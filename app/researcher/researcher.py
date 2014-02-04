@@ -114,7 +114,7 @@ def editConsents(id_survey, id_consent):
         return redirect(url_for('researcher.consents',id_survey = id_survey))
     elif request.method != "POST":
         form.text.data = consent.text
-        consents =Consent.query.filter(Consent.survey_id == id_survey)
+        consents = Consent.query.filter(Consent.survey_id == id_survey)
     return render_template('/researcher/consents.html',
         title = "consent",
         form = form,
@@ -140,6 +140,34 @@ def addSection(id_survey):
         db.session.commit()
         flash('Adding section.')
         return redirect(url_for('researcher.editSurvey',id = survey.id))
+    return render_template('/researcher/addSection.html',
+        title = "consent",
+        form = form,
+        id_survey = id_survey,
+        sections = sections)
+
+@blueprint.route('/edit/<int:id_survey>/section/<int:id_section>', methods = ['GET', 'POST'])
+def editSection(id_survey, id_section):
+    section = Section.query.filter(Section.survey_id == id_survey, Section.id == id_section).first()
+    if section == None:
+        flash('Section wrong') 
+        return redirect(url_for('researcher.editSurvey',id = id_survey))
+    form = SectionForm()
+    if form.validate_on_submit():
+        section.title = form.title.data
+        section.description = form.description.data
+        section.sequence = form.sequence.data
+        section.percent = form.percent.data
+        db.session.add(section)
+        db.session.commit()
+        flash('Editing consent')
+        return redirect(url_for('researcher.editSurvey',id = id_survey))
+    elif request.method != "POST":
+        form.title.data = section.title
+        form.description.data = section.description
+        form.sequence.data = section.sequence
+        form.percent.data = section.percent
+        sections = Section.query.filter(Section.survey_id == id_survey)
     return render_template('/researcher/addSection.html',
         title = "consent",
         form = form,
