@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Edit Survey</h1>
+<form action="" method="post" name="new">
+    {{form.hidden_tag()}}
+    <table>
+        <tr>
+            <td>Title:</td>
+            <td>
+                {{form.title(size = 64)}}
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td>{{form.description(cols = 32, rows = 4)}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Save changes">
+            </td>
+        </tr>
+
+    </table>
+    <a href="{{ url_for('researcher.consents',id_survey = survey.id) }}">{{ ('consents') }}</a>
+    {% for section in sections %}
+            {% include 'researcher/section.html' %}
+    {% endfor %}
+    <a href="{{ url_for('researcher.addSection',id_survey = survey.id) }}">{{ ('section') }}</a>
+    <br>
+    
+</form>
+{% endblock %}
