@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>New Survey</h1>
+<form action="" method="post" name="new">
+    {{form.hidden_tag()}}
+    <table>
+        <tr>
+            <td>Title:</td>
+            <td>
+                {{form.title(size = 64)}}
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td>{{form.description(cols = 32, rows = 4)}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Create Survey">
+            <a href="{{ url_for('researcher.index')}}">{{ ('Cancel') }}</a> </td>
+
+        </tr>
+    </table>
+</form>
+{% endblock %}
