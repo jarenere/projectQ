@@ -30,13 +30,13 @@ def new():
         title = 'New survey',
         form = form)
 
-@blueprint.route('/edit/<int:id>', methods = ['GET', 'POST'])
+@blueprint.route('/edit/<int:id_survey>', methods = ['GET', 'POST'])
 #podrimamos definir la entrada como string del titulo+id:
 #ejempo: "esto-es-una-encuesta_123", seria mas legible..
 #@blueprint.route('/edit/tittle_<int:id>'
 def editSurvey(id_survey):
     #get survey
-    survey = Survey.query.get(id)
+    survey = Survey.query.get(id_survey)
     #survey = Survey.query.filter(Survey.id == id)
     sections = survey.sections.all()
     form = EditSurveyForm()
@@ -173,3 +173,19 @@ def editSection(id_survey, id_section):
         form = form,
         id_survey = id_survey,
         sections = sections)
+
+@blueprint.route('/survey/<int:id_survey>/deleteSection/<int:id_section>')
+def deleteSection(id_survey,id_section):
+        #
+        #CUANDO TENGA SUBSECCIONES Y ENCUESTAR, EL ELIMINAR NO ES TRIVIAL
+        #
+    section = Section.query.filter(Section.survey_id == id_survey, Section.id == id_section).first()
+    if section != None:
+        #el consentimiento pertence a esa encuesta
+        db.session.delete(section)
+        db.session.commit()
+        flash('Section removed')
+        return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
+    else:
+        flash('Section wrong') 
+        return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
