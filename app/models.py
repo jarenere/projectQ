@@ -1,6 +1,61 @@
 # -*- coding: utf-8 -*-
 
 from app import db
+import json
+from datetime import datetime
+
+
+class Survey(db.Model):
+    '''A table with Survey
+    '''
+    #: unique id (automatically generated)
+    id = db.Column(db.Integer, primary_key = True)
+    #: Tittle for this Survey
+    title = db.Column(db.String(128), nullable = False)
+    #: description for this Survey
+    description = db.Column(db.String(1200))
+    #: created timestamp (automatically set)
+    created = db.Column(db.DateTime, default = datetime.utcnow())
+    ## Relationships
+    #: Survey have zero or more consents
+    consents = db.relationship('Consent', backref = 'survey', lazy = 'dynamic')
+    #: Survey have zero or more sections 
+    sections = db.relationship('Section', backref = 'survey', lazy = 'dynamic')
+
+
+
+class Consent(db.Model):
+    '''A table with Consents to a Survey
+    '''
+    #: unique id (automatically generated)
+    id = db.Column(db.Integer, primary_key = True)
+    #: Text for this consents
+    text = db.Column(db.String, nullable = False)
+    ## Relationships
+    survey_id = db.Column(db.Integer, db.ForeignKey('survey.id'))
+
+class Section(db.Model):
+    '''A table with sections of a Survey
+    '''
+    #: unique id (automatically generated)
+    id = db.Column(db.Integer, primary_key = True)
+    #: Tittle for this section
+    title = db.Column(db.String(128), nullable = False)
+    #: description for this section
+    description = db.Column(db.String)
+    #: sequence of the section
+    #If two or more sections of the same survey with the same sequence, 
+    # is chosen at random which is done first
+    sequence = db.Column(db.Integer, default = 1)
+    #:Percentage of Respondents who pass through this section
+    percent = db.Column(db.Numeric, default = 1)
+    #: created timestamp (automatically set)
+    created = db.Column(db.DateTime, default = datetime.utcnow())   
+    ## Relationships
+    #: section belongs to zero or more surveys 
+    survey_id = db.Column(db.Integer, db.ForeignKey('survey.id'))
+
+
 
 
 class Question(db.Model):
@@ -34,10 +89,17 @@ class PreguntaTexto(Pregunta):
 
 class PreguntaSeleccion(Pregunta):
     __mapper_args__ = {'polymorphic_identity' : 'seleccion'}
-    numero = db.Column(db.Integer)
-    #mmm.. almacenar en un json las posibles "respuestas" u
+    #mmm.. almacenar en una picke las posibles "respuestas" u
     #otra clase con las posibles respuestas.... va a ser que no
-    campos = db.Column(db.String(400))
+    opciones = db.Column(db.PickleType)
+
+    def numero(self):
+        return  len(self.opciones)
+
+class PreguntaSN(Pregunta):
+    __mapper_args__ = {'polymorphic_identity' : 's/n'}
+
+
 
 
 class Respuesta(db.Model):
