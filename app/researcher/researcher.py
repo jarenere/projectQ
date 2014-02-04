@@ -25,7 +25,7 @@ def new():
         db.session.add(survey)
         db.session.commit()
         flash('Your survey have been saved.')
-        return redirect(url_for('researcher.editSurvey',id = survey.id))
+        return redirect(url_for('researcher.editSurvey',id_survey = survey.id))
     return render_template('/researcher/new.html',
         title = 'New survey',
         form = form)
@@ -34,7 +34,7 @@ def new():
 #podrimamos definir la entrada como string del titulo+id:
 #ejempo: "esto-es-una-encuesta_123", seria mas legible..
 #@blueprint.route('/edit/tittle_<int:id>'
-def editSurvey(id):
+def editSurvey(id_survey):
     #get survey
     survey = Survey.query.get(id)
     #survey = Survey.query.filter(Survey.id == id)
@@ -139,7 +139,7 @@ def addSection(id_survey):
         db.session.add(section)
         db.session.commit()
         flash('Adding section.')
-        return redirect(url_for('researcher.editSurvey',id = survey.id))
+        return redirect(url_for('researcher.editSurvey',id_survey = survey.id))
     return render_template('/researcher/addSection.html',
         title = "consent",
         form = form,
@@ -151,7 +151,7 @@ def editSection(id_survey, id_section):
     section = Section.query.filter(Section.survey_id == id_survey, Section.id == id_section).first()
     if section == None:
         flash('Section wrong') 
-        return redirect(url_for('researcher.editSurvey',id = id_survey))
+        return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
     form = SectionForm()
     if form.validate_on_submit():
         section.title = form.title.data
@@ -161,7 +161,7 @@ def editSection(id_survey, id_section):
         db.session.add(section)
         db.session.commit()
         flash('Editing consent')
-        return redirect(url_for('researcher.editSurvey',id = id_survey))
+        return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
     elif request.method != "POST":
         form.title.data = section.title
         form.description.data = section.description
