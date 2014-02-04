@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Section!</h1>
+    <form action="" method="post" name="secion">
+        {{form.hidden_tag()}}
+        <table>
+            <tr>
+                <td>Title:</td>
+                <td>{{form.title(size = 64)}}
+                    {% for error in form.errors.title %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td>{{form.description(cols = 32, rows = 4)}}
+                    {% for error in form.errors.description %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Sequence:</td>
+                <td>{{form.sequence()}}
+                    {% for error in form.errors.sequence %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Percent:</td>
+                <td>{{form.percent()}}
+                    {% for error in form.errors.percent %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                {% if form.title.data  %}
+                    <input type="submit" value="Edit Section">
+                {% else %}
+                    <input type="submit" value="Add Section">
+                {% endif %}
+                <a href="{{ url_for('researcher.editSurvey', id = id_survey) }}">{{ ('Back') }}</a></td>
+
+            </tr>
+        </table>
+    </form>
+{#
+    {% for consent in consents %}
+        {% include 'researcher/consent.html' %}
+    {% endfor %}
+    #}
+{% endblock %}
