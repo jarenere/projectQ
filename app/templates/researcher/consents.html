@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Consent!</h1>
+    <form action="" method="post" name="consent">
+        {{form.hidden_tag()}}
+        <table>
+            <tr>
+                <td>Text:</td>
+                <td>{{form.text(cols = 32, rows = 4)}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                {% if form.text.data  %}
+                    <input type="submit" value="Edit Consent">
+                {% else %}
+                    <input type="submit" value="Add Consent">
+                {% endif %}
+                <a href="{{ url_for('researcher.editSurvey', id = id_survey) }}">{{ ('Back') }}</a></td>
+
+            </tr>
+        </table>
+    </form>
+
+    {% for consent in consents %}
+        {% include 'researcher/consent.html' %}
+    {% endfor %}
+{% endblock %}
