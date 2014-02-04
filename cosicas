@@ -1,0 +1,9 @@
+meter todas las preguntas en el mismo html, y seleccionar con if
+
+comprobar porque me mete entradas no validas en consent (sin relacion con survey)
+
+
+errores con wtforms!!!!
+        {% for error in form.errors.openid %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
