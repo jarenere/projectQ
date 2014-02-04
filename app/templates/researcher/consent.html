@@ -1,0 +1,10 @@
+<p><h3>{{consent.id}}</h3></p>
+<p>{{consent.text}}</p>
+<a href="{{ url_for('researcher.deleteConsent', id_consent = consent.id, id_survey = id_survey) }}">{{ ('Delete') }}</a>
+<a href="{{ url_for('researcher.editConsents', id_consent = consent.id, id_survey = id_survey) }}">{{ ('Edit') }}</a>
+
+{#<a href="{{ url_for('researcher.editSurvey', id = survey.id) }}">{{ ('Edit') }}</a>
+<a href="{{ url_for('copiar', id = pregunta.id) }}">{{ ('Copiar') }}</a>
+<a href="{{ url_for('editar', id = pregunta.id) }}">{{ ('Editar') }}</a>
+<a href="{{ url_for('eliminar', id = pregunta.id) }}">{{ ('Eliminar') }}</a>}
+#}
