@@ -54,6 +54,10 @@ class Section(db.Model):
     ## Relationships
     #: section belongs to zero or more surveys 
     survey_id = db.Column(db.Integer, db.ForeignKey('survey.id'))
+    #: section belongs to zero or more sections
+    section_id = db.Column(db.Integer, db.ForeignKey('section.id'))
+    #: Section have zero or more subsections 
+    subsections = db.relationship('Section', backref = 'survey', lazy = 'dynamic')
 
 
 
