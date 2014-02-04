@@ -144,7 +144,9 @@ def addSection(id_survey):
         title = "consent",
         form = form,
         id_survey = id_survey,
-        sections = sections)
+        sections = sections,
+        #add = true, you is adding a new section, add = False you is editing a section
+        add = True)
 
 @blueprint.route('/edit/<int:id_survey>/section/<int:id_section>', methods = ['GET', 'POST'])
 def editSection(id_survey, id_section):
@@ -153,6 +155,7 @@ def editSection(id_survey, id_section):
         flash('Section wrong') 
         return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
     form = SectionForm()
+    sections = Section.query.filter(Section.survey_id == id_survey)
     if form.validate_on_submit():
         section.title = form.title.data
         section.description = form.description.data
@@ -167,12 +170,13 @@ def editSection(id_survey, id_section):
         form.description.data = section.description
         form.sequence.data = section.sequence
         form.percent.data = section.percent
-        sections = Section.query.filter(Section.survey_id == id_survey)
     return render_template('/researcher/addSection.html',
         title = "consent",
         form = form,
         id_survey = id_survey,
-        sections = sections)
+        sections = sections,
+        #add = true, you is adding a new section, add = False you is editing a section
+        add = False)
 
 @blueprint.route('/survey/<int:id_survey>/deleteSection/<int:id_section>')
 def deleteSection(id_survey,id_section):
