@@ -45,7 +45,7 @@
                 {% else %}
                     <input type="submit" value="Add Section">
                 {% endif %}
-                <a href="{{ url_for('researcher.editSurvey', id = id_survey) }}">{{ ('Back') }}</a></td>
+                <a href="{{ url_for('researcher.editSurvey', id_survey = id_survey) }}">{{ ('Back') }}</a></td>
 
             </tr>
         </table>
