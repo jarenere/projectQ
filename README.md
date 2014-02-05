@@ -27,4 +27,4 @@ Run migration:
 
 Run server 
 ==========
-./manage.py runserver 
+./manage.py runserver
