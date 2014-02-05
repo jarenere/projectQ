@@ -1,9 +1,27 @@
 meter todas las preguntas en el mismo html, y seleccionar con if
 
-comprobar porque me mete entradas no validas en consent (sin relacion con survey)
+Campos para añadir texto debería usar markdown http://blog.miguelgrinberg.com/post/flask-pagedown-markdown-editor-extension-for-flask-wtf
+
+comprobar porque me mete entradas no validas en consent (sin relacion con survey) (seguramente porque el campo foraneo no es obligatorio, yeah)
 
 
 errores con wtforms!!!!
         {% for error in form.errors.openid %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
+
+
+funciones a revisar segun avance:
+researcher.deleteSection() 
+
+mandar a tomar por culo flask-sqlalchemy
+
+bug conocidos:
+
+ fichero addSection.htm (tambien pasa en /consents.html:) el boton de add, cambia de nombre a edit ya que compruebo la si titulo vacio para mostrar que boton.
+Solucion1: varias plantillas (coñazo a la hora de editar plantillas)
+Solucion2: parametro para indicar si estas editando o es una nueva plantilla
+Solucion3: extender con block e ir subiendo hacia arriba para tener finalmente la pagina.. te ahorras el parametro.. pero generas varios ficheros mas, eso si pequeñajos, no me convence
+
+Solucionado!! con solucion2, aunque tal vez mejor cambiar el nombre de parametros
+---------------------------

@@ -50,9 +50,12 @@
             </tr>
         </table>
     </form>
+    {% for section in sections %}
+            {% include 'researcher/subSection.html' %}
+    {% endfor %}
 {#
-    {% for consent in consents %}
-        {% include 'researcher/consent.html' %}
+    {% for section in sections %}
+            {% include 'researcher/subSection.html' %}
     {% endfor %}
     #}
 {% endblock %}

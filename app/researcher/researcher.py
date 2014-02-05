@@ -140,7 +140,7 @@ def addSection(id_survey):
         db.session.commit()
         flash('Adding section.')
         return redirect(url_for('researcher.editSurvey',id_survey = survey.id))
-    return render_template('/researcher/addSection.html',
+    return render_template('/researcher/addEditSection.html',
         title = "consent",
         form = form,
         id_survey = id_survey,
@@ -170,7 +170,7 @@ def editSection(id_survey, id_section):
         form.description.data = section.description
         form.sequence.data = section.sequence
         form.percent.data = section.percent
-    return render_template('/researcher/addSection.html',
+    return render_template('/researcher/addEditSection.html',
         title = "consent",
         form = form,
         id_survey = id_survey,
@@ -193,3 +193,32 @@ def deleteSection(id_survey,id_section):
     else:
         flash('Section wrong') 
         return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
+
+@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/subSection', methods = ['GET', 'POST'])
+def addSubSection(id_survey, id_section):
+    section = Section.query.filter(Section.survey_id == id_survey, Section.id == id_section).first()
+    if section == None:
+        flash('Section wrong') 
+        return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
+
+    form = SectionForm()
+    subsections = section.children.all()
+
+    if form.validate_on_submit():
+        section = Section(title = form.title.data,
+            description = form.description.data,
+            sequence = form.sequence.data,
+            percent = form.percent.data,
+            parent_id = id_section)
+        db.session.add(section)
+        db.session.commit()
+        flash('Adding subsection.')
+        return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
+    
+    return render_template('/researcher/addEditSection.html',
+        title = "consent",
+        form = form,
+        id_survey = id_survey,
+        sections = subsections,
+        #add = true, you is adding a new section, add = False you is editing a section
+        add = True)

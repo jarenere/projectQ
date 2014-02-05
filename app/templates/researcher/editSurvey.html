@@ -24,12 +24,12 @@
         </tr>
 
     </table>
-    <a href="{{ url_for('researcher.consents',id_survey = survey.id) }}">{{ ('View consents') }}</a>
+    <a href="{{ url_for('researcher.consents',id_survey = survey.id) }}">{{ ('View/Add consents') }}</a>
     {% for section in sections %}
             {% include 'researcher/section.html' %}
     {% endfor %}
     <br><br>
-    <a href="{{ url_for('researcher.addSection',id_survey = survey.id) }}">{{ ('View section') }}</a>
+    <a href="{{ url_for('researcher.addSection',id_survey = survey.id) }}">{{ ('Add section') }}</a>
     <br>
     
 </form>
