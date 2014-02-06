@@ -55,16 +55,18 @@ class Section(db.Model):
     #: section belongs to zero or more surveys 
     survey_id = db.Column(db.Integer, db.ForeignKey('survey.id'))
     #: section belongs to zero or more sections
-    parent_id = db.Column(db.Integer, db.ForeignKey('section.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey(id))
     #: Section have zero or more subsections 
     #https://github.com/zzzeek/sqlalchemy/blob/master/examples/adjacency_list/adjacency_list.py
     #http://stackoverflow.com/questions/15044777/relating-a-class-to-its-self
     #distintas opciones, si queremos lazy dynamic debemos de forzar uselist
     #debido a a la relacion one to one, many to one
     #http://docs.sqlalchemy.org/en/rel_0_9/orm/relationships.html
+    # children = db.relationship('Section', 
+    #     backref='section',remote_side=id, lazy = 'dynamic', uselist = True)
+    #http://stackoverflow.com/questions/19606745/flask-sqlalchemy-error-typeerror-incompatible-collection-type-model-is-not
     children = db.relationship('Section', 
-        backref='section',remote_side=id, lazy = 'dynamic', uselist = True)
-
+        backref='parent',remote_side=id, lazy = 'dynamic', uselist = True)
 
 
 
