@@ -25,3 +25,10 @@ Solucion3: extender con block e ir subiendo hacia arriba para tener finalmente l
 
 Solucionado!! con solucion2, aunque tal vez mejor cambiar el nombre de parametros
 ---------------------------
+
+
+mirar todas las insercciones, posiblemente esten todas mal, por no hacer uso del backref o mejor dicho ignorarlo, todo funcionaba porque filtraba por id, chapuza 
+
+
+s1 = models.Section.query.get(1)                                                                                                       
+/home/jarenere/frame_game_theory/flask/lib/python2.7/site-packages/sqlalchemy/sql/type_api.py:311: SAWarning: Dialect sqlite+pysqlite does *not* support Decimal objects natively, and SQLAlchemy must convert from floating point - rounding errors and other issues may occur. Please consider storing Decimal numbers as strings or integers on this platform for lossless storage. 
