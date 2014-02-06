@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Indice!</h1>
+        <div>
+            <a href="{{ url_for('cuestionario') }}">{{ ('Cuestionario') }}</a>
+            <a href="{{ url_for('pregunta') }}">{{ ('Pregunta') }}</a>
+
+        </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="" method="post" name="pregunta">
+          {{form.hidden_tag()}}
+      <p>        
+        Introduzca la pregunta:
+        {{form.texto(cols = 32, rows = 4)}}
+        </p>
+        <p>
+            ¿Es obligatoria la pregunta?
+            {{form.obligatoriedad}}
+        </p>
+<!--          <p><input type="submit" value="Siguiente"></p>
+    </form> -->
+   {% block pregunta_extendida %}{% endblock %}
+{% endblock %}
