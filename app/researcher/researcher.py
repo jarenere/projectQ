@@ -146,7 +146,7 @@ def addSection(id_survey):
         form = form,
         id_survey = id_survey,
         sections = sections,
-        #add = true, you is adding a new section, add = False you is editing a section
+        #add = true, you is adding a new section
         addSection = True)
 
 @blueprint.route('/edit/<int:id_survey>/section/<int:id_section>', methods = ['GET', 'POST'])
@@ -156,11 +156,8 @@ def editSection(id_survey, id_section):
         flash('Section wrong') 
         return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
     form = SectionForm()
-    #subsections = Section.query.filter(Section.survey_id == id_survey, )
     print section.title
     subsections = section.children.all()
-    for s in subsections:
-        print s.id, s.title
     if form.validate_on_submit():
         section.title = form.title.data
         section.description = form.description.data
@@ -181,7 +178,8 @@ def editSection(id_survey, id_section):
         id_survey = id_survey,
         sections = subsections,
         #add = true, you is adding a new section, add = False you is editing a section
-        editSection = True)
+        editSection = True,
+        id_section = id_section)
 
 @blueprint.route('/survey/<int:id_survey>/deleteSection/<int:id_section>')
 def deleteSection(id_survey,id_section):
@@ -201,6 +199,7 @@ def deleteSection(id_survey,id_section):
 
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/subSection', methods = ['GET', 'POST'])
 def addSubSection(id_survey, id_section):
+    #  QUERY MAAAAAAAAAAAAAAL!!!!
     section = Section.query.filter(Section.survey_id == id_survey, Section.id == id_section).first()
     if section == None:
         flash('Section wrong') 
@@ -214,8 +213,6 @@ def addSubSection(id_survey, id_section):
             description = form.description.data,
             sequence = form.sequence.data,
             percent = form.percent.data,
-            #parent_id = id_section
-#            parent = [section])
             parent = section)
 
         db.session.add(section)
@@ -238,16 +235,13 @@ def editSubSection(id_survey, id_section,id_subSection):
     #:id_section: id of parent section, maybe can be deleted
     #:id_subSection: id of secction to modify
     '''
-    section = Section.query.filter(Section.survey_id == id_survey, Section.id == id_section).first()
+    section = Section.query.filter(Section.id == id_subSection, Section.parent_id == id_section).first()
     if section == None:
         flash('Section wrong') 
         return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
     form = SectionForm()
-    #subsections = Section.query.filter(Section.survey_id == id_survey, )
+    subsections = section.children
     print section.title
-    subsections = section.children.all()
-    for s in subsections:
-        print s.id, s.title
     if form.validate_on_submit():
         section.title = form.title.data
         section.description = form.description.data
@@ -268,4 +262,5 @@ def editSubSection(id_survey, id_section,id_subSection):
         id_survey = id_survey,
         sections = subsections,
         #add = true, you is adding a new section, add = False you is editing a section
-        addSubSection = True)
+        addSubSection = True,
+        id_subSection = id_subSection)
