@@ -3,22 +3,31 @@
 from app import db
 import json
 from datetime import datetime
-
+from sqlalchemy import BigInteger, Integer, Boolean, Unicode,\
+        Float, UnicodeText, Text, String, DateTime, Numeric
+from sqlalchemy.schema import Table, MetaData, Column, ForeignKey
+from sqlalchemy.orm import relationship, backref, class_mapper
+from sqlalchemy.types import TypeDecorator
+from sqlalchemy import event, text
+from sqlalchemy.engine import reflection
+from sqlalchemy import create_engine
+from sqlalchemy.orm.collections import attribute_mapped_collection
 
 class Survey(db.Model):
     '''A table with Survey
     '''
+    __tablename__ = 'survey'
     #: unique id (automatically generated)
-    id = db.Column(db.Integer, primary_key = True)
+    id = Column(Integer, primary_key = True)
     #: Tittle for this Survey
-    title = db.Column(db.String(128), nullable = False)
+    title = Column(String(128), nullable = False)
     #: description for this Survey
-    description = db.Column(db.String(1200))
+    description = Column(String(1200))
     #: created timestamp (automatically set)
-    created = db.Column(db.DateTime, default = datetime.utcnow())
+    created = Column(DateTime, default = datetime.utcnow())
     ## Relationships
     #: Survey have zero or more consents
-    consents = db.relationship('Consent', backref = 'survey', lazy = 'dynamic')
+    consents = relationship('Consent', backref = 'survey', lazy = 'dynamic')
     #: Survey have zero or more sections 
     sections = db.relationship('Section', backref = 'survey', lazy = 'dynamic')
 
@@ -27,35 +36,38 @@ class Survey(db.Model):
 class Consent(db.Model):
     '''A table with Consents to a Survey
     '''
+    __tablename__ = 'consent'
     #: unique id (automatically generated)
-    id = db.Column(db.Integer, primary_key = True)
+    id = Column(Integer, primary_key = True)
     #: Text for this consents
-    text = db.Column(db.String, nullable = False)
+    text = Column(String, nullable = False)
     ## Relationships
-    survey_id = db.Column(db.Integer, db.ForeignKey('survey.id'))
+    survey_id = Column(Integer, ForeignKey('survey.id'))
 
 class Section(db.Model):
     '''A table with sections of a Survey
     '''
+    __tablename__ = 'section'
     #: unique id (automatically generated)
-    id = db.Column(db.Integer, primary_key = True)
+    id = Column(Integer, primary_key = True)
     #: Tittle for this section
-    title = db.Column(db.String(128), nullable = False)
+    title = Column(String(128), nullable = False)
     #: description for this section
-    description = db.Column(db.String)
+    description = Column(String)
     #: sequence of the section
     #If two or more sections of the same survey with the same sequence, 
     # is chosen at random which is done first
-    sequence = db.Column(db.Integer, default = 1)
+    sequence = Column(Integer, default = 1)
     #:Percentage of Respondents who pass through this section
-    percent = db.Column(db.Numeric, default = 1)
+    percent = Column(Numeric, default = 1)
     #: created timestamp (automatically set)
-    created = db.Column(db.DateTime, default = datetime.utcnow())   
+    #created = Column(DateTime, default = datetime.utcnow())   
+    
     ## Relationships
     #: section belongs to zero or more surveys 
     survey_id = db.Column(db.Integer, db.ForeignKey('survey.id'))
     #: section belongs to zero or more sections
-    parent_id = db.Column(db.Integer, db.ForeignKey(id))
+    parent_id = Column(Integer, ForeignKey(id))
     #: Section have zero or more subsections 
     #https://github.com/zzzeek/sqlalchemy/blob/master/examples/adjacency_list/adjacency_list.py
     #http://stackoverflow.com/questions/15044777/relating-a-class-to-its-self
@@ -65,9 +77,19 @@ class Section(db.Model):
     # children = db.relationship('Section', 
     #     backref='section',remote_side=id, lazy = 'dynamic', uselist = True)
     #http://stackoverflow.com/questions/19606745/flask-sqlalchemy-error-typeerror-incompatible-collection-type-model-is-not
-    children = db.relationship('Section', 
-        backref='parent',remote_side=id, lazy = 'dynamic', uselist = True)
+    # children = db.relationship('Section', 
+    #     backref='parent',remote_side=id, lazy = 'dynamic',uselist = True,
+    #     collection_class=attribute_mapped_collection('name')
+    #     )
+    # children = relationship('Section', backref=backref('parent', remote_side=id),
+    #     collection_class=attribute_mapped_collection('name'))
+    children = relationship('Section', backref=backref('parent', remote_side=id),
+        lazy = 'dynamic', uselist = True)
 
+    
+    # def __init__(self, title, parent=None):
+    #     self.title = title
+    #     self.parent = parent
 
 
 class Question(db.Model):

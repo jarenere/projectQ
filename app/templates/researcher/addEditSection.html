@@ -40,10 +40,14 @@
             <tr>
                 <td></td>
                 <td>
-                {% if add  %}
+                {% if addSection  %}
                     <input type="submit" value="Add Section">
-                {% else %}
-                    <input type="submit" value="Edit     Section">
+                {% endif %}
+                {% if editSection  %}
+                    <input type="submit" value="Edit Section">
+                {% endif %}
+                {% if addSubSection  %}
+                    <input type="submit" value="Add  SubSection">
                 {% endif %}
                 <a href="{{ url_for('researcher.editSurvey', id_survey = id_survey) }}">{{ ('Back') }}</a></td>
 
@@ -53,9 +57,5 @@
     {% for section in sections %}
             {% include 'researcher/subSection.html' %}
     {% endfor %}
-{#
-    {% for section in sections %}
-            {% include 'researcher/subSection.html' %}
-    {% endfor %}
-    #}
+
 {% endblock %}

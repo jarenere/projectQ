@@ -1,8 +1,12 @@
 meter todas las preguntas en el mismo html, y seleccionar con if
 
+intentar eliminar flask-sqlalchemy
+
 Campos para añadir texto debería usar markdown http://blog.miguelgrinberg.com/post/flask-pagedown-markdown-editor-extension-for-flask-wtf
 
 comprobar porque me mete entradas no validas en consent (sin relacion con survey) (seguramente porque el campo foraneo no es obligatorio, yeah)
+
+
 
 
 errores con wtforms!!!!
