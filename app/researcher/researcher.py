@@ -2,8 +2,10 @@
 
 from flask import Blueprint, request, url_for, flash, redirect, abort
 from flask import render_template
-from forms import EditSurveyForm, EditConsentForm, SectionForm
+from forms import EditSurveyForm, EditConsentForm, SectionForm, QuestionForm
 from app.models import Survey, Consent, Section
+from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
+from app.models import QuestionYN
 from app import app, db
 
 blueprint = Blueprint('researcher', __name__)
@@ -199,7 +201,6 @@ def deleteSection(id_survey,id_section):
 
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/subSection', methods = ['GET', 'POST'])
 def addSubSection(id_survey, id_section):
-    #  QUERY MAAAAAAAAAAAAAAL!!!!
     section = Section.query.filter(Section.survey_id == id_survey, Section.id == id_section).first()
     if section == None:
         flash('Section wrong') 
@@ -264,3 +265,45 @@ def editSubSection(id_survey, id_section,id_subSection):
         #add = true, you is adding a new section, add = False you is editing a section
         addSubSection = True,
         id_subSection = id_subSection)
+
+
+@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/addQuestion', methods = ['GET', 'POST'])
+def addQuestion(id_survey, id_section):
+    section = Section.query.filter(Section.survey_id == id_survey, Section.id == id_section).first()
+    if section == None:
+        flash('Section wrong') 
+        return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
+    form = QuestionForm()
+    
+    if form.validate_on_submit():
+        if form.questionType.data =='YES/NO':
+            question = QuestionYN()
+        if form.questionType.data == 'Numerical':
+            question = QuestionNumerical()
+        if form.questionType.data == 'Text':
+            question = QuestionText()
+        if form.questionType.data == 'Choice':
+            l = [form.answer1.data,
+            form.answer2.data,
+            form.answer3.data,
+            form.answer4.data,
+            form.answer5.data,
+            form.answer6.data,
+            form.answer7.data,
+            form.answer8.data,
+            form.answer9.data]
+            question = QuestionChoice(choices = l[0:int(form.numberFields.data)])
+        question.text = form.text.data
+        question.required = form.required.data
+        question.registerTime = form.registerTime.data
+        question.section = section
+        db.session.add(question)
+        db.session.commit()
+        flash('Adding question')
+        return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
+    
+    return render_template('/researcher/addEditQuestion.html',
+        title = "Question",
+        form = form,
+        id_survey = id_survey,
+        section = section)

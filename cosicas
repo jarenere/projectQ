@@ -6,7 +6,9 @@ Campos para añadir texto debería usar markdown http://blog.miguelgrinberg.com/
 
 comprobar porque me mete entradas no validas en consent (sin relacion con survey) (seguramente porque el campo foraneo no es obligatorio, yeah)
 
+models: questionChoice, el texto de las elecciones podria ir en otra tabla
 
+meter javascript en addEditQuestion, para mostrar/ocultar partes
 
 
 errores con wtforms!!!!

@@ -4,7 +4,7 @@ from app import db
 import json
 from datetime import datetime
 from sqlalchemy import BigInteger, Integer, Boolean, Unicode,\
-        Float, UnicodeText, Text, String, DateTime, Numeric
+        Float, UnicodeText, Text, String, DateTime, Numeric, PickleType
 from sqlalchemy.schema import Table, MetaData, Column, ForeignKey
 from sqlalchemy.orm import relationship, backref, class_mapper
 from sqlalchemy.types import TypeDecorator
@@ -29,7 +29,7 @@ class Survey(db.Model):
     #: Survey have zero or more consents
     consents = relationship('Consent', backref = 'survey', lazy = 'dynamic')
     #: Survey have zero or more sections 
-    sections = db.relationship('Section', backref = 'survey', lazy = 'dynamic')
+    sections = relationship('Section', backref = 'survey', lazy = 'dynamic')
 
 
 
@@ -64,8 +64,10 @@ class Section(db.Model):
     #created = Column(DateTime, default = datetime.utcnow())   
     
     ## Relationships
-    #: section belongs to zero or more surveys 
-    survey_id = db.Column(db.Integer, db.ForeignKey('survey.id'))
+    #: Section have zero or more questions 
+    questions = relationship('Question', backref = 'section', lazy = 'dynamic')
+    #: section belongs to zero or one surveys 
+    survey_id = Column(Integer, ForeignKey('survey.id'))
     #: section belongs to zero or more sections
     parent_id = Column(Integer, ForeignKey(id))
     #: Section have zero or more subsections 
@@ -91,21 +93,72 @@ class Section(db.Model):
     #     self.title = title
     #     self.parent = parent
 
-
 class Question(db.Model):
-    #Clase Question
-    id = db.Column(db.Integer, primary_key = True)
-    text = db.Column(db.String(400))
+    '''A table with Questions
+    '''
+    __tablename__ = 'question'
+    #: unique id (automatically generated)
+    id = Column(Integer, primary_key = True)
+    #: Text for this question
+    text = Column(String, nullable = False)
+    #: If the question is obligatory or not
+    required = Column(Boolean, nullable = False)
+    #: If time is register or not
+    registerTime = Column(Boolean, nullable = False)
+    #: Type of question, discriminate between classes
+    type = Column(String(20))
+    __mapper_args__ = {'polymorphic_on': type}
+    ## Relationships
+    #: Question belong to one section
+    section_id = Column(Integer, ForeignKey('section.id'),  nullable = False)
 
-    def __repr__(self):
-        return '<Question %r>' % (self.id)
+class QuestionYN(Question):
+    '''Question of type yes or no
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'yn'}
 
-class QuestionNumber(Question):
-    #Pregunta de tipo numero
-    number = db.Column(db.Integer)
 
-    def __repr__(self):
-        return '<Question_numeber %r>' % (self.id)
+class QuestionNumerical(Question):
+    '''Question of type numerical
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'numerical'}
+
+
+class QuestionText(Question):
+    '''Question of type text
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'text'}
+
+class QuestionChoice(Question):
+    '''Question of type choice
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'choice'}
+    #: possible choices
+    choices = Column(PickleType)
+    
+    def number(self):
+        return  len(self.choices)
+
+
+
+
+
+
+
+# class Question(db.Model):
+#     #Clase Question
+#     id = db.Column(db.Integer, primary_key = True)
+#     text = db.Column(db.String(400))
+
+#     def __repr__(self):
+#         return '<Question %r>' % (self.id)
+
+# class QuestionNumber(Question):
+#     #Pregunta de tipo numero
+#     number = db.Column(db.Integer)
+
+#     def __repr__(self):
+#         return '<Question_numeber %r>' % (self.id)
 
 
 class Pregunta(db.Model):

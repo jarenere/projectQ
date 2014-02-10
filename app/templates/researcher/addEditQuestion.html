@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Question!</h1>
+    <form action="" method="post" name="question">
+        {{form.hidden_tag()}}
+        <table>
+            <tr>
+                <td>Text:</td>
+                <td>{{form.text(cols = 32, rows = 4)}}
+                    {% for error in form.errors.text %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Required:</td>
+                <td>{{form.required()}}
+                    {% for error in form.errors.required %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Register time:</td>
+                <td>{{form.registerTime()}}
+                    {% for error in form.errors.registerTime %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Type of question:</td>
+                <td>{{form.questionType()}}
+                    {% for error in form.errors.questionType %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Number of Fields in "choice question":</td>
+                <td>{{form.numberFields()}}
+                    {% for error in form.errors.numberFields %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Answer 1:</td>
+                <td>{{form.answer1(size = 64)}}
+                    {% for error in form.errors.answer1 %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Answer 2:</td>
+                <td>{{form.answer2(size = 64)}}
+                    {% for error in form.errors.answer2 %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Answer 3:</td>
+                <td>{{form.answer3(size = 64)}}
+                    {% for error in form.errors.answer3 %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Answer 4:</td>
+                <td>{{form.answer4(size = 64)}}
+                    {% for error in form.errors.answer4 %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Answer 5:</td>
+                <td>{{form.answer5(size = 64)}}
+                    {% for error in form.errors.answer5 %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Answer 6:</td>
+                <td>{{form.answer6(size = 64)}}
+                    {% for error in form.errors.answer6 %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Answer 7:</td>
+                <td>{{form.answer7(size = 64)}}
+                    {% for error in form.errors.answer7 %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Answer 8:</td>
+                <td>{{form.answer8(size = 64)}}
+                    {% for error in form.errors.answer8 %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Answer 9</td>
+                <td>{{form.answer9(size = 64)}}
+                    {% for error in form.errors.answer9 %}
+                    <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Add Question">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+{% endblock %}
