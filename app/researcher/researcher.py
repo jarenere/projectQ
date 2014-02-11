@@ -58,6 +58,31 @@ def editSurvey(id_survey):
         sections = sections)
 
 
+@blueprint.route('/edit2/<int:id_survey>', methods = ['GET', 'POST'])
+#podrimamos definir la entrada como string del titulo+id:
+#ejempo: "esto-es-una-encuesta_123", seria mas legible..
+#@blueprint.route('/edit/tittle_<int:id>'
+def editSurvey2(id_survey):
+    #get survey
+    survey = Survey.query.get(id_survey)
+    #survey = Survey.query.filter(Survey.id == id)
+    sections = survey.sections.all()
+    form = EditSurveyForm()
+    if form.validate_on_submit():
+        survey.title = form.title.data
+        survey.description = form.description.data
+        db.session.add(survey)
+        db.session.commit()
+        flash('Your changes have been saved.')
+    elif request.method != "POST":
+        form.title.data = survey.title
+        form.description.data = survey.description
+    return render_template('/researcher/editSurvey2.html',
+        title = survey.title,
+        form = form,
+        survey = survey,
+        sections = sections)
+
 
 @blueprint.route('/edit/<int:id_survey>/consents/', methods = ['GET', 'POST'])
 #podrimamos definir la entrada como string del titulo+id:

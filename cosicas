@@ -38,3 +38,6 @@ mirar todas las insercciones, posiblemente esten todas mal, por no hacer uso del
 
 s1 = models.Section.query.get(1)                                                                                                       
 /home/jarenere/frame_game_theory/flask/lib/python2.7/site-packages/sqlalchemy/sql/type_api.py:311: SAWarning: Dialect sqlite+pysqlite does *not* support Decimal objects natively, and SQLAlchemy must convert from floating point - rounding errors and other issues may occur. Please consider storing Decimal numbers as strings or integers on this platform for lossless storage. 
+
+
+si se quiere añadir un nuevo tipo de pregunta ficheros a tocar: researcher.py (addquestion), forms y model
