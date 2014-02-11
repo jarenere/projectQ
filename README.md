@@ -10,6 +10,8 @@ flask-sqlalchemy 1.0
 flask-migrate  1.2.0
 flask-wtf
 bootstrap 2.3.2
+Flask-Login-0.2.9.tar.gz
+Flask-OpenID-1.2.1
 
 Change Python default encoding:
 

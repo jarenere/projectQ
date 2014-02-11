@@ -4,7 +4,8 @@ from app import db
 import json
 from datetime import datetime
 from sqlalchemy import BigInteger, Integer, Boolean, Unicode,\
-        Float, UnicodeText, Text, String, DateTime, Numeric, PickleType
+        Float, UnicodeText, Text, String, DateTime, Numeric, PickleType,\
+        SmallInteger
 from sqlalchemy.schema import Table, MetaData, Column, ForeignKey
 from sqlalchemy.orm import relationship, backref, class_mapper
 from sqlalchemy.types import TypeDecorator
@@ -140,10 +141,55 @@ class QuestionChoice(Question):
         return  len(self.choices)
 
 
+ROLE_USER = 0
+ROLE_RESEARCHER = 1
+ROLE_ADMIN = 2
 
 
+class User(db.Model):
+    '''A table with user
+    '''
+    __tablename__ = 'user'
+    #: unique id (automatically generated)
+    id = Column(Integer, primary_key = True)
+    #: created timestamp (automatically set)
+    created = Column(DateTime, default = datetime.utcnow())
+    #: email address ...
+    email = Column(Unicode(length=254), unique=True, nullable=False)
+    #: user name
+    nickname = Column(String(64), unique = True)
+    #: role of user
+    role = Column(SmallInteger, default = ROLE_USER)
 
 
+    def is_authenticated(self):
+        '''Returns True if the user is authenticated, i.e. they have provided 
+        valid credentials. (Only authenticated users will fulfill the criteria 
+        of login_required.)
+        '''
+        return True
+
+    def is_active(self):
+        '''Returns True if this is an active user - in addition to being
+        authenticated, they also have activated their account, not been
+        suspended, or any condition your application has for rejecting an
+        account. Inactive accounts may not log in (without being forced of
+        course).
+        '''
+        return True
+
+    def is_anonymous(self):
+        '''Returns True if this is an anonymous user. (Actual users should 
+        return False instead.)
+        '''
+        return False
+
+    def get_id(self):
+        '''Returns a unicode that uniquely identifies this user, and can be
+        used to load the user from the user_loader callback. Note that this 
+        must be a unicode 
+        '''
+        return unicode(self.id)
 
 # class Question(db.Model):
 #     #Clase Question
