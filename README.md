@@ -9,6 +9,7 @@ sqlalchemy 0.9.1
 flask-sqlalchemy 1.0
 flask-migrate  1.2.0
 flask-wtf
+bootstrap 2.3.2
 
 Change Python default encoding:
 
