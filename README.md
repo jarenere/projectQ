@@ -13,6 +13,7 @@ bootstrap 2.3.2
 Flask-Login-0.2.9.tar.gz
 Flask-OpenID-1.2.1
 flask-pagedown-0.1.3
+Flask-Markdown-0.3
 
 Change Python default encoding:
 

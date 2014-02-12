@@ -2,32 +2,42 @@
 
 {% block content %}
     <h1>Consent!</h1>
-    <form action="" method="post" name="consent">
-        {{form.hidden_tag()}}
-        <table>
-            <tr>
-                <td>Text:</td>
-                <td>{{form.text(cols = 32, rows = 4)}}
-                    {% for error in form.errors.text %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                {% if form.text.data  %}
-                    <input type="submit" value="Edit Consent">
-                {% else %}
-                    <input type="submit" value="Add Consent">
-                {% endif %}
-                <a href="{{ url_for('researcher.editSurvey', id_survey = id_survey) }}">{{ ('Back') }}</a></td>
+    <div class="container-fluid">
+        <div class="well">
+            <form action="" method="post" name="consent">
+                {{form.hidden_tag()}}
+                <table>
+                    <tr>
+                        <td>Consent:</td>
+                        <td>{{form.text(rows = 10, style = 'width:100%')}}
+                            {% for error in form.errors.text %}
+                            <span style="color: red;">[{{error}}]</span>
+                            {% endfor %}<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                        {% if addConsent  %}
+                            <input type="submit" value="Add Consent">
+                        {% endif %}
+                        {% if editConsent %}
+                            <input type="submit" value="Edit Consent">
+                        {% endif %}
+                        <a href="{{ url_for('researcher.editSurvey', id_survey = id_survey) }}">{{ ('Back') }}</a></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
 
-            </tr>
-        </table>
-    </form>
 
     {% for consent in consents %}
-        {% include 'researcher/consent.html' %}
+        <div class="well">
+            {% filter markdown %}{{consent.text}}{% endfilter %}
+            <a href="{{ url_for('researcher.deleteConsent', id_consent = consent.id, id_survey = id_survey) }}">{{ ('Delete') }}</a>
+            <a href="{{ url_for('researcher.editConsents', id_consent = consent.id, id_survey = id_survey) }}">{{ ('Edit') }}</a>
+        </div>
     {% endfor %}
+    
+    </div>
 {% endblock %}

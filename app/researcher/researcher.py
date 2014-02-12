@@ -2,7 +2,7 @@
 
 from flask import Blueprint, request, url_for, flash, redirect, abort
 from flask import render_template
-from forms import EditSurveyForm, EditConsentForm, SectionForm, QuestionForm
+from forms import SurveyForm, EditConsentForm, SectionForm, QuestionForm
 from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
 from app.models import QuestionYN
@@ -14,18 +14,17 @@ blueprint = Blueprint('researcher', __name__)
 
 @blueprint.route('/')
 @blueprint.route('/index')
-@login_required
-@researcher_required
+#@login_required
+#@researcher_required
 def index():
     surveys = Survey.query.order_by(Survey.created.desc())
     return render_template('/researcher/index.html',
         tittle = 'Survey',
         surveys = surveys)
 
-@blueprint.route('/new', methods = ['GET', 'POST'])
-@researcher_required
+@blueprint.route('/survey/new', methods = ['GET', 'POST'])
 def new():
-    form = EditSurveyForm()
+    form = SurveyForm()
     if form.validate_on_submit():
         survey = Survey( title = form.title.data,
             description = form.description.data)
@@ -37,16 +36,15 @@ def new():
         title = 'New survey',
         form = form)
 
-@blueprint.route('/edit/<int:id_survey>', methods = ['GET', 'POST'])
+@blueprint.route('/survey/<int:id_survey>', methods = ['GET', 'POST'])
 #podrimamos definir la entrada como string del titulo+id:
 #ejempo: "esto-es-una-encuesta_123", seria mas legible..
 #@blueprint.route('/edit/tittle_<int:id>'
 def editSurvey(id_survey):
     #get survey
     survey = Survey.query.get(id_survey)
-    #survey = Survey.query.filter(Survey.id == id)
     sections = survey.sections.all()
-    form = EditSurveyForm()
+    form = SurveyForm()
     if form.validate_on_submit():
         survey.title = form.title.data
         survey.description = form.description.data
@@ -89,10 +87,10 @@ def editSurvey2(id_survey):
         sections = sections)
 
 
-@blueprint.route('/edit/<int:id_survey>/consents/', methods = ['GET', 'POST'])
+@blueprint.route('/survey/<int:id_survey>/consent/add', methods = ['GET', 'POST'])
 #podrimamos definir la entrada como string del titulo+id:
 #ejempo: "esto-es-una-encuesta_123", seria mas legible..
-def consents(id_survey):
+def addConsent(id_survey):
     form = EditConsentForm()
     survey = Survey.query.get(id_survey)
     if survey == None:
@@ -107,43 +105,41 @@ def consents(id_survey):
         db.session.add(consent)
         db.session.commit()
         flash('Adding consent.')
-        return redirect(url_for('researcher.consents',id_survey = survey.id))
+        return redirect(url_for('researcher.addConsent',id_survey = survey.id))
  
     return render_template('/researcher/consents.html',
         title = "consent",
         form = form,
         id_survey = id_survey,
-        consents = consents)
+        consents = consents,
+        addConsent = True)
 
-@blueprint.route('/deleteConsent/<int:id_survey>/<int:id_consent>')
+@blueprint.route('/survey/<int:id_survey>/consent/<int:id_consent>/delete')
 def deleteConsent(id_survey,id_consent):
-    #>>> cs = models.Consent.query.filter(models.Consent.survey_id == 1, models.Consent.id == 23)
     consent = Consent.query.filter(Consent.survey_id == id_survey, Consent.id == id_consent).first()
     if consent != None:
-        #el consentimiento pertence a esa encuesta
         db.session.delete(consent)
         db.session.commit()
         flash('consent removed')
-        return redirect(url_for('researcher.consents',id_survey = id_survey))
-
+        return redirect(url_for('researcher.addConsent',id_survey = id_survey))
     else:
         flash('consent wrong') 
-        return redirect(url_for('researcher.consents',id_survey = id_survey))
+        return redirect(url_for('researcher.addConsent',id_survey = id_survey))
 
 
-@blueprint.route('/edit/<int:id_survey>/consents/<int:id_consent>', methods = ['GET', 'POST'])
+@blueprint.route('/survey/<int:id_survey>/consent/<int:id_consent>', methods = ['GET', 'POST'])
 def editConsents(id_survey, id_consent):
     consent = Consent.query.filter(Consent.survey_id == id_survey, Consent.id == id_consent).first()
     if consent == None:
         flash('Consent wrong') 
-        return redirect(url_for('researcher.consents',id_survey = id_survey))
+        return redirect(url_for('researcher.addConsent',id_survey = id_survey))
     form = EditConsentForm()
     if form.validate_on_submit():
         consent.text = form.text.data
         db.session.add(consent)
         db.session.commit()
         flash('Editing consent')
-        return redirect(url_for('researcher.consents',id_survey = id_survey))
+        return redirect(url_for('researcher.addConsent',id_survey = id_survey))
     elif request.method != "POST":
         form.text.data = consent.text
         consents = Consent.query.filter(Consent.survey_id == id_survey)
@@ -151,7 +147,8 @@ def editConsents(id_survey, id_consent):
         title = "consent",
         form = form,
         id_survey = id_survey,
-        consents = consents)
+        consents = consents,
+        editConsent = True)
 
 @blueprint.route('/survey/<int:id_survey>/section/', methods = ['GET', 'POST'])
 def addSection(id_survey):

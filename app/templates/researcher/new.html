@@ -11,11 +11,16 @@
                 {{form.title(size = 64)}}
                 {% for error in form.errors.title %}
                 <span style="color: red;">[{{error}}]</span>
-                {% endfor %}<br>                
+                {% endfor %}<br>
+            <td>                
         </tr>
         <tr>
             <td>Description:</td>
             <td>{{form.description(rows = 10, style = 'width:100%')}}</td>
+                {% for error in form.errors.description %}
+                <span style="color: red;">[{{error}}]</span>
+                {% endfor %}<br>     
+            <td>
         </tr>
         <tr>
             <td></td>

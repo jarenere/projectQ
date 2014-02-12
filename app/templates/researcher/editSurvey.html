@@ -1,36 +1,78 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Edit Survey</h1>
-<form action="" method="post" name="new">
-    {{form.hidden_tag()}}
-    <table>
-        <tr>
-            <td>Title:</td>
-            <td>
-                {{form.title(size = 64)}}
-                {% for error in form.errors.title %}
-                <span style="color: red;">[{{error}}]</span>
-                {% endfor %}<br>                
-        </tr>
-        <tr>
-            <td>Description:</td>
-            <td>{{form.description(cols = 32, rows = 4)}}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Save changes">
-            </td>
-        </tr>
 
-    </table>
-    <a href="{{ url_for('researcher.consents',id_survey = survey.id) }}">{{ ('View/Add consents') }}</a>
-    {% for section in sections %}
-            {% include 'researcher/section.html' %}
-    {% endfor %}
-    <br><br>
-    <a href="{{ url_for('researcher.addSection',id_survey = survey.id) }}">{{ ('Add section') }}</a>
-    <br>
+<h1>Edit Survey</h1>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <!--Sidebar content-->
+            <div class="well">
+                    <ul class="sections">
+                    {%- for section in sections recursive %}
+                        <li><a href="{{ url_for('researcher.editSection', id_section = section.id, id_survey =  survey.id) }}">{{section.title}}</a>
+
+                        {%- if section.children %}
+                            <ul class="submenu">{{ loop (section.children)}}</ul>
+                        {%- endif %}</li>
+                    {%- endfor %}
+                    </ul>
+            </div>
+        </div>
+        <div class="span10">
+            <!--Body content-->
+            <div class="well">
+                <form action="" method="post" name="new">
+                    {{form.hidden_tag()}}
+                    <table>
+                        <tr>
+                            <td>Title:</td>
+                            <td>
+                                {{form.title(size = 64)}}
+                                {% for error in form.errors.title %}
+                                <span style="color: red;">[{{error}}]</span>
+                                {% endfor %}<br>                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Description:</td>
+                            <td>{{form.description(rows = 10, style = 'width:100%')}}
+                                {% for error in form.errors.description %}
+                                <span style="color: red;">[{{error}}]</span>
+                                {% endfor %}<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="submit" value="Save changes">
+                            </td>
+                        </tr>
+
+                    </table>
+                    <a href="{{ url_for('researcher.addConsent',id_survey = survey.id) }}">{{ ('View/Add consents') }}</a>
+                    <br><br>
+                    <a href="{{ url_for('researcher.addSection',id_survey = survey.id) }}">{{ ('Add section') }}</a>
+                    <br>
+                    
+                </form>
+            </div>
+            <div class="well">
+
+
+
+                {% for section in sections %}
+                    {% include 'researcher/section.html' %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
     
-</form>
+
+
+
 {% endblock %}

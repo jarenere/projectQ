@@ -7,12 +7,12 @@ from flask.ext.pagedown.fields import PageDownField
 EXAMPLE_MARKDOWN = '## This is a example of Markdown\n**Markdown** is rendered on the fly in the <i>preview area</i>!\n\n\
 More about [markdown](http://daringfireball.net/projects/markdown/).'
 
-class EditSurveyForm(Form):
+class SurveyForm(Form):
     title = TextField('title', validators = [Length(min = 1, max = 128)])
-    description = PageDownField('description',validators = [Length(min = 0, max = 1200)],default = EXAMPLE_MARKDOWN)
+    description = PageDownField('description',validators = [Length(min = 10, max = 1200)],default = EXAMPLE_MARKDOWN)
 
 class EditConsentForm(Form):
-    text = TextAreaField('text',validators = [Length(min = 1)])
+    text = PageDownField('text',validators = [Length(min = 1)],default = EXAMPLE_MARKDOWN)
 
 class SectionForm(Form):
     title = TextField('title', validators = [Length(min = 1, max = 128)])
