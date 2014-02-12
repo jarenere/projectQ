@@ -1,20 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% from "_formHelpers.html" import render_field %}
     <h1>Consent!</h1>
     <div class="container-fluid">
         <div class="well">
             <form action="" method="post" name="consent">
                 {{form.hidden_tag()}}
                 <table>
-                    <tr>
-                        <td>Consent:</td>
-                        <td>{{form.text(rows = 10, style = 'width:100%')}}
-                            {% for error in form.errors.text %}
-                            <span style="color: red;">[{{error}}]</span>
-                            {% endfor %}<br>
-                        </td>
-                    </tr>
+                    {{ render_field(form.text,rows = 10, style = 'width:100%') }}
                     <tr>
                         <td></td>
                         <td>
