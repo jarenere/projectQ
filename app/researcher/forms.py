@@ -16,7 +16,7 @@ class EditConsentForm(Form):
 
 class SectionForm(Form):
     title = TextField('title', validators = [Length(min = 1, max = 128)])
-    description = TextAreaField('description',validators = [Length(min = 0, max = 1200)])
+    description = PageDownField('description',validators = [Length(min = 0, max = 1200)],default = EXAMPLE_MARKDOWN)
     sequence = IntegerField('sequence')
     # Field with two decimal, range 0-1
     percent = DecimalField ('percent', validators = [NumberRange(min = 0, max = 1)],places=2)
