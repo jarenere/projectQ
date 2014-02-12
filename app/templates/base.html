@@ -1,5 +1,14 @@
 <html>
     <head>
+    {{ pagedown.include_pagedown() }}
+    <style>
+    .flask-pagedown-input {
+    }
+    .flask-pagedown-preview {
+        border: 1px dotted black;
+        background-color: #f0f0f0;
+    }
+    </style>
     {% if title %}
         <title>{{title}}</title>
     {% else %}

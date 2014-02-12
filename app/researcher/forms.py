@@ -1,11 +1,15 @@
 from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, RadioField, SelectField, IntegerField, TextAreaField, TextField, DecimalField
 from wtforms.validators import Required, Length, NumberRange, ValidationError
+from flask.ext.pagedown import PageDown
+from flask.ext.pagedown.fields import PageDownField
 
+EXAMPLE_MARKDOWN = '## This is a example of Markdown\n**Markdown** is rendered on the fly in the <i>preview area</i>!\n\n\
+More about [markdown](http://daringfireball.net/projects/markdown/).'
 
 class EditSurveyForm(Form):
     title = TextField('title', validators = [Length(min = 1, max = 128)])
-    description = TextAreaField('description',validators = [Length(min = 0, max = 1200)])
+    description = PageDownField('description',validators = [Length(min = 0, max = 1200)],default = EXAMPLE_MARKDOWN)
 
 class EditConsentForm(Form):
     text = TextAreaField('text',validators = [Length(min = 1)])
