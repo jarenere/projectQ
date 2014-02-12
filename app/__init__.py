@@ -6,6 +6,7 @@ from flask.ext.migrate import Migrate
 from flask.ext.login import LoginManager
 from flask.ext.openid import OpenID
 from config import basedir
+from flaskext.markdown import Markdown
 from flask.ext.pagedown import PageDown
 
 
@@ -15,7 +16,7 @@ app = Flask(__name__)
 
 #markdown editor
 pagedown = PageDown(app)
-
+markdown = Markdown(app)
 
 app.config.from_object('config')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
