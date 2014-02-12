@@ -8,18 +8,18 @@ EXAMPLE_MARKDOWN = '## This is a example of Markdown\n**Markdown** is rendered o
 More about [markdown](http://daringfireball.net/projects/markdown/).'
 
 class SurveyForm(Form):
-    title = TextField('title', validators = [Length(min = 1, max = 128)])
-    description = PageDownField('description',validators = [Length(min = 10, max = 1200)],default = EXAMPLE_MARKDOWN)
+    title = TextField('Title', validators = [Length(min = 1, max = 128)])
+    description = PageDownField('Description',validators = [Length(min = 10, max = 1200)],default = EXAMPLE_MARKDOWN)
 
 class EditConsentForm(Form):
-    text = PageDownField('text',validators = [Length(min = 1)],default = EXAMPLE_MARKDOWN)
+    text = PageDownField('Consent',validators = [Length(min = 1)],default = EXAMPLE_MARKDOWN)
 
 class SectionForm(Form):
-    title = TextField('title', validators = [Length(min = 1, max = 128)])
-    description = PageDownField('description',validators = [Length(min = 0, max = 1200)],default = EXAMPLE_MARKDOWN)
-    sequence = IntegerField('sequence')
+    title = TextField('Title', validators = [Length(min = 1, max = 128)])
+    description = PageDownField('Sescription',validators = [Length(min = 0, max = 1200)],default = EXAMPLE_MARKDOWN)
+    sequence = IntegerField('Sequence')
     # Field with two decimal, range 0-1
-    percent = DecimalField ('percent', validators = [NumberRange(min = 0, max = 1)],places=2)
+    percent = DecimalField ('Percent', validators = [NumberRange(min = 0, max = 1)],places=2)
 
 class QuestionForm(Form):
     #: Text of the question
