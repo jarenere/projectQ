@@ -7,11 +7,15 @@ from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
 from app.models import QuestionYN
 from app import app, db
+from app.decorators import researcher_required
+from flask.ext.login import login_user, logout_user, current_user, login_required
 
 blueprint = Blueprint('researcher', __name__)
 
 @blueprint.route('/')
 @blueprint.route('/index')
+@login_required
+@researcher_required
 def index():
     surveys = Survey.query.order_by(Survey.created.desc())
     return render_template('/researcher/index.html',
@@ -19,6 +23,7 @@ def index():
         surveys = surveys)
 
 @blueprint.route('/new', methods = ['GET', 'POST'])
+@researcher_required
 def new():
     form = EditSurveyForm()
     if form.validate_on_submit():
