@@ -1,128 +1,57 @@
 {% extends "base.html" %}
+{% from "_formHelpers.html" import render_field %}
+{% from "researcher/_renderQuestions.html" import renderQuestions %}
 
 {% block content %}
-    <h1>Question!</h1>
-    <form action="" method="post" name="question">
-        {{form.hidden_tag()}}
-        <table>
-            <tr>
-                <td>Text:</td>
-                <td>{{form.text(cols = 32, rows = 4)}}
-                    {% for error in form.errors.text %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td>Required:</td>
-                <td>{{form.required()}}
-                    {% for error in form.errors.required %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td>Register time:</td>
-                <td>{{form.registerTime()}}
-                    {% for error in form.errors.registerTime %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td>Type of question:</td>
-                <td>{{form.questionType()}}
-                    {% for error in form.errors.questionType %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td>Number of Fields in "choice question":</td>
-                <td>{{form.numberFields()}}
-                    {% for error in form.errors.numberFields %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td>Answer 1:</td>
-                <td>{{form.answer1(size = 64)}}
-                    {% for error in form.errors.answer1 %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td>Answer 2:</td>
-                <td>{{form.answer2(size = 64)}}
-                    {% for error in form.errors.answer2 %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td>Answer 3:</td>
-                <td>{{form.answer3(size = 64)}}
-                    {% for error in form.errors.answer3 %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td>Answer 4:</td>
-                <td>{{form.answer4(size = 64)}}
-                    {% for error in form.errors.answer4 %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td>Answer 5:</td>
-                <td>{{form.answer5(size = 64)}}
-                    {% for error in form.errors.answer5 %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td>Answer 6:</td>
-                <td>{{form.answer6(size = 64)}}
-                    {% for error in form.errors.answer6 %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td>Answer 7:</td>
-                <td>{{form.answer7(size = 64)}}
-                    {% for error in form.errors.answer7 %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td>Answer 8:</td>
-                <td>{{form.answer8(size = 64)}}
-                    {% for error in form.errors.answer8 %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td>Answer 9</td>
-                <td>{{form.answer9(size = 64)}}
-                    {% for error in form.errors.answer9 %}
-                    <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}<br>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" value="Add Question">
-                </td>
-            </tr>
-        </table>
-    </form>
+ <legend>
+    <h1><a href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{survey.title}}</a></h1>
+    <h3>Add Question!</h3>
+</legend>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <!--Sidebar content-->
+            <div class="well">
+                    <ul class="sections">
+                    {%- for section in sections recursive %}
+                        <li><a href="{{ url_for('researcher.editSection', id_section = section.id, id_survey =  survey.id) }}">{{section.title}}</a>
 
+                        {%- if section.children %}
+                            <ul class="submenu">{{ loop (section.children)}}</ul>
+                        {%- endif %}</li>
+                    {%- endfor %}
+                    </ul>
+            </div>
+        </div>
+        <div class="span10">
+            <!--Body content-->
+            <div class="well">
+                <form action="" method="post" name="question">
+                    {{form.hidden_tag()}}
+                    <table>
+                    {{ render_field(form.text,rows = 10, style = 'width:100%') }}
+                    {{ render_field(form.required) }}
+                    {{ render_field(form.registerTime) }}
+                    {{ render_field(form.questionType) }}
+                    {{ render_field(form.numberFields) }}
+                    {{ render_field(form.answer1) }}
+                    {{ render_field(form.answer2) }}
+                    {{ render_field(form.answer3) }}
+                    {{ render_field(form.answer4) }}
+                    {{ render_field(form.answer5) }}
+                    {{ render_field(form.answer6) }}
+                    {{ render_field(form.answer7) }}
+                    {{ render_field(form.answer8) }}
+                    {{ render_field(form.answer9) }}
+                    <td></td>
+                    <td><input type="submit" value="Add Question">
+                    </td>
+                    </table>
+                </form>
+            </div>
+            {{ renderQuestions(questions, section, survey)}}
+
+        </div>
+    </div>
+</div>
 {% endblock %}
