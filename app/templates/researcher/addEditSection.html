@@ -45,6 +45,7 @@
                         <input type="submit" value="Add SubSection">
                     {% endif %}
                     <a href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{ ('Back') }}</a>
+                    <a href="{{ url_for('researcher.addQuestion', id_survey = survey.id, id_section = id_section) }}">{{ ('Add/Edit question') }}</a>
                 </form>
             </div>
                 {{ renderSections(sections, survey) }}
