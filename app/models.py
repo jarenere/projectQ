@@ -86,7 +86,10 @@ class Section(db.Model):
     #     )
     # children = relationship('Section', backref=backref('parent', remote_side=id),
     #     collection_class=attribute_mapped_collection('name'))
-    children = relationship('Section', backref=backref('parent', remote_side=id),
+    children = relationship('Section',
+        # cascade deletions
+        cascade="all, delete-orphan",
+        backref=backref('parent', remote_side=id),
         lazy = 'dynamic', uselist = True)
 
     
