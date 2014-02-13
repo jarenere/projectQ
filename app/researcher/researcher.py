@@ -283,7 +283,7 @@ def addQuestion(id_survey, id_section):
         db.session.add(question)
         db.session.commit()
         flash('Adding question')
-        return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
+        return redirect(url_for('researcher.addQuestion',id_survey = id_survey, id_section = id_section))
     
     return render_template('/researcher/addEditQuestion.html',
         title = "Question",
@@ -328,7 +328,7 @@ def editQuestion(id_survey, id_section,id_question):
         db.session.add(q)
         db.session.commit()
         flash('Adding question')
-        return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
+        return redirect(url_for('researcher.addQuestion',id_survey = id_survey, id_section = id_section))
     elif request.method != "POST":
         form.text.data = question.text
         form.required.data = question.required
