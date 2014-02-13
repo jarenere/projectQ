@@ -2,29 +2,62 @@
 
 {% block content %}
 {% from "_formHelpers.html" import render_field %}
+{% from "researcher/_renderSections.html" import renderSections %}
 
-  <legend>Section!</legend>
-    <form action="" method="post" name="secion">
-        {{form.hidden_tag()}}
-        <table>
-        {{ render_field(form.title, size = 64) }}
-        {{ render_field(form.description) }}
-        {{ render_field(form.sequence) }}
-        {{ render_field(form.percent) }}
-        </table>
-        {% if addSection  %}
-            <input type="submit" value="Add Section">
-        {% endif %}
-        {% if editSection  %}
-            <input type="submit" value="Edit Section">
-        {% endif %}
-        {% if addSubSection  %}
-            <input type="submit" value="Add SubSection">
-        {% endif %}
-                <a href="{{ url_for('researcher.editSurvey', id_survey = id_survey) }}">{{ ('Back') }}</a>
-    </form>
-    {% for section in sections %}
-            {% include 'researcher/subSection.html' %}
-    {% endfor %}
+ <legend>
+    <h1><a href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{survey.title}}</a></h1>
+    <h3>Section!</h3>
+</legend>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <!--Sidebar content-->
+            <div class="well">
+                    <ul class="sections">
+                    {%- for section in sections recursive %}
+                        <li><a href="{{ url_for('researcher.editSection', id_section = section.id, id_survey =  survey.id) }}">{{section.title}}</a>
+
+                        {%- if section.children %}
+                            <ul class="submenu">{{ loop (section.children)}}</ul>
+                        {%- endif %}</li>
+                    {%- endfor %}
+                    </ul>
+            </div>
+        </div>
+        <div class="span10">
+            <!--Body content-->
+            <div class="well">
+                <form action="" method="post" name="secion">
+                    {{form.hidden_tag()}}
+                    <table>
+                    {{ render_field(form.title, size = 64) }}
+                    {{ render_field(form.description) }}
+                    {{ render_field(form.sequence) }}
+                    {{ render_field(form.percent) }}
+                    </table>
+                    {% if addSection  %}
+                        <input type="submit" value="Add Section">
+                    {% endif %}
+                    {% if editSection  %}
+                        <input type="submit" value="Edit Section">
+                    {% endif %}
+                    {% if addSubSection  %}
+                        <input type="submit" value="Add SubSection">
+                    {% endif %}
+                    <a href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{ ('Back') }}</a>
+                </form>
+            </div>
+            <div class="well">
+                {# 
+                {% for section in sections %}
+                    {% include 'researcher/subSection.html' %}
+                {% endfor %}
+                #}
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 {% endblock %}

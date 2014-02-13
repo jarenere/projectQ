@@ -138,7 +138,7 @@ def editConsents(id_survey, id_consent):
         consent.text = form.text.data
         db.session.add(consent)
         db.session.commit()
-        flash('Editing consent')
+        flash('Edited consent')
         return redirect(url_for('researcher.addConsent',id_survey = id_survey))
     elif request.method != "POST":
         form.text.data = consent.text
@@ -150,7 +150,7 @@ def editConsents(id_survey, id_consent):
         consents = consents,
         editConsent = True)
 
-@blueprint.route('/survey/<int:id_survey>/section/', methods = ['GET', 'POST'])
+@blueprint.route('/survey/<int:id_survey>/section/new', methods = ['GET', 'POST'])
 def addSection(id_survey):
     form = SectionForm()
     survey = Survey.query.get(id_survey)
@@ -173,20 +173,19 @@ def addSection(id_survey):
     return render_template('/researcher/addEditSection.html',
         title = "consent",
         form = form,
-        id_survey = id_survey,
+        survey = survey,
         sections = sections,
         #add = true, you is adding a new section
         addSection = True)
 
-@blueprint.route('/edit/<int:id_survey>/section/<int:id_section>', methods = ['GET', 'POST'])
+@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods = ['GET', 'POST'])
 def editSection(id_survey, id_section):
-    section = Section.query.filter(Section.survey_id == id_survey, Section.id == id_section).first()
+    section = Section.query.get(id_section)
     if section == None:
         flash('Section wrong') 
         return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
     form = SectionForm()
-    print section.title
-    subsections = section.children.all()
+    sections = Survey.query.get(id_survey).sections.all()
     if form.validate_on_submit():
         section.title = form.title.data
         section.description = form.description.data
@@ -194,7 +193,7 @@ def editSection(id_survey, id_section):
         section.percent = form.percent.data
         db.session.add(section)
         db.session.commit()
-        flash('Editing consent')
+        flash('Edited section')
         return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
     elif request.method != "POST":
         form.title.data = section.title
@@ -204,8 +203,8 @@ def editSection(id_survey, id_section):
     return render_template('/researcher/addEditSection.html',
         title = "consent",
         form = form,
-        id_survey = id_survey,
-        sections = subsections,
+        survey = Survey.query.get(id_survey),
+        sections = sections,
         #add = true, you is adding a new section, add = False you is editing a section
         editSection = True,
         id_section = id_section)
@@ -226,72 +225,66 @@ def deleteSection(id_survey,id_section):
         flash('Section wrong') 
         return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
 
-@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/subSection', methods = ['GET', 'POST'])
+@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/new', methods = ['GET', 'POST'])
 def addSubSection(id_survey, id_section):
-    section = Section.query.filter(Section.survey_id == id_survey, Section.id == id_section).first()
-    if section == None:
+    parentSection = Section.query.filter(Section.id == id_section).first()
+    if parentSection == None:
         flash('Section wrong') 
         return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
-
     form = SectionForm()
-    subsections = section.children.all()
-
     if form.validate_on_submit():
         section = Section(title = form.title.data,
             description = form.description.data,
             sequence = form.sequence.data,
             percent = form.percent.data,
-            parent = section)
-
+            parent = parentSection)
         db.session.add(section)
         db.session.commit()
         flash('Adding subsection.')
         return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
-    
     return render_template('/researcher/addEditSection.html',
         title = "consent",
         form = form,
-        id_survey = id_survey,
-        sections = subsections,
-        #add = true, you is adding a new section, add = False you is editing a section
+        survey = Survey.query.get(id_survey),
+        sections = Survey.query.get(id_survey).sections.all(),
         addSubSection = True)
 
-@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/subSection/<int:id_subSection>', methods = ['GET', 'POST'])
-def editSubSection(id_survey, id_section,id_subSection):
-    '''
-    #:id_survey: id of Survey
-    #:id_section: id of parent section, maybe can be deleted
-    #:id_subSection: id of secction to modify
-    '''
-    section = Section.query.filter(Section.id == id_subSection, Section.parent_id == id_section).first()
-    if section == None:
-        flash('Section wrong') 
-        return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
-    form = SectionForm()
-    subsections = section.children
-    print section.title
-    if form.validate_on_submit():
-        section.title = form.title.data
-        section.description = form.description.data
-        section.sequence = form.sequence.data
-        section.percent = form.percent.data
-        db.session.add(section)
-        db.session.commit()
-        flash('Editing consent')
-        return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
-    elif request.method != "POST":
-        form.title.data = section.title
-        form.description.data = section.description
-        form.sequence.data = section.sequence
-        form.percent.data = section.percent
-    return render_template('/researcher/addEditSection.html',
-        title = "consent",
-        form = form,
-        id_survey = id_survey,
-        sections = subsections,
-        #add = true, you is adding a new section, add = False you is editing a section
-        addSubSection = True,
-        id_subSection = id_subSection)
+# @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/subSection/<int:id_subSection>', methods = ['GET', 'POST'])
+# def editSubSection(id_survey, id_section,id_subSection):
+#     '''
+#     #:id_survey: id of Survey
+#     #:id_section: id of parent section, maybe can be deleted
+#     #:id_subSection: id of secction to modify
+#     '''
+#     section = Section.query.filter(Section.id == id_subSection, Section.parent_id == id_section).first()
+#     if section == None:
+#         flash('Section wrong') 
+#         return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
+#     form = SectionForm()
+#     subsections = section.children
+#     print section.title
+#     if form.validate_on_submit():
+#         section.title = form.title.data
+#         section.description = form.description.data
+#         section.sequence = form.sequence.data
+#         section.percent = form.percent.data
+#         db.session.add(section)
+#         db.session.commit()
+#         flash('Editing consent')
+#         return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
+#     elif request.method != "POST":
+#         form.title.data = section.title
+#         form.description.data = section.description
+#         form.sequence.data = section.sequence
+#         form.percent.data = section.percent
+#     return render_template('/researcher/addEditSection.html',
+#         title = "consent",
+#         form = form,
+#         id_survey = id_survey,
+#         sections = subsections,
+#         #add = true, you is adding a new section, add = False you is editing a section
+#         addSubSection = True,
+#         id_subSection = id_subSection)
 
 
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/addQuestion', methods = ['GET', 'POST'])

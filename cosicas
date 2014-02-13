@@ -2,6 +2,8 @@ meter todas las preguntas en el mismo html, y seleccionar con if
 
 intentar eliminar flask-sqlalchemy
 
+evitar que los investigadores puedan modificar encuestas de otros investigadores
+
 markdown :The Javascript files are loaded from a CDN, the files do not need to be hosted by your application. If you prefer to host these files locally then replace the html_head() call with your own <script> tags for files Markdown.Converter.js and Markdown.Sanitizer.js (or their minified versions).
 
 los add/edits podrían ir en la misma función
