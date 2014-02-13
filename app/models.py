@@ -66,7 +66,10 @@ class Section(db.Model):
     
     ## Relationships
     #: Section have zero or more questions 
-    questions = relationship('Question', backref = 'section', lazy = 'dynamic')
+    questions = relationship('Question', 
+        # cascade deletions
+        cascade="all, delete-orphan",
+        backref = 'section', lazy = 'dynamic')
     #: section belongs to zero or one surveys 
     survey_id = Column(Integer, ForeignKey('survey.id'))
     #: section belongs to zero or more sections
