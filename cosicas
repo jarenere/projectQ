@@ -2,6 +2,15 @@ meter todas las preguntas en el mismo html, y seleccionar con if
 
 intentar eliminar flask-sqlalchemy
 
+no soy capaz de darle un valor por defecto a selectfield (de manera dinamica, una vez construido el objeto)
+
+
+QuestionForm, las respuestas podria ser una lista gnerada dinamicamente.... que luego sino es un coñazo obtener valores
+
+editquestion, algo chapuza lo de copiar la id, tal vez (sin el talvez, xd) mejor guardar un int con el orden de la encuesta
+
+eliminar en cascada question!!
+
 evitar que los investigadores puedan modificar encuestas de otros investigadores
 
 markdown :The Javascript files are loaded from a CDN, the files do not need to be hosted by your application. If you prefer to host these files locally then replace the html_head() call with your own <script> tags for files Markdown.Converter.js and Markdown.Sanitizer.js (or their minified versions).

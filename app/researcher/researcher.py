@@ -252,7 +252,7 @@ def addSubSection(id_survey, id_section):
 
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/addQuestion', methods = ['GET', 'POST'])
 def addQuestion(id_survey, id_section):
-    section = Section.query.filter(Section.survey_id == id_survey, Section.id == id_section).first()
+    section = Section.query.get(id_section)
     if section == None:
         flash('Section wrong') 
         return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
@@ -288,5 +288,101 @@ def addQuestion(id_survey, id_section):
     return render_template('/researcher/addEditQuestion.html',
         title = "Question",
         form = form,
-        id_survey = id_survey,
-        section = section)
+        survey = Survey.query.get(id_survey),
+        sections = Survey.query.get(id_survey).sections.all(),
+        section = section,
+        questions = section.questions)
+
+@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/question/<int:id_question>', methods = ['GET', 'POST'])
+def editQuestion(id_survey, id_section,id_question):
+    question = Question.query.get(id_question)
+    if question == None:
+        flash('Question wrong') 
+        return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
+    form = QuestionForm()    
+    if form.validate_on_submit():
+        if form.questionType.data =='YES/NO':
+            q = QuestionYN()
+        if form.questionType.data == 'Numerical':
+            q = QuestionNumerical()
+        if form.questionType.data == 'Text':
+            q = QuestionText()
+        if form.questionType.data == 'Choice':
+            l = [form.answer1.data,
+            form.answer2.data,
+            form.answer3.data,
+            form.answer4.data,
+            form.answer5.data,
+            form.answer6.data,
+            form.answer7.data,
+            form.answer8.data,
+            form.answer9.data]
+            q = QuestionChoice(choices = l[0:int(form.numberFields.data)])
+        q.text = form.text.data
+        q.required = form.required.data
+        q.registerTime = form.registerTime.data
+        q.id = question.id
+        q.section = question.section
+        db.session.delete (question)
+        db.session.commit()
+        db.session.add(q)
+        db.session.commit()
+        flash('Adding question')
+        return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
+    elif request.method != "POST":
+        form.text.data = question.text
+        form.required.data = question.required
+        form.registerTime.data = question.registerTime
+        #form = form.selectQuestionTypeDefault()
+        # if isinstance (question,QuestionYN):
+        #     form.selectQuestionTypeDefault(d='YES/NO')
+        #     flash("si o no")
+        # if isinstance (question,QuestionNumerical):
+        #     form.selectQuestionTypeDefault(d='Numecial')
+        #     flash("numericooo")
+        # if isinstance (question,QuestionText):
+        #     form.selectQuestionTypeDefault(d='Text')
+        #     flash("texto")
+        if isinstance (question,QuestionChoice):
+            l= question.choices
+            if len(l) >0:
+                form.answer1.data = l[0]
+            if len(l) >1:
+                form.answer2.data = l[1]
+            if len(l) >2:
+                form.answer3.data = l[2]
+            if len(l) >3:
+                form.answer4.data = l[3]
+            if len(l) >4:
+                form.answer5.data = l[4]
+            if len(l) >5:
+                form.answer6.data = l[5]
+            if len(l) >6:
+                form.answer7.data = l[6]
+            if len(l) >7:
+                form.answer8.data = l[7]
+            if len(l) >8:
+                form.answer9.data = l[8]
+    return render_template('/researcher/addEditQuestion.html',
+        title = "Question",
+        form = form,
+        survey = Survey.query.get(id_survey),
+        sections = Survey.query.get(id_survey).sections.all(),
+        section = Section.query.get(id_section),
+        questions = Section.query.get(id_section).questions)
+
+@blueprint.route('/survey/<int:id_survey>/Section/<int:id_section>/deleteQuestion/<int:id_question>')
+def deleteQuestion(id_survey,id_section,id_question):
+        #
+        #CUANDO TENGA SUBSECCIONES Y ENCUESTAR, EL ELIMINAR NO ES TRIVIAL
+        #
+    question = Question.query.get(id_question)
+    if question != None:
+        #el consentimiento pertence a esa encuesta
+        db.session.delete(question)
+        db.session.commit()
+        flash('Question removed')
+        return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
+    else:
+        flash('Question wrong') 
+        return redirect(url_for('researcher.editSurvey',id_survey = id_survey))

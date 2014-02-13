@@ -114,7 +114,7 @@ class Question(db.Model):
     __mapper_args__ = {'polymorphic_on': type}
     ## Relationships
     #: Question belong to one section
-    section_id = Column(Integer, ForeignKey('section.id'),  nullable = False)
+    section_id = Column(Integer, ForeignKey('section.id'))
 
 class QuestionYN(Question):
     '''Question of type yes or no
