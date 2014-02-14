@@ -31,6 +31,9 @@ class Survey(db.Model):
     consents = relationship('Consent', backref = 'survey', lazy = 'dynamic')
     #: Survey have zero or more sections 
     sections = relationship('Section', backref = 'survey', lazy = 'dynamic')
+    #: Survey have zero or more stateSurvey 
+    stateSurveys = relationship('StateSurvey', backref = 'survey', lazy = 'dynamic')
+
 
 
 
@@ -172,6 +175,8 @@ class User(db.Model):
     ## Relationships
     #: User have zero or more answers
     answers = relationship('Answer', backref = 'user', lazy = 'dynamic')
+    #: User have zero or more stateSurvey
+    stateSurveys = relationship('StateSurvey', backref = 'user', lazy = 'dynamic')
 
     def is_authenticated(self):
         '''Returns True if the user is authenticated, i.e. they have provided 
@@ -223,6 +228,35 @@ class Answer(db.Model):
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     #answer belong a question
     question_id = Column(Integer, ForeignKey('question.id'), nullable=False)
+
+class StateSurvey(db.Model):
+    '''A table that saves the state of a survey  
+    '''
+    __tablename__ = 'stateSurvey'
+    #: unique id (automatically generated)
+    id = Column(Integer, primary_key = True)
+    #: created timestamp (automatically set)
+    created = Column(DateTime, default = datetime.utcnow())
+    #: Consent accept or not
+    consented = Column(Boolean, default=False)
+    #: finished or not
+    finish = Column(Boolean, default =False)
+    ## Relationships
+    #stateSurvey belong a user
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    #stateSurvey belong a survey
+    survey_id = Column(Integer, ForeignKey('survey.id'), nullable=False)
+    
+    @staticmethod
+    def getStateSurvey(id_survey, user):
+        stateSurvey = StateSurvey.query.filter(StateSurvey.survey_id == id_survey, 
+            StateSurvey.user_id == user.id).first()
+        if stateSurvey is None:
+            stateSurvey = StateSurvey(survey = Survey.query.get(id_survey),
+            user = user )
+            db.session.add(stateSurvey)
+            db.session.commit()  
+        return stateSurvey
 
 
 
