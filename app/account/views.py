@@ -7,7 +7,7 @@ from forms import LoginForm
 from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
 from app.models import QuestionYN
-
+from app.models import StateSurvey
 
 blueprint = Blueprint('account', __name__)
 
@@ -53,20 +53,36 @@ def logicSurvey(id_survey):
     '''
     Function that decides which is the next step in the survey
     '''
-    survey = Survey.query.get(id_survey)
-    if (g.get('consent', None)) == (None) or (g.get('consent', None) == False):
-        return showConsent(id_survey)
+    stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
+    if (stateSurvey.consented == False):
+        return redirect(url_for('account.showConsent', id_survey = id_survey))
+    
     return redirect (url_for('account.index'))
 
+@blueprint.route('/survey/<int:id_survey>/consent', methods=['GET', 'POST'])
+@login_required
 def showConsent(id_survey):
     '''
     Show consent
     '''
     if request.method == 'POST':
-        g.consent = True
+        stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
+        stateSurvey.consented=True
+        db.session.add(stateSurvey)
+        db.session.commit()
         return redirect(url_for('account.logicSurvey',id_survey = id_survey))
     survey = Survey.query.get(id_survey)
     return render_template('/account/consent.html',
         title = survey.title,
         survey = survey,
         consent = survey.consents.first())
+
+@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods=['GET', 'POST'])
+@login_required
+def showQuestions(id_survey, id_section):
+    '''
+    Show all question of a section
+    '''
+    
+
+
