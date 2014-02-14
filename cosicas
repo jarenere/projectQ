@@ -2,6 +2,8 @@ meter todas las preguntas en el mismo html, y seleccionar con if
 
 intentar eliminar flask-sqlalchemy
 
+revisar todas las relaciones 1..n y comprobar nullable
+
 no soy capaz de darle un valor por defecto a selectfield (de manera dinamica, una vez construido el objeto)
 
 

@@ -118,6 +118,9 @@ class Question(db.Model):
     ## Relationships
     #: Question belong to one section
     section_id = Column(Integer, ForeignKey('section.id'))
+    #: Question have zero or more answers
+    answers = relationship('Answer', backref = 'question', lazy = 'dynamic')
+
 
 class QuestionYN(Question):
     '''Question of type yes or no
@@ -166,7 +169,9 @@ class User(db.Model):
     nickname = Column(String(64), unique = True)
     #: role of user
     role = Column(SmallInteger, default = ROLE_USER)
-
+    ## Relationships
+    #: User have zero or more answers
+    answers = relationship('Answer', backref = 'user', lazy = 'dynamic')
 
     def is_authenticated(self):
         '''Returns True if the user is authenticated, i.e. they have provided 
@@ -196,6 +201,31 @@ class User(db.Model):
         must be a unicode 
         '''
         return unicode(self.id)
+
+
+
+class Answer(db.Model):
+    '''A table with answers
+    '''
+    __tablename__ = 'answer'
+    #: unique id (automatically generated)
+    id = Column(Integer, primary_key = True)
+    #: created timestamp (automatically set)
+    created = Column(DateTime, default = datetime.utcnow())
+    #: answer Numeric
+    answerNumeric = Column(Integer)
+    #: answer Text
+    answerText = Column(String)
+    #: answer Boolean
+    answerYN = Column(Boolean)
+    ## Relationships
+    #answer belong a user
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    #answer belong a question
+    question_id = Column(Integer, ForeignKey('question.id'), nullable=False)
+
+
+
 
 # class Question(db.Model):
 #     #Clase Question
