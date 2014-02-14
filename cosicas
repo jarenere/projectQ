@@ -6,6 +6,10 @@ revisar todas las relaciones 1..n y comprobar nullable
 
 no soy capaz de darle un valor por defecto a selectfield (de manera dinamica, una vez construido el objeto)
 
+mostrar barra de progreso a la hora de contestar
+Permitir  que los encuestados editen sus respuestas
+copiar mas cosicas de gdocs
+
 
 QuestionForm, las respuestas podria ser una lista gnerada dinamicamente.... que luego sino es un coñazo obtener valores
 
