@@ -121,11 +121,11 @@ def showQuestions(id_survey, id_section):
             setattr(Answer,"c"+str(question.id),TextField('Answer'))
             # ans = AnswerRender(type='Text', text = question.text)
             # list.append(ans)
-        # if isinstance (question,QuestionChoice):
-        #     ans = AnswerRender(type='Choice',form = AnswerChoiceForm(), text = question.text)
+        if isinstance (question,QuestionChoice):
+            list = [(index,choice) for index, choice in enumerate(question.choices)]
+            setattr(Answer,"c"+str(question.id),RadioField('Answer', choices = list))
         #     ans.form.answer.choice = question.choices
         #     list.append = ans
-
     form = Answer()
     return render_template('/account/showQuestions.html',
             title = survey.title,
