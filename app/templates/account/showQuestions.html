@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "_formHelpers.html" import render_field %}
+
+    <div class="container">
+        <h1>{{survey.title}}!</h1>
+        <h2>{{section.title}}</h2>
+
+
+        {% for question in questions %}
+            <table class="table table-hover"><td>
+                {% filter markdown %}{{question.text}}{% endfilter %}
+                {% set i= "c"'%s' % question.id %}
+                {{form[i]}}
+                {#                          
+                {{render_field(form.["c"'%s' % question.id])}}
+
+
+                {% if question.type == 'YN' %}
+                    {% include '/account/questionYN.html' %}
+                {% endif %}
+                {% if question.type == 'Numerical' %}
+                    {% include '/account/questionYN.html' %}
+                {% endif %}
+                {% if question.type == 'Text' %}
+                    {% include '/account/questionYN.html' %}
+                {% endif %}            
+                {% if question.type == 'Choice' %}
+                    {% include '/account/questionYN.html' %}
+                {% endif %}
+                 #}            
+            </td></table>
+        {% endfor %}
+    </div>
+{% endblock %}

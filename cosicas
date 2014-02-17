@@ -11,6 +11,8 @@ Permitir  que los encuestados editen sus respuestas
 copiar mas cosicas de gdocs
 
 
+Crear un creador de Forms para las respuestas segun la base de datos
+
 QuestionForm, las respuestas podria ser una lista gnerada dinamicamente.... que luego sino es un coñazo obtener valores
 
 editquestion, algo chapuza lo de copiar la id, tal vez (sin el talvez, xd) mejor guardar un int con el orden de la encuesta
