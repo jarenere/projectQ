@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?taskcoach release="1.3.36" tskversion="37"?>
+
+<tasks>
+<task actualstartdate="2014-02-18 10:46:36.602226" creationDateTime="2014-02-18 10:43:20.954623" id="1a3b5fec-9881-11e3-9a91-001b21040984" modificationDateTime="2014-02-18 10:56:53.879251" status="1" subject="Crear un &quot;creador&quot; forms dinamico para renderizar cuestionarios">
+<description>
+Si queremos campo opcional 
+            #setattr(Answer,"c"+str(question.id),RadioField('Answer', choices = [('Yes','Yes'),('No','No')], validators = [Optional()]))
+
+Si queremos que sea obligatorio
+            setattr(Answer,"c"+str(question.id),RadioField('Answer', choices = [('Yes','Yes'),('No','No')],validators = [Required()]))
+
+
+from wtforms.validators import Optional
+
+todo esto habría que moverlo de views a forms
+</description>
+<note creationDateTime="2014-02-18 10:45:42.321116" id="6e7e2d28-9881-11e3-9a91-001b21040984" modificationDateTime="2014-02-18 10:47:29.990468" status="1" subject="implementacion">
+<description>
+Si queremos campo opcional 
+            #setattr(Answer,"c"+str(question.id),RadioField('Answer', choices = [('Yes','Yes'),('No','No')], validators = [Optional()]))
+
+from wtforms.validators import Optional
+
+</description>
+</note>
+</task>
+<task creationDateTime="2014-02-18 12:13:16.144091" expandedContexts="('taskviewer',)" id="aa0c5de0-988d-11e3-9a91-001b21040984" modificationDateTime="2014-02-18 12:13:56.368362" status="1" subject="models">
+<task actualstartdate="2014-02-18 12:14:59.188460" creationDateTime="2014-02-18 12:13:56.367586" id="c1fd8ef6-988d-11e3-9a91-001b21040984" modificationDateTime="2014-02-18 12:14:59.188176" status="1" subject="models answer">
+<description>
+tal vez buena idea crear answerChoice, o una lista que se relacione con la respuesta o crear un campo para saber que tipo de respuesta es
+</description>
+</task>
+</task>
+<task actualstartdate="2014-02-18 12:16:01.987326" creationDateTime="2014-02-18 12:15:06.482120" id="ebc83006-988d-11e3-9a91-001b21040984" modificationDateTime="2014-02-18 12:16:01.987102" status="1" subject="showQuestion">
+<description>
+Añadir opcion de completar cuestionario, continuar mas tarde
+</description>
+</task>
+<syncmlconfig>
+<TaskCoach-000001444460759f7c0e115d009b00d200880024>
+<spds>
+<sources>
+<TaskCoach-000001444460759f7c0e115d009b00d200880024.Tasks />
+<TaskCoach-000001444460759f7c0e115d009b00d200880024.Notes />
+</sources>
+<syncml>
+<Auth />
+<Conn />
+</syncml>
+</spds>
+</TaskCoach-000001444460759f7c0e115d009b00d200880024>
+</syncmlconfig>
+<guid>
+000001444460759f7c0e115d009b00d200880024
+</guid>
+</tasks>
