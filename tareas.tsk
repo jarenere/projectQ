@@ -32,6 +32,13 @@ no es bug, pero cuidado como lo haces, que el percent indica el porcentaje que p
 Tal vez modelizar un excluyente..
 </description>
 </task>
+<task actualstartdate="2014-02-18 18:55:50.924794" creationDateTime="2014-02-18 18:53:55.139767" id="a25f9552-98c5-11e3-9a91-001b21040984" modificationDateTime="2014-02-18 18:55:50.924526" status="1" subject="mmm.. showQuestion, problemas al validar">
+<description>
+creo qeue en cada iteracion answerform no se crea, sino que se "hace" mas grande y como yo slo muestro los forms que me interesan(por id) no se borra.
+
+Habría que elimiar el form una vez usado
+</description>
+</task>
 <task actualstartdate="2014-02-18 17:02:53.922441" creationDateTime="2014-02-18 12:13:16.144091" expandedContexts="('taskviewer',)" id="aa0c5de0-988d-11e3-9a91-001b21040984" modificationDateTime="2014-02-18 17:02:53.922148" status="1" subject="models">
 <task actualstartdate="2014-02-18 12:14:59.188460" creationDateTime="2014-02-18 12:13:56.367586" id="c1fd8ef6-988d-11e3-9a91-001b21040984" modificationDateTime="2014-02-18 12:14:59.188176" status="1" subject="models answer">
 <description>
@@ -57,7 +64,7 @@ Seguro que se peude mejorar un poco el algoritmo y quitar el ultimo bucle, pero 
 mmm... por poder se podria, pero habría que repetirlo para el ultimo tramo.. por lo que es tonteria
 </description>
 </task>
-<category categorizables="5e68f6d8-98b9-11e3-9a91-001b21040984 b41b69ea-98c2-11e3-9a91-001b21040984" creationDateTime="2014-02-18 17:27:42.190865" expandedContexts="('categoryviewerintaskeditor',)" id="970e3b9c-98b9-11e3-9a91-001b21040984" modificationDateTime="2014-02-18 17:27:45.403072" status="1" subject="bug" />
+<category categorizables="5e68f6d8-98b9-11e3-9a91-001b21040984 a25f9552-98c5-11e3-9a91-001b21040984 b41b69ea-98c2-11e3-9a91-001b21040984" creationDateTime="2014-02-18 17:27:42.190865" expandedContexts="('categoryviewerintaskeditor',)" filtered="True" id="970e3b9c-98b9-11e3-9a91-001b21040984" modificationDateTime="2014-02-18 17:27:45.403072" status="1" subject="bug" />
 <syncmlconfig>
 <TaskCoach-000001444460759f7c0e115d009b00d200880024>
 <spds>
