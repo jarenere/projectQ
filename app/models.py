@@ -2,6 +2,7 @@
 
 from app import db
 import json
+import random
 from datetime import datetime
 from sqlalchemy import BigInteger, Integer, Boolean, Unicode,\
         Float, UnicodeText, Text, String, DateTime, Numeric, PickleType,\
@@ -102,6 +103,29 @@ class Section(db.Model):
     # def __init__(self, title, parent=None):
     #     self.title = title
     #     self.parent = parent
+    @staticmethod
+    def sequenceSections(sections):
+        '''Sections: are order by sequence
+        generates the order in which sections are traversed
+        '''
+        iMin = 0
+        lAux = []
+        l2Aux= []
+        if sections.count()==0:
+            return []
+        for index,section in enumerate(sections):
+            if (sections[iMin].sequence!=section.sequence):
+                #generamos una sublista aleatoria de elementos con la msima secuencia
+                lAux.extend(random.sample(sections[iMin:index],index-iMin))
+                iMin=index
+        #caso para el ultimo tramo de elemento
+        lAux.extend(random.sample(sections[iMin:sections.count()],sections.count()-iMin))
+            #ya tenemos los "padres" ordenados aleatoriamente, ahora toca los hijos
+        for section in lAux:
+            l2Aux.append(section)
+            l2Aux.extend(Section.sequenceSections(Section.query.filter(
+                Section.parent_id==section.id).order_by(Section.sequence)))
+        return l2Aux
 
 class Question(db.Model):
     '''A table with Questions
@@ -241,6 +265,10 @@ class StateSurvey(db.Model):
     consented = Column(Boolean, default=False)
     #: finished or not
     finish = Column(Boolean, default =False)
+    #: Sequence of sections are traversed
+    sequence = Column(PickleType)
+    #: index the lastt sections made
+    index = Column(Integer, default =0)
     ## Relationships
     #stateSurvey belong a user
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
@@ -252,8 +280,12 @@ class StateSurvey(db.Model):
         stateSurvey = StateSurvey.query.filter(StateSurvey.survey_id == id_survey, 
             StateSurvey.user_id == user.id).first()
         if stateSurvey is None:
+            #generamos arbol
+            ss = Section.query.filter(Section.survey_id == id_survey).order_by(Section.sequence)
+            list = Section.sequenceSections(ss)
+
             stateSurvey = StateSurvey(survey = Survey.query.get(id_survey),
-            user = user )
+            user = user, sequence =list)
             db.session.add(stateSurvey)
             db.session.commit()  
         return stateSurvey
