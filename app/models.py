@@ -265,7 +265,7 @@ class StateSurvey(db.Model):
     consented = Column(Boolean, default=False)
     #: finished or not
     finish = Column(Boolean, default =False)
-    #: Sequence of sections are traversed
+    #: Sequence of sections are traversed (it is a list of secction to go through )
     sequence = Column(PickleType)
     #: index the lastt sections made
     index = Column(Integer, default =0)
@@ -275,6 +275,27 @@ class StateSurvey(db.Model):
     #stateSurvey belong a survey
     survey_id = Column(Integer, ForeignKey('survey.id'), nullable=False)
     
+    def nextSection(self):
+        '''Return next Section to do
+        '''
+        if self.index>=len(self.sequence):
+            return None
+        else:
+            return self.sequence[self.index]
+
+    def isFinished(self):
+        '''return there isn't more sections to do
+        '''
+        return self.index>=len(self.sequence)
+
+        
+    def finishedSection(self):
+        '''Section is finished, index+1
+        '''
+        self.index=self.index+1
+        db.session.add(self)
+        db.session.commit()
+
     @staticmethod
     def getStateSurvey(id_survey, user):
         stateSurvey = StateSurvey.query.filter(StateSurvey.survey_id == id_survey, 
