@@ -4,15 +4,18 @@ from flask import Blueprint, request, url_for, flash, redirect, abort, session, 
 from flask import render_template
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from forms import LoginForm, AnswerChoiceForm, AnswerNumericalForm, AnswerTextForm, AnswerYNForm
-from forms import Answer
+from forms import AnswerForm
 from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
 from app.models import QuestionYN
 from app.models import StateSurvey
+from app.models import Answer
 
 from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, RadioField, IntegerField
 from wtforms.validators import Required
+from wtforms.validators import Optional
+
 
 
 blueprint = Blueprint('account', __name__)
@@ -108,29 +111,56 @@ def showQuestions(id_survey, id_section):
     section = Section.query.get(id_section)
     questions = section.questions
     # Answer.prueba = TextField('Prueba')
+    #listID = ["c"+str(q.id) for q in questions]
     for question in questions:
+        #added "c" to that the key is valid
         if isinstance (question,QuestionYN):
-            setattr(Answer,"c"+str(question.id),RadioField('Answer', choices = [('Yes','Yes'),('No','No')]))
+            setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                choices = [('Yes','Yes'),('No','No')],validators = [Required()]))
+            #setattr(Answer,"c"+str(question.id),RadioField('Answer', choices = [('Yes','Yes'),('No','No')], validators = [Optional()]))
+            #Answer["c"+str(question.id)].validators = False
             # ans = AnswerRender(type='YN', text = question.text)
             # list.append(ans)
         if isinstance (question,QuestionNumerical):
-            setattr(Answer,"c"+str(question.id),IntegerField('Answer'))
+            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
             # ans = AnswerRender(type='Numerical', text = question.text)
             # list.append(ans)
         if isinstance (question,QuestionText,):
-            setattr(Answer,"c"+str(question.id),TextField('Answer'))
+            setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required()]))
             # ans = AnswerRender(type='Text', text = question.text)
             # list.append(ans)
         if isinstance (question,QuestionChoice):
-            list = [(index,choice) for index, choice in enumerate(question.choices)]
-            setattr(Answer,"c"+str(question.id),RadioField('Answer', choices = list))
+            list = [(str(index),choice) for index, choice in enumerate(question.choices)]
+            setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                choices = list,validators = [Required()]))
         #     ans.form.answer.choice = question.choices
         #     list.append = ans
-    form = Answer()
+    form = AnswerForm()
+    if form.validate_on_submit():
+        flash("yeah")
+        for question in questions:
+            if isinstance (question,QuestionYN):
+                answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
+                db.session.add(answer)
+                db.session.commit()
+            if isinstance (question,QuestionNumerical):
+                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                db.session.add(answer)
+                db.session.commit()
+            if isinstance (question,QuestionText,):
+                answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
+                db.session.add(answer)
+                db.session.commit()
+            if isinstance (question,QuestionChoice):
+                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                 db.session.add(answer)
+                 db.session.commit()
+        return redirect(url_for('account.logicSurvey',id_survey = id_survey))
     return render_template('/account/showQuestions.html',
             title = survey.title,
             survey = survey,
             section = section,
+            # form = form,
             form = form,
             questions = questions)
 

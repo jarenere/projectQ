@@ -1,6 +1,7 @@
 from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, RadioField, IntegerField
 from wtforms.validators import Required
+from wtforms.validators import Optional
 
 class LoginForm(Form):
     openid = TextField('openid', validators = [Required()])
@@ -18,5 +19,6 @@ class AnswerTextForm(Form):
 class AnswerChoiceForm(Form):
     answer = RadioField('Answer')
 
-class Answer(Form):
-        pass
+class AnswerForm(Form):
+    pass
+

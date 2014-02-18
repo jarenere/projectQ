@@ -4,21 +4,19 @@
 {% from "_formHelpers.html" import render_field %}
 
     <div class="container">
-        <h1>{{survey.title}}!</h1>
-        <h2>{{section.title}}</h2>
-        <form class="form-horizontal" action="" method="post" name="showQuestion">
+        <form class="form-horizontal" action="" method="post" name="question">
             {{form.hidden_tag()}}
-
             {% for question in questions %}
                 <table class="table table-hover"><td>
                     {% filter markdown %}{{question.text}}{% endfilter %}
                     {% set i= "c"'%s' % question.id %}
-                    {{form[i]}}
+                    {{render_field(form[i])}}
                 </td></table>
             {% endfor %}
             <div class="control-group">
                 <div class="controls">
-                    <input class="btn btn-primary" type="submit" value="Next">
+                    <input type="submit" value="Next">
+                   {# <input class="btn btn-primary" type="submit" value="Next">#}
                 </div>
             </div>
         </form>
