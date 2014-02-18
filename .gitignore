@@ -4,3 +4,4 @@ flask/*
 *.db
 migrations/
 tmp/
+tareas.tsk.lock*
