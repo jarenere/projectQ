@@ -65,7 +65,10 @@ def logicSurvey(id_survey):
     stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
     if (stateSurvey.consented == False):
         return redirect(url_for('account.showConsent', id_survey = id_survey))
-    section = Survey.query.get(id_survey).sections.first()
+    section = stateSurvey.nextSection()
+    if section ==None:
+        return render_template('/account/finish.html', 
+            title = 'Finish')
     return redirect (url_for('account.showQuestions',id_survey=id_survey,id_section=section.id))
     # return redirect (url_for('account.index'))
 
@@ -87,19 +90,6 @@ def showConsent(id_survey):
         survey = survey,
         consent = survey.consents.first())
 
-class AnswerRender():
-    #: Type contains the type of question
-    type = None
-    #: form, the form of question
-    form = None
-    #: text of question
-    text = None
-    def __init__(self, type=None, form=None, text=None):
-        self.type = type
-        self.form = form
-        self.text = text
-
-
 
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods=['GET', 'POST'])
 @login_required
@@ -119,23 +109,19 @@ def showQuestions(id_survey, id_section):
                 choices = [('Yes','Yes'),('No','No')],validators = [Required()]))
             #setattr(Answer,"c"+str(question.id),RadioField('Answer', choices = [('Yes','Yes'),('No','No')], validators = [Optional()]))
             #Answer["c"+str(question.id)].validators = False
-            # ans = AnswerRender(type='YN', text = question.text)
-            # list.append(ans)
         if isinstance (question,QuestionNumerical):
             setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
-            # ans = AnswerRender(type='Numerical', text = question.text)
-            # list.append(ans)
         if isinstance (question,QuestionText,):
             setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required()]))
-            # ans = AnswerRender(type='Text', text = question.text)
-            # list.append(ans)
+
         if isinstance (question,QuestionChoice):
             list = [(str(index),choice) for index, choice in enumerate(question.choices)]
             setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
                 choices = list,validators = [Required()]))
-        #     ans.form.answer.choice = question.choices
-        #     list.append = ans
     form = AnswerForm()
+    # for f1 in form:
+    #     flash (f1.form.data)
+
     if form.validate_on_submit():
         flash("yeah")
         for question in questions:
@@ -155,6 +141,8 @@ def showQuestions(id_survey, id_section):
                  answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
                  db.session.add(answer)
                  db.session.commit()
+        stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
+        stateSurvey.finishedSection()
         return redirect(url_for('account.logicSurvey',id_survey = id_survey))
     return render_template('/account/showQuestions.html',
             title = survey.title,
