@@ -1,5 +1,22 @@
 lucia, necane
 
+IDEAS
+------
+para aleatoriazar subconjuntos: si misma sequencia y flag aleatorio, ejemplo:
+seccion 1, sequencia 1, aleatorio si
+secion 2 sequencia 2, aleatorio si
+seccion 3 secuencia 2 aleatorio si
+resultado final 1,2,3| 2,3,1| 3,2,1, nunca 2,1,3 o 3,1,2
+
+Permitir crear pregunta especial para el matching
+
+
+
+questionpartwo
+--------------
+el nombre de choices da error 
+
+
 meter todas las preguntas en el mismo html, y seleccionar con if
 
 intentar eliminar flask-sqlalchemy
