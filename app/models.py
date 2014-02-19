@@ -120,7 +120,26 @@ class Section(db.Model):
                 iMin=index
         #caso para el ultimo tramo de elemento
         lAux.extend(random.sample(sections[iMin:sections.count()],sections.count()-iMin))
-            #ya tenemos los "padres" ordenados aleatoriamente, ahora toca los hijos
+        
+        #comprobamos el porcentaje de los que pasan por cada seccion, La suma del porcentaje
+        #de todas las secciones (del mismo nivel y rama) deben sumar 1, si es 1 ignoramos
+        ran =random.random()
+        percent=0
+        insert = False
+        for index,section in enumerate(lAux):
+            if section.percent!=1:
+                percent = section.percent+percent
+            #Si es uno, se deja
+            if section.percent == 1:
+                pass
+            #Si el porcentaje es mayor que el aleatorio, se deja, el resto se borraran
+            elif (percent >ran) and (not insert):
+                insert = True
+            else:
+                del lAux[index]
+
+
+        #ya tenemos los "padres" ordenados aleatoriamente, ahora toca los hijos
         for section in lAux:
             l2Aux.append(section)
             l2Aux.extend(Section.sequenceSections(Section.query.filter(
