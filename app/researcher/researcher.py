@@ -5,7 +5,7 @@ from flask import render_template
 from forms import SurveyForm, EditConsentForm, SectionForm, QuestionForm
 from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
-from app.models import QuestionYN
+from app.models import QuestionYN, QuestionPartTwo
 from app import app, db
 from app.decorators import researcher_required
 from flask.ext.login import login_user, logout_user, current_user, login_required
@@ -276,6 +276,11 @@ def addQuestion(id_survey, id_section):
             form.answer8.data,
             form.answer9.data]
             question = QuestionChoice(choices = l[0:int(form.numberFields.data)])
+        if form.questionType.data == 'PartTwo':
+            l = [form.answer1.data,
+            form.answer2.data]
+            question = QuestionPartTwo(choicesPartTwo = l[0:int(form.numberFields.data)])
+           
         question.text = form.text.data
         question.required = form.required.data
         question.registerTime = form.registerTime.data
@@ -318,6 +323,10 @@ def editQuestion(id_survey, id_section,id_question):
             form.answer8.data,
             form.answer9.data]
             q = QuestionChoice(choices = l[0:int(form.numberFields.data)])
+        if form.questionType.data == 'TwoPart':
+            l = [form.answer1.data,
+            form.answer2.data]
+            q = QuestionPartTwo(choicesPartTwo = l[0:int(form.numberFields.data)])
         q.text = form.text.data
         q.required = form.required.data
         q.registerTime = form.registerTime.data
@@ -363,6 +372,11 @@ def editQuestion(id_survey, id_section,id_question):
                 form.answer8.data = l[7]
             if len(l) >8:
                 form.answer9.data = l[8]
+        if isinstance (question,QuestionPartTwo):
+            l= question.choicesPartTwo
+            form.answer1.data = l[0]
+            form.answer2.data = l[1]
+
     return render_template('/researcher/addEditQuestion.html',
         title = "Question",
         form = form,

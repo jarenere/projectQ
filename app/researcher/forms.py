@@ -8,7 +8,7 @@ EXAMPLE_MARKDOWN = '## This is a example of Markdown\n**Markdown** is rendered o
 More about [markdown](http://daringfireball.net/projects/markdown/).'
 
 listQuestionType = [('YES/NO', 'YES/NO'),('Numerical','Numerical'),
-        ('Text','Text'),('Choice','Choice')]
+        ('Text','Text'),('Choice','Choice'),('PartTwo','Part two')]
 
 class SurveyForm(Form):
     title = TextField('Title', validators = [Length(min = 1, max = 128)])
@@ -80,4 +80,14 @@ class QuestionForm(Form):
                     l[i].errors.append('The field can not be empty')
                     state = False
             return state
+        if self.questionType.data == 'PartTwo':
+            l = [self.answer1,
+            self.answer2]
+            state = True
+            for i in  range (2):
+                if len(l[i].data) == 0:
+                    l[i].errors.append('The field can not be empty')
+                    state = False
+            return state
+
         return True

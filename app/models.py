@@ -195,6 +195,14 @@ class QuestionChoice(Question):
     def number(self):
         return  len(self.choices)
 
+class QuestionPartTwo(Question):
+    '''Question to part two, addoc
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'partTwo'}
+    choicesPartTwo = Column(PickleType)
+
+    def len(self):
+        return 2
 
 ROLE_USER = 0
 ROLE_RESEARCHER = 1
