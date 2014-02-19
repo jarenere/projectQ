@@ -8,3 +8,11 @@ def borrarState():
 def verAnswers():
     for ans in models.Answer.query.all():
         print ans.id, ans.answerYN, ans.user_id, ans.question_id
+
+def verPreguntas():
+    for q in models.Question.query.all():
+        print q.id, q.text, q.type
+        if q.type =='partTwo':
+            for index,i in enumerate(q.choicesPartTwo):
+                print "  ", index, i
+

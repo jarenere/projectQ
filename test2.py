@@ -51,21 +51,16 @@ def sequenceSectionsB(sections):
     #comprobamos el porcentaje de los que pasan por cada seccion, La suma del porcentaje
     #de todas las secciones (del mismo nivel y rama) deben sumar 1, si es 1 ignoramos
     ran =random.random()
-    print "random",ran
     percent=0
     insert = False
-    listar(lAux)
     for index,section in enumerate(lAux):
         if section.percent!=1:
             percent = section.percent+percent
-        print section.title, "insert:" , percent, ran, "booelanos", percent>ran, not insert, (percent >ran) and (not insert)
-
         #Si es uno, se deja
         if section.percent == 1:
             pass
         #Si el porcentaje es mayor que el aleatorio, se deja, el resto se borraran
         elif (percent >ran) and (not insert):
-            print "+++++++++++:" , percent, ran
             insert = True
         else:
             del lAux[index]
