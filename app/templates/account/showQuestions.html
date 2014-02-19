@@ -6,11 +6,6 @@
     <div class="container">
         <form class="form-horizontal" action="" method="post" name="question">
             {{form.hidden_tag()}}
-            {#
-            {% for fa in form %}
-                {{render_field(fa)}}
-            {% endfor %}
-            #}
             {% for question in questions %}
                 <table class="table table-hover"><td>
                     {% filter markdown %}{{question.text}}{% endfilter %}

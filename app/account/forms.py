@@ -19,6 +19,3 @@ class AnswerTextForm(Form):
 class AnswerChoiceForm(Form):
     answer = RadioField('Answer')
 
-class AnswerForm(Form):
-    pass
-

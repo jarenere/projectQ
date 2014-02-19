@@ -4,7 +4,6 @@ from flask import Blueprint, request, url_for, flash, redirect, abort, session, 
 from flask import render_template
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from forms import LoginForm, AnswerChoiceForm, AnswerNumericalForm, AnswerTextForm, AnswerYNForm
-from forms import AnswerForm
 from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
 from app.models import QuestionYN
@@ -97,11 +96,17 @@ def showQuestions(id_survey, id_section):
     '''
     Show all question of a section
     '''
+    class AnswerForm(Form):
+        pass
+
+        
     survey = Survey.query.get(id_survey)
     section = Section.query.get(id_section)
     questions = section.questions
+
     # Answer.prueba = TextField('Prueba')
     #listID = ["c"+str(q.id) for q in questions]
+    
     for question in questions:
         #added "c" to that the key is valid
         if isinstance (question,QuestionYN):
@@ -119,8 +124,7 @@ def showQuestions(id_survey, id_section):
             setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
                 choices = list,validators = [Required()]))
     form = AnswerForm()
-    # for f1 in form:
-    #     flash (f1.form.data)
+
 
     if form.validate_on_submit():
         flash("yeah")
