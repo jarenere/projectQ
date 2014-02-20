@@ -279,7 +279,7 @@ def addQuestion(id_survey, id_section):
         if form.questionType.data == 'PartTwo':
             l = [form.answer1.data,
             form.answer2.data]
-            question = QuestionPartTwo(choicesPartTwo = l[0:int(form.numberFields.data)])
+            question = QuestionPartTwo(choicesPartTwo = l[0:2])
            
         question.text = form.text.data
         question.required = form.required.data
@@ -323,10 +323,10 @@ def editQuestion(id_survey, id_section,id_question):
             form.answer8.data,
             form.answer9.data]
             q = QuestionChoice(choices = l[0:int(form.numberFields.data)])
-        if form.questionType.data == 'TwoPart':
+        if form.questionType.data == 'PartTwo':
             l = [form.answer1.data,
             form.answer2.data]
-            q = QuestionPartTwo(choicesPartTwo = l[0:int(form.numberFields.data)])
+            q = QuestionPartTwo(choicesPartTwo = l[0:2])
         q.text = form.text.data
         q.required = form.required.data
         q.registerTime = form.registerTime.data

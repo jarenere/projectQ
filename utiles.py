@@ -8,6 +8,8 @@ def borrarState():
 def verAnswers():
     for ans in models.Answer.query.all():
         print ans.id, ans.answerYN, ans.user_id, ans.question_id
+        if models.Question.query.get(ans.question_id).type =='partTwo':
+          print ans.answerNumeric
 
 def verPreguntas():
     for q in models.Question.query.all():

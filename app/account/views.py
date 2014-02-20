@@ -6,7 +6,7 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 from forms import LoginForm, AnswerChoiceForm, AnswerNumericalForm, AnswerTextForm, AnswerYNForm
 from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
-from app.models import QuestionYN
+from app.models import QuestionYN , QuestionPartTwo
 from app.models import StateSurvey
 from app.models import Answer
 
@@ -123,6 +123,10 @@ def showQuestions(id_survey, id_section):
             list = [(str(index),choice) for index, choice in enumerate(question.choices)]
             setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
                 choices = list,validators = [Required()]))
+        if isinstance(question, QuestionPartTwo):
+            list = [(str(index),choice) for index, choice in enumerate(question.choicesPartTwo)]
+            setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                choices = list,validators = [Required()]))
     form = AnswerForm()
 
 
@@ -145,6 +149,11 @@ def showQuestions(id_survey, id_section):
                  answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
                  db.session.add(answer)
                  db.session.commit()
+            if isinstance(question,QuestionPartTwo):
+                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                 db.session.add(answer)
+                 db.session.commit()
+
         stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
         stateSurvey.finishedSection()
         return redirect(url_for('account.logicSurvey',id_survey = id_survey))
