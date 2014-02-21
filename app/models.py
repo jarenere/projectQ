@@ -158,9 +158,13 @@ class Question(db.Model):
     required = Column(Boolean, nullable = False)
     #: If time is register or not
     registerTime = Column(Boolean, nullable = False)
+    #: possible choices
+    choices = Column(PickleType)
     #: Type of question, discriminate between classes
     type = Column(String(20))
     __mapper_args__ = {'polymorphic_on': type}
+    #: type2, two implementation, no classes
+    type2 = Column(String(20))
     ## Relationships
     #: Question belong to one section
     section_id = Column(Integer, ForeignKey('section.id'))
@@ -190,7 +194,7 @@ class QuestionChoice(Question):
     '''
     __mapper_args__ = {'polymorphic_identity': 'choice'}
     #: possible choices
-    choices = Column(PickleType)
+    
     
     def number(self):
         return  len(self.choices)
@@ -199,10 +203,10 @@ class QuestionPartTwo(Question):
     '''Question to part two, addoc
     '''
     __mapper_args__ = {'polymorphic_identity': 'partTwo'}
-    choicesPartTwo = Column(PickleType)
 
     def len(self):
         return 2
+
 
 ROLE_USER = 0
 ROLE_RESEARCHER = 1

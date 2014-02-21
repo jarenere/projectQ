@@ -124,7 +124,7 @@ def showQuestions(id_survey, id_section):
             setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
                 choices = list,validators = [Required()]))
         if isinstance(question, QuestionPartTwo):
-            list = [(str(index),choice) for index, choice in enumerate(question.choicesPartTwo)]
+            list = [(str(index),choice) for index, choice in enumerate(question.choices)]
             setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
                 choices = list,validators = [Required()]))
     form = AnswerForm()
