@@ -28,6 +28,7 @@ manager = Manager(app)
 #OpenID
 lm = LoginManager()
 lm.init_app(app)
+lm.login_view = 'account.login'
 oid = OpenID(app, os.path.join(basedir, 'tmp'))
 
 from app import models
