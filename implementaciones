@@ -1,0 +1,6 @@
+para añadir una nuevo tipo de cuestion
+
+    En models se hereda de question y se añaden los metodos necesarios (mmm.. habría que normalizar en plan metodos de validaciones, que hacer cuando se añade un pregunta... o se responde!)
+    Añadir en forms, el form para poder seleccionarlo, xd
+    (addquestion)
+    si se quiere añadir un nuevo tipo de pregunta ficheros a tocar: researcher.py (addquestion), forms y model
