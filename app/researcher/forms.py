@@ -8,7 +8,10 @@ EXAMPLE_MARKDOWN = '## This is a example of Markdown\n**Markdown** is rendered o
 More about [markdown](http://daringfireball.net/projects/markdown/).'
 
 listQuestionType = [('YES/NO', 'YES/NO'),('Numerical','Numerical'),
-        ('Text','Text'),('Choice','Choice'),('PartTwo','Part two')]
+        ('Text','Text'),('Choice','Choice'),('PartTwo','Part two'),('DecisionOne','Decision One'),
+        ('DecisionTwo','Decision Two'),('DecisionThree','Decision Three'),
+        ('DecisionFour','Decision Four'),('DecisionFive','Decision Five'),
+        ('DecisionSix','Decision Six')]
 
 class SurveyForm(Form):
     title = TextField('Title', validators = [Length(min = 1, max = 128)])

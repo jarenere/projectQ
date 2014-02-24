@@ -250,6 +250,36 @@ def addSubSection(id_survey, id_section):
         addSubSection = True)
 
 
+def selectType(form):
+
+    if form.questionType.data =='YES/NO':
+        question = QuestionYN()
+    if form.questionType.data == 'Numerical':
+        question = QuestionNumerical()
+    if form.questionType.data == 'Text':
+        question = QuestionText()
+    if form.questionType.data == 'Choice':
+        l = [form.answer1.data,
+        form.answer2.data,
+        form.answer3.data,
+        form.answer4.data,
+        form.answer5.data,
+        form.answer6.data,
+        form.answer7.data,
+        form.answer8.data,
+        form.answer9.data]
+        question = QuestionChoice(choices = l[0:int(form.numberFields.data)])
+    if form.questionType.data == 'PartTwo':
+        l = [form.answer1.data,
+        form.answer2.data]
+        question = QuestionPartTwo(choices = l[0:2])
+       
+    question.text = form.text.data
+    question.required = form.required.data
+    question.registerTime = form.registerTime.data
+    return question
+
+
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/addQuestion', methods = ['GET', 'POST'])
 def addQuestion(id_survey, id_section):
     section = Section.query.get(id_section)
@@ -259,31 +289,33 @@ def addQuestion(id_survey, id_section):
     form = QuestionForm()
     
     if form.validate_on_submit():
-        if form.questionType.data =='YES/NO':
-            question = QuestionYN()
-        if form.questionType.data == 'Numerical':
-            question = QuestionNumerical()
-        if form.questionType.data == 'Text':
-            question = QuestionText()
-        if form.questionType.data == 'Choice':
-            l = [form.answer1.data,
-            form.answer2.data,
-            form.answer3.data,
-            form.answer4.data,
-            form.answer5.data,
-            form.answer6.data,
-            form.answer7.data,
-            form.answer8.data,
-            form.answer9.data]
-            question = QuestionChoice(choices = l[0:int(form.numberFields.data)])
-        if form.questionType.data == 'PartTwo':
-            l = [form.answer1.data,
-            form.answer2.data]
-            question = QuestionPartTwo(choices = l[0:2])
+        question = selectType()
+        # if form.questionType.data =='YES/NO':
+        #     question = QuestionYN()
+        # if form.questionType.data == 'Numerical':
+        #     question = QuestionNumerical()
+        # if form.questionType.data == 'Text':
+        #     question = QuestionText()
+        # if form.questionType.data == 'Choice':
+        #     l = [form.answer1.data,
+        #     form.answer2.data,
+        #     form.answer3.data,
+        #     form.answer4.data,
+        #     form.answer5.data,
+        #     form.answer6.data,
+        #     form.answer7.data,
+        #     form.answer8.data,
+        #     form.answer9.data]
+        #     question = QuestionChoice(choices = l[0:int(form.numberFields.data)])
+        # if form.questionType.data == 'PartTwo':
+        #     l = [form.answer1.data,
+        #     form.answer2.data]
+        #     question = QuestionPartTwo(choices = l[0:2])
            
-        question.text = form.text.data
-        question.required = form.required.data
-        question.registerTime = form.registerTime.data
+        # question.text = form.text.data
+        # question.required = form.required.data
+        # question.registerTime = form.registerTime.data
+
         question.section = section
         db.session.add(question)
         db.session.commit()

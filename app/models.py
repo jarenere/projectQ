@@ -207,6 +207,36 @@ class QuestionPartTwo(Question):
     def len(self):
         return 2
 
+class DecisionOne(Question):
+    '''Question to part three, decision one, addoc
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'decisionOne'}
+
+class DecisionTwo(Question):
+    '''Question to part three, decision two, addoc
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'decisionTwo'}
+
+class DecisionThree(Question):
+    '''Question to part three, decision three, addoc
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'decisionThree'}
+
+class DecisionFour(Question):
+    '''Question to part three, decision four, addoc
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'decisionFour'}
+
+class DecisionFive(Question):
+    '''Question to part three, decision five, addoc
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'decisionFive'}
+
+class DecisionSix(Question):
+    '''Question to part three, decision six, addoc
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'decisionSix'}
+
 
 ROLE_USER = 0
 ROLE_RESEARCHER = 1
