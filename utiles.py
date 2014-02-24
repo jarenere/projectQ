@@ -18,3 +18,18 @@ def verPreguntas():
             for index,i in enumerate(q.choicesPartTwo):
                 print "  ", index, i
 
+
+def generateUserFake(count=100):
+    from sqlalchemy.exc import IntegrityError
+    from random import seed
+    import forgery_py
+
+    seed()
+    for i in range(count):
+        u = models.User(email=forgery_py.internet.email_address(),
+                 nickname=forgery_py.internet.user_name(True))
+        db.session.add(u)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
