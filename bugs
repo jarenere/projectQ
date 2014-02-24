@@ -1,0 +1,13 @@
+
+[X]Show question, problemas de validacion:
+    creo qeue en cada iteracion answerform no se crea, sino que se "hace" mas grande y como yo slo muestro los forms que me interesan(por id) no se borra.
+    Habría que elimiar el form una vez usado
+    generas la clase dinamicamente, por lo que al final tiene todos los forms que le has ido metiendo!!!!
+    [18-febrero, 19-Febero]
+[]Un usuario puedo entrar en cualquier cuestionario.
+    solucion:
+      comprobar que es la seccion que le toca al usuario, sino llevarlo a logicSurvey
+    [18-Febrero]
+
+[]evitar que los investigadores puedan modificar encuestas de otros investigadores
+
