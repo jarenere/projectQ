@@ -6,7 +6,9 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 from forms import LoginForm, AnswerChoiceForm, AnswerNumericalForm, AnswerTextForm, AnswerYNForm
 from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
-from app.models import QuestionYN , QuestionPartTwo
+from app.models import QuestionYN , QuestionPartTwo, QuestionDecisionOne,\
+  QuestionDecisionTwo, QuestionDecisionThree, QuestionDecisionFour, \
+  QuestionDecisionFive, QuestionDecisionSix
 from app.models import StateSurvey
 from app.models import Answer
 
@@ -116,6 +118,7 @@ def showQuestions(id_survey, id_section):
             #Answer["c"+str(question.id)].validators = False
         if isinstance (question,QuestionNumerical):
             setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
+
         if isinstance (question,QuestionText,):
             setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required()]))
 
@@ -123,10 +126,31 @@ def showQuestions(id_survey, id_section):
             list = [(str(index),choice) for index, choice in enumerate(question.choices)]
             setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
                 choices = list,validators = [Required()]))
+
         if isinstance(question, QuestionPartTwo):
             list = [(str(index),choice) for index, choice in enumerate(question.choices)]
             setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
                 choices = list,validators = [Required()]))
+
+        if isinstance (question, QuestionDecisionOne):
+            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
+
+        if isinstance (question, QuestionDecisionTwo):
+            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
+
+        if isinstance (question, QuestionDecisionThree):
+            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
+        
+        if isinstance (question, QuestionDecisionFour):
+            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
+
+        if isinstance (question, QuestionDecisionFive):
+            setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                choices = [('Yes','Yes'),('No','No')],validators = [Required()]))
+
+        if isinstance (question, QuestionDecisionSix):
+            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
+
     form = AnswerForm()
 
 
@@ -153,6 +177,31 @@ def showQuestions(id_survey, id_section):
                  answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
                  db.session.add(answer)
                  db.session.commit()
+            if isinstance (question,QuestionDecisionOne):
+                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                db.session.add(answer)
+                db.session.commit()
+            if isinstance (question,QuestionDecisionTwo):
+                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                db.session.add(answer)
+                db.session.commit()
+            if isinstance (question,QuestionDecisionThree):
+                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                db.session.add(answer)
+                db.session.commit()
+            if isinstance (question,QuestionDecisionFour):
+                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                db.session.add(answer)
+                db.session.commit()
+            if isinstance (question,QuestionFive):
+                answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
+                db.session.add(answer)
+                db.session.commit()
+
+            if isinstance (question,QuestionDecisionSix):
+                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                db.session.add(answer)
+                db.session.commit()
 
         stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
         stateSurvey.finishedSection()

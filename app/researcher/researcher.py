@@ -5,7 +5,9 @@ from flask import render_template
 from forms import SurveyForm, EditConsentForm, SectionForm, QuestionForm
 from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
-from app.models import QuestionYN, QuestionPartTwo
+from app.models import QuestionYN, QuestionPartTwo, QuestionDecisionOne, \
+    QuestionDecisionTwo, QuestionDecisionThree, QuestionDecisionFour, \
+    QuestionDecisionFive, QuestionDecisionSix
 from app import app, db
 from app.decorators import researcher_required
 from flask.ext.login import login_user, logout_user, current_user, login_required
@@ -273,6 +275,19 @@ def selectType(form):
         l = [form.answer1.data,
         form.answer2.data]
         question = QuestionPartTwo(choices = l[0:2])
+    if form.questionType.data == 'DecisionOne':
+        question = QuestionDecisionOne()
+    if form.questionType.data == 'DecisionTwo':
+        question = QuestionDecisionTwo()
+    if form.questionType.data == 'DecisionThree':
+        question = QuestionDecisionThree()
+    if form.questionType.data == 'DecisionFour':
+        question = QuestionDecisionFour()
+    if form.questionType.data == 'DecisionFive':
+        l = [form.answer1.data]
+        question = QuestionDecisionFive(choices = l[0:1])
+    if form.questionType.data == 'DecisionSix':
+        question = QuestionDecisionSix()
        
     question.text = form.text.data
     question.required = form.required.data
@@ -289,32 +304,7 @@ def addQuestion(id_survey, id_section):
     form = QuestionForm()
     
     if form.validate_on_submit():
-        question = selectType()
-        # if form.questionType.data =='YES/NO':
-        #     question = QuestionYN()
-        # if form.questionType.data == 'Numerical':
-        #     question = QuestionNumerical()
-        # if form.questionType.data == 'Text':
-        #     question = QuestionText()
-        # if form.questionType.data == 'Choice':
-        #     l = [form.answer1.data,
-        #     form.answer2.data,
-        #     form.answer3.data,
-        #     form.answer4.data,
-        #     form.answer5.data,
-        #     form.answer6.data,
-        #     form.answer7.data,
-        #     form.answer8.data,
-        #     form.answer9.data]
-        #     question = QuestionChoice(choices = l[0:int(form.numberFields.data)])
-        # if form.questionType.data == 'PartTwo':
-        #     l = [form.answer1.data,
-        #     form.answer2.data]
-        #     question = QuestionPartTwo(choices = l[0:2])
-           
-        # question.text = form.text.data
-        # question.required = form.required.data
-        # question.registerTime = form.registerTime.data
+        question = selectType(form)
 
         question.section = section
         db.session.add(question)
@@ -338,30 +328,7 @@ def editQuestion(id_survey, id_section,id_question):
         return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
     form = QuestionForm()    
     if form.validate_on_submit():
-        if form.questionType.data =='YES/NO':
-            q = QuestionYN()
-        if form.questionType.data == 'Numerical':
-            q = QuestionNumerical()
-        if form.questionType.data == 'Text':
-            q = QuestionText()
-        if form.questionType.data == 'Choice':
-            l = [form.answer1.data,
-            form.answer2.data,
-            form.answer3.data,
-            form.answer4.data,
-            form.answer5.data,
-            form.answer6.data,
-            form.answer7.data,
-            form.answer8.data,
-            form.answer9.data]
-            q = QuestionChoice(choices = l[0:int(form.numberFields.data)])
-        if form.questionType.data == 'PartTwo':
-            l = [form.answer1.data,
-            form.answer2.data]
-            q = QuestionPartTwo(choices = l[0:2])
-        q.text = form.text.data
-        q.required = form.required.data
-        q.registerTime = form.registerTime.data
+        q = selectType(form)
         q.id = question.id
         q.section = question.section
         db.session.delete (question)
@@ -374,16 +341,6 @@ def editQuestion(id_survey, id_section,id_question):
         form.text.data = question.text
         form.required.data = question.required
         form.registerTime.data = question.registerTime
-        #form = form.selectQuestionTypeDefault()
-        # if isinstance (question,QuestionYN):
-        #     form.selectQuestionTypeDefault(d='YES/NO')
-        #     flash("si o no")
-        # if isinstance (question,QuestionNumerical):
-        #     form.selectQuestionTypeDefault(d='Numecial')
-        #     flash("numericooo")
-        # if isinstance (question,QuestionText):
-        #     form.selectQuestionTypeDefault(d='Text')
-        #     flash("texto")
         if isinstance (question,QuestionChoice):
             l= question.choices
             if len(l) >0:
@@ -408,6 +365,9 @@ def editQuestion(id_survey, id_section,id_question):
             l= question.choices
             form.answer1.data = l[0]
             form.answer2.data = l[1]
+        if isinstance (question,QuestionDecisionFive):
+            l= question.choices
+            form.answer1.data = l[0]
 
     return render_template('/researcher/addEditQuestion.html',
         title = "Question",

@@ -92,5 +92,13 @@ class QuestionForm(Form):
                     l[i].errors.append('The field can not be empty')
                     state = False
             return state
+        if self.questionType.data == 'DecisionFive':
+            l = [self.answer1]
+            state = True
+            for i in  range (1):
+                if len(l[i].data) == 0:
+                    l[i].errors.append('The field can not be empty')
+                    state = False
+            return state
 
         return True

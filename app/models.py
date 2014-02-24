@@ -207,35 +207,148 @@ class QuestionPartTwo(Question):
     def len(self):
         return 2
 
-class DecisionOne(Question):
+class QuestionDecisionOne(Question):
     '''Question to part three, decision one, addoc
     '''
     __mapper_args__ = {'polymorphic_identity': 'decisionOne'}
 
-class DecisionTwo(Question):
+
+
+class QuestionDecisionTwo(Question):
     '''Question to part three, decision two, addoc
     '''
     __mapper_args__ = {'polymorphic_identity': 'decisionTwo'}
 
-class DecisionThree(Question):
+class QuestionDecisionThree(Question):
     '''Question to part three, decision three, addoc
     '''
     __mapper_args__ = {'polymorphic_identity': 'decisionThree'}
 
-class DecisionFour(Question):
+class QuestionDecisionFour(Question):
     '''Question to part three, decision four, addoc
     '''
     __mapper_args__ = {'polymorphic_identity': 'decisionFour'}
 
-class DecisionFive(Question):
+class QuestionDecisionFive(Question):
     '''Question to part three, decision five, addoc
     '''
     __mapper_args__ = {'polymorphic_identity': 'decisionFive'}
 
-class DecisionSix(Question):
+    def len(self):
+        return 1
+
+    @staticmethod
+    def getIntverval():
+        '''return a list witch all interval
+        '''
+        l =[]
+        qs = QuestionDecisionFive.query.all()
+        for q in qs:
+            l.append((q.choices[0],q.id))
+        return l
+
+
+class QuestionDecisionSix(Question):
     '''Question to part three, decision six, addoc
     '''
     __mapper_args__ = {'polymorphic_identity': 'decisionSix'}
+
+
+class Match(db.Model):
+    '''stores the results of the decisions depend on more than one user
+    '''
+
+    __tablename__ = 'match'
+    #: unique id (automatically generated)
+    id = Column(Integer, primary_key = True)
+    #: user A
+    userA = Column(Integer, ForeignKey('user.id'))
+    #:user B
+    userB = Column(Integer, ForeignKey('user.id'))
+    #:answer  of User A
+    answerA = Column(Integer, ForeignKey('answer.id'))
+    #:answer of User B
+    answerB = Column(Integer, ForeignKey('answer.id'))
+    #:type of decision, each decisision have a different algorithm
+    type = Column(String(20))
+    #:user win
+    win = Column(Integer,ForeignKey('user.id'))
+    #:money earned of userA
+    moneyA = Column(Numeric)
+    #:money earned of userB
+    moneyB = Column(Numeric)
+
+    def cashInitA(self):
+        return Answer.query.get(self.answerA).answerNumeric
+
+    def cashInitB(self):
+        return Answer.query.get(self.answerB).answerNumeric
+
+
+    def decisionOne(self):
+        '''Probability:= userA_Money/(userA_Money+user_MoneyB)
+        '''
+        AWARD = 10
+        INIT_MONEY = 10
+        
+        percentA=self.cashInithA/(self.cashInitA+
+                                            self.cashInitB)
+        if percentA>random.random():
+            #answerA win
+            self.win = self.userA
+            self.moneyA = AWARD + (INIT_MONEY - self.cashInitA)
+            self.moneyB = (INIT_MONEY - self.cashInitB)
+        else:
+            self.win = self.userB
+            self.moneyB = AWARD + (INIT_MONEY - self.cashInitB)
+            self.moneyA = (INIT_MONEY - self.cashInitA)
+
+    def decisionTwo(self):
+        INIT_MONEY = 10
+        CONSTANT_FUND = 0.8
+        fund = (self.cashInitA()+self.cashInitB())*CONSTANT_FUND
+        self.moneyA = fund + INIT_MONEY - self.cashInitA()
+        self.moneyB = fund + INIT_MONEY - self.cashInitB()
+
+    def decisionThree(self):
+        INIT_MONEY = 10
+        CONSTANT_FUND = 1.2
+        fund = (self.cashInitA()+self.cashInitB())*CONSTANT_FUND
+        self.moneyA = fund + INIT_MONEY - self.cashInitA()
+        self.moneyB = fund + INIT_MONEY - self.cashInitB()
+
+    def decisionFour(self):
+        '''
+        '''
+        MONEY = 20
+        interval = QuestionDecisionFive.getIntverval()
+        for i in interval:
+            if i[0]==self.cashInitA:
+            #in i[1] if of question
+                answer = Answer.query.filter(Answer.question_id == i[1],
+                    Answer.user_id == self.userB).first()
+                if answer.answerYN:
+                    self.win = self.userA
+                    self.moneyA = MONEY - self.moneyA
+                    self.moneyB = self.cashInitA
+                else:
+                    self.win = self.userB
+                    self.moneyA = 0
+                    self.moneyB = 0
+                return
+        
+
+
+
+  #          stateSurvey = StateSurvey.query.filter(StateSurvey.survey_id == id_survey, 
+  #               StateSurvey.user_id == user.id).first()
+
+
+    def decisionFourAcpet(self):
+        '''return if userB accept the division of money
+        '''
+        return self.win ==self.userA
+
 
 
 ROLE_USER = 0
