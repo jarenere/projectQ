@@ -7,6 +7,8 @@ seccion 1, sequencia 1, aleatorio si
 secion 2 sequencia 2, aleatorio si
 seccion 3 secuencia 2 aleatorio si
 resultado final 1,2,3| 2,3,1| 3,2,1, nunca 2,1,3 o 3,1,2
+listQuestionType podria metero en la bbdd
+eliminar la herencia de la bbdd, solo voy a añadir metodos
 
 Crear utiles para los tipos de pregunta, cada uno en su fichero python, vamos un modulo con las cosas a implementar paca
 cada pregunta, esto hará mas reutilizable y mas facil añadir opciones
@@ -14,15 +16,12 @@ cada pregunta, esto hará mas reutilizable y mas facil añadir opciones
 Permitir crear pregunta especial para el matching (se complica mucho la cosa, mejor hacer caso a la idea de arriba)
 
 
+statesurvey, sequence e index se podrian fusionar en unica clase
 
-questionpartwo
---------------
-el nombre de choices da error 
+Añadir opcion de completar cuestionario, continuar mas tarde
 
 
 meter todas las preguntas en el mismo html, y seleccionar con if
-
-intentar eliminar flask-sqlalchemy
 
 revisar todas las relaciones 1..n y comprobar nullable
 
@@ -41,7 +40,6 @@ editquestion, algo chapuza lo de copiar la id, tal vez (sin el talvez, xd) mejor
 
 eliminar en cascada question!!
 
-evitar que los investigadores puedan modificar encuestas de otros investigadores
 
 markdown :The Javascript files are loaded from a CDN, the files do not need to be hosted by your application. If you prefer to host these files locally then replace the html_head() call with your own <script> tags for files Markdown.Converter.js and Markdown.Sanitizer.js (or their minified versions).
 
@@ -49,7 +47,6 @@ los add/edits podrían ir en la misma función
 
 mirar en pybosa fieldset
 
-comprobar porque me mete entradas no validas en consent (sin relacion con survey) (seguramente porque el campo foraneo no es obligatorio, yeah)
 
 models: questionChoice, el texto de las elecciones podria ir en otra tabla
 
@@ -67,22 +64,10 @@ researcher.deleteSection()
 
 mandar a tomar por culo flask-sqlalchemy
 
-bug conocidos:
 
- fichero addSection.htm (tambien pasa en /consents.html:) el boton de add, cambia de nombre a edit ya que compruebo la si titulo vacio para mostrar que boton.
-Solucion1: varias plantillas (coñazo a la hora de editar plantillas)
-Solucion2: parametro para indicar si estas editando o es una nueva plantilla
-Solucion3: extender con block e ir subiendo hacia arriba para tener finalmente la pagina.. te ahorras el parametro.. pero generas varios ficheros mas, eso si pequeñajos, no me convence
-
-Solucionado!! con solucion2, aunque tal vez mejor cambiar el nombre de parametros
----------------------------
-
-
-mirar todas las insercciones, posiblemente esten todas mal, por no hacer uso del backref o mejor dicho ignorarlo, todo funcionaba porque filtraba por id, chapuza 
 
 
 s1 = models.Section.query.get(1)                                                                                                       
 /home/jarenere/frame_game_theory/flask/lib/python2.7/site-packages/sqlalchemy/sql/type_api.py:311: SAWarning: Dialect sqlite+pysqlite does *not* support Decimal objects natively, and SQLAlchemy must convert from floating point - rounding errors and other issues may occur. Please consider storing Decimal numbers as strings or integers on this platform for lossless storage. 
 
 
-si se quiere añadir un nuevo tipo de pregunta ficheros a tocar: researcher.py (addquestion), forms y model
