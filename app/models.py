@@ -163,6 +163,15 @@ class Question(db.Model):
     registerTime = Column(Boolean, nullable = False)
     #: possible choices
     choices = Column(PickleType)
+    
+    #: If there is a expected answer
+    expectedAnswer = Column(Boolean, default = False)
+    #:expected answer
+    answer = Column(String(20))
+    #:number of attempt to answer a question with  expected Answer
+    # zero is infinite attempt to get the right answer
+    numberAttempt = Column(Integer, default = 0)
+    
     #: Type of question, discriminate between classes
     type = Column(String(20))
     __mapper_args__ = {'polymorphic_on': type}
@@ -210,6 +219,7 @@ class QuestionLikertScale(Question):
     max = Column(Integer, nullable = False)
     labelMin = Column(String(20))
     labelMax = Column(String(20))
+
 
 
 class QuestionPartTwo(Question):
