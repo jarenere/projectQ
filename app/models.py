@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import division
 
 from app import db
 import json
@@ -14,6 +15,8 @@ from sqlalchemy import event, text
 from sqlalchemy.engine import reflection
 from sqlalchemy import create_engine
 from sqlalchemy.orm.collections import attribute_mapped_collection
+
+
 
 class Survey(db.Model):
     '''A table with Survey
@@ -238,13 +241,13 @@ class QuestionDecisionFive(Question):
         return 1
 
     @staticmethod
-    def getIntverval():
+    def getIntverval(section_id):
         '''return a list witch all interval
         '''
         l =[]
-        qs = QuestionDecisionFive.query.all()
-        for q in qs:
-            l.append((q.choices[0],q.id))
+        for q in Section.query.get(section_id).questions:
+            if isinstance (q, QuestionDecisionFive):
+                l.append((q.choices[0],q.id))
         return l
 
 
@@ -288,20 +291,26 @@ class Match(db.Model):
     def decisionOne(self):
         '''Probability:= userA_Money/(userA_Money+user_MoneyB)
         '''
+
         AWARD = 10
         INIT_MONEY = 10
         
-        percentA=self.cashInithA/(self.cashInitA+
-                                            self.cashInitB)
+        self.type = 'decisionOne'
+        percentA=self.cashInitA()/(self.cashInitA()+self.cashInitB())
         if percentA>random.random():
             #answerA win
             self.win = self.userA
-            self.moneyA = AWARD + (INIT_MONEY - self.cashInitA)
-            self.moneyB = (INIT_MONEY - self.cashInitB)
+            self.moneyA = AWARD + (INIT_MONEY - self.cashInitA())
+            self.moneyB = (INIT_MONEY - self.cashInitB())
         else:
             self.win = self.userB
-            self.moneyB = AWARD + (INIT_MONEY - self.cashInitB)
-            self.moneyA = (INIT_MONEY - self.cashInitA)
+            self.moneyB = AWARD + (INIT_MONEY - self.cashInitB())
+            self.moneyA = (INIT_MONEY - self.cashInitA())
+        print "ganador:", self.win
+        print "percentA", percentA
+        print "dinero jugadorA:", self.moneyA
+        print "dinero jugadorB:", self.moneyB
+
 
     def decisionTwo(self):
         INIT_MONEY = 10
@@ -309,6 +318,11 @@ class Match(db.Model):
         fund = (self.cashInitA()+self.cashInitB())*CONSTANT_FUND
         self.moneyA = fund + INIT_MONEY - self.cashInitA()
         self.moneyB = fund + INIT_MONEY - self.cashInitB()
+        print "initA", self.cashInitA()
+        print "initB", self.cashInitB()
+        print "fondo", fund
+        print "moneyA", self.moneyA
+        print "moneyB", self.moneyB
 
     def decisionThree(self):
         INIT_MONEY = 10
@@ -316,25 +330,35 @@ class Match(db.Model):
         fund = (self.cashInitA()+self.cashInitB())*CONSTANT_FUND
         self.moneyA = fund + INIT_MONEY - self.cashInitA()
         self.moneyB = fund + INIT_MONEY - self.cashInitB()
+        print "initA", self.cashInitA()
+        print "initB", self.cashInitB()
+        print "fondo", fund
+        print "moneyA", self.moneyA
+        print "moneyB", self.moneyB
 
-    def decisionFour(self):
-        '''
+    def decisionFour(self, section_id):
+        '''userB decision to accept o refuse, section_id is where store question type decisisonfive
+            if userA win, the userB have accepted the money
         '''
         MONEY = 20
-        interval = QuestionDecisionFive.getIntverval()
+        interval = QuestionDecisionFive.getIntverval(section_id)
         for i in interval:
-            if i[0]==self.cashInitA:
+            if int(i[0])==self.cashInitA():
             #in i[1] if of question
-                answer = Answer.query.filter(Answer.question_id == i[1],
-                    Answer.user_id == self.userB).first()
+                answer = Answer.query.filter(Answer.question_id == i[1],Answer.user_id == self.userB).first()
                 if answer.answerYN:
                     self.win = self.userA
-                    self.moneyA = MONEY - self.moneyA
-                    self.moneyB = self.cashInitA
+                    self.moneyA = MONEY - self.cashInitA()
+                    self.moneyB = self.cashInitA()
                 else:
                     self.win = self.userB
                     self.moneyA = 0
                     self.moneyB = 0
+                print "win", self.win
+                print "initA", self.cashInitA()
+                #print "initB", self.cashInitB()
+                print "moneyA", self.moneyA
+                print "moneyB", self.moneyB
                 return
         
 
