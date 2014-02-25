@@ -202,6 +202,16 @@ class QuestionChoice(Question):
     def number(self):
         return  len(self.choices)
 
+class QuestionLikertScale(Question):
+    '''Question of type likert Scale
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'likertScale'}
+    min = Column(Integer, nullable = False)
+    max = Column(Integer, nullable = False)
+    labelMin = Column(String(20))
+    labelMax = Column(String(20))
+
+
 class QuestionPartTwo(Question):
     '''Question to part two, addoc
     '''
@@ -280,6 +290,12 @@ class Match(db.Model):
     moneyA = Column(Numeric)
     #:money earned of userB
     moneyB = Column(Numeric)
+
+    @staticmethod
+    def Matching():
+        '''search user/answer that no Matching with other user/answer
+        '''
+        pass
 
     def cashInitA(self):
         return Answer.query.get(self.answerA).answerNumeric
