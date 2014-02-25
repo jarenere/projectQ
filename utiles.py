@@ -7,9 +7,30 @@ def borrarState():
 
 def verAnswers():
     for ans in models.Answer.query.all():
-        print ans.id, ans.answerYN, ans.user_id, ans.question_id
-        if models.Question.query.get(ans.question_id).type =='partTwo':
-          print ans.answerNumeric
+        print ans.id, "user", ans.user.nickname, ans.question_id, ans.question.text
+        if ans.question.type=='yn':
+            print ans.answerYN
+        if ans.question.type =='numerical':
+            print ans.answerNumeric
+        if ans.question.type== 'text':
+            print ans.answerText
+        if ans.question.type== 'choice':
+            print ans.answerNumeric
+        if ans.question.type== 'partTwo':
+            print ans.answerNumeric
+        if ans.question.type== 'decisionOne':
+            print ans.answerNumeric
+        if ans.question.type =='decisionTwo':
+            print ans.answerNumeric
+        if ans.question.type =='decisionThree':
+            print ans.answerNumeric
+        if ans.question.type =='decisionFour':
+            print ans.answerNumeric
+        if ans.question.type =='decisionFive':
+            print ans.answerYN
+        if ans.question.type =='decisionSix':
+            print ans.answerNumeric
+        print '================================='
 
 def verPreguntas():
     for q in models.Question.query.all():
@@ -18,6 +39,10 @@ def verPreguntas():
             for index,i in enumerate(q.choicesPartTwo):
                 print "  ", index, i
 
+def borrarAnswers():
+    for ans in models.Answer.query.all():
+        db.session.delete(ans)
+    db.session.commit()
 
 def generateUserFake(count=100):
     from sqlalchemy.exc import IntegrityError
@@ -33,3 +58,11 @@ def generateUserFake(count=100):
             db.session.commit()
         except IntegrityError:
             db.session.rollback()
+
+def verUsuarios():
+    for u in models.User.query.all():
+        print u.id, u.email, u.nickname
+
+def verMatch():
+    for m in models.Match.query.all():
+        print m.id
