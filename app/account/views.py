@@ -193,7 +193,7 @@ def showQuestions(id_survey, id_section):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
                 db.session.add(answer)
                 db.session.commit()
-            if isinstance (question,QuestionFive):
+            if isinstance (question,QuestionDecisionFive):
                 answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
                 db.session.add(answer)
                 db.session.commit()
