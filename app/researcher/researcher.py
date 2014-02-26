@@ -5,7 +5,7 @@ from flask import render_template
 from forms import SurveyForm, EditConsentForm, SectionForm, QuestionForm
 from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
-from app.models import QuestionYN, QuestionPartTwo, QuestionDecisionOne, \
+from app.models import QuestionYN, QuestionLikertScale, QuestionPartTwo, QuestionDecisionOne, \
     QuestionDecisionTwo, QuestionDecisionThree, QuestionDecisionFour, \
     QuestionDecisionFive, QuestionDecisionSix
 from app import app, db
@@ -271,6 +271,10 @@ def selectType(form):
         form.answer8.data,
         form.answer9.data]
         question = QuestionChoice(choices = l[0:int(form.numberFields.data)])
+    if form.questionType.data == 'likert':
+        question = QuestionLikertScale(minLikert=form.minLikert.data,
+            maxLikert=form.maxLikert.data, labelMin=form.labelMinLikert.data,
+            labelMax=form.labelMaxLikert.data)
     if form.questionType.data == 'PartTwo':
         l = [form.answer1.data,
         form.answer2.data]
@@ -288,10 +292,12 @@ def selectType(form):
         question = QuestionDecisionFive(choices = l[0:1])
     if form.questionType.data == 'DecisionSix':
         question = QuestionDecisionSix()
-       
+           
     question.text = form.text.data
     question.required = form.required.data
     question.registerTime = form.registerTime.data
+    question.expectedAnswer = form.expectedAnswer.data
+    question.numberAttempt = form.numberAttempt.data
     return question
 
 

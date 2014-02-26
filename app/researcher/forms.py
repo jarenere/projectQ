@@ -1,6 +1,6 @@
 from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, RadioField, SelectField, IntegerField, TextAreaField, TextField, DecimalField
-from wtforms.validators import Required, Length, NumberRange, ValidationError
+from wtforms.validators import Required, Length, NumberRange, ValidationError, Optional
 from flask.ext.pagedown import PageDown
 from flask.ext.pagedown.fields import PageDownField
 
@@ -40,20 +40,20 @@ class QuestionForm(Form):
     questionType = SelectField('Type of question', choices=listQuestionType)
     
     #:Expected Answer
-    expectedAnswer = BooleanField('Register time', default = False)
-    answer = TextField('answer', validators = [Length(min = 0, max = 20)])
-    numberAttempt = IntegerField('Number of attempt', default = 0)
+    expectedAnswer = TextField('answer', validators = [Length(min = 0, max = 20)], 
+        description='none if There isnt correct answer')
+    numberAttempt = IntegerField('Number of attempt', validators = [Optional()])
 
     #: Number of fields in "choice question"
     numberFields = SelectField('number of fields in "choice question"',
         choices=[('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),
         ('7','7'),('8','8'),('9','9')])
     #likert Scale
-    minLikert = SelectField('Scale',choices=[('0','0'),('1','1')])
+    minLikert = SelectField('Scale',choices=[('0','0'),('1','1')], default=('1'))
     maxLikert = SelectField('to', choices=[('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),
-        ('7','7'),('8','8'),('9','9'),('10','10')])
-    minLikerText = TextField('min', validators = [Length(min = 0, max = 128)], description = 'label optional')
-    maxLikertText = TextField('max',validators = [Length(min = 0, max = 128)], description = 'label optional')
+        ('7','7'),('8','8'),('9','9'),('10','10')], default=('7'))
+    labelMinLikert= TextField('min', validators = [Length(min = 0, max = 128)], description = 'label optional')
+    labelMaxLikert = TextField('max',validators = [Length(min = 0, max = 128)], description = 'label optional')
 
     #: text of possible answers of the choice questions
     answer1 = TextField('Answer 1', validators = [Length(min = 0, max =400)])

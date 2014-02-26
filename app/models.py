@@ -165,9 +165,9 @@ class Question(db.Model):
     choices = Column(PickleType)
     
     #: If there is a expected answer
-    expectedAnswer = Column(Boolean, default = False)
+    #expectedAnswer = Column(Boolean, default = False)
     #:expected answer
-    answer = Column(String(20))
+    expectedAnswer = Column(String(20))
     #:number of attempt to answer a question with  expected Answer
     # zero is infinite attempt to get the right answer
     numberAttempt = Column(Integer, default = 0)
@@ -183,6 +183,10 @@ class Question(db.Model):
     #: Question have zero or more answers
     answers = relationship('Answer', backref = 'question', lazy = 'dynamic')
 
+    def isExpectedAnswer(self):
+        '''return if there is a expected answer
+        '''
+        return len(self.expectedAnswer)>0
 
 class QuestionYN(Question):
     '''Question of type yes or no
@@ -215,8 +219,8 @@ class QuestionLikertScale(Question):
     '''Question of type likert Scale
     '''
     __mapper_args__ = {'polymorphic_identity': 'likertScale'}
-    min = Column(Integer, nullable = False)
-    max = Column(Integer, nullable = False)
+    minLikert = Column(Integer)
+    maxLikert = Column(Integer)
     labelMin = Column(String(128))
     labelMax = Column(String(128))
 
