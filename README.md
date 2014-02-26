@@ -15,6 +15,7 @@ Flask-OpenID-1.2.1
 flask-pagedown-0.1.3
 Flask-Markdown-0.3
 forgery forgerypy (to testing)
+Flask-Bootstrap-3.1.1.1
 
 Change Python default encoding:
 
