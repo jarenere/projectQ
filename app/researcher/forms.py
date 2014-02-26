@@ -8,7 +8,8 @@ EXAMPLE_MARKDOWN = '## This is a example of Markdown\n**Markdown** is rendered o
 More about [markdown](http://daringfireball.net/projects/markdown/).'
 
 listQuestionType = [('YES/NO', 'YES/NO'),('Numerical','Numerical'),
-        ('Text','Text'),('Choice','Choice'),('PartTwo','Part two'),('DecisionOne','Decision One'),
+        ('Text','Text'),('Choice','Choice'),('likert','Likert Scale'),
+        ('PartTwo','Part two'),('DecisionOne','Decision One'),
         ('DecisionTwo','Decision Two'),('DecisionThree','Decision Three'),
         ('DecisionFour','Decision Four'),('DecisionFive','Decision Five'),
         ('DecisionSix','Decision Six')]
@@ -37,10 +38,23 @@ class QuestionForm(Form):
     registerTime = BooleanField('Register time', default = False)
     #: Type of response
     questionType = SelectField('Type of question', choices=listQuestionType)
+    
+    #:Expected Answer
+    expectedAnswer = BooleanField('Register time', default = False)
+    answer = TextField('answer', validators = [Length(min = 0, max = 20)])
+    numberAttempt = IntegerField('Number of attempt', default = 0)
+
     #: Number of fields in "choice question"
     numberFields = SelectField('number of fields in "choice question"',
         choices=[('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),
         ('7','7'),('8','8'),('9','9')])
+    #likert Scale
+    minLikert = SelectField('Scale',choices=[('0','0'),('1','1')])
+    maxLikert = SelectField('to', choices=[('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),
+        ('7','7'),('8','8'),('9','9'),('10','10')])
+    minLikerText = TextField('min', validators = [Length(min = 0, max = 128)], description = 'label optional')
+    maxLikertText = TextField('max',validators = [Length(min = 0, max = 128)], description = 'label optional')
+
     #: text of possible answers of the choice questions
     answer1 = TextField('Answer 1', validators = [Length(min = 0, max =400)])
     answer2 = TextField('Answer 2', validators = [Length(min = 0, max =400)])
