@@ -13,12 +13,12 @@
                         <td></td>
                         <td>
                         {% if addConsent  %}
-                            <input type="submit" value="Add Consent">
+                            <input class="btn" type="submit" value="Add Consent">
                         {% endif %}
                         {% if editConsent %}
-                            <input type="submit" value="Edit Consent">
+                            <input class="btn" type="submit" value="Edit Consent">
                         {% endif %}
-                        <a href="{{ url_for('researcher.editSurvey', id_survey = id_survey) }}">{{ ('Back') }}</a></td>
+                        <a class="btn"  href="{{ url_for('researcher.editSurvey', id_survey = id_survey) }}">{{ ('Back') }}</a></td>
                     </tr>
                 </table>
             </form>
