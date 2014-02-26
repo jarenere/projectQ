@@ -195,8 +195,8 @@ def editSection(id_survey, id_section):
         section.percent = form.percent.data
         db.session.add(section)
         db.session.commit()
-        flash('Edited section')
-        return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
+        flash('Save changes')
+        return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
     elif request.method != "POST":
         form.title.data = section.title
         form.description.data = section.description
@@ -399,7 +399,7 @@ def deleteQuestion(id_survey,id_section,id_question):
         db.session.delete(question)
         db.session.commit()
         flash('Question removed')
-        return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
+        return redirect(url_for('researcher.addQuestion',id_survey = id_survey, id_section=id_section))
     else:
         flash('Question wrong') 
         return redirect(url_for('researcher.editSurvey',id_survey = id_survey))

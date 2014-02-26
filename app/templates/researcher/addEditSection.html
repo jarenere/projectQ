@@ -35,19 +35,22 @@
                     {{ render_field(form.sequence) }}
                     {{ render_field(form.percent) }}
                     </table>
-                    {% if addSection  %}
-                        <input type="submit" value="Add Section">
-                    {% endif %}
-                    {% if editSection  %}
-                        <input type="submit" value="Edit Section">
-                    {% endif %}
-                    {% if addSubSection  %}
-                        <input type="submit" value="Add SubSection">
-                    {% endif %}
-                    <a href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{ ('Back') }}</a>
-                    {% if editSection  %}
-                        <a href="{{ url_for('researcher.addQuestion', id_survey = survey.id, id_section = id_section) }}">{{ ('Add/Edit question') }}</a>
-                    {% endif %}                    
+                    <div class="btn-group">
+                        {% if addSection  %}
+                            <input class="btn" type="submit" value="Add Section">
+                        {% endif %}
+                        {% if editSection  %}
+                            <input class="btn" type="submit" value="Save changes">
+                            <a class="btn" href="{{ url_for('researcher.addSubSection', id_section = id_section, id_survey =  survey.id) }}">{{ ('Add subsection') }}</a>
+                        {% endif %}
+                        {% if addSubSection  %}
+                            <input class="btn" type="submit" value="Add SubSection">
+                        {% endif %}
+                        {% if editSection  %}
+                            <a class="btn" href="{{ url_for('researcher.addQuestion', id_survey = survey.id, id_section = id_section) }}">{{ ('Add/Edit question') }}</a>
+                        {% endif %}                    
+                        <a class="btn" href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{ ('Back') }}</a>
+                    </div>
                 </form>
             </div>
                 {{ renderSections(sections, survey) }}

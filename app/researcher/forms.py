@@ -60,10 +60,10 @@ class QuestionForm(Form):
     answer2 = TextField('Answer 2', validators = [Length(min = 0, max =400)])
     answer3 = TextField('Answer 3', validators = [Length(min = 0, max =400)])
     answer4 = TextField('Answer 4', validators = [Length(min = 0, max =400)])
-    answer5 = TextField('answer 5', validators = [Length(min = 0, max =400)])
+    answer5 = TextField('Answer 5', validators = [Length(min = 0, max =400)])
     answer6 = TextField('Answer 6', validators = [Length(min = 0, max =400)])
-    answer7 = TextField('answer 7', validators = [Length(min = 0, max =400)])
-    answer8 = TextField('answer 8', validators = [Length(min = 0, max =400)])
+    answer7 = TextField('Answer 7', validators = [Length(min = 0, max =400)])
+    answer8 = TextField('Answer 8', validators = [Length(min = 0, max =400)])
     answer9 = TextField('Answer 9', validators = [Length(min = 0, max =400)])
 
     def selectQuestionTypeDefault(self):

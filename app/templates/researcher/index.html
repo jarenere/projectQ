@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Researcher!</h1>
     <div>
-        <a href="{{ url_for('researcher.new') }}">{{ ('New survey') }}</a>
+        <a class="btn btn-primary btn" href="{{ url_for('researcher.new') }}">{{ ('New survey') }}</a>
     </div>
     {% for survey in surveys %}
         {% include 'researcher/survey.html' %}
