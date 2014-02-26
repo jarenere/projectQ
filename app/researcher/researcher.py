@@ -347,6 +347,8 @@ def editQuestion(id_survey, id_section,id_question):
         form.text.data = question.text
         form.required.data = question.required
         form.registerTime.data = question.registerTime
+        form.expectedAnswer.data = question.expectedAnswer
+        form.numberAttempt.data = question.numberAttempt
         if isinstance (question,QuestionChoice):
             l= question.choices
             if len(l) >0:
@@ -374,6 +376,9 @@ def editQuestion(id_survey, id_section,id_question):
         if isinstance (question,QuestionDecisionFive):
             l= question.choices
             form.answer1.data = l[0]
+        if isinstance(question, QuestionLikertScale):
+            form.labelMinLikert.data=question.labelMin
+            form.labelMaxLikert.data=question.labelMax
 
     return render_template('/researcher/addEditQuestion.html',
         title = "Question",
