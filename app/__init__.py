@@ -8,12 +8,15 @@ from flask.ext.openid import OpenID
 from config import basedir
 from flaskext.markdown import Markdown
 from flask.ext.pagedown import PageDown
+from flask.ext.bootstrap import Bootstrap
+
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 
+Bootstrap(app)
 #markdown editor
 pagedown = PageDown(app)
 markdown = Markdown(app)

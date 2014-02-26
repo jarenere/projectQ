@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import TextField, BooleanField, RadioField, SelectField, IntegerField, TextAreaField, TextField, DecimalField
+from wtforms import TextField, BooleanField, RadioField, SelectField, IntegerField, TextAreaField, TextField, DecimalField, SubmitField
 from wtforms.validators import Required, Length, NumberRange, ValidationError, Optional
 from flask.ext.pagedown import PageDown
 from flask.ext.pagedown.fields import PageDownField
@@ -17,6 +17,7 @@ listQuestionType = [('YES/NO', 'YES/NO'),('Numerical','Numerical'),
 class SurveyForm(Form):
     title = TextField('Title', validators = [Length(min = 1, max = 128)])
     description = PageDownField('Description',validators = [Length(min = 10, max = 1200)],default = EXAMPLE_MARKDOWN)
+#    submit = SubmitField('Register')
 
 class EditConsentForm(Form):
     text = PageDownField('Consent',validators = [Length(min = 1)],default = EXAMPLE_MARKDOWN)

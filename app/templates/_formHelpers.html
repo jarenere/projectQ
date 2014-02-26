@@ -5,10 +5,21 @@
             <td> {{field(**kwargs)}}
                 {% if field.errors %}
                     {% for error in field.errors %}
-                        <span class="help-inline">{{ error }}</span>
+                        <span style="color: red;" class="help-inline">{{ error }}</span>
                     {% endfor %}
                 {% endif %}
             </td>
         </tr>
+    </div>
+{% endmacro %}
+
+{% macro render_field2(field) %}
+    <div class="control-group {% if field.errors %} error {% endif %}">
+        {{field(**kwargs)}}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <span style="color: red;" class="help-inline">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
     </div>
 {% endmacro %}
