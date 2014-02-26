@@ -217,8 +217,8 @@ class QuestionLikertScale(Question):
     __mapper_args__ = {'polymorphic_identity': 'likertScale'}
     min = Column(Integer, nullable = False)
     max = Column(Integer, nullable = False)
-    labelMin = Column(String(20))
-    labelMax = Column(String(20))
+    labelMin = Column(String(128))
+    labelMax = Column(String(128))
 
 
 
