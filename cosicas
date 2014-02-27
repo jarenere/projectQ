@@ -15,6 +15,7 @@ cada pregunta, esto hará mas reutilizable y mas facil añadir opciones
 
 Permitir crear pregunta especial para el matching (se complica mucho la cosa, mejor hacer caso a la idea de arriba)
 
+generar xml/json de la encuesta
 
 statesurvey, sequence e index se podrian fusionar en unica clase
 

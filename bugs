@@ -16,3 +16,5 @@
 
 []Cuando modificas unas cuestion sigue poniendo añadir
 []Calcular el tiempo tiene bug, si se falla el formulario (formulario mas contestado),se reinicia el tiempo
+[]Solo muestra un consentimiento si lo hay
+[]models nextSection pasa algo raro raro raro con una consulata que devuelve vacia...
