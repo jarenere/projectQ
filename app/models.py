@@ -506,10 +506,25 @@ class StateSurvey(db.Model):
     def nextSection(self):
         '''Return next Section to do
         '''
+        # if self.index>=len(self.sequence):
+        #     return None
+        # else:
+        #     return self.sequence[self.index]
+
         if self.index>=len(self.sequence):
             return None
+        section = self.sequence[self.index]
+        #section.questions.count always return 0, rare rare rare
+        s = Section.query.get(section.id)
+        if ((len(section.description)==0) and (s.questions.count()==0)):
+            self.finishedSection()
+            return self.nextSection()
         else:
-            return self.sequence[self.index]
+            print s.questions
+            print "___________________"
+            print section.questions
+            return section
+
 
     def isFinished(self):
         '''return there isn't more sections to do
