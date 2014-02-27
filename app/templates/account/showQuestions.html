@@ -6,12 +6,25 @@
 {% from "_formHelpers.html" import render_field %}
 {% from "_formHelpers.html" import render_field2 %}
 
+<script language="javascript">
+    function timestamp(){
+        var t_fin = Date.now();
+        document.getElementById("time").value = t_fin - t_ini;
+        alert(document.getElementById("time").value);
+    }
+</script>
+
+<script language="javascript">
+    window.onload = function() {
+        t_ini = Date.now();
+}
+</script>
+
     <div class="container">
         {% filter markdown %}{{section.description}}{% endfilter %}
 
-        <form class="form-horizontal" action="" method="post" name="question">
+        <form onsubmit="timestamp()" class="form-horizontal" action="" method="post" name="question">
             {{form.hidden_tag()}}
-            {{wtf.form_errors(form)}}
             {% for question in questions %}
             <table class="table table-hover"><td>
                     {% filter markdown %}{{question.text}}{% endfilter %}

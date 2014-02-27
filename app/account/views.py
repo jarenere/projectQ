@@ -13,7 +13,7 @@ from app.models import StateSurvey
 from app.models import Answer
 
 from flask.ext.wtf import Form
-from wtforms import TextField, BooleanField, RadioField, IntegerField
+from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField
 from wtforms.validators import Required
 from wtforms.validators import Optional
 
@@ -99,7 +99,7 @@ def showQuestions(id_survey, id_section):
     Show all question of a section
     '''
     class AnswerForm(Form):
-        pass
+        time = HiddenField('time')
 
         
     survey = Survey.query.get(id_survey)
@@ -219,6 +219,7 @@ def showQuestions(id_survey, id_section):
         stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
         stateSurvey.finishedSection()
         return redirect(url_for('account.logicSurvey',id_survey = id_survey))
+
     return render_template('/account/showQuestions.html',
             title = survey.title,
             survey = survey,
