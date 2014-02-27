@@ -7,6 +7,7 @@ from models import Pregunta, PreguntaNumerica, PreguntaSeleccion, PreguntaTexto,
     ROLE_ADMIN, ROLE_RESEARCHER, ROLE_USER
 #login
 from flask.ext.login import login_user, logout_user, current_user, login_required
+from config import basedir
 
 @lm.user_loader
 def load_user(id):
@@ -51,7 +52,9 @@ def logout():
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    f = open(basedir+"/app/static/index.re", "r")
+    text =  f.read()
+    return render_template('index.html', text = text)
 
 
 @app.route('/pregunta', methods = ['GET', 'POST'])
