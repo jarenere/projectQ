@@ -15,3 +15,4 @@
 []siempre que hay decision 4, tiene que haber decission 5, hacer un comprobador cuando se publice encuesta
 
 []Cuando modificas unas cuestion sigue poniendo añadir
+[]Calcular el tiempo tiene bug, si se falla el formulario (formulario mas contestado),se reinicia el tiempo
