@@ -1,4 +1,4 @@
 
-rm -r  migrations/ 
+rm -r  migrations/versions
 rm app/app.db 
 
