@@ -30,8 +30,8 @@
                     <table>
                         {{ render_field(form.title, size = 64) }}
                         {{ render_field(form.description, rows = 10, style = 'width:100%') }}
-
-
+                        {{ render_field(form.startDate, size = 128,placeholder="%Y-%m-%d %H:%M:%S")}}
+                        {{ render_field(form.endDate, size = 128,placeholder="%Y-%m-%d %H:%M:%S")}}
 
                     </table>
                     <br>

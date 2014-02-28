@@ -5,7 +5,6 @@
 {% block content %}
 <h1>New Survey</h1>
 <form action="" method="post" name="new">
-    {{form.hidden_tag()}}
     <table>
         <tr>
             <td>
@@ -16,10 +15,9 @@
             <td> {{ render_field(form.description,rows = 10, style = 'width:100%')}}</td>
         </tr>
         <tr>
-            <td> {{ render_field(form.startDate, size = 128,placeholder="%Y-%m-%d %H:%M:%S")}}</td>
-        </tr>
-        <tr>
-            <td> {{ render_field(form.endDate, size = 64,placeholder="%Y-%m-%d %H:%M:%S")}}</td>
+            <td>
+                {{ render_field(form.rangeTimeSurvey) }}
+            <td>                
         </tr>
         <tr>
             <td></td>

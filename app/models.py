@@ -17,7 +17,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm.collections import attribute_mapped_collection
 
 
-
 class Survey(db.Model):
     '''A table with Survey
     '''
@@ -30,6 +29,10 @@ class Survey(db.Model):
     description = Column(String(1200))
     #: created timestamp (automatically set)
     created = Column(DateTime, default = datetime.utcnow())
+    #: DateTime init survey
+    startDate = Column(DateTime, default = datetime.utcnow())
+    #: DateTime finish survey
+    endDate = Column(DateTime, default = datetime.utcnow())
     ## Relationships
     #: Survey have zero or more consents
     consents = relationship('Consent', backref = 'survey', lazy = 'dynamic')

@@ -29,7 +29,9 @@ def new():
     form = SurveyForm()
     if form.validate_on_submit():
         survey = Survey( title = form.title.data,
-            description = form.description.data)
+            description = form.description.data,
+            endDate = form.endDate.data,
+            startDate = form.startDate.data)
         db.session.add(survey)
         db.session.commit()
         flash('Your survey have been saved.')
@@ -37,6 +39,8 @@ def new():
     return render_template('/researcher/new.html',
         title = 'New survey',
         form = form)
+
+
 
 @blueprint.route('/survey/<int:id_survey>', methods = ['GET', 'POST'])
 #podrimamos definir la entrada como string del titulo+id:
@@ -50,12 +54,16 @@ def editSurvey(id_survey):
     if form.validate_on_submit():
         survey.title = form.title.data
         survey.description = form.description.data
+        survey.startDate = form.startDate.data
+        survey.endDate = form.endDate.data
         db.session.add(survey)
         db.session.commit()
         flash('Your changes have been saved.')
     elif request.method != "POST":
         form.title.data = survey.title
         form.description.data = survey.description
+        form.startDate.data = survey.startDate
+        form.endDate.data = survey.endDate
     return render_template('/researcher/editSurvey.html',
         title = survey.title,
         form = form,
