@@ -207,6 +207,10 @@ class QuestionText(Question):
     '''Question of type text
     '''
     __mapper_args__ = {'polymorphic_identity': 'text'}
+    isNumber = Column(Boolean, default=False)
+    regularExpression = Column (String(256)) 
+    #text with the error if the user answer with wrong  regular expression
+    errorMessage = Column (String(256)) 
 
 class QuestionChoice(Question):
     '''Question of type choice

@@ -14,8 +14,7 @@ from app.models import Answer
 
 from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField
-from wtforms.validators import Required
-from wtforms.validators import Optional
+from wtforms.validators import Required, Regexp, Optional
 
 
 
@@ -120,7 +119,13 @@ def showQuestions(id_survey, id_section):
             setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
 
         if isinstance (question,QuestionText,):
-            setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required()]))
+            if question.regularExpression !="":
+                setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
+                    validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
+            elif question.isNumber:
+                setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
+            else:
+                setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required()]))
 
         if isinstance (question,QuestionChoice):
             #First element must be a string, otherwise fail to valid choice

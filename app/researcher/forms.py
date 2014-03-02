@@ -44,7 +44,12 @@ class QuestionForm(Form):
     registerTime = BooleanField('Register time', default = False)
     #: Type of response
     questionType = SelectField('Type of question', choices=listQuestionType)
-    
+
+    #:dateValidation(text)
+    isNumber = BooleanField('Number')
+    regularExpression = TextField('Regular Expression', validators = [Length(min=0, max=255)])
+    errorMessage = TextField('Error Message', validators = [Length(min=0, max=255)])
+
     #:Expected Answer
     expectedAnswer = TextField('answer', validators = [Length(min = 0, max = 20)], 
         description='none if There isnt correct answer')

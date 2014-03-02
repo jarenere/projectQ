@@ -267,7 +267,9 @@ def selectType(form):
     if form.questionType.data == 'Numerical':
         question = QuestionNumerical()
     if form.questionType.data == 'Text':
-        question = QuestionText()
+        question = QuestionText(isNumber=form.isNumber.data,
+            regularExpression=form.regularExpression.data,
+            errorMessage=form.errorMessage.data)
     if form.questionType.data == 'Choice':
         l = [form.answer1.data,
         form.answer2.data,
@@ -357,6 +359,10 @@ def editQuestion(id_survey, id_section,id_question):
         form.registerTime.data = question.registerTime
         form.expectedAnswer.data = question.expectedAnswer
         form.numberAttempt.data = question.numberAttempt
+        if isinstance(question, QuestionText):
+            form.regularExpression.data = question.regularExpression
+            form.isNumber.data = question.isNumber
+            form.errorMessage.data = question.errorMessage
         if isinstance (question,QuestionChoice):
             l= question.choices
             if len(l) >0:
