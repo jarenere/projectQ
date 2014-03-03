@@ -173,7 +173,7 @@ class Question(db.Model):
     expectedAnswer = Column(String(20))
     #:number of attempt to answer a question with  expected Answer
     # zero is infinite attempt to get the right answer
-    numberAttempt = Column(Integer, default = 0)
+    maxNumberAttempt = Column(Integer, default = 0)
     
     #: Type of question, discriminate between classes
     type = Column(String(20))
@@ -482,11 +482,36 @@ class Answer(db.Model):
     answerText = Column(String)
     #: answer Boolean
     answerYN = Column(Boolean)
+    #:numberAttemp do in a question with expected answer
+    numberAttempt = Column(Integer, default = 1)
     ## Relationships
     #answer belong a user
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     #answer belong a question
     question_id = Column(Integer, ForeignKey('question.id'), nullable=False)
+
+    def answerAttempt(self):
+        '''Return if the answer is the correct, else increment in 1
+        the number attempt
+        '''
+        if self.question.isExpectedAnswer():
+            if self.answerText.lower() != self.question.expectedAnswer.lower():
+                self.numberAttempt = self.numberAttempt + 1
+                db.session.add(self)
+                db.session.commit()
+                return False
+            else:
+                return True
+        else:               
+            return True
+
+    def isMoreAttempt(self):
+        '''Return if there are more attempt
+        '''
+        if self.numberAttempt>=self.question.maxNumberAttempt:
+            return False
+        else:
+            return True
 
 class StateSurvey(db.Model):
     '''A table that saves the state of a survey  

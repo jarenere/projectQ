@@ -307,7 +307,7 @@ def selectType(form):
     question.required = form.required.data
     question.registerTime = form.registerTime.data
     question.expectedAnswer = form.expectedAnswer.data
-    question.numberAttempt = form.numberAttempt.data
+    question.maxNumberAttempt = form.maxNumberAttempt.data
     return question
 
 
@@ -358,7 +358,7 @@ def editQuestion(id_survey, id_section,id_question):
         form.required.data = question.required
         form.registerTime.data = question.registerTime
         form.expectedAnswer.data = question.expectedAnswer
-        form.numberAttempt.data = question.numberAttempt
+        form.maxNumberAttempt.data = question.maxNumberAttempt
         if isinstance(question, QuestionText):
             form.regularExpression.data = question.regularExpression
             form.isNumber.data = question.isNumber

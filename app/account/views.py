@@ -168,7 +168,6 @@ def showQuestions(id_survey, id_section):
 
 
     if form.validate_on_submit():
-        flash("yeah")
         for question in questions:
             if isinstance (question,QuestionYN):
                 answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
@@ -178,10 +177,33 @@ def showQuestions(id_survey, id_section):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
                 db.session.add(answer)
                 db.session.commit()
-            if isinstance (question,QuestionText,):
-                answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
+            if isinstance (question,QuestionText):
+                if question.isExpectedAnswer():
+                    #searches if the question has been answered
+                    answer = Answer.query.filter(Answer.user_id==g.user.id,
+                        Answer.question_id==question.id)
+                    if answer.count()!=1:
+                        answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)     
+                        db.session.add(answer)
+                        db.session.commit()          
+                    else:
+                        answer = answer.first()
+                        answer.answerText = form["c"+str(question.id)].data
+                    if not answer.answerAttempt():
+                        if answer.isMoreAttempt():
+                            flash ("answer wrong")
+                            return render_template('/account/showQuestions.html',
+                                title = survey.title,
+                                survey = survey,
+                                section = section,
+                                # form = form,
+                                form = form,
+                                questions = questions)
+
                 db.session.add(answer)
                 db.session.commit()
+
+
             if isinstance (question,QuestionChoice):
                  answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
                  db.session.add(answer)
@@ -221,9 +243,11 @@ def showQuestions(id_survey, id_section):
                 db.session.add(answer)
                 db.session.commit()
 
+
         stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
         stateSurvey.finishedSection()
         return redirect(url_for('account.logicSurvey',id_survey = id_survey))
+
 
     return render_template('/account/showQuestions.html',
             title = survey.title,
