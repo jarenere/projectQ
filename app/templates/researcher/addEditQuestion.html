@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% from "_formHelpers.html" import render_field %}
+{% from "_formHelpers.html" import render_field2 %}
+{% from "_formHelpers.html" import render_field3 %}
 {% from "researcher/_renderQuestions.html" import renderQuestions %}
 
 {% block content %}
+
+
  <legend>
     <h1><a href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{survey.title}}</a></h1>
     <h3>Add Question!</h3>
@@ -26,36 +30,48 @@
         <div class="span10">
             <!--Body content-->
             <div class="well">
-                <form action="" method="post" name="question">
+                <form method="post" class="form-horizontal">
                     {{form.hidden_tag()}}
-                    <table>
-                    {{ render_field(form.text,rows = 10, style = 'width:100%') }}
-                    {{ render_field(form.required) }}
-                    {{ render_field(form.registerTime) }}
-                    {{ render_field(form.questionType) }}
-                    {{ render_field(form.isNumber) }}
-                    {{ render_field(form.regularExpression) }}
-                    {{ render_field(form.errorMessage) }}
-                    {{ render_field(form.expectedAnswer, placeholder='none if There isnt correct answer') }}
-                    {{ render_field(form.maxNumberAttempt) }}
-                    {{ render_field(form.minLikert) }}
-                    {{ render_field(form.maxLikert) }}
-                    {{ render_field(form.labelMinLikert,placeholder='label optional') }}
-                    {{ render_field(form.labelMaxLikert, placeholder='label optional') }}
-                    {{ render_field(form.numberFields) }}
-                    {{ render_field(form.answer1) }}
-                    {{ render_field(form.answer2) }}
-                    {{ render_field(form.answer3) }}
-                    {{ render_field(form.answer4) }}
-                    {{ render_field(form.answer5) }}
-                    {{ render_field(form.answer6) }}
-                    {{ render_field(form.answer7) }}
-                    {{ render_field(form.answer8) }}
-                    {{ render_field(form.answer9) }}
+                    <fieldset>
+                    {{ render_field3(form.text,rows = 10, style = 'width:100%') }}
+                    {{ render_field3(form.required) }}
+                    {{ render_field3(form.registerTime) }}
+                    {{ render_field3(form.questionType) }}
+                    <div id="divText">
+                        {{ render_field3(form.isNumber) }}
+                        {{ render_field3(form.regularExpression) }}
+                        {{ render_field3(form.errorMessage) }}
+                    </div>
+                        {{ render_field3(form.expectedAnswer, placeholder='none if There isnt correct answer') }}
+                        {{ render_field3(form.maxNumberAttempt) }}
+                    <div id="divLikert">
+                        {{ render_field3(form.minLikert) }}
+                        {{ render_field3(form.maxLikert) }}
+                        {{ render_field3(form.labelMinLikert,placeholder='label optional') }}
+                        {{ render_field3(form.labelMaxLikert, placeholder='label optional') }}
+                    </div>
+                    <div id="divChoices">
+                        {{ render_field3(form.numberFields) }}
+                    </div>
+                    <div id="divAnswer1">
+                        {{ render_field3(form.answer1) }}
+                    </div>
+                    <div id="divAnswer2">
+                        {{ render_field3(form.answer2) }}
+                    </div>
+                    <div id="divAnswers">
+                        {{ render_field3(form.answer3) }}
+                        {{ render_field3(form.answer4) }}
+                        {{ render_field3(form.answer5) }}
+                        {{ render_field3(form.answer6) }}
+                        {{ render_field3(form.answer7) }}
+                        {{ render_field3(form.answer8) }}
+                        {{ render_field3(form.answer9) }}
+                    </div>
                     <td></td>
                     <td><input class="btn" type="submit" value="Add Question">
                     </td>
-                    </table>
+                <fieldset>
                 </form>
             </div>
             {{ renderQuestions(questions, section, survey)}}
@@ -63,4 +79,58 @@
         </div>
     </div>
 </div>
+<script language="javascript">
+    window.onload = function() {
+        $("#divText").hide();
+        $("#divLikert").hide();
+        $("#divChoices").hide();
+        $("#divAnswer1").hide();
+        $("#divAnswer2").hide();
+        $("#divAnswers").hide();
+}
+</script>
+<script language="javascript">
+    var select = document.getElementById("questionType");
+    select.onchange = function() {
+    var selIndex = select.selectedIndex;
+    var selValue = select.options[selIndex].value;
+    //var selValue = document.getElementById("questionType").options[selIndex].value;
+    $("#divText").hide();
+    $("#divLikert").hide();
+    $("#divChoices").hide();
+    $("#divAnswer1").hide();
+    $("#divAnswer2").hide();
+    $("#divAnswers").hide();
+    if (selValue=="Text")
+    {
+        //document.getElementById("divAnswer").style.display="none";; 
+        $("#divText").show();
+    }
+    if (selValue=="Choice")
+    {
+        //document.getElementById("divAnswer").style.display="none";; 
+        $("#divChoices").show();
+        $("#divAnswer1").show();
+        $("#divAnswer2").show();
+        $("#divAnswers").show();
+
+    }
+    if (selValue=="likert")
+    {
+        //document.getElementById("divAnswer").style.display="none";; 
+        $("#divLikert").show();
+    }
+    if (selValue=="PartTwo")
+    {
+        //document.getElementById("divAnswer").style.display="none";; 
+        $("#divAnswer1").show();
+        $("#divAnswer2").show();
+    }
+    if (selValue=="DecisionFive")
+    {
+        //document.getElementById("divAnswer").style.display="none";; 
+        $("#divAnswer1").show();
+    }
+}
+</script>
 {% endblock %}
