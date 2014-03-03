@@ -53,7 +53,7 @@ class QuestionForm(Form):
     #:Expected Answer
     expectedAnswer = TextField('answer', validators = [Length(min = 0, max = 20)], 
         description='none if There isnt correct answer')
-    numberAttempt = IntegerField('Number of attempt', validators = [Optional()])
+    maxNumberAttempt = IntegerField('Number of attempt', validators = [Optional()])
 
     #: Number of fields in "choice question"
     numberFields = SelectField('number of fields in "choice question"',
