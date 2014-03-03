@@ -3,7 +3,13 @@ def borrarState():
     state = models.StateSurvey.query.all()
     for s in state:
         db.session.delete(s)
-        db.session.commit()
+    db.session.commit()
+
+def borrarRespeustas():
+    for ans in models.Answer.query.all():
+        db.session.delete(ans)
+    db.session.commit()
+    borrarState()
 
 def verAnswers():
     for ans in models.Answer.query.all():
