@@ -21,6 +21,8 @@ class SurveyForm(Form):
     description = PageDownField('Description',validators = [Length(min = 10, max = 1200)],default = EXAMPLE_MARKDOWN)
     startDate = DateTimeField('Day and start time', validators = [Optional()])
     endDate =DateTimeField('Day and finish time', validators = [Optional()])
+    maxNumberRespondents = IntegerField('Number of respondents', validators = [Optional()])
+
 #    submit = SubmitField('Register')
 
 

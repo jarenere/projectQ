@@ -1,31 +1,18 @@
 {% extends "base.html" %}
-{% from "_formHelpers.html" import render_field %}
+{% from "_formHelpers.html" import render_field3 %}
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
 <h1>New Survey</h1>
-<form action="" method="post" name="new">
+<form method="post" class="form-horizontal">
     {{form.hidden_tag()}}
-    <table>
-        <tr>
-            <td>
-                {{ render_field(form.title, size = 64) }}
-            <td>                
-        </tr>
-        <tr>
-            <td> {{ render_field(form.description,rows = 10, style = 'width:100%')}}</td>
-        </tr>
-        <tr>
-            <td> {{ render_field(form.startDate, size = 128,placeholder="%Y-%m-%d %H:%M:%S")}}</td>
-        </tr>
-        <tr>
-            <td> {{ render_field(form.endDate, size = 64,placeholder="%Y-%m-%d %H:%M:%S")}}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input class="btn" type="submit" value="Create Survey">
-            <a class="btn" href="{{ url_for('researcher.index')}}">{{ ('Cancel') }}</a> </td>
-        </tr>
-    </table>
+    {{ render_field3(form.title, size = 64) }}
+    {{ render_field3(form.description,rows = 10, style = 'width:100%')}}
+    {{ render_field3(form.startDate, size = 128,placeholder="%Y-%m-%d %H:%M:%S")}}
+    {{ render_field3(form.endDate, size = 64,placeholder="%Y-%m-%d %H:%M:%S")}}
+    {{ render_field3(form.maxNumberRespondents)}}
+
+    <input class="btn" type="submit" value="Create Survey">
+            <a class="btn" href="{{ url_for('researcher.index')}}">{{ ('Cancel') }}</a> 
 </form>
 {% endblock %}

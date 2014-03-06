@@ -31,7 +31,8 @@ def new():
         survey = Survey( title = form.title.data,
             description = form.description.data,
             endDate = form.endDate.data,
-            startDate = form.startDate.data)
+            startDate = form.startDate.data,
+            maxNumberRespondents = form.maxNumberRespondents.data)
         db.session.add(survey)
         db.session.commit()
         flash('Your survey have been saved.')
@@ -56,6 +57,7 @@ def editSurvey(id_survey):
         survey.description = form.description.data
         survey.startDate = form.startDate.data
         survey.endDate = form.endDate.data
+        survey.maxNumberRespondents = form.maxNumberRespondents.data
         db.session.add(survey)
         db.session.commit()
         flash('Your changes have been saved.')
@@ -64,37 +66,13 @@ def editSurvey(id_survey):
         form.description.data = survey.description
         form.startDate.data = survey.startDate
         form.endDate.data = survey.endDate
+        form.maxNumberRespondents.data = survey.maxNumberRespondents
     return render_template('/researcher/editSurvey.html',
         title = survey.title,
         form = form,
         survey = survey,
         sections = sections)
 
-
-@blueprint.route('/edit2/<int:id_survey>', methods = ['GET', 'POST'])
-#podrimamos definir la entrada como string del titulo+id:
-#ejempo: "esto-es-una-encuesta_123", seria mas legible..
-#@blueprint.route('/edit/tittle_<int:id>'
-def editSurvey2(id_survey):
-    #get survey
-    survey = Survey.query.get(id_survey)
-    #survey = Survey.query.filter(Survey.id == id)
-    sections = survey.sections.all()
-    form = EditSurveyForm()
-    if form.validate_on_submit():
-        survey.title = form.title.data
-        survey.description = form.description.data
-        db.session.add(survey)
-        db.session.commit()
-        flash('Your changes have been saved.')
-    elif request.method != "POST":
-        form.title.data = survey.title
-        form.description.data = survey.description
-    return render_template('/researcher/editSurvey2.html',
-        title = survey.title,
-        form = form,
-        survey = survey,
-        sections = sections)
 
 
 @blueprint.route('/survey/<int:id_survey>/consent/add', methods = ['GET', 'POST'])

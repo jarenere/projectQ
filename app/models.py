@@ -33,6 +33,8 @@ class Survey(db.Model):
     startDate = Column(DateTime, default = datetime.utcnow())
     #: DateTime finish survey
     endDate = Column(DateTime, default = datetime.utcnow())
+    #: max number of respondents, 0 is infinite
+    maxNumberRespondents = Column(Integer, default = 0)
     ## Relationships
     #: Survey have zero or more consents
     consents = relationship('Consent', backref = 'survey', lazy = 'dynamic')
@@ -173,6 +175,7 @@ class Question(db.Model):
     expectedAnswer = Column(String(20))
     #:number of attempt to answer a question with  expected Answer
     # zero is infinite attempt to get the right answer
+    numberAttempt = Column(Integer, default = 0)
     maxNumberAttempt = Column(Integer, default = 0)
     
     #: Type of question, discriminate between classes
