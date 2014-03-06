@@ -199,6 +199,8 @@ def showQuestions(id_survey, id_section):
                                 # form = form,
                                 form = form,
                                 questions = questions)
+                else:
+                    answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
 
                 db.session.add(answer)
                 db.session.commit()
