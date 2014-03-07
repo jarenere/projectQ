@@ -275,6 +275,10 @@ def fromXmlSection(root,survey,msg):
 
 
 def fromxmlsurvey():
+    '''
+    MIRAR LOS TIPOS DE DATOS NONETYPE Y NONE, CUANDO CREO EL RECORRIDO PETA POR ALGUNA SECCION NONETYPE EN VEZ DE VACIA
+    LINEA 702 CREO
+    '''
 
     root = ET.parse('output.xml')
     msg = []
