@@ -16,6 +16,10 @@ from sqlalchemy.engine import reflection
 from sqlalchemy import create_engine
 from sqlalchemy.orm.collections import attribute_mapped_collection
 
+from xml.etree import ElementTree
+from xml.etree.ElementTree import Element
+from xml.etree.ElementTree import SubElement
+import xml.etree.cElementTree as ET
 
 class Survey(db.Model):
     '''A table with Survey
@@ -44,6 +48,51 @@ class Survey(db.Model):
     stateSurveys = relationship('StateSurvey', backref = 'survey', lazy = 'dynamic')
 
 
+    def to_json(self):
+        json_survey = {
+            'title': self.title,
+            'description': self.description,
+            'created': self.created,
+            'startDate': self.startDate,
+            'endDate': self.endDate,
+            'maxNumberRespondents': self.maxNumberRespondents,
+            # 'consents': self.consents.to_json(),
+        }
+        return json_survey
+
+    def to_xml(self):
+        survey = Element('survey')
+        title = SubElement(survey,'title')
+        title.text = self.title
+
+        description = SubElement(survey,'description')
+        description.text = self.description
+        
+        startDate = SubElement(survey,'startDate')
+        startDate.text = str(self.startDate)
+
+        endDate = SubElement(survey,'endDate')
+        endDate.text = str(self.endDate)
+
+        maxNumberRespondents = SubElement(survey,'maxNumberRespondents')
+        maxNumberRespondents.text = str(self.maxNumberRespondents)
+
+
+
+        for consent in self.consents:
+            #SubElement (consents,consentXml(consent))
+            survey.append(consent.to_xml())
+
+
+        for section in self.sections:
+            survey.append(section.to_xml())
+
+        tree = ET.ElementTree(survey)
+        #tree = ET.ElementTree(consents)
+
+        return tree
+
+
 
 
 class Consent(db.Model):
@@ -56,6 +105,17 @@ class Consent(db.Model):
     text = Column(String, nullable = False)
     ## Relationships
     survey_id = Column(Integer, ForeignKey('survey.id'))
+
+    def to_json(self):
+        json_survey = {
+            'text': self.text,
+        }
+        return json_survey
+
+    def to_xml(self):
+        consent = Element('consent')
+        consent.text = self.text
+        return consent
 
 class Section(db.Model):
     '''A table with sections of a Survey
@@ -111,6 +171,31 @@ class Section(db.Model):
     # def __init__(self, title, parent=None):
     #     self.title = title
     #     self.parent = parent
+
+
+    def to_xml(self):
+        section = Element('section')
+        title = SubElement(section,'title')
+        title.text = self.title
+        
+        description = SubElement(section,'description')
+        description.text = self.description
+
+        sequence = SubElement(section,'sequence')
+        sequence.text = str(self.sequence)
+
+        percent = SubElement(section,'percent')
+        percent.text = str(self.percent)
+
+        for question in self.questions:
+             section.append(question.to_xml())
+
+
+        for children in self.children:
+            section.append(children.to_xml())
+
+        return section
+
     @staticmethod
     def sequenceSections(sections):
         '''Sections: are order by sequence
@@ -193,6 +278,56 @@ class Question(db.Model):
         '''return if there is a expected answer
         '''
         return len(self.expectedAnswer)>0
+
+    def to_xml(self):
+        question = Element('question')
+
+        type = SubElement(question,'type')
+        type.text = self.type
+
+        text1 = SubElement(question,'text')
+        text1.text = self.text
+
+        required = SubElement(question,'required')
+        required.text = str(self.required)
+
+        if self.choices !=None:
+            for choice in self.choices:
+                c = SubElement(question,'choice')
+                c.text = choice
+
+
+        expectedAnswer = SubElement(question,'expectedAnswer')
+        expectedAnswer.text = self.expectedAnswer
+
+        maxNumberAttempt = SubElement(question,'maxNumberAttempt')
+        maxNumberAttempt.text = self.maxNumberAttempt
+
+        if isinstance (self, QuestionText):
+            isNumber = SubElement(question,'isNumber')
+            isNumber.text = str(self.isNumber)
+
+            regularExpression = SubElement(question,'regularExpression')
+            regularExpression.text = regularExpression.text
+
+            errorMessage = SubElement(question,'errorMessage')
+            errorMessage.text = self.errorMessage
+
+        if isinstance (self, QuestionLikertScale):
+
+            minLikert = SubElement(question,'minLikert')
+            minLikert.text = str(self.minLikert)
+
+            maxLikert = SubElement(question,'maxLikert')
+            maxLikert.text = str(self.maxLikert)
+
+            labelMin = SubElement(question,'labelMin')
+            labelMin.text = self.labelMin
+
+            labelMax = SubElement(question,'labelMax')
+            labelMax.text = self.labelMax
+
+        return question
 
 class QuestionYN(Question):
     '''Question of type yes or no
@@ -289,6 +424,12 @@ class QuestionDecisionSix(Question):
     '''Question to part three, decision six, addoc
     '''
     __mapper_args__ = {'polymorphic_identity': 'decisionSix'}
+
+
+
+
+    
+
 
 
 class Match(db.Model):
