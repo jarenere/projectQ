@@ -41,9 +41,13 @@ class Survey(db.Model):
     maxNumberRespondents = Column(Integer, default = 0)
     ## Relationships
     #: Survey have zero or more consents
-    consents = relationship('Consent', backref = 'survey', lazy = 'dynamic')
+    consents = relationship('Consent',
+        cascade="all, delete-orphan",
+        backref = 'survey', lazy = 'dynamic')
     #: Survey have zero or more sections 
-    sections = relationship('Section', backref = 'survey', lazy = 'dynamic')
+    sections = relationship('Section', 
+        cascade="all, delete-orphan",
+        backref = 'survey', lazy = 'dynamic')
     #: Survey have zero or more stateSurvey 
     stateSurveys = relationship('StateSurvey', backref = 'survey', lazy = 'dynamic')
 
@@ -61,6 +65,9 @@ class Survey(db.Model):
         return json_survey
 
     def to_xml(self):
+        '''write file:
+        tree.write("output.xml",encoding="ISO-8859-1", method="xml")
+        '''
         survey = Element('survey')
         title = SubElement(survey,'title')
         title.text = self.title

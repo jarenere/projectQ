@@ -37,6 +37,8 @@
                         <input class="btn" type="submit" value="Save changes">
                         <a class="btn" href="{{ url_for('researcher.addConsent',id_survey = survey.id) }}">{{ ('View/Add consents') }}</a>
                         <a class="btn" href="{{ url_for('researcher.addSection',id_survey = survey.id) }}">{{ ('Add section') }}</a>
+                        <a class="btn" href="{{ url_for('researcher.deleteSurvey',id_survey = survey.id) }}">{{ ('Delete survey') }}</a>
+
                     </div>
                 </form>
             </div>

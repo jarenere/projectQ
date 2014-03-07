@@ -31,7 +31,7 @@ def new():
         survey = Survey( title = form.title.data,
             description = form.description.data,
             endDate = form.endDate.data,
-            startDate = form.startDate.data,
+            startDate = None,
             maxNumberRespondents = form.maxNumberRespondents.data)
         db.session.add(survey)
         db.session.commit()
@@ -72,6 +72,22 @@ def editSurvey(id_survey):
         form = form,
         survey = survey,
         sections = sections)
+
+@blueprint.route('/survey/deleteSurvey/<int:id_survey>')
+def deleteSurvey(id_survey):
+        #
+        #CUANDO TENGA SUBSECCIONES Y ENCUESTAR, EL ELIMINAR NO ES TRIVIAL
+        #
+    survey = Survey.query.get(id_survey)
+    if survey != None:
+        #el consentimiento pertence a esa encuesta
+        db.session.delete(survey)
+        db.session.commit()
+        flash('Survey removed')
+        return redirect(url_for('researcher.index'))
+    else:
+        flash('Survey wrong') 
+        return redirect(url_for('researcher.index'))
 
 
 
