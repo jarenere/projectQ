@@ -3,7 +3,10 @@ from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
 import xml.etree.cElementTree as ET
 from app import db, models
-from app.models import Section, Survey, Consent, Question, QuestionText, QuestionLikertScale
+from app.models import Section, Survey, Consent, Question, QuestionText, QuestionLikertScale,\
+    QuestionYN, QuestionNumerical, QuestionChoice, QuestionPartTwo, QuestionDecisionOne, \
+    QuestionDecisionThree, QuestionDecisionThree, QuestionDecisionFour, QuestionDecisionFive, \
+    QuestionDecisionTwo, QuestionDecisionSix
 
 def surveyXml(surveyData):
     survey = Element('survey')
@@ -116,3 +119,214 @@ def questionXml(questionData):
         labelMax.text = questionData.labelMax
 
     return question
+
+
+def verSurvey(survey):
+    print "title",survey.title
+    print "description", survey.description
+    print "startDate", survey.startDate
+    print "endDate", survey.endDate
+    print "maxNumberRespondents", survey.maxNumberRespondents
+
+
+def findField(str, root, msg = None):
+    try:
+        field=root.find(str).text
+        if field == "None":
+            #WTF!! return str "None" instead of NoneType
+            return None
+        return field
+    except:
+        if msg !=None :
+            msg.append(str + " not found")
+        return None
+
+def fromXmlQuestion(root,section,msg):
+    text = findField('text',root,msg)
+    required = (findField('required',root,msg) ==True)
+
+    #CHOICES = findField('sequence',root,msg)
+    l=[]
+    for choice in root.findall('choice'):
+        l.append(choice.text)
+
+    expectedAnswer = findField('expectedAnswer',root,msg)
+    maxNumberAttempt = findField('maxNumberAttempt',root,msg)
+    kind = findField('type',root,msg)
+    
+    if kind == 'yn':
+        question = QuestionYN()
+    
+    elif kind == 'numerical':
+        question = QuestionNumerical()
+
+    elif kind == 'text':
+        isNumber = (findField('isNumber',root,msg)==True)
+        regularExpression = findField('regularExpression',root,msg)
+        errorMessage = findField('errorMessage',root,msg)
+        question = QuestionText(isNumber=isNumber,
+            regularExpression=regularExpression,
+            errorMessage=errorMessage)
+
+    elif kind == 'choice':
+        question = QuestionChoice()
+
+    elif kind == 'likertScale':
+        minLikert = findField('minLikert',root,msg)
+        maxLikert = findField('maxLikert',root,msg)
+        labelMin = findField('labelMin',root,msg)
+        labelMax = findField('labelMax',root,msg)
+        question = QuestionLikertScale(minLikert=minLikert,
+            maxLikert=maxLikert,
+            labelMin=labelMin,
+            labelMax=labelMax)
+
+
+    elif kind == 'partTwo':
+        question = QuestionPartTwo()
+
+    elif kind == 'decisionOne':
+        question = QuestionDecisionOne()
+
+
+    elif kind == 'decisionTwo':
+        question = QuestionDecisionTwo()
+
+    elif kind == 'decisionThree':
+        question = QuestionDecisionThree()
+
+    elif kind == 'decisionFour':
+        question = QuestionDecisionFour()
+
+    elif kind == 'decisionFive':
+        question = QuestionDecisionFive()
+    elif kind == 'decisionSix':
+        question = QuestionDecisionSix()
+    else:
+        print "MIERDA, typo:", kind
+        print "mierta texto: ", text
+        return False
+
+    question.text = text
+    question.required = required
+    question.expectedAnswer = expectedAnswer
+    question.maxNumberAttempt = maxNumberAttempt
+    question.choices = l
+    question.section = section
+    question.registerTime = False
+    
+    db.session.add(question)
+
+
+
+
+
+
+
+
+def fromXmlSubSection(root,parent,msg):
+
+    title = findField('title',root,msg)
+    description = findField('description',root,msg)
+    sequence = findField('sequence',root,msg)
+    percent = findField('percent',root,msg)
+
+    section = models.Section(title = title,
+        description = description,
+        sequence = sequence,
+        percent = percent,
+        parent = parent
+        )
+    db.session.add(section)
+
+    for q in root.findall('question'):
+        fromXmlQuestion(q, section, msg)
+
+    for s in root.findall('section'):
+        fromXmlSubSection(s,section,msg)
+
+
+
+
+
+def fromXmlSection(root,survey,msg):
+    title = findField('title',root,msg)
+    description = findField('description',root,msg)
+    sequence = findField('sequence',root,msg)
+    percent = findField('percent',root,msg)
+
+    section = models.Section(title = title,
+        description = description,
+        sequence = sequence,
+        percent = percent,
+        survey = survey
+        )
+    db.session.add(section)
+
+    for q in root.findall('question'):
+        fromXmlQuestion(q, section, msg)
+
+    for s in root.findall('section'):
+        fromXmlSubSection(s,section,msg)
+
+
+
+
+
+
+def fromxmlsurvey():
+
+    root = ET.parse('output.xml')
+    msg = []
+
+    title = findField('title',root,msg)
+    description = findField('description',root,msg)
+    startDate = findField('startDate',root,msg)
+    endDate = findField('endDate',root,msg)
+    maxNumberRespondents = findField('maxNumberRespondents',root,msg)
+    # print "startDate: ", type(startDate), "v/F:", startDate ==None
+
+    # print "startDate2: ", startDate2, "v/F:", startDate2 ==None
+
+    # print "startDate3: ", startDate2, "v/F:", startDate == startDate2
+
+    # print "startDate4: ", startDate2, "v/F:", startDate == "None"
+
+
+
+    survey = models.Survey(title = title, description = description,
+        startDate = startDate, endDate = endDate,
+        maxNumberRespondents = maxNumberRespondents)
+
+
+    # print ("SURVEY:")
+    # verSurvey(survey)
+
+
+    db.session.add(survey)
+
+
+    for co in root.findall('consent'):
+        consent = models.Consent(text = co.text, 
+            survey = survey)
+        db.session.add(consent)
+
+    for section in root.findall('section'):
+        fromXmlSection(section,survey,msg)
+
+    db.session.commit()
+    # try:
+    #     db.session.commit()
+    # except :
+    #     print "MIERDAAAAA"
+    #     db.session.rollback()
+
+
+
+
+
+    
+    print ("ERRORES:")
+    for m in msg:
+        print m
+
