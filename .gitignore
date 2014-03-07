@@ -7,3 +7,4 @@ tmp/
 tareas.tsk.lock*
 tareas.tsk
 dudas
+*.xml
