@@ -20,3 +20,4 @@
 []models nextSection pasa algo raro raro raro con una consulata que devuelve vacia...
 []eliminar survey/seccion/question error si hay alguna respuesta (eliminacion en cascada y bueno no pienso
     dejar que se eliminen encuestas ya con resultados)
+[]Cuando importas o creas una encuesta si no hay fecha, se pone la de ahora en inicio y fin de la encuesta
