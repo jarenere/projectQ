@@ -18,7 +18,7 @@ listQuestionType = [('YES/NO', 'YES/NO'),('Numerical','Numerical'),
 
 class SurveyForm(Form):
     title = TextField('Title', validators = [Length(min = 1, max = 128)])
-    description = PageDownField('Description',validators = [Length(min = 10, max = 1200)],default = EXAMPLE_MARKDOWN)
+    description = PageDownField('Description',validators = [Length(min = 0, max = 1200)],default = EXAMPLE_MARKDOWN)
     startDate = DateTimeField('Day and start time', validators = [Optional()])
     endDate =DateTimeField('Day and finish time', validators = [Optional()])
     maxNumberRespondents = IntegerField('Number of respondents', validators = [Optional()])
