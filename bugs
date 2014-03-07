@@ -18,3 +18,5 @@
 []Calcular el tiempo tiene bug, si se falla el formulario (formulario mas contestado),se reinicia el tiempo
 []Solo muestra un consentimiento si lo hay
 []models nextSection pasa algo raro raro raro con una consulata que devuelve vacia...
+[]eliminar survey/seccion/question error si hay alguna respuesta (eliminacion en cascada y bueno no pienso
+    dejar que se eliminen encuestas ya con resultados)
