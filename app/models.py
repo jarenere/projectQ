@@ -699,7 +699,8 @@ class StateSurvey(db.Model):
         section = self.sequence[self.index]
         #section.questions.count always return 0, rare rare rare
         s = Section.query.get(section.id)
-        if ((len(section.description)==0) and (s.questions.count()==0)):
+        # if ((len(section.description)==0) and (s.questions.count()==0)):
+        if (section.description is None  or len(section.description)==0) and s.questions.count()==0:
             self.finishedSection()
             return self.nextSection()
         else:
