@@ -21,3 +21,4 @@
 []eliminar survey/seccion/question error si hay alguna respuesta (eliminacion en cascada y bueno no pienso
     dejar que se eliminen encuestas ya con resultados)
 []Cuando importas o creas una encuesta si no hay fecha, se pone la de ahora en inicio y fin de la encuesta
+[?]Bug en stateSurvey (nextSection) cuando un campo esta vacio, ahora lo checkeo, aunque estaria bien inicializr ese campo a "" en vez de vacio
