@@ -3,8 +3,7 @@
 from app import app, db, lm, oid
 from flask import render_template, flash, redirect, url_for, request, g, session
 from forms import PreguntaForm, TipoPreguntaForm, PreguntaSeleccionForm
-from models import Pregunta, PreguntaNumerica, PreguntaSeleccion, PreguntaTexto, PreguntaSN, User,\
-    ROLE_ADMIN, ROLE_RESEARCHER, ROLE_USER
+from models import  User, ROLE_ADMIN, ROLE_RESEARCHER, ROLE_USER
 #login
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from config import basedir
