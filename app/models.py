@@ -30,7 +30,7 @@ class Survey(db.Model):
     #: Tittle for this Survey
     title = Column(String(128), nullable = False)
     #: description for this Survey
-    description = Column(String(1200))
+    description = Column(String(1200), default="")
     #: created timestamp (automatically set)
     created = Column(DateTime, default = datetime.utcnow())
     #: DateTime init survey
@@ -133,7 +133,7 @@ class Section(db.Model):
     #: Tittle for this section
     title = Column(String(128), nullable = False)
     #: description for this section
-    description = Column(String)
+    description = Column(String, default="")
     #: sequence of the section
     #If two or more sections of the same survey with the same sequence, 
     # is chosen at random which is done first
@@ -264,7 +264,7 @@ class Question(db.Model):
     #: If there is a expected answer
     #expectedAnswer = Column(Boolean, default = False)
     #:expected answer
-    expectedAnswer = Column(String(20))
+    expectedAnswer = Column(String(20), default="")
     #:number of attempt to answer a question with  expected Answer
     # zero is infinite attempt to get the right answer
     maxNumberAttempt = Column(Integer, default = 0)
@@ -272,8 +272,6 @@ class Question(db.Model):
     #: Type of question, discriminate between classes
     type = Column(String(20))
     __mapper_args__ = {'polymorphic_on': type}
-    #: type2, two implementation, no classes
-    type2 = Column(String(20))
     ## Relationships
     #: Question belong to one section
     section_id = Column(Integer, ForeignKey('section.id'))
@@ -352,9 +350,9 @@ class QuestionText(Question):
     '''
     __mapper_args__ = {'polymorphic_identity': 'text'}
     isNumber = Column(Boolean, default=False)
-    regularExpression = Column (String(256)) 
+    regularExpression = Column (String(256), default="") 
     #text with the error if the user answer with wrong  regular expression
-    errorMessage = Column (String(256)) 
+    errorMessage = Column (String(256), default="") 
 
 class QuestionChoice(Question):
     '''Question of type choice
@@ -372,8 +370,8 @@ class QuestionLikertScale(Question):
     __mapper_args__ = {'polymorphic_identity': 'likertScale'}
     minLikert = Column(Integer)
     maxLikert = Column(Integer)
-    labelMin = Column(String(128))
-    labelMax = Column(String(128))
+    labelMin = Column(String(128), default="")
+    labelMax = Column(String(128), default="")
 
 
 
