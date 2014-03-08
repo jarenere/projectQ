@@ -267,7 +267,6 @@ class Question(db.Model):
     expectedAnswer = Column(String(20))
     #:number of attempt to answer a question with  expected Answer
     # zero is infinite attempt to get the right answer
-    numberAttempt = Column(Integer, default = 0)
     maxNumberAttempt = Column(Integer, default = 0)
     
     #: Type of question, discriminate between classes
