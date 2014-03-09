@@ -21,4 +21,8 @@
 []eliminar survey/seccion/question error si hay alguna respuesta (eliminacion en cascada y bueno no pienso
     dejar que se eliminen encuestas ya con resultados)
 []Cuando importas o creas una encuesta si no hay fecha, se pone la de ahora en inicio y fin de la encuesta
-[?]Bug en stateSurvey (nextSection) cuando un campo esta vacio, ahora lo checkeo, aunque estaria bien inicializr ese campo a "" en vez de vacio
+[X]Bug en stateSurvey (nextSection) cuando un campo esta vacio, ahora lo checkeo, aunque estaria bien inicializr ese campo a "" en vez de vacio,, dia 8-Marzo, ya se ha añadido "" en los campos vacios para problema encuestas importadas desde xml
+[X]bug raro cuando importas encuesntas con las preguntas de tipo texto. Resuelto, problema era con typos vacios y expresiones regulares que intentaba validar y fallaba
+[]mirar codigo xml genrado para las fechas
+[]cuidado con el xml de las fechas para importarlo, tambien deberia comprobar la longitud de las entradas...
+[]cuando importo un xml no hace falta que los datos esten completos http://localhost:5000/researcher/survey/new
