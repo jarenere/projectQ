@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, request, url_for, flash, redirect, abort
+from flask import Blueprint, request, url_for, flash, redirect, abort, send_file
 from flask import render_template
 from forms import SurveyForm, EditConsentForm, SectionForm, QuestionForm
 from app.models import Survey, Consent, Section
@@ -11,6 +11,8 @@ from app.models import QuestionYN, QuestionLikertScale, QuestionPartTwo, Questio
 from app import app, db
 from app.decorators import researcher_required
 from flask.ext.login import login_user, logout_user, current_user, login_required
+import tempfile
+
 
 blueprint = Blueprint('researcher', __name__)
 
@@ -85,6 +87,24 @@ def deleteSurvey(id_survey):
         db.session.commit()
         flash('Survey removed')
         return redirect(url_for('researcher.index'))
+    else:
+        flash('Survey wrong') 
+        return redirect(url_for('researcher.index'))
+
+@blueprint.route('/survey/exportSurvey/<int:id_survey>')
+def exportSurvey(id_survey):
+    '''http://stackoverflow.com/questions/14614756/how-can-i-generate-file-on-the-fly-and-delete-it-after-download
+        http://stackoverflow.com/questions/13344538/how-to-clean-up-temporary-file-used-with-send-file/
+    '''
+    survey = Survey.query.get(id_survey)
+    if survey != None:
+        #el consentimiento pertence a esa encuesta
+        xml = survey.to_xml()
+        tf = tempfile.NamedTemporaryFile()
+        xml.write(tf,encoding="ISO-8859-1", method="xml")
+        flash('Survey exported')
+        flash (tf.name)
+        return send_file(tf, as_attachment=True, attachment_filename=survey.title+'.xml')
     else:
         flash('Survey wrong') 
         return redirect(url_for('researcher.index'))

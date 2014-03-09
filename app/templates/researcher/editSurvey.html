@@ -38,6 +38,7 @@
                         <a class="btn" href="{{ url_for('researcher.addConsent',id_survey = survey.id) }}">{{ ('View/Add consents') }}</a>
                         <a class="btn" href="{{ url_for('researcher.addSection',id_survey = survey.id) }}">{{ ('Add section') }}</a>
                         <a class="btn" href="{{ url_for('researcher.deleteSurvey',id_survey = survey.id) }}">{{ ('Delete survey') }}</a>
+                        <a class="btn" href="{{ url_for('researcher.exportSurvey',id_survey = survey.id) }}">{{ ('Export survey') }}</a>
 
                     </div>
                 </form>
