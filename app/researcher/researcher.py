@@ -12,7 +12,7 @@ from app import app, db
 from app.decorators import researcher_required
 from flask.ext.login import login_user, logout_user, current_user, login_required
 import tempfile
-
+from werkzeug import secure_filename
 
 blueprint = Blueprint('researcher', __name__)
 
@@ -30,14 +30,29 @@ def index():
 def new():
     form = SurveyForm()
     if form.validate_on_submit():
-        survey = Survey( title = form.title.data,
-            description = form.description.data,
-            endDate = form.endDate.data,
-            startDate = None,
-            maxNumberRespondents = form.maxNumberRespondents.data)
-        db.session.add(survey)
-        db.session.commit()
-        flash('Your survey have been saved.')
+        # file = request.files['file']
+        # if file:
+        filename = secure_filename(form.surveyXml.data.filename)
+        if filename:
+            tf = tempfile.NamedTemporaryFile()
+            form.surveyXml.data.save(tf.name)
+            msg = Survey.from_xml(tf.name)
+            if len(msg)>0:
+                for m in msg:
+                    flash(m)
+                return redirect(url_for('researcher.new'))
+            else:
+                flash('Your survey have been saved.')
+                return redirect(url_for('researcher.index'))
+        else:
+            survey = Survey( title = form.title.data,
+                description = form.description.data,
+                endDate = form.endDate.data,
+                startDate = None,
+                maxNumberRespondents = form.maxNumberRespondents.data)
+            db.session.add(survey)
+            db.session.commit()
+            flash('Your survey have been saved.')
         return redirect(url_for('researcher.editSurvey',id_survey = survey.id))
     return render_template('/researcher/new.html',
         title = 'New survey',

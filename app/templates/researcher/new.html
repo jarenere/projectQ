@@ -4,14 +4,14 @@
 
 {% block content %}
 <h1>New Survey</h1>
-<form method="post" class="form-horizontal">
+<form method="POST" enctype="multipart/form-data" class="form-horizontal">
     {{form.hidden_tag()}}
     {{ render_field3(form.title, size = 64) }}
     {{ render_field3(form.description,rows = 10, style = 'width:100%')}}
     {{ render_field3(form.startDate, size = 128,placeholder="%Y-%m-%d %H:%M:%S")}}
     {{ render_field3(form.endDate, size = 64,placeholder="%Y-%m-%d %H:%M:%S")}}
     {{ render_field3(form.maxNumberRespondents)}}
-
+    {{ render_field3(form.surveyXml)}}
     <input class="btn" type="submit" value="Create Survey">
             <a class="btn" href="{{ url_for('researcher.index')}}">{{ ('Cancel') }}</a> 
 </form>

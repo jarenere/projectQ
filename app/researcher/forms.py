@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import TextField, BooleanField, RadioField, SelectField, IntegerField, TextAreaField, TextField, DecimalField, SubmitField, DateTimeField
+from wtforms import TextField, BooleanField, RadioField, SelectField, IntegerField, TextAreaField, TextField, DecimalField, SubmitField, DateTimeField, FileField
 from wtforms.validators import Required, Length, NumberRange, ValidationError, Optional
 from flask.ext.pagedown import PageDown
 from flask.ext.pagedown.fields import PageDownField
@@ -22,7 +22,7 @@ class SurveyForm(Form):
     startDate = DateTimeField('Day and start time', validators = [Optional()])
     endDate =DateTimeField('Day and finish time', validators = [Optional()])
     maxNumberRespondents = IntegerField('Number of respondents', validators = [Optional()])
-
+    surveyXml = FileField("File survey xml", validators = [Optional()])
 #    submit = SubmitField('Register')
 
 
