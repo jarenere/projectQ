@@ -37,6 +37,7 @@ def new():
             tf = tempfile.NamedTemporaryFile()
             form.surveyXml.data.save(tf.name)
             msg = Survey.from_xml(tf.name)
+            tf.close()
             if len(msg)>0:
                 for m in msg:
                     flash(m)
