@@ -21,6 +21,15 @@ from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
 import xml.etree.cElementTree as ET
 
+def findField(str, root, msg = None):
+    try:
+        field=root.find(str).text
+        return field
+    except:
+        if msg !=None :
+            msg.append(str + " not found")
+        return None
+
 class Survey(db.Model):
     '''A table with Survey
     '''
@@ -84,21 +93,50 @@ class Survey(db.Model):
         maxNumberRespondents = SubElement(survey,'maxNumberRespondents')
         maxNumberRespondents.text = str(self.maxNumberRespondents)
 
-
-
         for consent in self.consents:
-            #SubElement (consents,consentXml(consent))
             survey.append(consent.to_xml())
-
 
         for section in self.sections:
             survey.append(section.to_xml())
 
         tree = ET.ElementTree(survey)
-        #tree = ET.ElementTree(consents)
 
         return tree
 
+    @staticmethod
+    def from_xml(file):
+       # root = ET.parse('output.xml')
+        root = ET.parse(file)
+        msg = []
+        title = findField('title',root,msg)
+        description = findField('description',root,msg)
+        startDate = findField('startDate',root,msg)
+        endDate = findField('endDate',root,msg)
+        maxNumberRespondents = findField('maxNumberRespondents',root,msg)
+
+        survey = Survey(title = title, description = description,
+            startDate = startDate, endDate = endDate,
+            maxNumberRespondents = maxNumberRespondents)
+
+        db.session.add(survey)
+
+        for consent in root.findall('consent'):
+            Consent.from_xml(consent,survey)
+            
+
+        for section in root.findall('section'):
+            Section.from_xml(section,survey,msg)
+
+        try:
+            db.session.commit()
+        except :
+            print "file xml bad"
+            msg.append("file xml bad")
+            raise
+            db.session.rollback()
+        
+        for m in msg:
+            print m
 
 
 
@@ -123,6 +161,14 @@ class Consent(db.Model):
         consent = Element('consent')
         consent.text = self.text
         return consent
+
+    @staticmethod
+    def from_xml(cons,survey):
+        consent = Consent(text = cons.text, 
+            survey = survey)
+        db.session.add(consent)
+
+
 
 class Section(db.Model):
     '''A table with sections of a Survey
@@ -202,6 +248,50 @@ class Section(db.Model):
             section.append(children.to_xml())
 
         return section
+
+    @staticmethod
+    def __from_xml_subSection(root,parent,msg):
+
+        title = findField('title',root,msg)
+        description = findField('description',root,msg)
+        sequence = findField('sequence',root,msg)
+        percent = findField('percent',root,msg)
+
+        section = Section(title = title,
+            description = description,
+            sequence = sequence,
+            percent = percent,
+            parent = parent
+            )
+        db.session.add(section)
+
+        for q in root.findall('question'):
+            Question.from_xml(q, section, msg)
+
+        for s in root.findall('section'):
+            Section.__from_xml_subSection(s,section,msg)
+
+    @staticmethod
+    def from_xml(root,survey,msg):
+        title = findField('title',root,msg)
+        description = findField('description',root,msg)
+        sequence = findField('sequence',root,msg)
+        percent = findField('percent',root,msg)
+
+        section = Section(title = title,
+            description = description,
+            sequence = sequence,
+            percent = percent,
+            survey = survey
+            )
+        db.session.add(section)
+
+        for q in root.findall('question'):
+            Question.from_xml(q, section, msg)
+
+        for s in root.findall('section'):
+            Section.__from_xml_subSection(s,section,msg)
+
 
     @staticmethod
     def sequenceSections(sections):
@@ -332,6 +422,85 @@ class Question(db.Model):
             labelMax.text = self.labelMax
 
         return question
+    
+    @staticmethod
+    def from_xml(root,section,msg):
+        texto = findField('text',root,msg)
+        required = (findField('required',root,msg) =="True")
+
+        #CHOICES = findField('sequence',root,msg)
+        l=[]
+        for choice in root.findall('choice'):
+            l.append(choice.text)
+
+        expectedAnswer = findField('expectedAnswer',root,msg)
+        maxNumberAttempt = findField('maxNumberAttempt',root,msg)
+        type = findField('type',root,msg)
+        
+        if type == 'yn':
+            question = QuestionYN()
+        
+        elif type == 'numerical':
+            question = QuestionNumerical()
+
+        elif type == 'text':
+            isNumber = (findField('isNumber',root,msg)=="True")
+            regularExpression = findField('regularExpression',root,msg)
+            errorMessage = findField('errorMessage',root,msg)
+            question = QuestionText(isNumber=isNumber,
+                regularExpression=regularExpression,
+                errorMessage=errorMessage)
+
+        elif type == 'choice':
+            question = QuestionChoice()
+
+        elif type == 'likertScale':
+            minLikert = findField('minLikert',root,msg)
+            maxLikert = findField('maxLikert',root,msg)
+            labelMin = findField('labelMin',root,msg)
+            labelMax = findField('labelMax',root,msg)
+            question = QuestionLikertScale(minLikert=minLikert,
+                maxLikert=maxLikert,
+                labelMin=labelMin,
+                labelMax=labelMax)
+
+
+        elif type == 'partTwo':
+            question = QuestionPartTwo()
+
+        elif type == 'decisionOne':
+            question = QuestionDecisionOne()
+
+
+        elif type == 'decisionTwo':
+            question = QuestionDecisionTwo()
+
+        elif type == 'decisionThree':
+            question = QuestionDecisionThree()
+
+        elif type == 'decisionFour':
+            question = QuestionDecisionFour()
+
+        elif type == 'decisionFive':
+            question = QuestionDecisionFive()
+        elif type == 'decisionSix':
+            question = QuestionDecisionSix()
+        else:
+            print "MIERDA, typo:", type
+            print "mierta texto: ", text
+            return False
+
+        question.text = texto
+        question.required = required
+        question.expectedAnswer = expectedAnswer
+        question.maxNumberAttempt = maxNumberAttempt
+        question.choices = l
+        question.section = section
+        question.registerTime = False
+        
+        db.session.add(question)
+
+
 
 class QuestionYN(Question):
     '''Question of type yes or no
