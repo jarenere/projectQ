@@ -129,12 +129,21 @@ def verSurvey(survey):
     print "maxNumberRespondents", survey.maxNumberRespondents
 
 
+# def findField(str, root, msg = None):
+#     try:
+#         field=root.find(str).text
+#         if field == "None":
+#             #WTF!! return str "None" instead of NoneType
+#             return None
+#         return field
+#     except:
+#         if msg !=None :
+#             msg.append(str + " not found")
+#         return None
+
 def findField(str, root, msg = None):
     try:
         field=root.find(str).text
-        if field == "None":
-            #WTF!! return str "None" instead of NoneType
-            return None
         return field
     except:
         if msg !=None :
@@ -143,7 +152,7 @@ def findField(str, root, msg = None):
 
 def fromXmlQuestion(root,section,msg):
     text = findField('text',root,msg)
-    required = (findField('required',root,msg) ==True)
+    required = (findField('required',root,msg) =="True")
 
     #CHOICES = findField('sequence',root,msg)
     l=[]
@@ -152,26 +161,26 @@ def fromXmlQuestion(root,section,msg):
 
     expectedAnswer = findField('expectedAnswer',root,msg)
     maxNumberAttempt = findField('maxNumberAttempt',root,msg)
-    kind = findField('type',root,msg)
+    type = findField('type',root,msg)
     
-    if kind == 'yn':
+    if type == 'yn':
         question = QuestionYN()
     
-    elif kind == 'numerical':
+    elif type == 'numerical':
         question = QuestionNumerical()
 
-    elif kind == 'text':
-        isNumber = (findField('isNumber',root,msg)==True)
+    elif type == 'text':
+        isNumber = (findField('isNumber',root,msg)=="True")
         regularExpression = findField('regularExpression',root,msg)
         errorMessage = findField('errorMessage',root,msg)
         question = QuestionText(isNumber=isNumber,
             regularExpression=regularExpression,
             errorMessage=errorMessage)
 
-    elif kind == 'choice':
+    elif type == 'choice':
         question = QuestionChoice()
 
-    elif kind == 'likertScale':
+    elif type == 'likertScale':
         minLikert = findField('minLikert',root,msg)
         maxLikert = findField('maxLikert',root,msg)
         labelMin = findField('labelMin',root,msg)
@@ -182,28 +191,28 @@ def fromXmlQuestion(root,section,msg):
             labelMax=labelMax)
 
 
-    elif kind == 'partTwo':
+    elif type == 'partTwo':
         question = QuestionPartTwo()
 
-    elif kind == 'decisionOne':
+    elif type == 'decisionOne':
         question = QuestionDecisionOne()
 
 
-    elif kind == 'decisionTwo':
+    elif type == 'decisionTwo':
         question = QuestionDecisionTwo()
 
-    elif kind == 'decisionThree':
+    elif type == 'decisionThree':
         question = QuestionDecisionThree()
 
-    elif kind == 'decisionFour':
+    elif type == 'decisionFour':
         question = QuestionDecisionFour()
 
-    elif kind == 'decisionFive':
+    elif type == 'decisionFive':
         question = QuestionDecisionFive()
-    elif kind == 'decisionSix':
+    elif type == 'decisionSix':
         question = QuestionDecisionSix()
     else:
-        print "MIERDA, typo:", kind
+        print "MIERDA, typo:", type
         print "mierta texto: ", text
         return False
 
@@ -269,7 +278,10 @@ def fromXmlSection(root,survey,msg):
     for s in root.findall('section'):
         fromXmlSubSection(s,section,msg)
 
-
+def fromXmlConsent(cons, survey):
+    consent = models.Consent(text = cons.text, 
+            survey = survey)
+    db.session.add(consent)
 
 
 
@@ -314,6 +326,9 @@ def fromxmlsurvey():
         consent = models.Consent(text = co.text, 
             survey = survey)
         db.session.add(consent)
+
+    for co in root.findall('consent'):
+        fromXmlConsent(consent,survey)
 
     for section in root.findall('section'):
         fromXmlSection(section,survey,msg)
