@@ -138,6 +138,8 @@ class Survey(db.Model):
         for m in msg:
             print m
 
+        return msg
+
 
 
 class Consent(db.Model):
