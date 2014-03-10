@@ -62,7 +62,7 @@ def logicSurvey(id_survey):
     '''
     Function that decides which is the next step in the survey
     '''
-    stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
+    stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user,request.remote_addr)
     if (stateSurvey.consented == False):
         return redirect(url_for('account.showConsent', id_survey = id_survey))
     section = stateSurvey.nextSection()
@@ -279,10 +279,6 @@ def showQuestions(id_survey, id_section):
         return redirect(url_for('account.logicSurvey',id_survey = id_survey))
 
     stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
-    flash (stateSurvey.percentSurvey() )
-    flash ( stateSurvey.index)
-    flash(len(stateSurvey.sequence))
-
 
     return render_template('/account/showQuestions.html',
             title = survey.title,

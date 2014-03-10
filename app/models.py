@@ -913,7 +913,7 @@ class StateSurvey(db.Model):
         db.session.commit()
 
     @staticmethod
-    def getStateSurvey(id_survey, user):
+    def getStateSurvey(id_survey, user, ip = ""):
         stateSurvey = StateSurvey.query.filter(StateSurvey.survey_id == id_survey, 
             StateSurvey.user_id == user.id).first()
         if stateSurvey is None:
@@ -922,7 +922,7 @@ class StateSurvey(db.Model):
             list = Section.sequenceSections(sections)
 
             stateSurvey = StateSurvey(survey = Survey.query.get(id_survey),
-                            user = user, sequence =list)
+                            user = user, sequence =list, ip = ip)
             db.session.add(stateSurvey)
             db.session.commit()  
         return stateSurvey
