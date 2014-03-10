@@ -803,7 +803,11 @@ class Answer(db.Model):
     answerYN = Column(Boolean)
     #:numberAttemp do in a question with expected answer
     numberAttempt = Column(Integer, default = 1)
-    ## Relationships
+    #:time since start section until you respond to the question, in milliseconds
+    globalTime = Column(Integer, default = 0)
+    #:time while since you answered the previous question, in milliseconds
+    differentialTime = Column(Integer, default = 0)
+    ## Relationships 
     #answer belong a user
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     #answer belong a question

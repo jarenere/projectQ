@@ -5,6 +5,7 @@
 {% block content %}
 {% from "_formHelpers.html" import render_field %}
 {% from "_formHelpers.html" import render_field2 %}
+{% from "_formHelpers.html" import render_field3 %}
 
 <script language="javascript">
     function timestamp(){
@@ -17,6 +18,7 @@
 <script language="javascript">
     window.onload = function() {
         t_ini = Date.now();
+        t_diff = t_ini;
 }
 </script>
 
@@ -31,6 +33,15 @@
                     {% set i= "c"'%s' % question.id %}
                     {{render_field2(form[i])}}
             </td></table>
+            <script language="javascript">
+                var select{{i}} = document.getElementById("{{i}}");
+                select{{i}}.onchange = function() {
+                    var t_fin = Date.now();
+                    document.getElementById("globalTime{{i}}").value = t_fin - t_ini;
+                    document.getElementById("differentialTime{{i}}").value = t_fin - t_diff;
+                    t_diff = t_fin;
+                }
+            </script>
             {% endfor %}
 
             <div class="control-group">
