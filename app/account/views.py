@@ -275,7 +275,7 @@ def showQuestions(id_survey, id_section):
 
 
         stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
-        stateSurvey.finishedSection()
+        stateSurvey.finishedSection(form.time.data)
         return redirect(url_for('account.logicSurvey',id_survey = id_survey))
 
     stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
