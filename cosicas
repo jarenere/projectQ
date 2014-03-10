@@ -4,6 +4,8 @@ IDEAS
 ------
 cuando se carga un xml, estaria bien que devolviera el survey para poder ir a esa encuesta
 
+tal vez mejor crear una tabla con la tupla section tiempo en vez de un pickleType
+
 para aleatoriazar subconjuntos: si misma sequencia y flag aleatorio, ejemplo:
 seccion 1, sequencia 1, aleatorio si
 secion 2 sequencia 2, aleatorio si
