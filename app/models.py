@@ -298,7 +298,7 @@ class Section(db.Model):
     @staticmethod
     def sequenceSections(sections):
         '''Sections: are order by sequence
-        generates the order in which sections are traversed
+        generates the order in which sections are traversed, only return de id of sections
         '''
         iMin = 0
         lAux = []
@@ -333,7 +333,11 @@ class Section(db.Model):
 
         #ya tenemos los "padres" ordenados aleatoriamente, ahora toca los hijos
         for section in lAux:
-            l2Aux.append(section)
+            # l2Aux.append(section)
+            # Si la seccion no es vacia sin descripcion o preguntas, metemos la id de la seccion
+            if not((section.description is None  or len(section.description)==0)
+                 and section.questions.count()==0):
+                l2Aux.append(section.id)
             l2Aux.extend(Section.sequenceSections(Section.query.filter(
                 Section.parent_id==section.id).order_by(Section.sequence)))
         return l2Aux
@@ -873,19 +877,15 @@ class StateSurvey(db.Model):
 
         if self.index>=len(self.sequence):
             return None
-        section = self.sequence[self.index]
-        #section.questions.count always return 0, rare rare rare
-        s = Section.query.get(section.id)
+        section = Section.query.get(self.sequence[self.index])
         # if ((len(section.description)==0) and (s.questions.count()==0)):
-        if (section.description is None  or len(section.description)==0) and s.questions.count()==0:
-            self.finishedSection()
-            return self.nextSection()
-        else:
-            print s.questions
-            print "___________________"
-            print section.questions
-            return section
-
+        #comprobacion hecha al generar el arbol
+        # if (section.description is None  or len(section.description)==0) and section.questions.count()==0:
+        #     self.finishedSection()
+        #     return self.nextSection()
+        # else:
+        #     return section
+        return section
 
     def isFinished(self):
         '''return there isn't more sections to do
@@ -906,29 +906,11 @@ class StateSurvey(db.Model):
             StateSurvey.user_id == user.id).first()
         if stateSurvey is None:
             #generamos arbol
-            ss = Section.query.filter(Section.survey_id == id_survey).order_by(Section.sequence)
-            list = Section.sequenceSections(ss)
+            sections = Section.query.filter(Section.survey_id == id_survey).order_by(Section.sequence)
+            list = Section.sequenceSections(sections)
 
             stateSurvey = StateSurvey(survey = Survey.query.get(id_survey),
-            user = user, sequence =list)
+                            user = user, sequence =list)
             db.session.add(stateSurvey)
             db.session.commit()  
         return stateSurvey
-
-
-
-
-# class Question(db.Model):
-#     #Clase Question
-#     id = db.Column(db.Integer, primary_key = True)
-#     text = db.Column(db.String(400))
-
-#     def __repr__(self):
-#         return '<Question %r>' % (self.id)
-
-# class QuestionNumber(Question):
-#     #Pregunta de tipo numero
-#     number = db.Column(db.Integer)
-
-#     def __repr__(self):
-#         return '<Question_numeber %r>' % (self.id)
