@@ -278,6 +278,11 @@ def showQuestions(id_survey, id_section):
         stateSurvey.finishedSection()
         return redirect(url_for('account.logicSurvey',id_survey = id_survey))
 
+    stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
+    flash (stateSurvey.percentSurvey() )
+    flash ( stateSurvey.index)
+    flash(len(stateSurvey.sequence))
+
 
     return render_template('/account/showQuestions.html',
             title = survey.title,
@@ -285,7 +290,9 @@ def showQuestions(id_survey, id_section):
             section = section,
             # form = form,
             form = form,
-            questions = questions)
+            questions = questions,
+            percent = stateSurvey.percentSurvey()
+            )
 
 
 

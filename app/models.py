@@ -858,6 +858,11 @@ class StateSurvey(db.Model):
     #stateSurvey belong a survey
     survey_id = Column(Integer, ForeignKey('survey.id'), nullable=False)
     
+    def percentSurvey(self):
+        '''returns the percentage done of the survey
+        '''
+        return round(100*self.index/len(self.sequence))
+
     def nextSection(self):
         '''Return next Section to do
         '''
