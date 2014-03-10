@@ -1,0 +1,13 @@
+TAREAS
+leyenda:
+/ a medias
+X hecho
+[X]calcular tiempo de cada pregunta
+[]guardar el tiempo de cada seccion!
+[]barra de progreso
+[]obtener ip
+[]evitar que conteste mas tarde
+[]fecha de inicio y fin de la encuesta
+[]implementar usarios para la pate de investidadores
+[/]limitar el numero maximo de participantes (falta parte del usuario, en la bbdd e investigador hecho)
+[] limpiar un poco el codigo cuando se responden questiones, por ejemplo la p arte de time se podria sacar, solo hacer un commit al final ..., parte de comprobacion de si la respuesta es correcta debería ir en el modelo

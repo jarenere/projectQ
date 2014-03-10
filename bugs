@@ -26,3 +26,4 @@
 []mirar codigo xml genrado para las fechas
 []cuidado con el xml de las fechas para importarlo, tambien deberia comprobar la longitud de las entradas...
 []cuando importo un xml no hace falta que los datos esten completos http://localhost:5000/researcher/survey/new
+[]tiempo no sera bueno si se falla en la validación, tal vez el tiempo global medirlo en python aunque puede haber bastante delay dependiendo de la conexión, otra es implementar wtf-javascript para validar datos via javascript
