@@ -848,6 +848,10 @@ class StateSurvey(db.Model):
     id = Column(Integer, primary_key = True)
     #: created timestamp (automatically set)
     created = Column(DateTime, default = datetime.utcnow())
+    #: time when finish the survey
+    endDate = Column(DateTime)
+    #: ip of user, ipv6, 8 block of FFFF, 8*5-1
+    ip = Column(String(40))
     #: Consent accept or not
     consented = Column(Boolean, default=False)
     #: finished or not
@@ -876,6 +880,10 @@ class StateSurvey(db.Model):
         #     return self.sequence[self.index]
 
         if self.index>=len(self.sequence):
+            if self.endDate is None:
+                self.endDate = datetime.utcnow()
+                db.session.add(self)
+                db.session.commit()
             return None
         section = Section.query.get(self.sequence[self.index])
         # if ((len(section.description)==0) and (s.questions.count()==0)):
@@ -890,6 +898,10 @@ class StateSurvey(db.Model):
     def isFinished(self):
         '''return there isn't more sections to do
         '''
+        if self.endDate is None:
+            self.endDate = datetime.utcnow()
+            db.session.add(self)
+            db.session.commit()
         return self.index>=len(self.sequence)
 
         
