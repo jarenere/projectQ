@@ -36,6 +36,8 @@ def verAnswers():
             print ans.answerYN
         if ans.question.type =='decisionSix':
             print ans.answerNumeric
+        print "global:",  ans.globalTime
+        print "diferencial:", ans.differentialTime 
         print '================================='
 
 def verPreguntas():
