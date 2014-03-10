@@ -31,7 +31,7 @@ manager = Manager(app)
 #OpenID
 lm = LoginManager()
 lm.init_app(app)
-lm.login_view = 'account.login'
+lm.login_view = 'auth.login'
 oid = OpenID(app, os.path.join(basedir, 'tmp'))
 
 from app import models
@@ -42,3 +42,6 @@ app.register_blueprint(researcher, url_prefix='/researcher')
 
 from app.account.views import blueprint as account
 app.register_blueprint(account, url_prefix='/account')
+
+from app.auth.views import blueprint as auth
+app.register_blueprint(auth, url_prefix='/auth')
