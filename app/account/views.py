@@ -47,7 +47,7 @@ def logicSurvey(id_survey):
     if not(survey.startDate < now and survey.endDate >now):
         flash ("access denied, html 403")
         return redirect(url_for('account.index'))
-        
+
     if (stateSurvey.consented == False):
         return redirect(url_for('account.showConsent', id_survey = id_survey))
     section = stateSurvey.nextSection()
@@ -106,33 +106,54 @@ def showQuestions(id_survey, id_section):
         setattr(AnswerForm,"differentialTimec"+str(question.id),HiddenField('differentialTimec'+str(question.id)))
 
         #added "c" to that the key is valid
-        if isinstance (question,QuestionYN):
-            setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
-                choices = [('Yes','Yes'),('No','No')],validators = [Required()]))
-            #setattr(Answer,"c"+str(question.id),RadioField('Answer', choices = [('Yes','Yes'),('No','No')], validators = [Optional()]))
-            #Answer["c"+str(question.id)].validators = False
-        if isinstance (question,QuestionNumerical):
-            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
+        #First element must be a string, otherwise fail to valid choice
 
-        if isinstance (question,QuestionText,):
-            if question.regularExpression !="":
-                setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
-                    validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
-            elif question.isNumber:
+        if isinstance (question,QuestionYN):
+            if question.required:
+                setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                    choices = [('Yes','Yes'),('No','No')],validators = [Required()]))
+            else:
+                setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                    choices = [('Yes','Yes'),('No','No')],validators = [Optional()]))
+        if isinstance (question,QuestionNumerical):
+            if question.required:
                 setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
             else:
-                setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required()]))
-
+                setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'),validators = [Optional()])
+        if isinstance (question,QuestionText):
+            if question.required:
+                if question.regularExpression !="":
+                    setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
+                        validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
+                elif question.isNumber:
+                    setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
+                else:
+                    setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required()]))
+            else:
+                if question.regularExpression !="":
+                    setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
+                        validators=[Optional(), Regexp(question.regularExpression,0,question.errorMessage)]))
+                elif question.isNumber:
+                    setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'),validators = [Optional()])
+                else:
+                    setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Optional()]))
         if isinstance (question,QuestionChoice):
-            #First element must be a string, otherwise fail to valid choice
             list = [(str(index),choice) for index, choice in enumerate(question.choices)]
-            setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
-                choices = list,validators = [Required()]))
+            if question.required:
+                setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                    choices = list,validators = [Required()]))
+            else:
+                setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                    choices = list,validators = [Optional()]))
 
         if isinstance (question, QuestionLikertScale):
             list = [(str(index),index) for index in range(question.minLikert,question.maxLikert+1)]
-            setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
-                choices = list,validators = [Required()]))
+            if question.required:
+                setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                    choices = list,validators = [Required()]))
+            else:
+                setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                    choices = list,validators = [Optional()]))
 
 
         if isinstance(question, QuestionPartTwo):
