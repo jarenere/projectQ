@@ -62,6 +62,8 @@ class Survey(db.Model):
         backref = 'survey', lazy = 'dynamic')
     #: Survey have zero or more stateSurvey 
     stateSurveys = relationship('StateSurvey', backref = 'survey', lazy = 'dynamic')
+    #: Survey belong to a one user(researcher)
+    researcher_id = Column(Integer, ForeignKey('user.id'), nullable=False)
 
 
     def to_json(self):
@@ -110,7 +112,7 @@ class Survey(db.Model):
         return tree
 
     @staticmethod
-    def from_xml(file):
+    def from_xml(file, user):
        # root = ET.parse('output.xml')
         root = ET.parse(file)
         msg = []
@@ -124,7 +126,8 @@ class Survey(db.Model):
         survey = Survey(title = title, description = description,
             startDate = startDate, endDate = endDate,
             maxNumberRespondents = maxNumberRespondents,
-            maxTime = maxTime)
+            maxTime = maxTime,
+            researcher = user)
 
         db.session.add(survey)
 
@@ -762,6 +765,8 @@ class User(db.Model):
     answers = relationship('Answer', backref = 'user', lazy = 'dynamic')
     #: User have zero or more stateSurvey
     stateSurveys = relationship('StateSurvey', backref = 'user', lazy = 'dynamic')
+    #: A researcher have zero or more Surveys
+    Surveys = relationship('Survey', backref = 'researcher', lazy = 'dynamic')
 
     def is_authenticated(self):
         '''Returns True if the user is authenticated, i.e. they have provided 
@@ -791,6 +796,9 @@ class User(db.Model):
         must be a unicode 
         '''
         return unicode(self.id)
+
+    def is_researcher(self):
+        return self.role == ROLE_RESEARCHER
 
 @lm.user_loader
 def load_user(user_id):

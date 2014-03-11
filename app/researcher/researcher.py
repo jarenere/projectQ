@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Blueprint, request, url_for, flash, redirect, abort, send_file
-from flask import render_template
+from flask import render_template, g
 from forms import SurveyForm, EditConsentForm, SectionForm, QuestionForm
 from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
@@ -18,14 +18,16 @@ blueprint = Blueprint('researcher', __name__)
 
 @blueprint.route('/')
 @blueprint.route('/index')
-#@login_required
-#@researcher_required
+@login_required
+@researcher_required
 def index():
-    surveys = Survey.query.order_by(Survey.created.desc())
+    surveys = Survey.query.filter(Survey.researcher==g.user).order_by(Survey.created.desc())
     return render_template('/researcher/index.html',
         tittle = 'Survey',
         surveys = surveys)
 
+@login_required
+@researcher_required
 @blueprint.route('/survey/new', methods = ['GET', 'POST'])
 def new():
     form = SurveyForm()
@@ -36,7 +38,7 @@ def new():
         if filename:
             tf = tempfile.NamedTemporaryFile()
             form.surveyXml.data.save(tf.name)
-            msg = Survey.from_xml(tf.name)
+            msg = Survey.from_xml(tf.name, g.user)
             tf.close()
             for m in msg:
                 flash(m)
@@ -47,7 +49,8 @@ def new():
                 endDate = form.endDate.data,
                 startDate = None,
                 maxNumberRespondents = form.maxNumberRespondents.data,
-                maxTime = form.maxTime.data)
+                maxTime = form.maxTime.data,
+                researcher = g.user)
             db.session.add(survey)
             db.session.commit()
             flash('Your survey have been saved.')
@@ -57,14 +60,18 @@ def new():
         form = form)
 
 
-
+@login_required
+@researcher_required
 @blueprint.route('/survey/<int:id_survey>', methods = ['GET', 'POST'])
-#podrimamos definir la entrada como string del titulo+id:
-#ejempo: "esto-es-una-encuesta_123", seria mas legible..
-#@blueprint.route('/edit/tittle_<int:id>'
 def editSurvey(id_survey):
     #get survey
     survey = Survey.query.get(id_survey)
+    if survey is None:
+        flash ("Survey wrong")
+        return redirect(url_for('researcher.index'))
+    if survey.researcher != g.user:
+        flash ("access denied, html 403")
+        return redirect(url_for('researcher.index'))
     sections = survey.sections.all()
     form = SurveyForm()
     if form.validate_on_submit():
@@ -90,29 +97,36 @@ def editSurvey(id_survey):
         survey = survey,
         sections = sections)
 
+@login_required
+@researcher_required
 @blueprint.route('/survey/deleteSurvey/<int:id_survey>')
 def deleteSurvey(id_survey):
-        #
-        #CUANDO TENGA SUBSECCIONES Y ENCUESTAR, EL ELIMINAR NO ES TRIVIAL
-        #
     survey = Survey.query.get(id_survey)
-    if survey != None:
-        #el consentimiento pertence a esa encuesta
+    if survey is not None and survey.researcher != g.user:
+        flash ("access denied, html 403")
+        return redirect(url_for('researcher.index'))
+    if survey is not None:
         db.session.delete(survey)
         db.session.commit()
         flash('Survey removed')
         return redirect(url_for('researcher.index'))
     else:
-        flash('Survey wrong') 
-        return redirect(url_for('researcher.index'))
+        flash ("Survey wrong")
+        return redirect(url_for('researcher.index')) 
 
+
+@login_required
+@researcher_required
 @blueprint.route('/survey/exportSurvey/<int:id_survey>')
 def exportSurvey(id_survey):
     '''http://stackoverflow.com/questions/14614756/how-can-i-generate-file-on-the-fly-and-delete-it-after-download
         http://stackoverflow.com/questions/13344538/how-to-clean-up-temporary-file-used-with-send-file/
     '''
     survey = Survey.query.get(id_survey)
-    if survey != None:
+    if survey is not None and survey.researcher != g.user:
+        flash ("access denied, html 403")
+        return redirect(url_for('researcher.index'))
+    if survey is not None:
         #el consentimiento pertence a esa encuesta
         xml = survey.to_xml()
         tf = tempfile.NamedTemporaryFile()
@@ -121,23 +135,29 @@ def exportSurvey(id_survey):
         flash (tf.name)
         return send_file(tf, as_attachment=True, attachment_filename=survey.title+'.xml')
     else:
-        flash('Survey wrong') 
+        flash ("Survey wrong")
         return redirect(url_for('researcher.index'))
 
 
 
+@login_required
+@researcher_required
 @blueprint.route('/survey/<int:id_survey>/consent/add', methods = ['GET', 'POST'])
 #podrimamos definir la entrada como string del titulo+id:
 #ejempo: "esto-es-una-encuesta_123", seria mas legible..
 def addConsent(id_survey):
     form = EditConsentForm()
     survey = Survey.query.get(id_survey)
-    if survey == None:
+    if survey is not None and survey.researcher != g.user:
+        flash ("access denied, html 403")
+        return redirect(url_for('researcher.index'))
+
+    if survey is None:
         flash('Survey not found.')
         return redirect(url_for('researcher.index'))
     else:
         consents = survey.consents.all()
-
+    
     if form.validate_on_submit():
         consent = Consent(text = form.text.data,
             survey = survey)
@@ -153,10 +173,16 @@ def addConsent(id_survey):
         consents = consents,
         addConsent = True)
 
+
+@login_required
+@researcher_required
 @blueprint.route('/survey/<int:id_survey>/consent/<int:id_consent>/delete')
 def deleteConsent(id_survey,id_consent):
     consent = Consent.query.filter(Consent.survey_id == id_survey, Consent.id == id_consent).first()
-    if consent != None:
+    if consent is not None and consent.researcher != g.user:
+        flash ("access denied, html 403")
+        return redirect(url_for('researcher.index'))
+    if consent is not None:
         db.session.delete(consent)
         db.session.commit()
         flash('consent removed')
@@ -166,10 +192,16 @@ def deleteConsent(id_survey,id_consent):
         return redirect(url_for('researcher.addConsent',id_survey = id_survey))
 
 
+@login_required
+@researcher_required
 @blueprint.route('/survey/<int:id_survey>/consent/<int:id_consent>', methods = ['GET', 'POST'])
 def editConsents(id_survey, id_consent):
     consent = Consent.query.filter(Consent.survey_id == id_survey, Consent.id == id_consent).first()
-    if consent == None:
+    if consent is not None and consent.researcher != g.user:
+        flash ("access denied, html 403")
+        return redirect(url_for('researcher.index'))
+
+    if consent is None:
         flash('Consent wrong') 
         return redirect(url_for('researcher.addConsent',id_survey = id_survey))
     form = EditConsentForm()
@@ -189,11 +221,19 @@ def editConsents(id_survey, id_consent):
         consents = consents,
         editConsent = True)
 
+
+@login_required
+@researcher_required
 @blueprint.route('/survey/<int:id_survey>/section/new', methods = ['GET', 'POST'])
 def addSection(id_survey):
     form = SectionForm()
     survey = Survey.query.get(id_survey)
-    if survey == None:
+    
+    if survey is not None and survey.researcher != g.user:
+        flash ("access denied, html 403")
+        return redirect(url_for('researcher.index'))
+
+    if survey is None:
         flash('Survey not found.')
         return redirect(url_for('researcher.index'))
     else:
@@ -217,10 +257,19 @@ def addSection(id_survey):
         #add = true, you is adding a new section
         addSection = True)
 
+
+@login_required
+@researcher_required
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods = ['GET', 'POST'])
 def editSection(id_survey, id_section):
     section = Section.query.get(id_section)
-    if section == None:
+
+    survey = Survey.query.get(id_survey)
+    if section is not None and survey.researcher != g.user:
+        flash ("access denied, html 403")
+        return redirect(url_for('researcher.index'))
+
+    if section is None:
         flash('Section wrong') 
         return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
     form = SectionForm()
@@ -248,13 +297,19 @@ def editSection(id_survey, id_section):
         editSection = True,
         id_section = id_section)
 
+
+@login_required
+@researcher_required
 @blueprint.route('/survey/<int:id_survey>/deleteSection/<int:id_section>')
 def deleteSection(id_survey,id_section):
-        #
-        #CUANDO TENGA SUBSECCIONES Y ENCUESTAR, EL ELIMINAR NO ES TRIVIAL
-        #
     section = Section.query.get(id_section)
-    if section != None:
+    
+    survey = Survey.query.get(id_survey)
+    if section is not None and survey.researcher != g.user:
+        flash ("access denied, html 403")
+        return redirect(url_for('researcher.index'))
+
+    if section is not None:
         #el consentimiento pertence a esa encuesta
         db.session.delete(section)
         db.session.commit()
@@ -264,10 +319,13 @@ def deleteSection(id_survey,id_section):
         flash('Section wrong') 
         return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
 
+
+@login_required
+@researcher_required
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/new', methods = ['GET', 'POST'])
 def addSubSection(id_survey, id_section):
     parentSection = Section.query.get(id_section)
-    if parentSection == None:
+    if parentSection is None:
         flash('Section wrong') 
         return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
     form = SectionForm()
@@ -340,10 +398,13 @@ def selectType(form):
     return question
 
 
+
+@login_required
+@researcher_required
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/addQuestion', methods = ['GET', 'POST'])
 def addQuestion(id_survey, id_section):
     section = Section.query.get(id_section)
-    if section == None:
+    if section is None:
         flash('Section wrong') 
         return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
     form = QuestionForm()
@@ -367,10 +428,13 @@ def addQuestion(id_survey, id_section):
         addQuestion = True,
         type = "yn")
 
+
+@login_required
+@researcher_required
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/question/<int:id_question>', methods = ['GET', 'POST'])
 def editQuestion(id_survey, id_section,id_question):
     question = Question.query.get(id_question)
-    if question == None:
+    if question is None:
         flash('Question wrong') 
         return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
     form = QuestionForm()    
@@ -435,13 +499,16 @@ def editQuestion(id_survey, id_section,id_question):
         editQuestion = True,
         type = question.type)
 
+
+@login_required
+@researcher_required
 @blueprint.route('/survey/<int:id_survey>/Section/<int:id_section>/deleteQuestion/<int:id_question>')
 def deleteQuestion(id_survey,id_section,id_question):
         #
         #CUANDO TENGA SUBSECCIONES Y ENCUESTAR, EL ELIMINAR NO ES TRIVIAL
         #
     question = Question.query.get(id_question)
-    if question != None:
+    if question is not None:
         #el consentimiento pertence a esa encuesta
         db.session.delete(question)
         db.session.commit()

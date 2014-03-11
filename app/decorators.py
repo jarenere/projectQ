@@ -8,8 +8,8 @@ def researcher_required(f):  # pragma: no cover
     """Checks if the user is and researcher or not"""
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if current_user.role == ROLE_RESEARCHER:
+        if current_user.is_researcher():
             return f(*args, **kwargs)
         else:
-            return render_template('403.html'), 403
+            return render_template('403.html')
     return decorated_function
