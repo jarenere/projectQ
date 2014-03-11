@@ -7,14 +7,30 @@ X hecho
 [X]guardar el tiempo de cada seccion || 10 de marzo
 [X]barra de progreso || 10 de marzo
 [x]obtener ip || 10 de marzo
-[]evitar que conteste mas tarde
-[X]fecha de inicio y fin de la encuesta 
-[]implementar usarios para la pate de investidadores
+[/]evitar que conteste mas tarde (el tiempo en minutos para ahcer una encuesta) (falta parte del usuario, 11 de marzo)
+[X]fecha de inicio y fin de la encuesta | 11 de marzo
+[] que hacer cuando un usuario a empezado una encuesta y la fecha se termina (dejo un dia y luego borrar respuestas?)
+[X]implementar usarios para la pate de investidadores
 [/]limitar el numero maximo de participantes (falta parte del usuario, en la bbdd e investigador hecho)
 [] limpiar un poco el codigo cuando se responden questiones, por ejemplo la p arte de time se podria sacar, solo hacer un commit al final ..., parte de comprobacion de si la respuesta es correcta debería ir en el modelo
-[X] en next section compruebo si vacio el camino, no sería mejor cuando genero el arbol? desde luego que si || 10 de marzo
+[X] en next section compruebo si vacio el camino, no sería mejor cuando genero el arbol? desde luego que si| 10 de marzo
 [] parte de pago y no pagos, tal vez algun flag en las preguntas
 []parte del match
-[]generar preguntas no obligatorias
-[]implementar que un usuario no pueda entrar a cualquier cuestionario
-[]sacar la validacion del usuario
+[x]generar preguntas no obligatorias | 11 de marzo
+[x]implementar que un usuario no pueda entrar a cualquier seccion || 11 de marzo
+[/]se peude acceder a encuestas aun no publicadas, validar fecha y numero de usuarios, evitarlo! || solo hecho la fecha
+[X]sacar la validacion del usuario || 10/11 de marzo
+[]implementar paginas de errores
+[]traduccion
+[]encuestas multidioma
+[X]cuando se modifica una pregunta, que el select field este en posición correcta || 11 de marzo
+[]cuando se miden tiempos de preguntas, podria mirar si se vuelve a la pregunta ver si ya se ha rellenado el tiempo y sino actualizarlo de manera conveniente, guardando alguan variable
+[]cuando importas de xml dar mas info cuando hay un campo que falta
+[]copiar seccion
+[]tengo un par de"mierdas" en models, ver que hace, xd
+[]getStateSurvey comprobar fecha tambien y sino es valido eliminar respeustas y devolver none
+[]consentimiento vacios, o mas de uno, controlarlo
+[]quitar el numero de campos en las preguntas choice
+[]etiquetas mas amigables del tipo string + id, #ejempo: "esto-es-una-encuesta_123", seria mas legible..
+[]no compruebo en todos los casos en los que los investigadores modifican encuestas de otros, deberia de mirarlo con calma y tener en cuenta el desarrollo del arbol para obtener el padre, eso o guardarme un enlace a la raiz, deberia de mirar desde secciones
+[]repasar el codico de consent, veo algun first un tanto feo
