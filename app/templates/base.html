@@ -34,8 +34,8 @@
                         <ul class="nav">
                             <li><a href="/researcher">Researcher</a></li>
                             <li><a href="/account">Account</a></li>
-                                {% if g.user.is_authenticated() %}
-                            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                            {% if current_user.is_authenticated() %}
+                                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                             {% endif %}
                         </ul>
                     <div class="nav-collapse collapse">

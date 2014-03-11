@@ -43,5 +43,8 @@ app.register_blueprint(researcher, url_prefix='/researcher')
 from app.account.views import blueprint as account
 app.register_blueprint(account, url_prefix='/account')
 
-from app.auth.views import blueprint as auth
-app.register_blueprint(auth, url_prefix='/auth')
+# from app.auth.views import blueprint as auth
+# app.register_blueprint(auth, url_prefix='/auth')
+
+from app.auth import blueprint as auth_blueprint
+app.register_blueprint(auth_blueprint, url_prefix='/auth')

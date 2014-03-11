@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 
-from app import db
-import json
+
+from . import db, lm
+from app import db 
 import random
 from datetime import datetime
 from sqlalchemy import BigInteger, Integer, Boolean, Unicode,\
@@ -788,6 +789,10 @@ class User(db.Model):
         must be a unicode 
         '''
         return unicode(self.id)
+
+@lm.user_loader
+def load_user(user_id):
+        return User.query.get(int(user_id))
 
 
 
