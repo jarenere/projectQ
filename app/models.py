@@ -49,6 +49,8 @@ class Survey(db.Model):
     endDate = Column(DateTime, default = datetime.utcnow())
     #: max number of respondents, 0 is infinite
     maxNumberRespondents = Column(Integer, default = 0)
+    #: Time in minutes that a user has to answer the survey
+    maxTime = Column(Integer, default = 0)
     ## Relationships
     #: Survey have zero or more consents
     consents = relationship('Consent',
@@ -94,6 +96,9 @@ class Survey(db.Model):
         maxNumberRespondents = SubElement(survey,'maxNumberRespondents')
         maxNumberRespondents.text = str(self.maxNumberRespondents)
 
+        maxTime = SubElement(survey,'maxTime')
+        maxTime.text = str(self.maxTime)
+
         for consent in self.consents:
             survey.append(consent.to_xml())
 
@@ -114,10 +119,12 @@ class Survey(db.Model):
         startDate = findField('startDate',root,msg)
         endDate = findField('endDate',root,msg)
         maxNumberRespondents = findField('maxNumberRespondents',root,msg)
+        maxTime = findField('maxTime',root,msg)
 
         survey = Survey(title = title, description = description,
             startDate = startDate, endDate = endDate,
-            maxNumberRespondents = maxNumberRespondents)
+            maxNumberRespondents = maxNumberRespondents,
+            maxTime = maxTime)
 
         db.session.add(survey)
 
@@ -130,18 +137,13 @@ class Survey(db.Model):
 
         try:
             db.session.commit()
+            msg.append("Your survey have been saved.")
         except :
-            print "file xml bad"
             msg.append("file xml bad")
             raise
             db.session.rollback()
         
-        for m in msg:
-            print m
-
         return msg
-
-
 
 class Consent(db.Model):
     '''A table with Consents to a Survey

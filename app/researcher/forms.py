@@ -22,6 +22,7 @@ class SurveyForm(Form):
     startDate = DateTimeField('Day and start time', validators = [Optional()])
     endDate =DateTimeField('Day and finish time', validators = [Optional()])
     maxNumberRespondents = IntegerField('Number of respondents', validators = [Optional()])
+    maxTime = IntegerField('Time in minutes that a user has to answer the survey', validators = [Optional()])
     surveyXml = FileField("File survey xml", validators = [Optional()])
 #    submit = SubmitField('Register')
 

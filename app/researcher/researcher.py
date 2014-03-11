@@ -38,19 +38,16 @@ def new():
             form.surveyXml.data.save(tf.name)
             msg = Survey.from_xml(tf.name)
             tf.close()
-            if len(msg)>0:
-                for m in msg:
-                    flash(m)
-                return redirect(url_for('researcher.new'))
-            else:
-                flash('Your survey have been saved.')
-                return redirect(url_for('researcher.index'))
+            for m in msg:
+                flash(m)
+            return redirect(url_for('researcher.index'))
         else:
             survey = Survey( title = form.title.data,
                 description = form.description.data,
                 endDate = form.endDate.data,
                 startDate = None,
-                maxNumberRespondents = form.maxNumberRespondents.data)
+                maxNumberRespondents = form.maxNumberRespondents.data,
+                maxTime = form.maxTime)
             db.session.add(survey)
             db.session.commit()
             flash('Your survey have been saved.')
@@ -76,6 +73,7 @@ def editSurvey(id_survey):
         survey.startDate = form.startDate.data
         survey.endDate = form.endDate.data
         survey.maxNumberRespondents = form.maxNumberRespondents.data
+        survey.maxTime = form.maxTime.data
         db.session.add(survey)
         db.session.commit()
         flash('Your changes have been saved.')
@@ -85,6 +83,7 @@ def editSurvey(id_survey):
         form.startDate.data = survey.startDate
         form.endDate.data = survey.endDate
         form.maxNumberRespondents.data = survey.maxNumberRespondents
+        form.maxTime.data = survey.maxTime
     return render_template('/researcher/editSurvey.html',
         title = survey.title,
         form = form,
