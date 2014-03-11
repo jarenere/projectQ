@@ -15,7 +15,7 @@ from app.models import Answer
 from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField
 from wtforms.validators import Required, Regexp, Optional
-
+import datetime
 
 
 blueprint = Blueprint('account', __name__)
@@ -28,7 +28,9 @@ def index():
     '''
     shows all available surveys
     '''
-    surveys = Survey.query.all()
+    now = datetime.datetime.utcnow()
+    surveys = Survey.query.filter(Survey.startDate<now,Survey.endDate>now).\
+            order_by(Survey.startDate)
     return render_template('/account/index.html',
         title = 'Index',
         surveys = surveys)
@@ -40,6 +42,12 @@ def logicSurvey(id_survey):
     Function that decides which is the next step in the survey
     '''
     stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user,request.remote_addr)
+    now = datetime.datetime.utcnow()
+    survey  = Survey.query.get(id_survey)
+    if not(survey.startDate < now and survey.endDate >now):
+        flash ("access denied, html 403")
+        return redirect(url_for('account.index'))
+        
     if (stateSurvey.consented == False):
         return redirect(url_for('account.showConsent', id_survey = id_survey))
     section = stateSurvey.nextSection()
