@@ -69,7 +69,13 @@
                         {{ render_field3(form.answer9) }}
                     </div>
                     <td></td>
-                    <td><input class="btn" type="submit" value="Add Question">
+                    <td>
+                        {% if addQuestion %}
+                            <input class="btn" type="submit" value="Add Question">
+                        {% endif %}
+                        {% if editQuestion %}
+                            <input class="btn" type="submit" value="Edit Question">
+                        {% endif %}
                     </td>
                 <fieldset>
                 </form>
@@ -80,6 +86,45 @@
     </div>
 </div>
 <script language="javascript">
+    function onchange(selValue)
+    {
+        $("#divText").hide();
+        $("#divLikert").hide();
+        $("#divChoices").hide();
+        $("#divAnswer1").hide();
+        $("#divAnswer2").hide();
+        $("#divAnswers").hide();
+        if (selValue=="text")
+        {
+            //document.getElementById("divAnswer").style.display="none";; 
+            $("#divText").show();
+        }
+        if (selValue=="choice")
+        {
+            //document.getElementById("divAnswer").style.display="none";; 
+            $("#divChoices").show();
+            $("#divAnswer1").show();
+            $("#divAnswer2").show();
+            $("#divAnswers").show();
+
+        }
+        if (selValue=="likertScale")
+        {
+            //document.getElementById("divAnswer").style.display="none";; 
+            $("#divLikert").show();
+        }
+        if (selValue=="partTwo")
+        {
+            //document.getElementById("divAnswer").style.display="none";; 
+            $("#divAnswer1").show();
+            $("#divAnswer2").show();
+        }
+        if (selValue=="decisionFive")
+        {
+            //document.getElementById("divAnswer").style.display="none";; 
+            $("#divAnswer1").show();
+        }
+    }
     window.onload = function() {
         $("#divText").hide();
         $("#divLikert").hide();
@@ -87,50 +132,14 @@
         $("#divAnswer1").hide();
         $("#divAnswer2").hide();
         $("#divAnswers").hide();
+        document.getElementById('questionType').value = '{{type}}';
+        onchange('{{type}}');
 }
-</script>
-<script language="javascript">
     var select = document.getElementById("questionType");
     select.onchange = function() {
     var selIndex = select.selectedIndex;
     var selValue = select.options[selIndex].value;
-    //var selValue = document.getElementById("questionType").options[selIndex].value;
-    $("#divText").hide();
-    $("#divLikert").hide();
-    $("#divChoices").hide();
-    $("#divAnswer1").hide();
-    $("#divAnswer2").hide();
-    $("#divAnswers").hide();
-    if (selValue=="Text")
-    {
-        //document.getElementById("divAnswer").style.display="none";; 
-        $("#divText").show();
-    }
-    if (selValue=="Choice")
-    {
-        //document.getElementById("divAnswer").style.display="none";; 
-        $("#divChoices").show();
-        $("#divAnswer1").show();
-        $("#divAnswer2").show();
-        $("#divAnswers").show();
-
-    }
-    if (selValue=="likert")
-    {
-        //document.getElementById("divAnswer").style.display="none";; 
-        $("#divLikert").show();
-    }
-    if (selValue=="PartTwo")
-    {
-        //document.getElementById("divAnswer").style.display="none";; 
-        $("#divAnswer1").show();
-        $("#divAnswer2").show();
-    }
-    if (selValue=="DecisionFive")
-    {
-        //document.getElementById("divAnswer").style.display="none";; 
-        $("#divAnswer1").show();
-    }
+    onchange(selValue)
 }
 </script>
 {% endblock %}

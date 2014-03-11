@@ -9,12 +9,12 @@ from flask.ext.pagedown.fields import PageDownField
 EXAMPLE_MARKDOWN = '## This is a example of Markdown\n**Markdown** is rendered on the fly in the <i>preview area</i>!\n\n\
 More about [markdown](http://daringfireball.net/projects/markdown/).'
 
-listQuestionType = [('YES/NO', 'YES/NO'),('Numerical','Numerical'),
-        ('Text','Text'),('Choice','Choice'),('likert','Likert Scale'),
-        ('PartTwo','Part two'),('DecisionOne','Decision One'),
-        ('DecisionTwo','Decision Two'),('DecisionThree','Decision Three'),
-        ('DecisionFour','Decision Four'),('DecisionFive','Decision Five'),
-        ('DecisionSix','Decision Six')]
+listQuestionType = [('yn', 'YES/NO'),('numerical','Numerical'),
+        ('text','Text'),('choice','Choice'),('likertScale','Likert Scale'),
+        ('partTwo','Part two'),('decisionOne','Decision One'),
+        ('decisionTwo','Decision Two'),('decisionThree','Decision Three'),
+        ('decisionFour','Decision Four'),('decisionFive','Decision Five'),
+        ('decisionSix','Decision Six')]
 
 class SurveyForm(Form):
     title = TextField('Title', validators = [Length(min = 1, max = 128)])

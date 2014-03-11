@@ -47,7 +47,7 @@ def new():
                 endDate = form.endDate.data,
                 startDate = None,
                 maxNumberRespondents = form.maxNumberRespondents.data,
-                maxTime = form.maxTime)
+                maxTime = form.maxTime.data)
             db.session.add(survey)
             db.session.commit()
             flash('Your survey have been saved.')
@@ -291,15 +291,15 @@ def addSubSection(id_survey, id_section):
 
 def selectType(form):
 
-    if form.questionType.data =='YES/NO':
+    if form.questionType.data =='yn':
         question = QuestionYN()
-    if form.questionType.data == 'Numerical':
+    if form.questionType.data == 'numerical':
         question = QuestionNumerical()
-    if form.questionType.data == 'Text':
+    if form.questionType.data == 'text':
         question = QuestionText(isNumber=form.isNumber.data,
             regularExpression=form.regularExpression.data,
             errorMessage=form.errorMessage.data)
-    if form.questionType.data == 'Choice':
+    if form.questionType.data == 'choice':
         l = [form.answer1.data,
         form.answer2.data,
         form.answer3.data,
@@ -310,26 +310,26 @@ def selectType(form):
         form.answer8.data,
         form.answer9.data]
         question = QuestionChoice(choices = l[0:int(form.numberFields.data)])
-    if form.questionType.data == 'likert':
+    if form.questionType.data == 'likertScale':
         question = QuestionLikertScale(minLikert=form.minLikert.data,
             maxLikert=form.maxLikert.data, labelMin=form.labelMinLikert.data,
             labelMax=form.labelMaxLikert.data)
-    if form.questionType.data == 'PartTwo':
+    if form.questionType.data == 'partTwo':
         l = [form.answer1.data,
         form.answer2.data]
         question = QuestionPartTwo(choices = l[0:2])
-    if form.questionType.data == 'DecisionOne':
+    if form.questionType.data == 'decisionOne':
         question = QuestionDecisionOne()
-    if form.questionType.data == 'DecisionTwo':
+    if form.questionType.data == 'decisionTwo':
         question = QuestionDecisionTwo()
-    if form.questionType.data == 'DecisionThree':
+    if form.questionType.data == 'decisionThree':
         question = QuestionDecisionThree()
-    if form.questionType.data == 'DecisionFour':
+    if form.questionType.data == 'decisionFour':
         question = QuestionDecisionFour()
-    if form.questionType.data == 'DecisionFive':
+    if form.questionType.data == 'decisionFive':
         l = [form.answer1.data]
         question = QuestionDecisionFive(choices = l[0:1])
-    if form.questionType.data == 'DecisionSix':
+    if form.questionType.data == 'decisionSix':
         question = QuestionDecisionSix()
            
     question.text = form.text.data
@@ -363,7 +363,9 @@ def addQuestion(id_survey, id_section):
         survey = Survey.query.get(id_survey),
         sections = Survey.query.get(id_survey).sections.all(),
         section = section,
-        questions = section.questions)
+        questions = section.questions,
+        addQuestion = True,
+        type = "yn")
 
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/question/<int:id_question>', methods = ['GET', 'POST'])
 def editQuestion(id_survey, id_section,id_question):
@@ -429,7 +431,9 @@ def editQuestion(id_survey, id_section,id_question):
         survey = Survey.query.get(id_survey),
         sections = Survey.query.get(id_survey).sections.all(),
         section = Section.query.get(id_section),
-        questions = Section.query.get(id_section).questions)
+        questions = Section.query.get(id_section).questions,
+        editQuestion = True,
+        type = question.type)
 
 @blueprint.route('/survey/<int:id_survey>/Section/<int:id_section>/deleteQuestion/<int:id_question>')
 def deleteQuestion(id_survey,id_section,id_question):
