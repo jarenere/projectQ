@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from app import app, db, lm, oid
+from app import app, db
 from flask import Blueprint, request, url_for, flash, redirect, abort, session, g
 from flask import render_template
 from flask.ext.login import login_user, logout_user, current_user, login_required
@@ -74,6 +74,14 @@ def showQuestions(id_survey, id_section):
     '''
     Show all question of a section
     '''
+
+    stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user,request.remote_addr)
+    section = stateSurvey.nextSection()
+    if section.id !=id_section:
+        flash ("access denied, html 403")
+        return redirect(url_for('account.index'))
+
+
     class AnswerForm(Form):
         time = HiddenField('time')
 
