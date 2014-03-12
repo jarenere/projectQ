@@ -869,7 +869,10 @@ class StateSurvey(db.Model):
     '''
     STATUS_FINISH = 1
     STATUS_NOT_FINISH = 0
+    #: finished out of time
     STATUS_TIMED_OUT = 2
+    #: finished out of date
+    STATUS_END_DATE_OUT = 3
     
     __tablename__ = 'stateSurvey'
     #: unique id (automatically generated)
@@ -898,6 +901,20 @@ class StateSurvey(db.Model):
     #stateSurvey belong a survey
     survey_id = Column(Integer, ForeignKey('survey.id'), nullable=False)
     
+    def _delete_answers(self):
+        '''find all answer of user in this survey,
+           I could do a recursive query.
+        '''
+        for s in self.sequence:
+            section = Section.query.get(s)
+            answers = Answer.query.filter(\
+                Answer.question_id==Question.id,\
+                Question.section_id==section.id,\
+                Answer.user_id == self.user_id)
+            for ans in answers:
+                db.session.delete(ans)
+        db.session.commit()
+
     def check_survey_duration(self):
         # return true if duration survey ok, else remove all answers
         now = datetime.datetime.utcnow()
@@ -909,17 +926,14 @@ class StateSurvey(db.Model):
             self.status = StateSurvey.STATUS_TIMED_OUT
             db.session.add(self)
             db.session.commit()
-            # find all answer of user in this survey,
-            # I could do a recursive query...
-            for s in self.sequence:
-                section = Section.query.get(s)
-                answers = Answer.query.filter(\
-                    Answer.question_id==Question.id,\
-                    Question.section_id==section.id,\
-                    Answer.user_id == self.user_id)
-                for ans in answers:
-                    db.session.delete(ans)
+            self._delete_answers()
+            return False
+        if now > self.survey.endDate:
+            #answer out of date
+            self.status=StateSurvey.STATUS_END_DATE_OUT
+            db.session.add(self)
             db.session.commit()
+            self._delete_answers()
             return False
         return True
 
@@ -939,7 +953,8 @@ class StateSurvey(db.Model):
     def nextSection(self):
         '''Return next Section to do, None if there isn't
         '''
-        if self.index>=len(self.sequence) or self.status==StateSurvey.STATUS_TIMED_OUT:
+        if self.index>=len(self.sequence) or self.status==StateSurvey.STATUS_TIMED_OUT or\
+                        self.status==StateSurvey.STATUS_END_DATE_OUT:
             if self.status == StateSurvey.STATUS_NOT_FINISH:
                 self.status = StateSurvey.STATUS_FINISH
                 self.endDate = datetime.datetime.utcnow()
