@@ -65,9 +65,7 @@ def showConsent(id_survey):
     '''
     if request.method == 'POST':
         stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
-        stateSurvey.consented=True
-        db.session.add(stateSurvey)
-        db.session.commit()
+        stateSurvey.accept_consent()
         return redirect(url_for('account.logicSurvey',id_survey = id_survey))
     survey = Survey.query.get(id_survey)
     return render_template('/account/consent.html',
@@ -76,32 +74,14 @@ def showConsent(id_survey):
         consent = survey.consents.first())
 
 
-@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods=['GET', 'POST'])
-@login_required
-def showQuestions(id_survey, id_section):
+def generate_form(questions):
+    '''dynamically generates the forms for surveys
     '''
-    Show all question of a section
-    '''
-
-    stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user,request.remote_addr)
-    section = stateSurvey.nextSection()
-    if section.id !=id_section:
-        flash ("access denied, html 403")
-        return redirect(url_for('account.index'))
-
-
     class AnswerForm(Form):
         time = HiddenField('time')
 
-        
-    survey = Survey.query.get(id_survey)
-    section = Section.query.get(id_section)
-    questions = section.questions
-
-    # Answer.prueba = TextField('Prueba')
-    #listID = ["c"+str(q.id) for q in questions]
-    
     for question in questions:
+
         setattr(AnswerForm,"globalTimec"+str(question.id),HiddenField('globalTimec'+str(question.id)))
         setattr(AnswerForm,"differentialTimec"+str(question.id),HiddenField('differentialTimec'+str(question.id)))
 
@@ -180,9 +160,29 @@ def showQuestions(id_survey, id_section):
         if isinstance (question, QuestionDecisionSix):
             setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
 
-
     form = AnswerForm()
+    return form
 
+
+
+@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods=['GET', 'POST'])
+@login_required
+def showQuestions(id_survey, id_section):
+    '''
+    Show all question of a section
+    '''
+
+    stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user,request.remote_addr)
+    section = stateSurvey.nextSection()
+    if section is None or section.id !=id_section:
+        flash ("access denied, html 403")
+        return redirect(url_for('account.index'))
+        
+    survey = Survey.query.get(id_survey)
+    section = Section.query.get(id_section)
+    questions = section.questions
+   
+    form = generate_form(questions)
 
     if form.validate_on_submit():
         for question in questions:

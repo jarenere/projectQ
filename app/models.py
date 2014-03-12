@@ -53,7 +53,7 @@ class Survey(db.Model):
     #: max number of respondents, 0 is infinite
     maxNumberRespondents = Column(Integer, default = 0)
     #: Time in minutes that a user has to answer the survey
-    maxTime = Column(Integer, default = 0)
+    duration = Column(Integer, default = 0)
     ## Relationships
     #: Survey have zero or more consents
     consents = relationship('Consent',
@@ -67,6 +67,12 @@ class Survey(db.Model):
     stateSurveys = relationship('StateSurvey', backref = 'survey', lazy = 'dynamic')
     #: Survey belong to a one user(researcher)
     researcher_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+
+    def is_duration(self):
+        '''Return true if the survey have max duratin
+        '''
+        return self.duration is not None and \
+                self.duration!=0 and self.duration!=""
 
 
     def to_json(self):
@@ -101,8 +107,8 @@ class Survey(db.Model):
         maxNumberRespondents = SubElement(survey,'maxNumberRespondents')
         maxNumberRespondents.text = str(self.maxNumberRespondents)
 
-        maxTime = SubElement(survey,'maxTime')
-        maxTime.text = str(self.maxTime)
+        duration = SubElement(survey,'duration')
+        duration.text = str(self.duration)
 
         for consent in self.consents:
             survey.append(consent.to_xml())
@@ -124,12 +130,12 @@ class Survey(db.Model):
         startDate = findField('startDate',root,msg)
         endDate = findField('endDate',root,msg)
         maxNumberRespondents = findField('maxNumberRespondents',root,msg)
-        maxTime = findField('maxTime',root,msg)
+        duration = findField('duration',root,msg)
 
         survey = Survey(title = title, description = description,
             startDate = startDate, endDate = endDate,
             maxNumberRespondents = maxNumberRespondents,
-            maxTime = maxTime,
+            duration = duration,
             researcher = user)
 
         db.session.add(survey)
@@ -861,11 +867,17 @@ class Answer(db.Model):
 class StateSurvey(db.Model):
     '''A table that saves the state of a survey  
     '''
+    STATUS_FINISH = 1
+    STATUS_NOT_FINISH = 0
+    STATUS_TIMED_OUT = 2
+    
     __tablename__ = 'stateSurvey'
     #: unique id (automatically generated)
     id = Column(Integer, primary_key = True)
     #: created timestamp (automatically set)
     created = Column(DateTime, default = make_timestamp)
+    #: init when acept the consents
+    start_date = Column(DateTime)
     #: time when finish the survey
     endDate = Column(DateTime)
     #: ip of user, ipv6, 8 block of FFFF, 8*5-1
@@ -873,7 +885,7 @@ class StateSurvey(db.Model):
     #: Consent accept or not
     consented = Column(Boolean, default=False)
     #: finished or not
-    finish = Column(Boolean, default =False)
+    status = Column(Integer, default = STATUS_NOT_FINISH)
     #: Sequence of sections are traversed (it is a list of secction to go through )
     sequence = Column(PickleType)
     #: list with time/section, maybe better crearte new table, in ms
@@ -886,45 +898,58 @@ class StateSurvey(db.Model):
     #stateSurvey belong a survey
     survey_id = Column(Integer, ForeignKey('survey.id'), nullable=False)
     
+    def check_survey_duration(self):
+        # return true if duration survey ok, else remove all answers
+        now = datetime.datetime.utcnow()
+        start = self.start_date
+        elapsedTime = now - start
+        if elapsedTime.total_seconds()>self.survey.duration*60 and \
+                self.status==StateSurvey.STATUS_NOT_FINISH:
+            # time has run out, delete all cuestions
+            self.status = StateSurvey.STATUS_TIMED_OUT
+            db.session.add(self)
+            db.session.commit()
+            # find all answer of user in this survey,
+            # I could do a recursive query...
+            for s in self.sequence:
+                section = Section.query.get(s)
+                answers = Answer.query.filter(\
+                    Answer.question_id==Question.id,\
+                    Question.section_id==section.id,\
+                    Answer.user_id == self.user_id)
+                for ans in answers:
+                    db.session.delete(ans)
+            db.session.commit()
+            return False
+        return True
+
+    def accept_consent(self):
+        '''
+        '''
+        self.consented=True
+        self.start_date= datetime.datetime.utcnow()
+        db.session.add(self)
+        db.session.commit()
+
     def percentSurvey(self):
         '''returns the percentage done of the survey
         '''
         return round(100*self.index/len(self.sequence))
 
     def nextSection(self):
-        '''Return next Section to do
+        '''Return next Section to do, None if there isn't
         '''
-        # if self.index>=len(self.sequence):
-        #     return None
-        # else:
-        #     return self.sequence[self.index]
-
-        if self.index>=len(self.sequence):
-            if self.endDate is None:
+        if self.index>=len(self.sequence) or self.status==StateSurvey.STATUS_TIMED_OUT:
+            if self.status == StateSurvey.STATUS_NOT_FINISH:
+                self.status = StateSurvey.STATUS_FINISH
                 self.endDate = datetime.datetime.utcnow()
                 db.session.add(self)
                 db.session.commit()
             return None
         section = Section.query.get(self.sequence[self.index])
-        # if ((len(section.description)==0) and (s.questions.count()==0)):
-        #comprobacion hecha al generar el arbol
-        # if (section.description is None  or len(section.description)==0) and section.questions.count()==0:
-        #     self.finishedSection()
-        #     return self.nextSection()
-        # else:
-        #     return section
         return section
 
-    def isFinished(self):
-        '''return there isn't more sections to do
-        '''
-        if self.endDate is None:
-            self.endDate = datetime.datetime.utcnow()
-            db.session.add(self)
-            db.session.commit()
-        return self.index>=len(self.sequence)
-
-        
+       
     def finishedSection(self,time):
         '''Section is finished, index+1
         '''
@@ -933,6 +958,8 @@ class StateSurvey(db.Model):
         l.append((self.sequence[self.index], time))
         self.sectionTime = l
         self.index=self.index+1
+        if self.survey.is_duration():
+            self.check_survey_duration()
         db.session.add(self)
         db.session.commit()
 

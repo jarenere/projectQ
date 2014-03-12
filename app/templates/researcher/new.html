@@ -11,7 +11,7 @@
     {{ render_field3(form.startDate, size = 128,placeholder="%Y-%m-%d %H:%M:%S")}}
     {{ render_field3(form.endDate, size = 64,placeholder="%Y-%m-%d %H:%M:%S")}}
     {{ render_field3(form.maxNumberRespondents)}}
-    {{ render_field3(form.maxTime)}}
+    {{ render_field3(form.duration)}}
     {{ render_field3(form.surveyXml)}}
     <input class="btn" type="submit" value="Create Survey">
             <a class="btn" href="{{ url_for('researcher.index')}}">{{ ('Cancel') }}</a> 
