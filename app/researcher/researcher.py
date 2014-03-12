@@ -375,20 +375,22 @@ def selectType(form):
     if form.questionType.data == 'partTwo':
         l = [form.answer1.data,
         form.answer2.data]
-        question = QuestionPartTwo(choices = l[0:2])
+        question = QuestionPartTwo(choices = l[0:2],
+            is_money_real=form.is_money_real.data)
     if form.questionType.data == 'decisionOne':
-        question = QuestionDecisionOne()
+        question = QuestionDecisionOne(is_money_real=form.is_money_real.data)
     if form.questionType.data == 'decisionTwo':
-        question = QuestionDecisionTwo()
+        question = QuestionDecisionTwo(is_money_real=form.is_money_real.data)
     if form.questionType.data == 'decisionThree':
-        question = QuestionDecisionThree()
+        question = QuestionDecisionThree(is_money_real=form.is_money_real.data)
     if form.questionType.data == 'decisionFour':
-        question = QuestionDecisionFour()
+        question = QuestionDecisionFour(is_money_real=form.is_money_real.data)
     if form.questionType.data == 'decisionFive':
         l = [form.answer1.data]
-        question = QuestionDecisionFive(choices = l[0:1])
+        question = QuestionDecisionFive(choices = l[0:1],
+            is_money_real=form.is_money_real.data)
     if form.questionType.data == 'decisionSix':
-        question = QuestionDecisionSix()
+        question = QuestionDecisionSix(is_money_real=form.is_money_real.data)
            
     question.text = form.text.data
     question.required = form.required.data
@@ -482,9 +484,22 @@ def editQuestion(id_survey, id_section,id_question):
             l= question.choices
             form.answer1.data = l[0]
             form.answer2.data = l[1]
+            form.is_money_real.data = question.is_money_real
+        if isinstance (question,QuestionDecisionOne):
+            form.is_money_real.data = question.is_money_real
+        if isinstance (question,QuestionDecisionTwo):
+            form.is_money_real.data = question.is_money_real
+        if isinstance (question,QuestionDecisionThree):
+            form.is_money_real.data = question.is_money_real
+        if isinstance (question,QuestionDecisionFour):
+            form.is_money_real.data = question.is_money_real
         if isinstance (question,QuestionDecisionFive):
             l= question.choices
             form.answer1.data = l[0]
+            form.is_money_real.data = question.is_money_real
+        if isinstance (question,QuestionDecisionSix):
+            form.is_money_real.data = question.is_money_real
+
         if isinstance(question, QuestionLikertScale):
             form.labelMinLikert.data=question.labelMin
             form.labelMaxLikert.data=question.labelMax

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 
-
+from sqlalchemy.ext.declarative import declared_attr
 from . import db, lm
 from app import db 
 import random
@@ -381,7 +381,7 @@ class Question(db.Model):
     maxNumberAttempt = Column(Integer, default = 0)
     
     #: Type of question, discriminate between classes
-    type = Column(String(20))
+    type = Column('type', String(50))
     __mapper_args__ = {'polymorphic_on': type}
     ## Relationships
     #: Question belong to one section
@@ -569,6 +569,11 @@ class QuestionPartTwo(Question):
     '''Question to part two, addoc
     '''
     __mapper_args__ = {'polymorphic_identity': 'partTwo'}
+    
+    @declared_attr
+    def is_real_money(cls):
+        "Is real money column, if not present already."
+        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
 
     def len(self):
         return 2
@@ -577,7 +582,11 @@ class QuestionDecisionOne(Question):
     '''Question to part three, decision one, addoc
     '''
     __mapper_args__ = {'polymorphic_identity': 'decisionOne'}
-
+    
+    @declared_attr
+    def is_real_money(cls):
+        "Is real money column, if not present already."
+        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
 
 
 class QuestionDecisionTwo(Question):
@@ -585,20 +594,40 @@ class QuestionDecisionTwo(Question):
     '''
     __mapper_args__ = {'polymorphic_identity': 'decisionTwo'}
 
+    @declared_attr
+    def is_real_money(cls):
+        "Is real money column, if not present already."
+        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
+
 class QuestionDecisionThree(Question):
     '''Question to part three, decision three, addoc
     '''
     __mapper_args__ = {'polymorphic_identity': 'decisionThree'}
 
+    @declared_attr
+    def is_real_money(cls):
+        "Is real money column, if not present already."
+        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
+
 class QuestionDecisionFour(Question):
     '''Question to part three, decision four, addoc
     '''
     __mapper_args__ = {'polymorphic_identity': 'decisionFour'}
-
+    
+    @declared_attr
+    def is_real_money(cls):
+        "Is real money column, if not present already."
+        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
+        
 class QuestionDecisionFive(Question):
     '''Question to part three, decision five, addoc
     '''
     __mapper_args__ = {'polymorphic_identity': 'decisionFive'}
+
+    @declared_attr
+    def is_real_money(cls):
+        "Is real money column, if not present already."
+        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
 
     def len(self):
         return 1
@@ -619,7 +648,10 @@ class QuestionDecisionSix(Question):
     '''
     __mapper_args__ = {'polymorphic_identity': 'decisionSix'}
 
-
+    @declared_attr
+    def is_real_money(cls):
+        "Is real money column, if not present already."
+        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
 
 
     

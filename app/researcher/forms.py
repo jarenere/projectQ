@@ -58,6 +58,9 @@ class QuestionForm(Form):
         description='none if There isnt correct answer')
     maxNumberAttempt = IntegerField('Number of attempt', validators = [Optional()])
 
+    #:is_money_real for part two and decision
+    is_money_real = BooleanField('It is with money real', default = False)
+
     #: Number of fields in "choice question"
     numberFields = SelectField('number of fields in "choice question"',
         choices=[('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),
