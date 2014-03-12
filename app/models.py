@@ -5,7 +5,7 @@ from __future__ import division
 from . import db, lm
 from app import db 
 import random
-from datetime import datetime
+import datetime
 from sqlalchemy import BigInteger, Integer, Boolean, Unicode,\
         Float, UnicodeText, Text, String, DateTime, Numeric, PickleType,\
         SmallInteger
@@ -31,6 +31,9 @@ def findField(str, root, msg = None):
             msg.append(str + " not found")
         return None
 
+def make_timestamp():
+    return datetime.datetime.utcnow()
+
 class Survey(db.Model):
     '''A table with Survey
     '''
@@ -42,11 +45,11 @@ class Survey(db.Model):
     #: description for this Survey
     description = Column(String(1200), default="")
     #: created timestamp (automatically set)
-    created = Column(DateTime, default = datetime.utcnow())
+    created = Column(DateTime, default = make_timestamp)
     #: DateTime init survey
-    startDate = Column(DateTime, default = datetime.utcnow())
+    startDate = Column(DateTime, default = make_timestamp)
     #: DateTime finish survey
-    endDate = Column(DateTime, default = datetime.utcnow())
+    endDate = Column(DateTime, default = make_timestamp)
     #: max number of respondents, 0 is infinite
     maxNumberRespondents = Column(Integer, default = 0)
     #: Time in minutes that a user has to answer the survey
@@ -195,7 +198,7 @@ class Section(db.Model):
     #:Percentage of Respondents who pass through this section
     percent = Column(Numeric, default = 1)
     #: created timestamp (automatically set)
-    #created = Column(DateTime, default = datetime.utcnow())   
+    #created = Column(DateTime, default = make_timestamp)   
     
     ## Relationships
     #: Section have zero or more questions 
@@ -753,7 +756,7 @@ class User(db.Model):
     #: unique id (automatically generated)
     id = Column(Integer, primary_key = True)
     #: created timestamp (automatically set)
-    created = Column(DateTime, default = datetime.utcnow())
+    created = Column(DateTime, default = make_timestamp)
     #: email address ...
     email = Column(Unicode(length=254), unique=True, nullable=False)
     #: user name
@@ -813,7 +816,7 @@ class Answer(db.Model):
     #: unique id (automatically generated)
     id = Column(Integer, primary_key = True)
     #: created timestamp (automatically set)
-    created = Column(DateTime, default = datetime.utcnow())
+    created = Column(DateTime, default = make_timestamp)
     #: answer Numeric
     answerNumeric = Column(Integer)
     #: answer Text
@@ -862,7 +865,7 @@ class StateSurvey(db.Model):
     #: unique id (automatically generated)
     id = Column(Integer, primary_key = True)
     #: created timestamp (automatically set)
-    created = Column(DateTime, default = datetime.utcnow())
+    created = Column(DateTime, default = make_timestamp)
     #: time when finish the survey
     endDate = Column(DateTime)
     #: ip of user, ipv6, 8 block of FFFF, 8*5-1
@@ -898,7 +901,7 @@ class StateSurvey(db.Model):
 
         if self.index>=len(self.sequence):
             if self.endDate is None:
-                self.endDate = datetime.utcnow()
+                self.endDate = datetime.datetime.utcnow()
                 db.session.add(self)
                 db.session.commit()
             return None
@@ -916,7 +919,7 @@ class StateSurvey(db.Model):
         '''return there isn't more sections to do
         '''
         if self.endDate is None:
-            self.endDate = datetime.utcnow()
+            self.endDate = datetime.datetime.utcnow()
             db.session.add(self)
             db.session.commit()
         return self.index>=len(self.sequence)
