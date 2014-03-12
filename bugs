@@ -29,4 +29,4 @@
 []tiempo no sera bueno si se falla en la validación, tal vez el tiempo global medirlo en python aunque puede haber bastante delay dependiendo de la conexión, otra es implementar wtf-javascript para validar datos via javascript
 []tal vez deba de guardar el orden de las respuestas por si se ha contestado una antes que otra
 []getStateSurvey puede haber problemas si survey_id es invalidad, tal vez validar si la encuesta es valida, tanto en fechas como usuarios
-[]bug con las fechas, siempre la misma cuando se crea una encuesta, me imagino que pasara en otras fechas
+[X]bug con las fechas, siempre la misma cuando se crea una encuesta, me imagino que pasara en otras fechas | 12 de marzo 

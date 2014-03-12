@@ -7,9 +7,9 @@ X hecho
 [X]guardar el tiempo de cada seccion || 10 de marzo
 [X]barra de progreso || 10 de marzo
 [x]obtener ip || 10 de marzo
-[/]evitar que conteste mas tarde (el tiempo en minutos para ahcer una encuesta) (falta parte del usuario, 11 de marzo)
+[X]evitar que conteste mas tarde (el tiempo en minutos para ahcer una encuesta) (falta parte del usuario, 11 de marzo) | terminado el 12 de marzo
 [X]fecha de inicio y fin de la encuesta | 11 de marzo
-[] que hacer cuando un usuario a empezado una encuesta y la fecha se termina (dejo un dia y luego borrar respuestas?)
+[X] que hacer cuando un usuario a empezado una encuesta y la fecha se termina (dejo un dia y luego borrar respuestas?) (solucion la misma que con el tiempo, si empezaste 2 minutos antes, mala suerte!)|| 12 de marzo
 [X]implementar usarios para la pate de investidadores
 [/]limitar el numero maximo de participantes (falta parte del usuario, en la bbdd e investigador hecho)
 [] limpiar un poco el codigo cuando se responden questiones, por ejemplo la p arte de time se podria sacar, solo hacer un commit al final ..., parte de comprobacion de si la respuesta es correcta debería ir en el modelo
@@ -34,3 +34,13 @@ X hecho
 []etiquetas mas amigables del tipo string + id, #ejempo: "esto-es-una-encuesta_123", seria mas legible..
 []no compruebo en todos los casos en los que los investigadores modifican encuestas de otros, deberia de mirarlo con calma y tener en cuenta el desarrollo del arbol para obtener el padre, eso o guardarme un enlace a la raiz, deberia de mirar desde secciones
 []repasar el codico de consent, veo algun first un tanto feo
+[]No mostras encuestas terminadas!! o tal vez mostrar aviso de encuesta ya finalizada o resultados de esta
+[] tal vez guardar a que pregunta pertenence cada encuesta, aunque es algo redundante, bastante
+[]caundo devuelvo none en next section, comprobar el status para dar info al usuario
+[]cron comprobando encuestas no terminadas
+[]logic survey cuando es feura de fecha, dar mas info, igual  que con otros estados de statusSurvey
+[]en el match puedes enfrentarte a un mismo usuario varias veces, habria que evitarlo, pero es un cañazo
+[]creo que me voy a cargar la herencia de las clases
+[x]creo que mal declarada herencia http://docs.sqlalchemy.org/en/rel_0_9/orm/extensions/declarative.html || 12 de marzo
+[]xml incluir flag de dinero real
+[]falta es dinero real en addeditquestion.html
