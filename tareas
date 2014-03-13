@@ -43,4 +43,14 @@ X hecho
 []creo que me voy a cargar la herencia de las clases
 [x]creo que mal declarada herencia http://docs.sqlalchemy.org/en/rel_0_9/orm/extensions/declarative.html || 12 de marzo
 []xml incluir flag de dinero real
-[]falta es dinero real en addeditquestion.html
+[X]falta es dinero real en addeditquestion.html | 13 de marzo
+[]algun cron o algo para nuevos usuarios si son researcher o no
+[]mirar xml creo que no genera part two
+[X]ni funciona ya el exportar|| 13 marzo, resuelto, faltaba tf.name y no solo el descriptor
+[]buscar el "sescription"
+[] que  escriba una secuencia ya por defecto (o incremental o la misma dependiendo de los apartados anteriroes)
+[]mejorar la navegacion para hacer las encuestas (que te maque migas de donde estas)
+[]parece que no controlo el input en la pregunta 5
+[]question parttwo cuando escribo en la bbdd no deberia ser answer de si o no?
+[]hacer una mascara para el estado y las funcioens de acceso a la mascara (añadir quitar elemento)
+[]tal vez añadir a question una referencia a que survey pertence
