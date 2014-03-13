@@ -1,6 +1,7 @@
 from models import StateSurvey, Answer, Section, Question
 import datetime
-from app import db
+import random
+from app import db, models
 def check_survey_duration(statusSurvey):
     # return true if duration survey ok, else remove all answers
     now = datetime.datetime.utcnow()
@@ -26,3 +27,61 @@ def check_survey_duration(statusSurvey):
         db.session.commit()
         return False
     return True
+
+def matching(survey):
+    def match_decision_one():
+        pass
+
+    DECISION_ONE=49
+    # DEBEN SER PARES!! Y LOS USUARIOS SELECCIONADOS DEL MISMO GRUPO (PAGO Y NO PAGO)
+    users = models.User.query.filter(models.User.id==models.StateSurvey.user_id,\
+         models.StateSurvey.status==models.StateSurvey.STATUS_FINISH,\
+         models.StateSurvey.survey_id==survey.id)
+    l=[]
+    for i in range(users.count()):
+        l.append(users[i].id)
+    l_aux=l[:]
+    # pop two in two
+    for i in range(len(l_aux)/2):
+        userA = random.choice(l_aux)
+        l_aux.remove(userA)
+        userB = random.choice(l_aux)
+        l_aux.remove(userB)
+        # answerA =db.session.query(models.Answer.id).filter(models.Answer.question_id==49, models.Answer.user_id==2).first()
+        answerA = models.Answer.query.filter_by(user_id=userA,question_id=DECISION_ONE).first()
+        answerB = models.Answer.query.filter_by(user_id=userB,question_id=DECISION_ONE).first()
+        match = models.Match(userA=userA, userB=userB,\
+            answerA = answerA.id, answerB = answerB.id,\
+            survey=survey.id)
+        match.decisionOne()
+        db.session.add(match)
+    
+    l_aux=l[:]
+    for i in range(len(l_aux)/2):
+        userA = random.choice(l_aux)
+        l_aux.remove(userA)
+        userB = random.choice(l_aux)
+        l_aux.remove(userB)
+        answerA = models.Answer.query.filter_by(user_id=userA,question_id=DECISION_ONE).first()
+        answerB = models.Answer.query.filter_by(user_id=userB,question_id=DECISION_ONE).first()
+        match = models.Match(userA=userA, userB=userB,\
+            answerA = answerA.id, answerB = answerB.id,\
+            survey=survey.id)
+        match.decisionTwo()
+        db.session.add(match)
+    db.session.commit()
+
+    l_aux=l[:]
+    for i in range(len(l_aux)/2):
+        userA = random.choice(l_aux)
+        l_aux.remove(userA)
+        userB = random.choice(l_aux)
+        l_aux.remove(userB)
+        answerA = models.Answer.query.filter_by(user_id=userA,question_id=DECISION_ONE).first()
+        answerB = models.Answer.query.filter_by(user_id=userB,question_id=DECISION_ONE).first()
+        match = models.Match(userA=userA, userB=userB,\
+            answerA = answerA.id, answerB = answerB.id,\
+            survey=survey.id)
+        match.decisionThree()
+        db.session.add(match)
+    db.session.commit()

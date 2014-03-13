@@ -130,9 +130,8 @@ def exportSurvey(id_survey):
         #el consentimiento pertence a esa encuesta
         xml = survey.to_xml()
         tf = tempfile.NamedTemporaryFile()
-        xml.write(tf,encoding="ISO-8859-1", method="xml")
+        xml.write(tf.name,encoding="ISO-8859-1", method="xml")
         flash('Survey exported')
-        flash (tf.name)
         return send_file(tf, as_attachment=True, attachment_filename=survey.title+'.xml')
     else:
         flash ("Survey wrong")
@@ -376,21 +375,21 @@ def selectType(form):
         l = [form.answer1.data,
         form.answer2.data]
         question = QuestionPartTwo(choices = l[0:2],
-            is_money_real=form.is_money_real.data)
+            is_real_money=form.is_real_money.data)
     if form.questionType.data == 'decisionOne':
-        question = QuestionDecisionOne(is_money_real=form.is_money_real.data)
+        question = QuestionDecisionOne(is_real_money=form.is_real_money.data)
     if form.questionType.data == 'decisionTwo':
-        question = QuestionDecisionTwo(is_money_real=form.is_money_real.data)
+        question = QuestionDecisionTwo(is_real_money=form.is_real_money.data)
     if form.questionType.data == 'decisionThree':
-        question = QuestionDecisionThree(is_money_real=form.is_money_real.data)
+        question = QuestionDecisionThree(is_real_money=form.is_real_money.data)
     if form.questionType.data == 'decisionFour':
-        question = QuestionDecisionFour(is_money_real=form.is_money_real.data)
+        question = QuestionDecisionFour(is_real_money=form.is_real_money.data)
     if form.questionType.data == 'decisionFive':
         l = [form.answer1.data]
         question = QuestionDecisionFive(choices = l[0:1],
-            is_money_real=form.is_money_real.data)
+            is_real_money=form.is_real_money.data)
     if form.questionType.data == 'decisionSix':
-        question = QuestionDecisionSix(is_money_real=form.is_money_real.data)
+        question = QuestionDecisionSix(is_real_money=form.is_real_money.data)
            
     question.text = form.text.data
     question.required = form.required.data
@@ -484,21 +483,21 @@ def editQuestion(id_survey, id_section,id_question):
             l= question.choices
             form.answer1.data = l[0]
             form.answer2.data = l[1]
-            form.is_money_real.data = question.is_money_real
+            form.is_real_money.data = question.is_real_money
         if isinstance (question,QuestionDecisionOne):
-            form.is_money_real.data = question.is_money_real
+            form.is_real_money.data = question.is_real_money
         if isinstance (question,QuestionDecisionTwo):
-            form.is_money_real.data = question.is_money_real
+            form.is_real_money.data = question.is_real_money
         if isinstance (question,QuestionDecisionThree):
-            form.is_money_real.data = question.is_money_real
+            form.is_real_money.data = question.is_real_money
         if isinstance (question,QuestionDecisionFour):
-            form.is_money_real.data = question.is_money_real
+            form.is_real_money.data = question.is_real_money
         if isinstance (question,QuestionDecisionFive):
             l= question.choices
             form.answer1.data = l[0]
-            form.is_money_real.data = question.is_money_real
+            form.is_real_money.data = question.is_real_money
         if isinstance (question,QuestionDecisionSix):
-            form.is_money_real.data = question.is_money_real
+            form.is_real_money.data = question.is_real_money
 
         if isinstance(question, QuestionLikertScale):
             form.labelMinLikert.data=question.labelMin

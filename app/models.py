@@ -665,6 +665,8 @@ class Match(db.Model):
     __tablename__ = 'match'
     #: unique id (automatically generated)
     id = Column(Integer, primary_key = True)
+    #: survey
+    survey = Column(Integer,ForeignKey('survey.id'))
     #: user A
     userA = Column(Integer, ForeignKey('user.id'))
     #:user B
@@ -713,35 +715,23 @@ class Match(db.Model):
             self.win = self.userB
             self.moneyB = AWARD + (INIT_MONEY - self.cashInitB())
             self.moneyA = (INIT_MONEY - self.cashInitA())
-        print "ganador:", self.win
-        print "percentA", percentA
-        print "dinero jugadorA:", self.moneyA
-        print "dinero jugadorB:", self.moneyB
-
 
     def decisionTwo(self):
         INIT_MONEY = 10
         CONSTANT_FUND = 0.8
+        self.type = 'decisionTwo'
         fund = (self.cashInitA()+self.cashInitB())*CONSTANT_FUND
         self.moneyA = fund + INIT_MONEY - self.cashInitA()
         self.moneyB = fund + INIT_MONEY - self.cashInitB()
-        print "initA", self.cashInitA()
-        print "initB", self.cashInitB()
-        print "fondo", fund
-        print "moneyA", self.moneyA
-        print "moneyB", self.moneyB
 
     def decisionThree(self):
         INIT_MONEY = 10
         CONSTANT_FUND = 1.2
+        self.type = 'decisionThree'
         fund = (self.cashInitA()+self.cashInitB())*CONSTANT_FUND
         self.moneyA = fund + INIT_MONEY - self.cashInitA()
         self.moneyB = fund + INIT_MONEY - self.cashInitB()
-        print "initA", self.cashInitA()
-        print "initB", self.cashInitB()
-        print "fondo", fund
-        print "moneyA", self.moneyA
-        print "moneyB", self.moneyB
+
 
     def decisionFour(self, section_id):
         '''userB decision to accept o refuse, section_id is where store question type decisisonfive

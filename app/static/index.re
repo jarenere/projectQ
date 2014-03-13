@@ -8,6 +8,12 @@ A pesar de no estar hecha toda la encuesta, llevo entre 45-60 minutos creándola
 ###Investigadores
 Por ahora cualquiera puede crear una encuesta y editar las encuestas creadas por otros, para ello vamos a **researcher**->New Survey. En Title, pues el título de la encuesta, descripción de la encuesta. Para rellenar este campo se utiliza el lenguaje Markdown, que es una sencilla forma de dar formato a un texto para una pagina web. 
 
+    Se puede limitar el numero maximo de usuarios que realicen la encuesta
+
+    Se puede fijar las fechas de publicacion de la encuesta
+
+    Se puede fijar el tiempo máximo para la realización de la encuesta 
+
 Una vez creada la encuesta, se puende añadir consentimiendos que los usuarios deben aceptar para realizar la encuesta.
 
 **Add section** sirve para añadir una sección a la encuesta, a su vez una sección puede tener mas subsecciones. El campo *Sequence* indica el orden de la sección en la que deseas que aparezca la encuesta. Si dos secciones tienen la mismo Sequence, se eligirá al azar el orden entre las secciones con la misma secuencia.

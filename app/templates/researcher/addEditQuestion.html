@@ -68,6 +68,9 @@
                         {{ render_field3(form.answer8) }}
                         {{ render_field3(form.answer9) }}
                     </div>
+                    <div id="is_real_money">
+                        {{ render_field3(form.is_real_money)}}
+                    </div>
                     <td></td>
                     <td>
                         {% if addQuestion %}
@@ -94,6 +97,8 @@
         $("#divAnswer1").hide();
         $("#divAnswer2").hide();
         $("#divAnswers").hide();
+        $("#is_real_money").hide();
+
         if (selValue=="text")
         {
             //document.getElementById("divAnswer").style.display="none";; 
@@ -101,7 +106,6 @@
         }
         if (selValue=="choice")
         {
-            //document.getElementById("divAnswer").style.display="none";; 
             $("#divChoices").show();
             $("#divAnswer1").show();
             $("#divAnswer2").show();
@@ -110,19 +114,42 @@
         }
         if (selValue=="likertScale")
         {
-            //document.getElementById("divAnswer").style.display="none";; 
             $("#divLikert").show();
         }
         if (selValue=="partTwo")
         {
-            //document.getElementById("divAnswer").style.display="none";; 
             $("#divAnswer1").show();
             $("#divAnswer2").show();
+            $("#is_real_money").show();
+        }
+        if (selValue=="decisionOne")
+        {
+            $("#is_real_money").show();
+        }
+        if (selValue=="decisionOne")
+        {
+            $("#is_real_money").show();
+        }
+        if (selValue=="decisionTwo")
+        {
+            $("#is_real_money").show();
+        }
+        if (selValue=="decisionThree")
+        {
+            $("#is_real_money").show();
+        }
+        if (selValue=="decisionFour")
+        {
+            $("#is_real_money").show();
         }
         if (selValue=="decisionFive")
         {
-            //document.getElementById("divAnswer").style.display="none";; 
             $("#divAnswer1").show();
+            $("#is_real_money").show();
+        }
+        if (selValue=="decisionSix")
+        {
+            $("#is_real_money").show();
         }
     }
     window.onload = function() {

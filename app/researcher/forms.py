@@ -59,7 +59,7 @@ class QuestionForm(Form):
     maxNumberAttempt = IntegerField('Number of attempt', validators = [Optional()])
 
     #:is_money_real for part two and decision
-    is_money_real = BooleanField('It is with money real', default = False)
+    is_real_money = BooleanField('It is with money real', default = False)
 
     #: Number of fields in "choice question"
     numberFields = SelectField('number of fields in "choice question"',
@@ -98,7 +98,7 @@ class QuestionForm(Form):
     def validate(self):
         if not Form.validate(self):
             return False
-        if self.questionType.data == 'Choice':
+        if self.questionType.data == 'choice':
             l = [self.answer1,
             self.answer2,
             self.answer3,
@@ -114,7 +114,7 @@ class QuestionForm(Form):
                     l[i].errors.append('The field can not be empty')
                     state = False
             return state
-        if self.questionType.data == 'PartTwo':
+        if self.questionType.data == 'partTwo':
             l = [self.answer1,
             self.answer2]
             state = True
@@ -123,7 +123,7 @@ class QuestionForm(Form):
                     l[i].errors.append('The field can not be empty')
                     state = False
             return state
-        if self.questionType.data == 'DecisionFive':
+        if self.questionType.data == 'decisionFive':
             l = [self.answer1]
             state = True
             for i in  range (1):
