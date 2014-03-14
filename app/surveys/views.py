@@ -16,9 +16,9 @@ from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField
 from wtforms.validators import Required, Regexp, Optional
 import datetime
+from . import blueprint
 
 
-blueprint = Blueprint('account', __name__)
 
 
 @blueprint.route('/', methods=['GET', 'POST'])
@@ -31,7 +31,7 @@ def index():
     now = datetime.datetime.utcnow()
     surveys = Survey.query.filter(Survey.startDate<now,Survey.endDate>now).\
             order_by(Survey.startDate)
-    return render_template('/account/index.html',
+    return render_template('/surveys/index.html',
         title = 'Index',
         surveys = surveys)
 
@@ -46,16 +46,16 @@ def logicSurvey(id_survey):
     survey  = Survey.query.get(id_survey)
     if not(survey.startDate < now and survey.endDate >now):
         flash ("access denied, html 403")
-        return redirect(url_for('account.index'))
+        return redirect(url_for('surveys.index'))
 
     if (stateSurvey.consented == False):
-        return redirect(url_for('account.showConsent', id_survey = id_survey))
+        return redirect(url_for('surveys.showConsent', id_survey = id_survey))
     section = stateSurvey.nextSection()
     if section ==None:
-        return render_template('/account/finish.html', 
+        return render_template('/surveys/finish.html', 
             title = 'Finish')
-    return redirect (url_for('account.showQuestions',id_survey=id_survey,id_section=section.id))
-    # return redirect (url_for('account.index'))
+    return redirect (url_for('surveys.showQuestions',id_survey=id_survey,id_section=section.id))
+    # return redirect (url_for('surveys.index'))
 
 @blueprint.route('/survey/<int:id_survey>/consent', methods=['GET', 'POST'])
 @login_required
@@ -66,9 +66,9 @@ def showConsent(id_survey):
     if request.method == 'POST':
         stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
         stateSurvey.accept_consent()
-        return redirect(url_for('account.logicSurvey',id_survey = id_survey))
+        return redirect(url_for('surveys.logicSurvey',id_survey = id_survey))
     survey = Survey.query.get(id_survey)
-    return render_template('/account/consent.html',
+    return render_template('/surveys/consent.html',
         title = survey.title,
         survey = survey,
         consent = survey.consents.first())
@@ -176,7 +176,7 @@ def showQuestions(id_survey, id_section):
     section = stateSurvey.nextSection()
     if section is None or section.id !=id_section:
         flash ("access denied, html 403")
-        return redirect(url_for('account.index'))
+        return redirect(url_for('surveys.index'))
         
     survey = Survey.query.get(id_survey)
     section = Section.query.get(id_section)
@@ -215,7 +215,7 @@ def showQuestions(id_survey, id_section):
                     if not answer.answerAttempt():
                         if answer.isMoreAttempt():
                             flash ("answer wrong")
-                            return render_template('/account/showQuestions.html',
+                            return render_template('/surveys/showQuestions.html',
                                 title = survey.title,
                                 survey = survey,
                                 section = section,
@@ -290,11 +290,11 @@ def showQuestions(id_survey, id_section):
 
         stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
         stateSurvey.finishedSection(form.time.data)
-        return redirect(url_for('account.logicSurvey',id_survey = id_survey))
+        return redirect(url_for('surveys.logicSurvey',id_survey = id_survey))
 
     stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
 
-    return render_template('/account/showQuestions.html',
+    return render_template('/surveys/showQuestions.html',
             title = survey.title,
             survey = survey,
             section = section,

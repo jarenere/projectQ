@@ -6,7 +6,7 @@
         {% for survey in surveys %}
             <table class="table table-hover">
                 <td>
-                    <h2><a href="{{ url_for('account.logicSurvey', id_survey = survey.id) }}">{{survey.title}}</a></h2>
+                    <h2><a href="{{ url_for('surveys.logicSurvey', id_survey = survey.id) }}">{{survey.title}}</a></h2>
                     {% filter markdown %}{{survey.description}}{% endfilter %}
                 </td>
             </table>

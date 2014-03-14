@@ -40,8 +40,8 @@ from app import views
 from app.researcher.researcher import blueprint as researcher
 app.register_blueprint(researcher, url_prefix='/researcher')
 
-from app.account.views import blueprint as account
-app.register_blueprint(account, url_prefix='/account')
+from app.surveys.views import blueprint as surveys_blueprint
+app.register_blueprint(surveys_blueprint, url_prefix='/surveys')
 
 # from app.auth.views import blueprint as auth
 # app.register_blueprint(auth, url_prefix='/auth')
