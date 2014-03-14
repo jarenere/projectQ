@@ -78,12 +78,12 @@ def generate_form(questions):
     '''dynamically generates the forms for surveys
     '''
     class AnswerForm(Form):
-        time = HiddenField('time')
+        time = HiddenField('time',default=0)
 
     for question in questions:
 
-        setattr(AnswerForm,"globalTimec"+str(question.id),HiddenField('globalTimec'+str(question.id)))
-        setattr(AnswerForm,"differentialTimec"+str(question.id),HiddenField('differentialTimec'+str(question.id)))
+        setattr(AnswerForm,"globalTimec"+str(question.id),HiddenField('globalTimec'+str(question.id),default=0))
+        setattr(AnswerForm,"differentialTimec"+str(question.id),HiddenField('differentialTimec'+str(question.id),default=0))
 
         #added "c" to that the key is valid
         #First element must be a string, otherwise fail to valid choice
