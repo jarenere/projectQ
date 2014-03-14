@@ -70,8 +70,8 @@ def editSurvey(id_survey):
         flash ("Survey wrong")
         return redirect(url_for('researcher.index'))
     if survey.researcher != g.user:
-        flash ("access denied, html 403")
-        return redirect(url_for('researcher.index'))
+        flash ("access denied")
+        abort (403)
     sections = survey.sections.all()
     form = SurveyForm()
     if form.validate_on_submit():
@@ -103,8 +103,8 @@ def editSurvey(id_survey):
 def deleteSurvey(id_survey):
     survey = Survey.query.get(id_survey)
     if survey is not None and survey.researcher != g.user:
-        flash ("access denied, html 403")
-        return redirect(url_for('researcher.index'))
+        flash ("access denied")
+        abort (403)
     if survey is not None:
         db.session.delete(survey)
         db.session.commit()
@@ -124,8 +124,8 @@ def exportSurvey(id_survey):
     '''
     survey = Survey.query.get(id_survey)
     if survey is not None and survey.researcher != g.user:
-        flash ("access denied, html 403")
-        return redirect(url_for('researcher.index'))
+        flash ("access denied")
+        abort (403)
     if survey is not None:
         #el consentimiento pertence a esa encuesta
         xml = survey.to_xml()
@@ -148,8 +148,8 @@ def addConsent(id_survey):
     form = EditConsentForm()
     survey = Survey.query.get(id_survey)
     if survey is not None and survey.researcher != g.user:
-        flash ("access denied, html 403")
-        return redirect(url_for('researcher.index'))
+        flash ("access denied")
+        abort (403)
 
     if survey is None:
         flash('Survey not found.')
@@ -179,8 +179,8 @@ def addConsent(id_survey):
 def deleteConsent(id_survey,id_consent):
     consent = Consent.query.filter(Consent.survey_id == id_survey, Consent.id == id_consent).first()
     if consent is not None and consent.researcher != g.user:
-        flash ("access denied, html 403")
-        return redirect(url_for('researcher.index'))
+        flash ("access denied")
+        abort (403)
     if consent is not None:
         db.session.delete(consent)
         db.session.commit()
@@ -197,8 +197,8 @@ def deleteConsent(id_survey,id_consent):
 def editConsents(id_survey, id_consent):
     consent = Consent.query.filter(Consent.survey_id == id_survey, Consent.id == id_consent).first()
     if consent is not None and consent.researcher != g.user:
-        flash ("access denied, html 403")
-        return redirect(url_for('researcher.index'))
+        flash ("access denied")
+        abort (403)
 
     if consent is None:
         flash('Consent wrong') 
@@ -229,8 +229,8 @@ def addSection(id_survey):
     survey = Survey.query.get(id_survey)
     
     if survey is not None and survey.researcher != g.user:
-        flash ("access denied, html 403")
-        return redirect(url_for('researcher.index'))
+        flash ("access denied")
+        abort (403)
 
     if survey is None:
         flash('Survey not found.')
@@ -265,8 +265,8 @@ def editSection(id_survey, id_section):
 
     survey = Survey.query.get(id_survey)
     if section is not None and survey.researcher != g.user:
-        flash ("access denied, html 403")
-        return redirect(url_for('researcher.index'))
+        flash ("access denied")
+        abort (403)
 
     if section is None:
         flash('Section wrong') 
@@ -305,8 +305,8 @@ def deleteSection(id_survey,id_section):
     
     survey = Survey.query.get(id_survey)
     if section is not None and survey.researcher != g.user:
-        flash ("access denied, html 403")
-        return redirect(url_for('researcher.index'))
+        flash ("access denied")
+        abort (403)
 
     if section is not None:
         #el consentimiento pertence a esa encuesta

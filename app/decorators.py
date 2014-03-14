@@ -1,6 +1,6 @@
 from flask.ext.login import current_user
 from functools import wraps
-from flask import render_template
+from flask import abort
 from models import ROLE_ADMIN, ROLE_RESEARCHER, ROLE_USER
 
 
@@ -11,5 +11,5 @@ def researcher_required(f):  # pragma: no cover
         if current_user.is_researcher():
             return f(*args, **kwargs)
         else:
-            return render_template('403.html')
+            return abort(403)
     return decorated_function
