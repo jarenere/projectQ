@@ -47,10 +47,6 @@ def verPreguntas():
             for index,i in enumerate(q.choicesPartTwo):
                 print "  ", index, i
 
-def borrarAnswers():
-    for ans in models.Answer.query.all():
-        db.session.delete(ans)
-    db.session.commit()
 
 def generateUserFake(count=100):
     from sqlalchemy.exc import IntegrityError
@@ -99,10 +95,11 @@ def borrarMatching():
 
 
 
-def generateAnswerFakePart3(id_survey):
+def generateAnswerFakePart3(id_survey, number = 6):
     #doy por echo que existen ya lso 100 usuarios de generarUserFake1
     #relleno aleatoriamente uan encuesta con preguntas del tipo decisiones
     import random
+    random.seed()
     l=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10]
     l2=[0,2,4,6,8,10,12,14,16,18,20]
     question1 = models.QuestionDecisionOne.query.filter(models.QuestionDecisionOne.section_id==26).first()
@@ -112,10 +109,10 @@ def generateAnswerFakePart3(id_survey):
     questions5 = models.QuestionDecisionFive.query.filter(models.QuestionDecisionFive.section_id==30)
     question6 = models.QuestionDecisionSix.query.filter(models.QuestionDecisionSix.section_id==31).first()
 
-    for i in range(100):
+    for i in range(number):
         user = models.User.query.filter(models.User.nickname=="user"+str(i)).first()
         ss =models.StateSurvey.getStateSurvey(id_survey,user,"192.168.0.0")
-        ss.status=models.StateSurvey.STATUS_FINISH
+        ss.status= ss.status | models.StateSurvey.FINISH
         db.session.add(ss)
         answer1=models.Answer(answerNumeric=random.choice(l),user=user,question=question1)
         db.session.add(answer1)

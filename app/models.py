@@ -634,7 +634,7 @@ class QuestionDecisionFive(Question):
 
     @staticmethod
     def getIntverval(section_id):
-        '''return a list witch all interval
+        '''return a list witch all interval(money,question_id)
         '''
         l =[]
         for q in Section.query.get(section_id).questions:
@@ -738,11 +738,12 @@ class Match(db.Model):
             if userA win, the userB have accepted the money
         '''
         MONEY = 20
+        self.type = 'decisisonFour'
         interval = QuestionDecisionFive.getIntverval(section_id)
         for i in interval:
             if int(i[0])==self.cashInitA():
-            #in i[1] if of question
                 answer = Answer.query.filter(Answer.question_id == i[1],Answer.user_id == self.userB).first()
+                self.answerB =answer.id
                 if answer.answerYN:
                     self.win = self.userA
                     self.moneyA = MONEY - self.cashInitA()
@@ -751,24 +752,21 @@ class Match(db.Model):
                     self.win = self.userB
                     self.moneyA = 0
                     self.moneyB = 0
-                print "win", self.win
-                print "initA", self.cashInitA()
-                #print "initB", self.cashInitB()
-                print "moneyA", self.moneyA
-                print "moneyB", self.moneyB
                 return
-        
-
-
-
-  #          stateSurvey = StateSurvey.query.filter(StateSurvey.survey_id == id_survey, 
-  #               StateSurvey.user_id == user.id).first()
-
-
+ 
     def decisionFourAcpet(self):
         '''return if userB accept the division of money
         '''
         return self.win ==self.userA
+
+    def decision_six(self):
+        MONEY = 20
+        self.type = 'decisisonSix'
+        self.moneyA = MONEY - self.cashInitA()
+        self.moneyB = self.cashInitA()
+
+
+
 
 
 
@@ -889,13 +887,17 @@ class Answer(db.Model):
 class StateSurvey(db.Model):
     '''A table that saves the state of a survey  
     '''
-    STATUS_FINISH = 1
-    STATUS_NOT_FINISH = 0
+
+    NONE = 0x00
+    # finish
+    FINISH = 0x01
     #: finished out of time
-    STATUS_TIMED_OUT = 2
+    TIMED_OUT = 0x02
     #: finished out of date
-    STATUS_END_DATE_OUT = 3
-    
+    END_DATE_OUT = 0x04
+    #: do matching
+    MATCHING = 0X08
+
     __tablename__ = 'stateSurvey'
     #: unique id (automatically generated)
     id = Column(Integer, primary_key = True)
@@ -910,7 +912,7 @@ class StateSurvey(db.Model):
     #: Consent accept or not
     consented = Column(Boolean, default=False)
     #: finished or not
-    status = Column(Integer, default = STATUS_NOT_FINISH)
+    status = Column(Integer, default = NONE)
     #: Sequence of sections are traversed (it is a list of secction to go through )
     sequence = Column(PickleType)
     #: list with time/section, maybe better crearte new table, in ms
@@ -937,22 +939,23 @@ class StateSurvey(db.Model):
                 db.session.delete(ans)
         db.session.commit()
 
-    def check_survey_duration(self):
+    def check_survey_duration_and_date(self):
         # return true if duration survey ok, else remove all answers
         now = datetime.datetime.utcnow()
         start = self.start_date
         elapsedTime = now - start
-        if elapsedTime.total_seconds()>self.survey.duration*60 and \
-                self.status==StateSurvey.STATUS_NOT_FINISH:
-            # time has run out, delete all cuestions
-            self.status = StateSurvey.STATUS_TIMED_OUT
-            db.session.add(self)
-            db.session.commit()
-            self._delete_answers()
-            return False
+        if self.survey.is_duration():
+            if elapsedTime.total_seconds()>self.survey.duration*60 and \
+                    not (self.status & StateSurvey.FINISH):
+                # time has run out, delete all cuestions
+                self.status = StateSurvey.TIMED_OUT | StateSurvey.FINISH
+                db.session.add(self)
+                db.session.commit()
+                self._delete_answers()
+                return False
         if now > self.survey.endDate:
             #answer out of date
-            self.status=StateSurvey.STATUS_END_DATE_OUT
+            self.status = StateSurvey.END_DATE_OUT | StateSurvey.FINISH
             db.session.add(self)
             db.session.commit()
             self._delete_answers()
@@ -975,10 +978,11 @@ class StateSurvey(db.Model):
     def nextSection(self):
         '''Return next Section to do, None if there isn't
         '''
-        if self.index>=len(self.sequence) or self.status==StateSurvey.STATUS_TIMED_OUT or\
-                        self.status==StateSurvey.STATUS_END_DATE_OUT:
-            if self.status == StateSurvey.STATUS_NOT_FINISH:
-                self.status = StateSurvey.STATUS_FINISH
+        # if self.index>=len(self.sequence) or self.status==StateSurvey.STATUS_TIMED_OUT or\
+        #                 self.status==StateSurvey.STATUS_END_DATE_OUT:
+        if self.index>=len(self.sequence) or self.status & StateSurvey.FINISH:
+            if not (self.status & StateSurvey.FINISH):
+                self.status = self.status | StateSurvey.FINISH
                 self.endDate = datetime.datetime.utcnow()
                 db.session.add(self)
                 db.session.commit()
@@ -986,7 +990,9 @@ class StateSurvey(db.Model):
         section = Section.query.get(self.sequence[self.index])
         return section
 
-       
+    def is_finished(self):
+         return StateSurvey.status & StateSurvey.FINISH >0
+
     def finishedSection(self,time):
         '''Section is finished, index+1
         '''
@@ -995,8 +1001,7 @@ class StateSurvey(db.Model):
         l.append((self.sequence[self.index], time))
         self.sectionTime = l
         self.index=self.index+1
-        if self.survey.is_duration():
-            self.check_survey_duration()
+        self.check_survey_duration_and_date()
         db.session.add(self)
         db.session.commit()
 
