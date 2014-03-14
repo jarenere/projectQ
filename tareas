@@ -14,17 +14,17 @@ X hecho
 [/]limitar el numero maximo de participantes (falta parte del usuario, en la bbdd e investigador hecho)
 [] limpiar un poco el codigo cuando se responden questiones, por ejemplo la p arte de time se podria sacar, solo hacer un commit al final ..., parte de comprobacion de si la respuesta es correcta debería ir en el modelo
 [X] en next section compruebo si vacio el camino, no sería mejor cuando genero el arbol? desde luego que si| 10 de marzo
-[] parte de pago y no pagos, tal vez algun flag en las preguntas
-[]parte del match
+[/] parte de pago y no pagos, tal vez algun flag en las preguntas | 13 de marzo flag de pago real
+[/]parte del match | 14 de marzo a medias
 [x]generar preguntas no obligatorias | 11 de marzo
 [x]implementar que un usuario no pueda entrar a cualquier seccion || 11 de marzo
 [/]se peude acceder a encuestas aun no publicadas, validar fecha y numero de usuarios, evitarlo! || solo hecho la fecha
 [X]sacar la validacion del usuario || 10/11 de marzo
-[]implementar paginas de errores
+[X]implementar paginas de errores ||14 marzo
 []traduccion
 []encuestas multidioma
 [X]cuando se modifica una pregunta, que el select field este en posición correcta || 11 de marzo
-[]cuando se miden tiempos de preguntas, podria mirar si se vuelve a la pregunta ver si ya se ha rellenado el tiempo y sino actualizarlo de manera conveniente, guardando alguan variable
+[X]cuando se miden tiempos de preguntas, podria mirar si se vuelve a la pregunta ver si ya se ha rellenado el tiempo y sino actualizarlo de manera conveniente, guardando alguan variable || 14 de marzo
 []cuando importas de xml dar mas info cuando hay un campo que falta
 []copiar seccion
 []tengo un par de"mierdas" en models, ver que hace, xd
@@ -40,6 +40,7 @@ X hecho
 []cron comprobando encuestas no terminadas
 []logic survey cuando es feura de fecha, dar mas info, igual  que con otros estados de statusSurvey
 []en el match puedes enfrentarte a un mismo usuario varias veces, habria que evitarlo, pero es un cañazo
+[]en el match decision 4-5 te puedes enfrentar a ti mismo, xd
 []creo que me voy a cargar la herencia de las clases
 [x]creo que mal declarada herencia http://docs.sqlalchemy.org/en/rel_0_9/orm/extensions/declarative.html || 12 de marzo
 []xml incluir flag de dinero real
@@ -52,5 +53,13 @@ X hecho
 []mejorar la navegacion para hacer las encuestas (que te maque migas de donde estas)
 []parece que no controlo el input en la pregunta 5
 []question parttwo cuando escribo en la bbdd no deberia ser answer de si o no?
-[]hacer una mascara para el estado y las funcioens de acceso a la mascara (añadir quitar elemento)
+[/]hacer una mascara para el estado y las funcioens de acceso a la mascara (añadir quitar elemento) | 14 de febero, sin funciones
 []tal vez añadir a question una referencia a que survey pertence
+[]crear algun check para preguntas tipo 4-5 (rango de valores por ejemplo)
+[]comprobar la fecha validad de la encuesta con un decorator
+[]cuando lanzo encuesta buscar matching y rellenar variables globales
+[]falta premios del matching
+[]falta parte2 del matching
+[]en preguntas con respeusta esperada, meto las demas preguntas tambien en la bbdd
+[]para respuesta esperada tal vez generar un validator, el calculo del tiempo se generara mal seguramente, proque no miro en la bbdd los datos, cosa a hacer
+[]cuidado con la medicion de tiempos de preguntas con respuesta correcta
