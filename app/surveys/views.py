@@ -11,6 +11,7 @@ from app.models import QuestionYN ,QuestionLikertScale, QuestionPartTwo, Questio
   QuestionDecisionFive, QuestionDecisionSix
 from app.models import StateSurvey
 from app.models import Answer
+from app.main.errors import MyCustom600
 
 from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField
@@ -18,6 +19,7 @@ from wtforms.validators import Required, Regexp, Optional
 from wtforms import ValidationError
 import datetime
 from . import blueprint
+
 
 
 
@@ -43,18 +45,20 @@ def logicSurvey(id_survey):
     Function that decides which is the next step in the survey
     '''
     stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user,request.remote_addr)
-    now = datetime.datetime.utcnow()
-    survey  = Survey.query.get(id_survey)
-    if not(survey.startDate < now and survey.endDate >now):
-        flash ("access denied, html 403")
-        return redirect(url_for('surveys.index'))
+    if not stateSurvey.check_survey_duration_and_date():
+        flash ("access denied")
+        raise MyCustom600
 
     if (stateSurvey.consented == False):
         return redirect(url_for('surveys.showConsent', id_survey = id_survey))
     section = stateSurvey.nextSection()
     if section ==None:
-        return render_template('/surveys/finish.html', 
-            title = 'Finish')
+        if stateSurvey.status & StateSurvey.END_DATE_OUT or stateSurvey.status & StateSurvey.TIMED_OUT:
+            flash ("access denied")
+            raise MyCustom600
+        else:
+            return render_template('/surveys/finish.html', 
+                title = 'Finish')
     return redirect (url_for('surveys.showQuestions',id_survey=id_survey,id_section=section.id))
     # return redirect (url_for('surveys.index'))
 
@@ -215,8 +219,8 @@ def showQuestions(id_survey, id_section):
     stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user,request.remote_addr)
     section = stateSurvey.nextSection()
     if section is None or section.id !=id_section:
-        flash ("access denied, html 403")
-        return redirect(url_for('surveys.index'))
+        flash ("access denied")
+        raise MyCustom600
         
     survey = Survey.query.get(id_survey)
     section = Section.query.get(id_section)

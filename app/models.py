@@ -902,7 +902,7 @@ class StateSurvey(db.Model):
     #: created timestamp (automatically set)
     created = Column(DateTime, default = make_timestamp)
     #: init when acept the consents
-    start_date = Column(DateTime)
+    start_date = Column(DateTime, default = make_timestamp)
     #: time when finish the survey
     endDate = Column(DateTime)
     #: ip of user, ipv6, 8 block of FFFF, 8*5-1
@@ -1015,5 +1015,6 @@ class StateSurvey(db.Model):
             stateSurvey = StateSurvey(survey = Survey.query.get(id_survey),
                             user = user, sequence =list, ip = ip, sectionTime = [])
             db.session.add(stateSurvey)
-            db.session.commit()  
+            db.session.commit()
+        stateSurvey.check_survey_duration_and_date()  
         return stateSurvey
