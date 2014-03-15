@@ -27,8 +27,8 @@ X hecho
 [X]cuando se miden tiempos de preguntas, podria mirar si se vuelve a la pregunta ver si ya se ha rellenado el tiempo y sino actualizarlo de manera conveniente, guardando alguan variable || 14 de marzo
 []cuando importas de xml dar mas info cuando hay un campo que falta
 []copiar seccion
-[]tengo un par de"mierdas" en models, ver que hace, xd
-[]getStateSurvey comprobar fecha tambien y sino es valido eliminar respeustas y devolver none
+[x]tengo un par de"mierdas" en models, ver que hace, xd | 15 de marzo
+[X]getStateSurvey comprobar fecha tambien y sino es valido eliminar respeustas y devolver none | 15 de abril
 []consentimiento vacios, o mas de uno, controlarlo
 []quitar el numero de campos en las preguntas choice
 []etiquetas mas amigables del tipo string + id, #ejempo: "esto-es-una-encuesta_123", seria mas legible..
@@ -48,11 +48,11 @@ X hecho
 []algun cron o algo para nuevos usuarios si son researcher o no
 []mirar xml creo que no genera part two
 [X]ni funciona ya el exportar|| 13 marzo, resuelto, faltaba tf.name y no solo el descriptor
-[]buscar el "sescription"
-[] que  escriba una secuencia ya por defecto (o incremental o la misma dependiendo de los apartados anteriroes)
-[]mejorar la navegacion para hacer las encuestas (que te maque migas de donde estas)
-[]parece que no controlo el input en la pregunta 5
-[]question parttwo cuando escribo en la bbdd no deberia ser answer de si o no?
+[X]buscar el "sescription" | 15 de marzo
+[X] que  escriba una secuencia ya por defecto (o incremental o la misma dependiendo de los apartados anteriroes) || 15 de marzo
+[X]mejorar la navegacion para hacer las encuestas (que te maque migas de donde estas) || 15 de marzo
+[X]parece que no controlo el input en la pregunta 5, es una pregunta de si o no, yo creo que esta bien|| 15 de marzo
+[X]question parttwo cuando escribo en la bbdd no deberia ser answer de si o no?|| es un numero porque es igual que una pregunta de tipo choice, 15 de marzo
 [/]hacer una mascara para el estado y las funcioens de acceso a la mascara (añadir quitar elemento) | 14 de febero, sin funciones
 []tal vez añadir a question una referencia a que survey pertence
 []crear algun check para preguntas tipo 4-5 (rango de valores por ejemplo)
@@ -61,5 +61,11 @@ X hecho
 []falta premios del matching
 []falta parte2 del matching
 []en preguntas con respeusta esperada, meto las demas preguntas tambien en la bbdd
-[]para respuesta esperada tal vez generar un validator, el calculo del tiempo se generara mal seguramente, proque no miro en la bbdd los datos, cosa a hacer
+[/]para respuesta esperada tal vez generar un validator, el calculo del tiempo se generara mal seguramente, proque no miro en la bbdd los datos, cosa a hacer, mirar bien en todos los casos de validar respuesta (ahora solo esta peusto en question text requerida) | validado echo! falta mirar todos los casos (15 de octubre)
 []cuidado con la medicion de tiempos de preguntas con respuesta correcta
+[]no editar encuestas que ya han empezado (error en la integridad de la bbdd)
+[]cambiar los 403 de de la encuesta por algo del tipo tiempo para la realizacion de la encuesta terminada
+[]cambiar researcher de nombre
+[]bastatne section wrong en researcher.py tal vez cambiarlo por un decorador
+[]tal vez añadir una cabecera en toda la parte de creacion de encuestas, que siempre repito lo miso, igual que sacar la barra lateral
+http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-code
