@@ -234,7 +234,7 @@ def addSection(id_survey):
 
     if survey is None:
         flash('Survey not found.')
-        return redirect(url_for('researcher.index'))
+        abort (404)
     else:
         sections = survey.sections.all()
     if form.validate_on_submit():
@@ -248,6 +248,15 @@ def addSection(id_survey):
         db.session.commit()
         flash('Adding section.')
         return redirect(url_for('researcher.editSurvey',id_survey = survey.id))
+    # heuristics of the next sequence
+    section = Section.query.filter(Section.survey_id==id_survey).order_by(Section.sequence.desc())
+    if section.count()>=2 and section[0].sequence==section[1].sequence:
+        # see the last and  penultimate
+        form.sequence.data= section[0].sequence
+    elif section.count()>=1:
+        form.sequence.data= section[0].sequence + 1
+    else:
+        form.sequence.data =1
     return render_template('/researcher/addEditSection.html',
         title = "consent",
         form = form,
@@ -338,6 +347,15 @@ def addSubSection(id_survey, id_section):
         db.session.commit()
         flash('Adding subsection.')
         return redirect(url_for('researcher.editSection',id_survey = id_survey, id_section = id_section))
+    # heuristics of the next sequence
+    section = Section.query.filter(Section.parent_id==id_section).order_by(Section.sequence.desc())
+    if section.count()>=2 and section[0].sequence==section[1].sequence:
+        # see the last and  penultimate
+        form.sequence.data= section[0].sequence
+    elif section.count()>=1:
+        form.sequence.data= section[0].sequence + 1
+    else:
+        form.sequence.data =1
     return render_template('/researcher/addEditSection.html',
         title = "consent",
         form = form,

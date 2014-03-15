@@ -1,7 +1,7 @@
 from flask import render_template, request
 from . import blueprint
 
-class MyCustom404(Exception):
+class MyCustom600(Exception):
     pass
 
 

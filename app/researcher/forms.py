@@ -33,9 +33,9 @@ class EditConsentForm(Form):
 class SectionForm(Form):
     title = TextField('Title', validators = [Length(min = 1, max = 128)])
     description = PageDownField('Description',validators = [Length(min = 0, max = 2200)],default = EXAMPLE_MARKDOWN)
-    sequence = IntegerField('Sequence')
+    sequence = IntegerField('Sequence', validators = [NumberRange(min = 1)])
     # Field with two decimal, range 0-1
-    percent = DecimalField ('Percent', validators = [NumberRange(min = 0, max = 1)],places=2)
+    percent = DecimalField ('Percent', validators = [NumberRange(min = 0, max = 1)],places=2, default=1)
 
 class QuestionForm(Form):
 
