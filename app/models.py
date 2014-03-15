@@ -850,7 +850,7 @@ class Answer(db.Model):
     #: answer Boolean
     answerYN = Column(Boolean)
     #:numberAttemp do in a question with expected answer
-    numberAttempt = Column(Integer, default = 1)
+    numberAttempt = Column(Integer, default = 0)
     #:time since start section until you respond to the question, in milliseconds
     globalTime = Column(Integer, default = 0)
     #:time while since you answered the previous question, in milliseconds
@@ -879,7 +879,7 @@ class Answer(db.Model):
     def isMoreAttempt(self):
         '''Return if there are more attempt
         '''
-        if self.numberAttempt>=self.question.maxNumberAttempt:
+        if self.numberAttempt>=self.question.maxNumberAttempt and self.question.maxNumberAttempt!=0:
             return False
         else:
             return True

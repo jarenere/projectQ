@@ -15,6 +15,7 @@ from app.models import Answer
 from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField
 from wtforms.validators import Required, Regexp, Optional
+from wtforms import ValidationError
 import datetime
 from . import blueprint
 
@@ -77,8 +78,44 @@ def showConsent(id_survey):
 def generate_form(questions):
     '''dynamically generates the forms for surveys
     '''
+    # def check_answer_expected(id_question):
+    #     print "VAMOS ATOMOS", id_question
+    #     def _check_answer_expected(self, field):
+    #         question = Question.query.get(id_question)
+    #         expected_answer = question.expectedAnswer
+    #         print "VAMOS ATOMOSsss"
+    #         if field.data!=expected_answer:
+    #             raise ValidationError("respuesta erronea")
+    def check_answer_expected(self,field):
+        '''check if the answer is the expected
+        '''
+        question = Question.query.get(field.name[1:])
+        answer = Answer.query.filter(Answer.user_id==g.user.id,
+                Answer.question_id==question.id).first()
+        if answer is None:
+            answer = Answer (answerText = field.data, user= g.user, question = question)
+            answer.globalTime = form["globalTimec"+str(question.id)].data
+            answer.differentialTime = form["differentialTimec"+str(question.id)].data
+        else:
+            answer.answerText = field.data
+        db.session.add(answer)
+        db.session.commit()
+        if not answer.answerAttempt():
+            if answer.isMoreAttempt():
+                raise ValidationError("Wrong answer")
+            else:
+                flash("wrong answer, you can continue")
+
+
+
+
+
+
+
     class AnswerForm(Form):
         time = HiddenField('time',default=0)
+
+
 
     for question in questions:
 
@@ -105,6 +142,9 @@ def generate_form(questions):
                 if question.regularExpression !="":
                     setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
                         validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
+                elif question.isExpectedAnswer():
+                    setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required(),
+                        check_answer_expected]))
                 elif question.isNumber:
                     setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
                 else:
@@ -188,105 +228,35 @@ def showQuestions(id_survey, id_section):
         for question in questions:
             if isinstance (question,QuestionYN):
                 answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
-                answer.globalTime = form["globalTimec"+str(question.id)].data
-                answer.differentialTime = form["differentialTimec"+str(question.id)].data
-                db.session.add(answer)
-                db.session.commit()
+
             if isinstance (question,QuestionNumerical):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-                answer.globalTime = form["globalTimec"+str(question.id)].data
-                answer.differentialTime = form["differentialTimec"+str(question.id)].data
-                db.session.add(answer)
-                db.session.commit()
             if isinstance (question,QuestionText):
-                if question.isExpectedAnswer():
-                    #searches if the question has been answered
-                    answer = Answer.query.filter(Answer.user_id==g.user.id,
-                        Answer.question_id==question.id)
-                    if answer.count()!=1:
-                        answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
-                        answer.globalTime = form["globalTimec"+str(question.id)].data
-                        answer.differentialTime = form["differentialTimec"+str(question.id)].data     
-                        db.session.add(answer)
-                        db.session.commit()          
-                    else:
-                        answer = answer.first()
-                        answer.answerText = form["c"+str(question.id)].data
-                    if not answer.answerAttempt():
-                        if answer.isMoreAttempt():
-                            flash ("answer wrong")
-                            return render_template('/surveys/showQuestions.html',
-                                title = survey.title,
-                                survey = survey,
-                                section = section,
-                                # form = form,
-                                form = form,
-                                questions = questions)
-                else:
-                    answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
-                answer.globalTime = form["globalTimec"+str(question.id)].data
-                answer.differentialTime = form["differentialTimec"+str(question.id)].data
-                db.session.add(answer)
-                db.session.commit()
-
-
+                answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
             if isinstance (question,QuestionChoice):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-                answer.globalTime = form["globalTimec"+str(question.id)].data
-                answer.differentialTime = form["differentialTimec"+str(question.id)].data
-                db.session.add(answer)
-                db.session.commit()
             if isinstance (question, QuestionLikertScale):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-                answer.globalTime = form["globalTimec"+str(question.id)].data
-                answer.differentialTime = form["differentialTimec"+str(question.id)].data
-                db.session.add(answer)
-                db.session.commit()
-
             if isinstance(question,QuestionPartTwo):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-                answer.globalTime = form["globalTimec"+str(question.id)].data
-                answer.differentialTime = form["differentialTimec"+str(question.id)].data
-                db.session.add(answer)
-                db.session.commit()
             if isinstance (question,QuestionDecisionOne):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
                 answer.globalTime = form["globalTimec"+str(question.id)].data
-                answer.differentialTime = form["differentialTimec"+str(question.id)].data
-                db.session.add(answer)
-                db.session.commit()
             if isinstance (question,QuestionDecisionTwo):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-                answer.globalTime = form["globalTimec"+str(question.id)].data
-                answer.differentialTime = form["differentialTimec"+str(question.id)].data
-                db.session.add(answer)
-                db.session.commit()
             if isinstance (question,QuestionDecisionThree):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-                answer.globalTime = form["globalTimec"+str(question.id)].data
-                answer.differentialTime = form["differentialTimec"+str(question.id)].data
-                db.session.add(answer)
-                db.session.commit()
             if isinstance (question,QuestionDecisionFour):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-                answer.globalTime = form["globalTimec"+str(question.id)].data
-                answer.differentialTime = form["differentialTimec"+str(question.id)].data
-                db.session.add(answer)
-                db.session.commit()
             if isinstance (question,QuestionDecisionFive):
                 answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
-                answer.globalTime = form["globalTimec"+str(question.id)].data
-                answer.differentialTime = form["differentialTimec"+str(question.id)].data
-                db.session.add(answer)
-                db.session.commit()
-
             if isinstance (question,QuestionDecisionSix):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-                answer.globalTime = form["globalTimec"+str(question.id)].data
-                answer.differentialTime = form["differentialTimec"+str(question.id)].data
-                db.session.add(answer)
-                db.session.commit()
 
+            answer.globalTime = form["globalTimec"+str(question.id)].data
+            answer.differentialTime = form["differentialTimec"+str(question.id)].data
+            db.session.add(answer)
+            db.session.commit()
 
         stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
         stateSurvey.finishedSection(form.time.data)
