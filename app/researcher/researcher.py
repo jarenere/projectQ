@@ -137,6 +137,17 @@ def exportSurvey(id_survey):
         flash ("Survey wrong")
         return redirect(url_for('researcher.index'))
 
+def tips_path(section=None):
+    '''Return a list with the path of a section
+    '''
+    l=[]
+    if section is not None:
+        l.append((section.title, section.id))
+        while (section.parent is not None):
+            l.append((section.parent.title, section.parent.id))
+            section = section.parent
+    l.reverse()
+    return l
 
 
 @login_required
@@ -296,6 +307,7 @@ def editSection(id_survey, id_section):
         form.description.data = section.description
         form.sequence.data = section.sequence
         form.percent.data = section.percent
+    path=tips_path(section)
     return render_template('/researcher/addEditSection.html',
         title = "consent",
         form = form,
@@ -303,7 +315,8 @@ def editSection(id_survey, id_section):
         sections = sections,
         #add = true, you is adding a new section, add = False you is editing a section
         editSection = True,
-        id_section = id_section)
+        id_section = id_section,
+        path = path)
 
 
 @login_required
@@ -356,12 +369,14 @@ def addSubSection(id_survey, id_section):
         form.sequence.data= section[0].sequence + 1
     else:
         form.sequence.data =1
+    path=tips_path(parentSection)
     return render_template('/researcher/addEditSection.html',
         title = "consent",
         form = form,
         survey = Survey.query.get(id_survey),
         sections = Survey.query.get(id_survey).sections.all(),
-        addSubSection = True)
+        addSubSection = True,
+        path = path)
 
 
 def selectType(form):
@@ -436,7 +451,7 @@ def addQuestion(id_survey, id_section):
         db.session.commit()
         flash('Adding question')
         return redirect(url_for('researcher.addQuestion',id_survey = id_survey, id_section = id_section))
-    
+    path=tips_path(section)
     return render_template('/researcher/addEditQuestion.html',
         title = "Question",
         form = form,
@@ -445,7 +460,8 @@ def addQuestion(id_survey, id_section):
         section = section,
         questions = section.questions,
         addQuestion = True,
-        type = "yn")
+        type = "yn",
+        path = path)
 
 
 @login_required
@@ -520,16 +536,18 @@ def editQuestion(id_survey, id_section,id_question):
         if isinstance(question, QuestionLikertScale):
             form.labelMinLikert.data=question.labelMin
             form.labelMaxLikert.data=question.labelMax
-
+    section =  Section.query.get(id_section)
+    path=tips_path(section)
     return render_template('/researcher/addEditQuestion.html',
         title = "Question",
         form = form,
         survey = Survey.query.get(id_survey),
         sections = Survey.query.get(id_survey).sections.all(),
-        section = Section.query.get(id_section),
+        section = section,
         questions = Section.query.get(id_section).questions,
         editQuestion = True,
-        type = question.type)
+        type = question.type,
+        path = path)
 
 
 @login_required

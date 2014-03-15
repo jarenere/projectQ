@@ -6,6 +6,10 @@
 
  <legend>
     <h1><a href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{survey.title}}</a></h1>
+    {% for section in path %}
+        <a href="{{ url_for('researcher.editSection', id_section = section[1], id_survey =  survey.id) }}">{{section[0]}}</a>
+        /
+    {% endfor %}
     <h3>Section!</h3>
 </legend>
 <div class="container-fluid">
