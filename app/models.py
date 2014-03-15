@@ -507,8 +507,6 @@ class Question(db.Model):
         elif type == 'decisionSix':
             question = QuestionDecisionSix()
         else:
-            print "MIERDA, typo:", type
-            print "mierta texto: ", text
             return False
 
         question.text = texto
