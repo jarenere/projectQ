@@ -245,7 +245,6 @@ def showQuestions(id_survey, id_section):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
             if isinstance (question,QuestionDecisionOne):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-                answer.globalTime = form["globalTimec"+str(question.id)].data
             if isinstance (question,QuestionDecisionTwo):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
             if isinstance (question,QuestionDecisionThree):
