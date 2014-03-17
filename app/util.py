@@ -7,9 +7,9 @@ def check_survey_duration(statusSurvey):
     now = datetime.datetime.utcnow()
     start = statusSurvey.start_date
     elapsedTime = now - start
-    print (statusSurvey.FINISH)
+    print (statusSurvey.FINISH_OK)
     if elapsedTime.total_seconds()>statusSurvey.survey.duration*60 and \
-            not (statusSurvey.status & StateSurvey.FINISH):
+            not (statusSurvey.status & StateSurvey.FINISH_OK):
         # time has run out, delete all cuestions
         statusSurvey.status = statusSurvey.status | StateSurvey.TIMED_OUT
         db.session.add(statusSurvey)
@@ -110,18 +110,18 @@ def matching(survey):
             db.session.add(match)
 
 
-    DECISION_ONE=49
-    DECISION_TWO=50
-    DECISION_THREE=51
-    DECISION_FOUR=52
-    SECTION_DECISION_FIVE=30
-    DECISION_SIX=64
+    DECISION_ONE=47
+    DECISION_TWO=48
+    DECISION_THREE=49
+    DECISION_FOUR=50
+    SECTION_DECISION_FIVE=27
+    DECISION_SIX=62
     # DEBEN SER PARES!! Y LOS USUARIOS SELECCIONADOS DEL MISMO GRUPO (PAGO Y NO PAGO)
     # users = models.User.query.filter(models.User.id==models.StateSurvey.user_id,\
     #      models.StateSurvey.status==models.StateSurvey.FINISH,\
     #      models.StateSurvey.survey_id==survey.id)
     state_surveys = models.StateSurvey.query.filter(models.User.id==models.StateSurvey.user_id,\
-         models.StateSurvey.status==models.StateSurvey.FINISH,\
+         models.StateSurvey.status==models.StateSurvey.FINISH_OK | models.StateSurvey.FINISH,\
          models.StateSurvey.survey_id==survey.id)
 
     l=[]
