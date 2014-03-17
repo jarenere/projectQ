@@ -62,21 +62,39 @@ def logicSurvey(id_survey):
     return redirect (url_for('surveys.showQuestions',id_survey=id_survey,id_section=section.id))
     # return redirect (url_for('surveys.index'))
 
+
 @blueprint.route('/survey/<int:id_survey>/consent', methods=['GET', 'POST'])
+@blueprint.route('/survey/<int:id_survey>/consent/<int:n_consent>', methods=['GET', 'POST'])
 @login_required
-def showConsent(id_survey):
+def showConsent(id_survey,n_consent = 0):
     '''
-    Show consent
+    Show consent, n_consent is the "position of consent", no id!!
     '''
-    if request.method == 'POST':
+    
+    survey = Survey.query.get(id_survey)
+    consents = survey.consents
+
+    if n_consent>consents.count():
+        abort (404)
+
+    if consents.count()==0:
         stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
         stateSurvey.accept_consent()
         return redirect(url_for('surveys.logicSurvey',id_survey = id_survey))
-    survey = Survey.query.get(id_survey)
+    
+    if request.method == 'POST' and consents.count()<=n_consent+1:
+        stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
+        stateSurvey.accept_consent()
+        return redirect(url_for('surveys.logicSurvey',id_survey = id_survey))
+
+    if request.method == 'POST' and consents.count()>n_consent+1:
+        return redirect(url_for('surveys.showConsent', id_survey = id_survey, n_consent = n_consent+1))
+
+
     return render_template('/surveys/consent.html',
         title = survey.title,
         survey = survey,
-        consent = survey.consents.first())
+        consent = survey.consents[n_consent])
 
 
 def generate_form(questions):
