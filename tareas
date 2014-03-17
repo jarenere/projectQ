@@ -29,11 +29,11 @@ X hecho
 []copiar seccion
 [x]tengo un par de"mierdas" en models, ver que hace, xd | 15 de marzo
 [X]getStateSurvey comprobar fecha tambien y sino es valido eliminar respeustas y devolver none | 15 de abril
-[]consentimiento vacios, o mas de uno, controlarlo
-[]quitar el numero de campos en las preguntas choice
+[x]consentimiento vacios, o mas de uno, controlarlo || 17 de marzo
+[x]quitar el numero de campos en las preguntas choice || 17 de marzo
 []etiquetas mas amigables del tipo string + id, #ejempo: "esto-es-una-encuesta_123", seria mas legible..
-[]no compruebo en todos los casos en los que los investigadores modifican encuestas de otros, deberia de mirarlo con calma y tener en cuenta el desarrollo del arbol para obtener el padre, eso o guardarme un enlace a la raiz, deberia de mirar desde secciones
-[]repasar el codico de consent, veo algun first un tanto feo
+[X]no compruebo en todos los casos en los que los investigadores modifican encuestas de otros, deberia de mirarlo con calma y tener en cuenta el desarrollo del arbol para obtener el padre, eso o guardarme un enlace a la raiz, deberia de mirar desde secciones || 17 de marzo, arreglado con un decorador
+[X]repasar el codico de consent, veo algun first un tanto feo || Esta bien co el first, que lo uso para ver si es valido el investtigados 17 de marzo
 []No mostras encuestas terminadas!! o tal vez mostrar aviso de encuesta ya finalizada o resultados de esta
 [] tal vez guardar a que pregunta pertenence cada encuesta, aunque es algo redundante, bastante
 []caundo devuelvo none en next section, comprobar el status para dar info al usuario
@@ -62,10 +62,18 @@ X hecho
 []falta parte2 del matching
 []en preguntas con respeusta esperada, meto las demas preguntas tambien en la bbdd
 [/]para respuesta esperada tal vez generar un validator, el calculo del tiempo se generara mal seguramente, proque no miro en la bbdd los datos, cosa a hacer, mirar bien en todos los casos de validar respuesta (ahora solo esta peusto en question text requerida) | validado echo! falta mirar todos los casos (15 de octubre)
-[]cuidado con la medicion de tiempos de preguntas con respuesta correcta
+[X]cuidado con la medicion de tiempos de preguntas con respuesta correcta || 15 de marzo (añadi un validate a este tipo de preguntas)
 []no editar encuestas que ya han empezado (error en la integridad de la bbdd)
 []cambiar los 403 de de la encuesta por algo del tipo tiempo para la realizacion de la encuesta terminada
-[]cambiar researcher de nombre
-[]bastatne section wrong en researcher.py tal vez cambiarlo por un decorador
+[X]cambiar researcher de nombre || 17 de marzo
+[X]bastatne section wrong en researcher.py tal vez cambiarlo por un decorador |17 de marzo
 []tal vez añadir una cabecera en toda la parte de creacion de encuestas, que siempre repito lo miso, igual que sacar la barra lateral
+[]mejorar la forma de añadir campos chocies(copiar a googe)
 http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-code
+[]tal vez añadir al decorador belong_researcher el decorador cache, xd http://www.juanjoconti.com.ar/2009/12/30/decoradores-en-python-iii/
+[]añadir flag de terminado en tiempo
+[]en util.matching se puede volver a coger a un usuario que ha hehco una encuesta
+[]import xml falla cuando hay fecha
+[]importar xml si vacio el titulo falla y ademaas luego si pones titulo no imoprta xml sino crea encuesta con ese titulo
+[]no comprobado el tiempo cuando valido xml
+[]comprobar que sino nahy numero masximo de repondents mento 0 o vacio
