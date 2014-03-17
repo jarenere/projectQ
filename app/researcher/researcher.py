@@ -189,7 +189,7 @@ def addConsent(id_survey):
 @blueprint.route('/survey/<int:id_survey>/consent/<int:id_consent>/delete')
 def deleteConsent(id_survey,id_consent):
     consent = Consent.query.filter(Consent.survey_id == id_survey, Consent.id == id_consent).first()
-    if consent is not None and consent.researcher != g.user:
+    if consent is not None and consent.survey.researcher != g.user:
         flash ("access denied")
         abort (403)
     if consent is not None:
@@ -207,7 +207,7 @@ def deleteConsent(id_survey,id_consent):
 @blueprint.route('/survey/<int:id_survey>/consent/<int:id_consent>', methods = ['GET', 'POST'])
 def editConsents(id_survey, id_consent):
     consent = Consent.query.filter(Consent.survey_id == id_survey, Consent.id == id_consent).first()
-    if consent is not None and consent.researcher != g.user:
+    if consent is not None and consent.survey.researcher != g.user:
         flash ("access denied")
         abort (403)
 
