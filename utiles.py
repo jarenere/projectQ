@@ -11,6 +11,12 @@ def borrarRespeustas():
     db.session.commit()
     borrarState()
 
+def verState():
+    state = models.StateSurvey.query.all()
+    for s in state:
+        print "id", s.id, "user", s.user_id, "survey:", s.survey_id, "status", s.status
+    
+
 def verAnswers():
     for ans in models.Answer.query.all():
         print ans.id, "user", ans.user.nickname, ans.question_id, ans.question.text
@@ -102,17 +108,17 @@ def generateAnswerFakePart3(id_survey, number = 6):
     random.seed()
     l=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10]
     l2=[0,2,4,6,8,10,12,14,16,18,20]
-    question1 = models.QuestionDecisionOne.query.filter(models.QuestionDecisionOne.section_id==26).first()
-    question2 = models.QuestionDecisionTwo.query.filter(models.QuestionDecisionTwo.section_id==27).first()
-    question3 = models.QuestionDecisionThree.query.filter(models.QuestionDecisionThree.section_id==28).first()
-    question4 = models.QuestionDecisionFour.query.filter(models.QuestionDecisionFour.section_id==29).first()
-    questions5 = models.QuestionDecisionFive.query.filter(models.QuestionDecisionFive.section_id==30)
-    question6 = models.QuestionDecisionSix.query.filter(models.QuestionDecisionSix.section_id==31).first()
+    question1 = models.QuestionDecisionOne.query.filter(models.QuestionDecisionOne.section_id==24).first()
+    question2 = models.QuestionDecisionTwo.query.filter(models.QuestionDecisionTwo.section_id==25).first()
+    question3 = models.QuestionDecisionThree.query.filter(models.QuestionDecisionThree.section_id==26).first()
+    question4 = models.QuestionDecisionFour.query.filter(models.QuestionDecisionFour.section_id==27).first()
+    questions5 = models.QuestionDecisionFive.query.filter(models.QuestionDecisionFive.section_id==28)
+    question6 = models.QuestionDecisionSix.query.filter(models.QuestionDecisionSix.section_id==29).first()
 
     for i in range(number):
         user = models.User.query.filter(models.User.nickname=="user"+str(i)).first()
         ss =models.StateSurvey.getStateSurvey(id_survey,user,"192.168.0.0")
-        ss.status= ss.status | models.StateSurvey.FINISH
+        ss.status= ss.status | models.StateSurvey.FINISH | models.StateSurvey.FINISH_OK
         db.session.add(ss)
         answer1=models.Answer(answerNumeric=random.choice(l),user=user,question=question1)
         db.session.add(answer1)
