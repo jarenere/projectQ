@@ -13,8 +13,8 @@ from app.decorators import researcher_required, is_section_researcher, belong_re
 from flask.ext.login import login_user, logout_user, current_user, login_required
 import tempfile
 from werkzeug import secure_filename
+from . import blueprint
 
-blueprint = Blueprint('researcher', __name__)
 
 @blueprint.route('/')
 @blueprint.route('/index')
