@@ -1,7 +1,9 @@
 from flask.ext.login import current_user
 from functools import wraps
-from flask import abort
-from .models import Section, Survey, Consent, Question
+from flask import abort, render_template
+from .main.errors import MyCustom600
+from .models import Section, Survey, Consent, Question, StateSurvey
+import datetime
 
 
 
@@ -91,3 +93,17 @@ def belong_researcher(check):
                 return abort(403)
         return decorated_function
     return _belong_researcher
+
+
+def valid_survey(f):  # pragma: no cover
+    '''Checks if the survey is published and the times and the 
+        maximum number of users is valid
+    '''
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        now = datetime.datetime.utcnow()
+        survey = Survey.query.get_or_404(kwargs['id_survey'])
+        if now > survey.endDate or now < survey.startDate:
+            raise MyCustom600
+        return f(*args, **kwargs)
+    return decorated_function

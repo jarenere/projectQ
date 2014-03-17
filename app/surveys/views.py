@@ -19,9 +19,7 @@ from wtforms.validators import Required, Regexp, Optional
 from wtforms import ValidationError
 import datetime
 from . import blueprint
-
-
-
+from app.decorators import valid_survey
 
 
 @blueprint.route('/', methods=['GET', 'POST'])
@@ -38,14 +36,34 @@ def index():
         title = 'Index',
         surveys = surveys)
 
+def get_stateSurvey_or_error(id_survey,user,ip=request.remote_addr):
+    stateSurvey, status = StateSurvey.getStateSurvey(id_survey,user,ip)
+    if status == StateSurvey.NO_ERROR:
+        return stateSurvey
+    else:
+        if status == StateSurvey.ERROR_EXCEEDED:
+            return render_template('/surveys/execeeded.html',
+                title = 'maximum number of surveys execeeded ')
+        if status == StateSurvey.ERROR_TIMED_OUT:
+            return render_template('/600.html',
+                title ='time out')
+        if status == StateSurvey.ERROR_END_DATE_OUT:
+            return render_template('/600.html',
+                title ='End date out')
+        return abort(500)    
+
+
+
+
 @blueprint.route('/survey/<int:id_survey>', methods=['GET', 'POST'])
 @login_required
+@valid_survey
 def logicSurvey(id_survey):
     '''
     Function that decides which is the next step in the survey
     '''
     stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user,request.remote_addr)
-    if not stateSurvey.check_survey_duration_and_date():
+    if stateSurvey is None:
         flash ("access denied")
         raise MyCustom600
 
@@ -66,6 +84,7 @@ def logicSurvey(id_survey):
 @blueprint.route('/survey/<int:id_survey>/consent', methods=['GET', 'POST'])
 @blueprint.route('/survey/<int:id_survey>/consent/<int:n_consent>', methods=['GET', 'POST'])
 @login_required
+@valid_survey
 def showConsent(id_survey,n_consent = 0):
     '''
     Show consent, n_consent is the "position of consent", no id!!
@@ -128,16 +147,8 @@ def generate_form(questions):
             else:
                 flash("wrong answer, you can continue")
 
-
-
-
-
-
-
     class AnswerForm(Form):
         time = HiddenField('time',default=0)
-
-
 
     for question in questions:
 
@@ -229,11 +240,11 @@ def generate_form(questions):
 
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods=['GET', 'POST'])
 @login_required
+@valid_survey
 def showQuestions(id_survey, id_section):
     '''
     Show all question of a section
     '''
-
     stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user,request.remote_addr)
     section = stateSurvey.nextSection()
     if section is None or section.id !=id_section:

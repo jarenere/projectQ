@@ -9,7 +9,7 @@ from app.models import QuestionYN, QuestionLikertScale, QuestionPartTwo, Questio
     QuestionDecisionTwo, QuestionDecisionThree, QuestionDecisionFour, \
     QuestionDecisionFive, QuestionDecisionSix
 from app import app, db
-from app.decorators import researcher_required, is_section_researcher, belong_researcher
+from app.decorators import researcher_required, belong_researcher
 from flask.ext.login import login_user, logout_user, current_user, login_required
 import tempfile
 from werkzeug import secure_filename

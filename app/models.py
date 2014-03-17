@@ -889,12 +889,22 @@ class StateSurvey(db.Model):
     NONE = 0x00
     # finish
     FINISH = 0x01
+    # finish ok
+    FINISH_OK = 0x02
     #: finished out of time
-    TIMED_OUT = 0x02
+    TIMED_OUT = 0x04
     #: finished out of date
-    END_DATE_OUT = 0x04
+    END_DATE_OUT = 0x08
     #: do matching
-    MATCHING = 0X08
+    MATCHING = 0X10
+
+    NO_ERROR = 0
+    # maximum number of surveys execeeded 
+    ERROR_EXCEEDED = 1
+    #: time exceeded
+    ERROR_TIMED_OUT = 2
+    #out of date
+    ERROR_END_DATE_OUT = 3
 
     __tablename__ = 'stateSurvey'
     #: unique id (automatically generated)
@@ -950,15 +960,15 @@ class StateSurvey(db.Model):
                 db.session.add(self)
                 db.session.commit()
                 self._delete_answers()
-                return False
-        if now > self.survey.endDate:
+                return StateSurvey.ERROR_TIMED_OUT
+        if now > self.survey.endDate or now < self.survey.startDate:
             #answer out of date
             self.status = StateSurvey.END_DATE_OUT | StateSurvey.FINISH
             db.session.add(self)
             db.session.commit()
             self._delete_answers()
-            return False
-        return True
+            return StateSurvey.ERROR_END_DATE_OUT
+        return StateSurvey.NO_ERROR
 
     def accept_consent(self):
         '''
@@ -1008,6 +1018,11 @@ class StateSurvey(db.Model):
         stateSurvey = StateSurvey.query.filter(StateSurvey.survey_id == id_survey, 
             StateSurvey.user_id == user.id).first()
         if stateSurvey is None:
+            survey = Survey.query.get(id_survey)
+            if survey.maxNumberRespondents > 0 and survey.maxNumberRespondents<StateSurvey.query.filter(
+                    StateSurvey.status.op('&')(StateSurvey.FINISH_OK),
+                    StateSurvey.survey_id==survey.id).count():
+                return None, StateSurvey.ERROR_EXCEEDED
             #generamos arbol
             sections = Section.query.filter(Section.survey_id == id_survey).order_by(Section.sequence)
             list = Section.sequenceSections(sections)
@@ -1016,5 +1031,4 @@ class StateSurvey(db.Model):
                             user = user, sequence =list, ip = ip, sectionTime = [])
             db.session.add(stateSurvey)
             db.session.commit()
-        stateSurvey.check_survey_duration_and_date()  
-        return stateSurvey
+        return stateSurvey, stateSurvey.check_survey_duration_and_date()  
