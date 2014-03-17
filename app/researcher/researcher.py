@@ -399,7 +399,11 @@ def selectType(form):
         form.answer7.data,
         form.answer8.data,
         form.answer9.data]
-        question = QuestionChoice(choices = l[0:int(form.numberFields.data)])
+        l_aux=[]
+        for i in l:
+            if len(i)!=0:
+                l_aux.append(i)    
+        question = QuestionChoice(choices = l_aux)
     if form.questionType.data == 'likertScale':
         question = QuestionLikertScale(minLikert=form.minLikert.data,
             maxLikert=form.maxLikert.data, labelMin=form.labelMinLikert.data,

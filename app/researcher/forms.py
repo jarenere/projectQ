@@ -61,10 +61,6 @@ class QuestionForm(Form):
     #:is_money_real for part two and decision
     is_real_money = BooleanField('It is with money real', default = False)
 
-    #: Number of fields in "choice question"
-    numberFields = SelectField('number of fields in "choice question"',
-        choices=[('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),
-        ('7','7'),('8','8'),('9','9')])
     #likert Scale
     minLikert = SelectField('Scale',choices=[('0','0'),('1','1')], default=('1'))
     maxLikert = SelectField('to', choices=[('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),
@@ -108,11 +104,12 @@ class QuestionForm(Form):
             self.answer7,
             self.answer8,
             self.answer9]
-            state = True
-            for i in  range (int(self.numberFields.data)):
-                if len(l[i].data) == 0:
-                    l[i].errors.append('The field can not be empty')
-                    state = False
+            state = False
+            for i in  range (9):
+                if len(l[i].data) != 0:
+                    state = True
+            if state ==False:
+                l[0].errors.append('All field can not be empty')
             return state
         if self.questionType.data == 'partTwo':
             l = [self.answer1,

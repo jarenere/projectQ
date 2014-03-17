@@ -53,9 +53,6 @@
                         {{ render_field3(form.labelMinLikert,placeholder='label optional') }}
                         {{ render_field3(form.labelMaxLikert, placeholder='label optional') }}
                     </div>
-                    <div id="divChoices">
-                        {{ render_field3(form.numberFields) }}
-                    </div>
                     <div id="divAnswer1">
                         {{ render_field3(form.answer1) }}
                     </div>
@@ -96,7 +93,6 @@
     {
         $("#divText").hide();
         $("#divLikert").hide();
-        $("#divChoices").hide();
         $("#divAnswer1").hide();
         $("#divAnswer2").hide();
         $("#divAnswers").hide();
@@ -109,7 +105,6 @@
         }
         if (selValue=="choice")
         {
-            $("#divChoices").show();
             $("#divAnswer1").show();
             $("#divAnswer2").show();
             $("#divAnswers").show();
@@ -158,7 +153,6 @@
     window.onload = function() {
         $("#divText").hide();
         $("#divLikert").hide();
-        $("#divChoices").hide();
         $("#divAnswer1").hide();
         $("#divAnswer2").hide();
         $("#divAnswers").hide();
