@@ -115,9 +115,9 @@ def generateAnswerFakePart3(id_survey, number = 6):
     questions5 = models.QuestionDecisionFive.query.filter(models.QuestionDecisionFive.section_id==28)
     question6 = models.QuestionDecisionSix.query.filter(models.QuestionDecisionSix.section_id==29).first()
 
-    for i in range(number):
+    for i in range(2,number+2):
         user = models.User.query.filter(models.User.nickname=="user"+str(i)).first()
-        ss =models.StateSurvey.getStateSurvey(id_survey,user,"192.168.0.0")
+        ss, error =models.StateSurvey.getStateSurvey(id_survey,user,"192.168.0.0")
         ss.status= ss.status | models.StateSurvey.FINISH | models.StateSurvey.FINISH_OK
         db.session.add(ss)
         answer1=models.Answer(answerNumeric=random.choice(l),user=user,question=question1)

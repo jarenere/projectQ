@@ -67,6 +67,14 @@ class Survey(db.Model):
     stateSurveys = relationship('StateSurvey', backref = 'survey', lazy = 'dynamic')
     #: Survey belong to a one user(researcher)
     researcher_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    def __repr__(self):
+        return "<User(id='%s', title='%s')>" % (
+            self.id, self.title)
+
+    def number_respondents(self):
+        return StateSurvey.query.filter(
+                    StateSurvey.status.op('&')(StateSurvey.FINISH_OK),
+                    StateSurvey.survey_id==self.id).count()
 
     def is_duration(self):
         '''Return true if the survey have max duratin
@@ -216,32 +224,16 @@ class Section(db.Model):
     survey_id = Column(Integer, ForeignKey('survey.id'))
     #: section belongs to zero or more sections
     parent_id = Column(Integer, ForeignKey(id))
-    #: Section have zero or more subsections 
-    #https://github.com/zzzeek/sqlalchemy/blob/master/examples/adjacency_list/adjacency_list.py
-    #http://stackoverflow.com/questions/15044777/relating-a-class-to-its-self
-    #distintas opciones, si queremos lazy dynamic debemos de forzar uselist
-    #debido a a la relacion one to one, many to one
-    #http://docs.sqlalchemy.org/en/rel_0_9/orm/relationships.html
-    # children = db.relationship('Section', 
-    #     backref='section',remote_side=id, lazy = 'dynamic', uselist = True)
-    #http://stackoverflow.com/questions/19606745/flask-sqlalchemy-error-typeerror-incompatible-collection-type-model-is-not
-    # children = db.relationship('Section', 
-    #     backref='parent',remote_side=id, lazy = 'dynamic',uselist = True,
-    #     collection_class=attribute_mapped_collection('name')
-    #     )
-    # children = relationship('Section', backref=backref('parent', remote_side=id),
-    #     collection_class=attribute_mapped_collection('name'))
+
     children = relationship('Section',
         # cascade deletions
         cascade="all, delete-orphan",
         backref=backref('parent', remote_side=id),
         lazy = 'dynamic', uselist = True)
 
-    
-    # def __init__(self, title, parent=None):
-    #     self.title = title
-    #     self.parent = parent
-
+    def __repr__(self):
+        return "<Section(id='%s', title='%s')>" % (
+            self.id, self.title)
 
     def to_xml(self):
         section = Element('section')
@@ -935,6 +927,10 @@ class StateSurvey(db.Model):
     #stateSurvey belong a survey
     survey_id = Column(Integer, ForeignKey('survey.id'), nullable=False)
     
+    def __repr__(self):
+        return "<StateSurvey(id='%s', survey='%s', user='%s', status='%s')>" % (
+            self.id, self.survey_id, self.user_id, self.status)
+
     def _delete_answers(self):
         '''find all answer of user in this survey,
            I could do a recursive query.

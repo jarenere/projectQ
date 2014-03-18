@@ -12,6 +12,7 @@ from app.models import QuestionYN ,QuestionLikertScale, QuestionPartTwo, Questio
 from app.models import StateSurvey
 from app.models import Answer
 from flask.ext.wtf import Form
+from sqlalchemy.sql import func
 from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField
 from wtforms.validators import Required, Regexp, Optional
 from wtforms import ValidationError
@@ -28,12 +29,23 @@ def index():
     '''
     shows all available surveys
     '''
+    stmt1 = db.session.query(StateSurvey.survey_id, StateSurvey.status).\
+        filter(StateSurvey.user==current_user).subquery()
+    
+    stmt2 = db.session.query(StateSurvey.survey_id, func.count('*').label('r_count')).group_by(StateSurvey.survey_id).subquery()
+
     now = datetime.datetime.utcnow()
-    surveys = Survey.query.filter(Survey.startDate<now,Survey.endDate>now).\
-            order_by(Survey.startDate)
+    #outerjoint Survey and StateSurvey(with the currentUser) and number of user
+    # that have made the survey
+    surveys = db.session.query(Survey, stmt1.c.status, stmt2.c.r_count).\
+        outerjoin(stmt1,Survey.id==stmt1.c.survey_id).\
+        outerjoin(stmt2,Survey.id==stmt2.c.survey_id).\
+        filter(Survey.startDate<now,Survey.endDate>now).\
+        order_by(Survey.startDate)
     return render_template('/surveys/index.html',
         title = 'Index',
-        surveys = surveys)
+        # surveys= [s.Survey for s in surveys],
+        surveys = surveys) 
 
 def get_stateSurvey_or_error(id_survey,user,ip = None):
     stateSurvey, status = StateSurvey.getStateSurvey(id_survey,user,ip)
