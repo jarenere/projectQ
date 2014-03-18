@@ -905,6 +905,8 @@ class StateSurvey(db.Model):
     ERROR_TIMED_OUT = 2
     #out of date
     ERROR_END_DATE_OUT = 3
+    # survey not found
+    ERROR_NO_SURVEY = 4
 
     __tablename__ = 'stateSurvey'
     #: unique id (automatically generated)
@@ -957,6 +959,7 @@ class StateSurvey(db.Model):
                     not (self.status & StateSurvey.FINISH):
                 # time has run out, delete all cuestions
                 self.status = StateSurvey.TIMED_OUT | StateSurvey.FINISH
+                print self.status
                 db.session.add(self)
                 db.session.commit()
                 self._delete_answers()
@@ -986,14 +989,7 @@ class StateSurvey(db.Model):
     def nextSection(self):
         '''Return next Section to do, None if there isn't
         '''
-        # if self.index>=len(self.sequence) or self.status==StateSurvey.STATUS_TIMED_OUT or\
-        #                 self.status==StateSurvey.STATUS_END_DATE_OUT:
         if self.index>=len(self.sequence) or self.status & StateSurvey.FINISH:
-            if not (self.status & StateSurvey.FINISH):
-                self.status = self.status | StateSurvey.FINISH
-                self.endDate = datetime.datetime.utcnow()
-                db.session.add(self)
-                db.session.commit()
             return None
         section = Section.query.get(self.sequence[self.index])
         return section
@@ -1009,7 +1005,9 @@ class StateSurvey(db.Model):
         l.append((self.sequence[self.index], time))
         self.sectionTime = l
         self.index=self.index+1
-        self.check_survey_duration_and_date()
+        if self.index>=len(self.sequence):
+            self.status = self.status | StateSurvey.FINISH | StateSurvey.FINISH_OK
+            self.endDate = datetime.datetime.utcnow()
         db.session.add(self)
         db.session.commit()
 
@@ -1019,7 +1017,9 @@ class StateSurvey(db.Model):
             StateSurvey.user_id == user.id).first()
         if stateSurvey is None:
             survey = Survey.query.get(id_survey)
-            if survey.maxNumberRespondents > 0 and survey.maxNumberRespondents<StateSurvey.query.filter(
+            if survey is None:
+                return None, StateSurvey.ERROR_NO_SURVEY
+            if survey.maxNumberRespondents > 0 and survey.maxNumberRespondents<=StateSurvey.query.filter(
                     StateSurvey.status.op('&')(StateSurvey.FINISH_OK),
                     StateSurvey.survey_id==survey.id).count():
                 return None, StateSurvey.ERROR_EXCEEDED

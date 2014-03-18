@@ -1,7 +1,7 @@
 from flask.ext.login import current_user
 from functools import wraps
-from flask import abort, render_template
-from .main.errors import MyCustom600
+from flask import abort
+from main.errors import ErrorEndDateOut
 from .models import Section, Survey, Consent, Question, StateSurvey
 import datetime
 
@@ -104,6 +104,19 @@ def valid_survey(f):  # pragma: no cover
         now = datetime.datetime.utcnow()
         survey = Survey.query.get_or_404(kwargs['id_survey'])
         if now > survey.endDate or now < survey.startDate:
-            raise MyCustom600
+            # return abort (404)
+            raise ErrorEndDateOut
         return f(*args, **kwargs)
     return decorated_function
+
+def there_is_stateSurvey(f):  # pragma: no cover
+    '''Checks if the survey is published and the times and the 
+        maximum number of users is valid
+    '''
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        StateSurvey.query.filter(StateSurvey.survey_id == kwargs['id_survey'], 
+            StateSurvey.user_id == current_user.id).first_or_404()
+        return f(*args, **kwargs)
+    return decorated_function
+

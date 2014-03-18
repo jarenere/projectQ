@@ -11,15 +11,14 @@ from app.models import QuestionYN ,QuestionLikertScale, QuestionPartTwo, Questio
   QuestionDecisionFive, QuestionDecisionSix
 from app.models import StateSurvey
 from app.models import Answer
-from app.main.errors import MyCustom600
-
 from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField
 from wtforms.validators import Required, Regexp, Optional
 from wtforms import ValidationError
 import datetime
 from . import blueprint
-from app.decorators import valid_survey
+from app.decorators import valid_survey, there_is_stateSurvey
+from ..main.errors import ErrorEndDateOut, ErrorExceeded, ErrorTimedOut
 
 
 @blueprint.route('/', methods=['GET', 'POST'])
@@ -36,55 +35,53 @@ def index():
         title = 'Index',
         surveys = surveys)
 
-def get_stateSurvey_or_error(id_survey,user,ip=request.remote_addr):
+def get_stateSurvey_or_error(id_survey,user,ip = None):
     stateSurvey, status = StateSurvey.getStateSurvey(id_survey,user,ip)
     if status == StateSurvey.NO_ERROR:
         return stateSurvey
     else:
         if status == StateSurvey.ERROR_EXCEEDED:
-            return render_template('/surveys/execeeded.html',
-                title = 'maximum number of surveys execeeded ')
+            raise ErrorExceeded
         if status == StateSurvey.ERROR_TIMED_OUT:
-            return render_template('/600.html',
-                title ='time out')
+            raise ErrorTimedOut
         if status == StateSurvey.ERROR_END_DATE_OUT:
-            return render_template('/600.html',
-                title ='End date out')
+            raise ErrorEndDateOut
+        if status == StateSurvey.ERROR_NO_SURVEY:
+            return abort(404)
         return abort(500)    
 
 
 
-
-@blueprint.route('/survey/<int:id_survey>', methods=['GET', 'POST'])
 @login_required
+@blueprint.route('/survey/<int:id_survey>', methods=['GET', 'POST'])
 @valid_survey
 def logicSurvey(id_survey):
     '''
     Function that decides which is the next step in the survey
     '''
-    stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user,request.remote_addr)
-    if stateSurvey is None:
-        flash ("access denied")
-        raise MyCustom600
+    stateSurvey = get_stateSurvey_or_error(id_survey,g.user,request.remote_addr)
 
     if (stateSurvey.consented == False):
         return redirect(url_for('surveys.showConsent', id_survey = id_survey))
     section = stateSurvey.nextSection()
-    if section ==None:
-        if stateSurvey.status & StateSurvey.END_DATE_OUT or stateSurvey.status & StateSurvey.TIMED_OUT:
-            flash ("access denied")
-            raise MyCustom600
-        else:
+    if section is None:
+        if stateSurvey.status & StateSurvey.FINISH_OK:
             return render_template('/surveys/finish.html', 
                 title = 'Finish')
+        if stateSurvey.status & StateSurvey.TIMED_OUT:
+            return render_template('/survey/error_time_date.html',
+                title ='time out')
+        if stateSurvey.status & StateSurvey.END_DATE_OUT:
+            return render_template('/survey/error_time_date.html',
+                title ='End date out')
+        return abort(500) 
     return redirect (url_for('surveys.showQuestions',id_survey=id_survey,id_section=section.id))
-    # return redirect (url_for('surveys.index'))
 
-
+@login_required
 @blueprint.route('/survey/<int:id_survey>/consent', methods=['GET', 'POST'])
 @blueprint.route('/survey/<int:id_survey>/consent/<int:n_consent>', methods=['GET', 'POST'])
-@login_required
 @valid_survey
+@there_is_stateSurvey
 def showConsent(id_survey,n_consent = 0):
     '''
     Show consent, n_consent is the "position of consent", no id!!
@@ -97,12 +94,12 @@ def showConsent(id_survey,n_consent = 0):
         abort (404)
 
     if consents.count()==0:
-        stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
+        stateSurvey = get_stateSurvey_or_error(id_survey,g.user)
         stateSurvey.accept_consent()
         return redirect(url_for('surveys.logicSurvey',id_survey = id_survey))
     
     if request.method == 'POST' and consents.count()<=n_consent+1:
-        stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
+        stateSurvey = get_stateSurvey_or_error(id_survey,g.user)
         stateSurvey.accept_consent()
         return redirect(url_for('surveys.logicSurvey',id_survey = id_survey))
 
@@ -237,26 +234,25 @@ def generate_form(questions):
     return form
 
 
-
-@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods=['GET', 'POST'])
 @login_required
+@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods=['GET', 'POST'])
 @valid_survey
+@there_is_stateSurvey
 def showQuestions(id_survey, id_section):
     '''
     Show all question of a section
     '''
-    stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user,request.remote_addr)
+    stateSurvey = get_stateSurvey_or_error(id_survey,g.user,request.remote_addr)
     section = stateSurvey.nextSection()
     if section is None or section.id !=id_section:
         flash ("access denied")
-        raise MyCustom600
+        return abort (403)
         
     survey = Survey.query.get(id_survey)
     section = Section.query.get(id_section)
     questions = section.questions
    
     form = generate_form(questions)
-
     if form.validate_on_submit():
         for question in questions:
             if isinstance (question,QuestionYN):
@@ -290,11 +286,8 @@ def showQuestions(id_survey, id_section):
             db.session.add(answer)
             db.session.commit()
 
-        stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
         stateSurvey.finishedSection(form.time.data)
         return redirect(url_for('surveys.logicSurvey',id_survey = id_survey))
-
-    stateSurvey = StateSurvey.getStateSurvey(id_survey,g.user)
 
     return render_template('/surveys/showQuestions.html',
             title = survey.title,
@@ -305,10 +298,3 @@ def showQuestions(id_survey, id_section):
             questions = questions,
             percent = stateSurvey.percentSurvey()
             )
-
-
-
-
-    
-
-
