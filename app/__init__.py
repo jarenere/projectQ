@@ -34,8 +34,8 @@ lm.init_app(app)
 lm.login_view = 'auth.login'
 oid = OpenID(app, os.path.join(basedir, 'tmp'))
 
-from app import models
-from app import views
+# from app import models
+# from app import views
 
 from app.researcher.researcher import blueprint as researcher_blueprint
 app.register_blueprint(researcher_blueprint, url_prefix='/researcher')
@@ -51,3 +51,12 @@ app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
 from app.main import blueprint as main_blueprint
 app.register_blueprint(main_blueprint)
+
+from datetime import datetime
+from apscheduler.scheduler import Scheduler
+from scheduler import deleteAnswers
+
+# Start the scheduler
+sched = Scheduler()
+sched.start()
+sched.add_interval_job(deleteAnswers.deleteAnswers, hours=2)
