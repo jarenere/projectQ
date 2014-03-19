@@ -37,7 +37,7 @@ X hecho
 [X]No mostras encuestas terminadas!! o tal vez mostrar aviso de encuesta ya finalizada o resultados de esta || 18 de marzo
 [] tal vez guardar a que pregunta pertenence cada encuesta, aunque es algo redundante, bastante
 [X]caundo devuelvo none en next section, comprobar el status para dar info al usuario | 18 de marzo
-[]cron comprobando encuestas no terminadas
+[X]cron comprobando encuestas no terminadas | 19 de marzo
 [X]logic survey cuando es feura de fecha, dar mas info, igual  que con otros estados de statusSurvey | 18 de marzo
 []en el match puedes enfrentarte a un mismo usuario varias veces, habria que evitarlo, pero es un cañazo
 []en el match decision 4-5 te puedes enfrentar a ti mismo, xd
@@ -80,5 +80,15 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []se puede cambiar el relationshiyp de lado com esta peusto en sqlalchemy que la verdad es mas logico...
 []añadir algun filtro para cuando muestro informacion del estado de la encuesta al usuario
 []tal vez las encuestas que ha hecho permitirle que als vea
-[]exportar resultados csv
+[]exportar resultados csv, cuando exportas el tipo de respeusta, mira si es respuesta esperada y resultado
 []info final a los usuarios
+[]log!!
+[]eliminar questionNumerica o questin texto tipo numerico
+[]tal vez mover matching y questiones "raras" a un modulo distinto (con la bbdd)
+[]tal vez cambiar sectionTime por una tabla externa
+[]ordenar las secciones por sequencia!!
+[]los hijos ordenados por sequence cuando accedo a ellos (modificar bbdd, es el relationship)
+[]comprobar la longitud de todos los campos (bbdd, y forms)
+[]quitar registro de tiempo
+[]tal vez solo guardar en respuesta "texto, nada de si o no, numero"
+[]en respuestas guardar el tipo de respeusta que guardas? eso o solo texto
