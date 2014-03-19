@@ -37,7 +37,7 @@ oid = OpenID(app, os.path.join(basedir, 'tmp'))
 # from app import models
 # from app import views
 
-from app.researcher.researcher import blueprint as researcher_blueprint
+from app.researcher import blueprint as researcher_blueprint
 app.register_blueprint(researcher_blueprint, url_prefix='/researcher')
 
 from app.surveys import blueprint as surveys_blueprint
