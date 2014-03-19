@@ -5,7 +5,7 @@ def borrarState():
         db.session.delete(s)
     db.session.commit()
 
-def borrarRespeustas():
+def borrarRespuestas():
     for ans in models.Answer.query.all():
         db.session.delete(ans)
     db.session.commit()
@@ -100,7 +100,6 @@ def borrarMatching():
     db.session.commit()
 
 
-
 def generateAnswerFakePart3(id_survey, number = 6):
     #doy por echo que existen ya lso 100 usuarios de generarUserFake1
     #relleno aleatoriamente uan encuesta con preguntas del tipo decisiones
@@ -142,3 +141,81 @@ def generateAnswerFakePart3(id_survey, number = 6):
 
     db.session.commit()
 
+def generate_answers_fake(id_survey, number=6):
+    '''responding to the survey(id_survey) randomly 
+    '''
+    import random
+    import forgery_py
+    from app.models import Survey, Consent, Section, Answer, User, StateSurvey
+    from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
+    from app.models import QuestionYN ,QuestionLikertScale, QuestionPartTwo, QuestionDecisionOne,\
+      QuestionDecisionTwo, QuestionDecisionThree, QuestionDecisionFour, \
+      QuestionDecisionFive, QuestionDecisionSix    
+
+
+    def answer_question(user,q, time):
+        l=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10]
+        l2=[0,2,4,6,8,10,12,14,16,18,20]
+        if isinstance (q, QuestionYN):
+            answer = Answer (answerYN =random.randrange(0,2)==1, user= user, question = q)
+        elif isinstance (q, QuestionNumerical):
+            answer = Answer (answerNumeric =random.randrange(0,100), user= user, question = q)
+        elif isinstance (q, QuestionText):
+            if q.isExpectedAnswer():
+                if random.choice([0,1,1])==1:
+                # 66% of know the answer
+                    answer = Answer (answerText =q.expectedAnswer.lower(), user= user, question = q)
+                    answer.numberAttempt= random.range(1, q.maxNumberAttempt+1)
+                else:
+                    answer = Answer (answerText =forgery_py.forgery.lorem_ipsum.word(), user= user, question = q)
+                    answer.numberAttempt= q.maxNumberAttempt+1
+            elif q.isNumber:
+                answer = Answer (answerNumeric =random.randrange(0,100), user= user, question = q)
+            else:
+                answer = Answer (answerText =forgery_py.forgery.lorem_ipsum.word(), user= user, question = q)
+        elif isinstance (q,QuestionChoice):
+            answer = Answer (answerNumeric =random.randrange(0,len(q.choices)), user= user, question = q)
+        elif isinstance (q,QuestionLikertScale):
+            answer = Answer (answerNumeric =random.randrange(q.minLikert,q.maxLikert+1), user= user, question = q)
+        elif isinstance (q, QuestionPartTwo):
+            answer = Answer (answerNumeric =random.randrange(0,2), user= user, question = q)
+        elif isinstance (q, QuestionDecisionOne):
+            answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
+        elif isinstance (q, QuestionDecisionTwo):
+            answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
+        elif isinstance (q, QuestionDecisionThree):
+            answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
+        elif isinstance (q, QuestionDecisionFour):
+            answer=models.Answer(answerNumeric=random.choice(l2),user=user,question=q)
+        elif isinstance (q, QuestionDecisionFive):
+            answer = Answer (answerYN =random.randrange(0,2)==1, user= user, question = q)
+        elif isinstance (q, QuestionDecisionSix):
+            answer=models.Answer(answerNumeric=random.choice(l2),user=user,question=q)
+        else:
+            print "tipo de pregunta invalido"
+            quit()
+        t = random.randrange(900, 6500)
+        time = time + t
+        answer.globalTime = time
+        answer.differentialTime = t
+        db.session.add(answer)
+        return time
+
+    borrarRespuestas()
+    random.seed()
+    for i in range(2,number+2):
+        user = User.query.get(i);
+        ss, error = StateSurvey.getStateSurvey(id_survey,user,forgery_py.forgery.internet.ip_v4())
+        if error != StateSurvey.NO_ERROR:
+            print "error en fechas o en algo"
+            quit()
+        ss.accept_consent()
+        while not ss.is_finished():
+            section = ss.nextSection()
+            questions = section.questions
+            time = 0
+            for question in questions:
+                time = answer_question(user,question, time)
+            db.session.commit()
+            time = time + random.randrange(100, 500)
+            ss.finishedSection(time)

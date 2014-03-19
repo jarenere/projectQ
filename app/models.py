@@ -991,7 +991,7 @@ class StateSurvey(db.Model):
         return section
 
     def is_finished(self):
-         return StateSurvey.status & StateSurvey.FINISH >0
+         return self.status & self.FINISH >0
 
     def finishedSection(self,time):
         '''Section is finished, index+1
