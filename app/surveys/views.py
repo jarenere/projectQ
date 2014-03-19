@@ -269,7 +269,6 @@ def showQuestions(id_survey, id_section):
         for question in questions:
             if isinstance (question,QuestionYN):
                 answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
-
             if isinstance (question,QuestionNumerical):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
             if isinstance (question,QuestionText):

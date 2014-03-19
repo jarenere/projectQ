@@ -8,3 +8,5 @@ tareas.tsk.lock*
 tareas.tsk
 dudas
 *.xml
+*.csv
+*.csv*

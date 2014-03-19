@@ -3,7 +3,7 @@
 from flask import Blueprint, request, url_for, flash, redirect, abort, send_file
 from flask import render_template, g
 from forms import SurveyForm, EditConsentForm, SectionForm, QuestionForm
-from app.models import Survey, Consent, Section
+from app.models import Survey, Consent, Section, StateSurvey, Answer
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
 from app.models import QuestionYN, QuestionLikertScale, QuestionPartTwo, QuestionDecisionOne, \
     QuestionDecisionTwo, QuestionDecisionThree, QuestionDecisionFour, \
@@ -14,6 +14,7 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 import tempfile
 from werkzeug import secure_filename
 from . import blueprint
+import csv
 
 
 @blueprint.route('/')
@@ -490,3 +491,117 @@ def deleteQuestion(id_survey,id_section,id_question):
     db.session.commit()
     flash('Question removed')
     return redirect(url_for('researcher.addQuestion',id_survey = id_survey, id_section=id_section))
+
+@login_required
+@researcher_required
+@blueprint.route('/survey/exportStats/<int:id_survey>')
+@belong_researcher('survey')
+def export_stats(id_survey):
+    '''Export stats in csv
+    '''
+    def export_users():
+        writer.writerow(['USERS:'])
+        writer.writerow(['ID_USER', 'IP', 'STATE', 'START DATE', 'FINISH DATE'])
+        sss = StateSurvey.query.filter(StateSurvey.survey_id==id_survey)
+        for ss in sss:
+            l=[ss.user_id, ss.ip, ss.get_status(), ss.start_date, ss.endDate]
+            writer.writerow(l)
+
+    def export_section():
+    
+        def _export_section(section):
+            if section.children.count()!=0:
+                for s in section.children:
+                    l=[s.id, s.title, s.parent.id , s.sequence, s.percent]
+                    writer.writerow(l)
+                    _export_section(s)
+
+        writer.writerow(['SECTION:'])
+        writer.writerow(['ID_SECTION','TITLE','SECTION_PARENT','SEQUENCE','PERCENT'])
+        sections = Section.query.filter(Section.survey_id==id_survey).order_by(Section.sequence)
+        for s in sections:
+            l=[s.id,s.title,"None",s.sequence,s.percent]
+            writer.writerow(l)
+            _export_section(s)
+
+    def export_section_user():
+        writer.writerow(['USER/SECTION (ORDER BY SEQUENCE OF USER):'])
+        writer.writerow(['USER_ID', 'SECTION_ID', 'TIME'])
+        sss = StateSurvey.query.filter(StateSurvey.survey_id==id_survey)
+        for ss in sss:
+            for s in ss.sectionTime:
+                l=[ss.user_id, s[0],s[1]]
+                writer.writerow(l)
+
+    def export_section_question():
+        def _export_section_question(section):
+            questions = section.questions
+            for q in questions:
+                l=[section.id, q.id,q.text,q.type, q.choices]
+                writer.writerow(l)
+            for s in section.children:
+                _export_section_question(s)
+
+        writer.writerow(['SECTION/QUESTION:'])
+        writer.writerow(['SECTION', 'ID_QUESTION', 'QUESTION', 'CHOICES'])
+        sections = Section.query.filter(Section.survey_id==id_survey).order_by(Section.sequence)
+        for s in sections:
+            _export_section_question(s)
+
+    def export_question_user():
+        def _export_question_user(section):
+            answers = Answer.query.filter(Answer.question_id==Question.id,\
+                Question.section_id==section.id)
+            for ans in answers:
+                if isinstance (ans.question,QuestionYN):
+                    text = ans.answerYN
+                if isinstance (ans.question,QuestionNumerical):
+                    text = ans.answerNumeric
+                if isinstance (ans.question,QuestionText):
+                    text = ans.answerText
+                if isinstance (ans.question,QuestionChoice):
+                    text = ans.question.choices[ans.answerNumeric]
+                if isinstance (ans.question, QuestionLikertScale):
+                    text = ans.answerNumeric
+                if isinstance(ans.question,QuestionPartTwo):
+                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                if isinstance (ans.question,QuestionDecisionOne):
+                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                if isinstance (ans.question,QuestionDecisionTwo):
+                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                if isinstance (ans.question,QuestionDecisionThree):
+                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                if isinstance (ans.question,QuestionDecisionFour):
+                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                if isinstance (ans.question,QuestionDecisionFive):
+                    answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
+                if isinstance (ans.question,QuestionDecisionSix):
+                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+
+
+
+                l=[ans.question_id,ans.question.section_id,ans.user_id,text,
+                ans.differentialTime,ans.globalTime,ans.question.text ]
+                writer.writerow(l)
+            for s in section.children:
+                _export_question_user(s)
+
+        writer.writerow(['QUESTION/USER:'])
+        writer.writerow(['ID_QUESTION','ID_SECTION','ID_USER' 'ANSWER', 'DIFFERENTIAL TIME',\
+            'GLOBAL TIME',"QUESTION"])
+        sections = Section.query.filter(Section.survey_id==id_survey).order_by(Section.sequence)
+        for s in sections:
+            _export_question_user(s)
+
+
+    ofile  = open('test.csv', "wb")
+    writer = csv.writer(ofile, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
+    export_users()
+    export_section()
+    export_section_user()
+    export_section_question()
+    export_question_user()
+
+    ofile.close()
+    flash ("Export stats")
+    return redirect(url_for('researcher.index'))

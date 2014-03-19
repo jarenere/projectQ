@@ -931,6 +931,20 @@ class StateSurvey(db.Model):
         return "<StateSurvey(id='%s', survey='%s', user='%s', status='%s')>" % (
             self.id, self.survey_id, self.user_id, self.status)
 
+    def get_status(self):
+        '''return a string with the status
+        '''
+        string =""
+        if self.status & StateSurvey.NONE:
+            string = string + "not finish, "
+        if self.status & StateSurvey.FINISH_OK:
+            string = string + "finish ok,"
+        if self.status & StateSurvey.TIMED_OUT:
+            string = string + "timed_out,"
+        if self.status & StateSurvey.END_DATE_OUT:
+            string = string + "end date out"
+        return string
+
     def _delete_answers(self):
         '''find all answer of user in this survey,
            I could do a recursive query.
