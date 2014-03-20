@@ -272,6 +272,37 @@ def deleteSection(id_survey,id_section):
     flash('Section removed')
     return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
 
+@login_required
+@researcher_required
+@blueprint.route('/survey/<int:id_survey>/deleteSection/<int:id_section>')
+@belong_researcher('section')
+def duplicate_section(id_survey,id_section):
+    def _duplicate_question(s,q):
+        pass
+
+    def _duplicate_section(s_parent,section):
+        section_cp = Section(title= section.title, description=section.description,\
+                sequence=section.sequence, percent=section.percent,\
+                parent= s_parent)
+
+        db.session.add(section_cp)
+        for s in section.children:
+            _duplicate_section(section_cp,s)
+
+
+    section = Section.query.get(id_section)
+    section_cp = Section(title= section.title, description=section.description,\
+            sequence=section.sequence, percent=section.percent,\
+            parent= section.parent, suvey=section.survey)
+    db.session.add(section_cp)
+    for question in section.questions:
+       _duplicate_question(section_cp,question)
+    for s in section.children:
+        _duplicate_section(section_cp,s)
+    db.session.commit()
+    flash('Section duplicated')
+    return redirect(url_for('researcher.editSurvey',id_survey = id_survey))   
+
 
 @login_required
 @researcher_required
