@@ -26,7 +26,7 @@ X hecho
 [X]cuando se modifica una pregunta, que el select field este en posición correcta || 11 de marzo
 [X]cuando se miden tiempos de preguntas, podria mirar si se vuelve a la pregunta ver si ya se ha rellenado el tiempo y sino actualizarlo de manera conveniente, guardando alguan variable || 14 de marzo
 []cuando importas de xml dar mas info cuando hay un campo que falta
-[]copiar seccion
+[/]copiar seccion | FALTA COPIAR PREGUNTAS
 [x]tengo un par de"mierdas" en models, ver que hace, xd | 15 de marzo
 [X]getStateSurvey comprobar fecha tambien y sino es valido eliminar respeustas y devolver none | 15 de abril
 [x]consentimiento vacios, o mas de uno, controlarlo || 17 de marzo
@@ -45,7 +45,7 @@ X hecho
 [x]creo que mal declarada herencia http://docs.sqlalchemy.org/en/rel_0_9/orm/extensions/declarative.html || 12 de marzo
 []xml incluir flag de dinero real
 [X]falta es dinero real en addeditquestion.html | 13 de marzo
-[]algun cron o algo para nuevos usuarios si son researcher o no
+[X]algun cron o algo para nuevos usuarios si son researcher o no | init del user
 []mirar xml creo que no genera part two
 [X]ni funciona ya el exportar|| 13 marzo, resuelto, faltaba tf.name y no solo el descriptor
 [X]buscar el "sescription" | 15 de marzo
@@ -80,15 +80,21 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []se puede cambiar el relationshiyp de lado com esta peusto en sqlalchemy que la verdad es mas logico...
 []añadir algun filtro para cuando muestro informacion del estado de la encuesta al usuario
 []tal vez las encuestas que ha hecho permitirle que als vea
-[]exportar resultados csv, cuando exportas el tipo de respeusta, mira si es respuesta esperada y resultado
+[/]exportar resultados csv, cuando exportas el tipo de respeusta, mira si es respuesta esperada y resultado | falta respuesta esperada y resultado 20 de marzo
 []info final a los usuarios
 []log!!
 []eliminar questionNumerica o questin texto tipo numerico
 []tal vez mover matching y questiones "raras" a un modulo distinto (con la bbdd)
 []tal vez cambiar sectionTime por una tabla externa
-[]ordenar las secciones por sequencia!!
-[]los hijos ordenados por sequence cuando accedo a ellos (modificar bbdd, es el relationship)
+[X]ordenar las secciones por sequencia!! || 20 de marzo
+[X]los hijos ordenados por sequence cuando accedo a ellos (modificar bbdd, es el relationship)| 20 de marzo
 []comprobar la longitud de todos los campos (bbdd, y forms)
-[]quitar registro de tiempo
+[x]quitar registro de tiempo | 20 marzo
 []tal vez solo guardar en respuesta "texto, nada de si o no, numero"
 []en respuestas guardar el tipo de respeusta que guardas? eso o solo texto
+[]csv algun icono de pensando
+[]comprobar cn carga real csv, no estoy seguro si lo hace bien
+[]csv se guarda ahora en local no se envia
+[]terminar position de implementar position de question
+[]fichero con investigadores
+[]en produccion quitar primer user researcher
