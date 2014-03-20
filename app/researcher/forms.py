@@ -43,8 +43,6 @@ class QuestionForm(Form):
     text = PageDownField('Text',validators = [Length(min = 1)],default = EXAMPLE_MARKDOWN)
     #: If the question is obligatory or not
     required = BooleanField('Required', default = True)
-    #: If time is register or not
-    registerTime = BooleanField('Register time', default = False)
     #: Type of response
     questionType = SelectField('Type of question', choices=listQuestionType)
 

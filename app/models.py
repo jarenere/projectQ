@@ -359,8 +359,6 @@ class Question(db.Model):
     text = Column(String, nullable = False)
     #: If the question is obligatory or not
     required = Column(Boolean, nullable = False)
-    #: If time is register or not
-    registerTime = Column(Boolean, nullable = False)
     #: possible choices
     choices = Column(PickleType)
     

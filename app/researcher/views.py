@@ -360,7 +360,6 @@ def selectType(form):
            
     question.text = form.text.data
     question.required = form.required.data
-    question.registerTime = form.registerTime.data
     question.expectedAnswer = form.expectedAnswer.data
     question.maxNumberAttempt = form.maxNumberAttempt.data
     return question
@@ -415,7 +414,6 @@ def editQuestion(id_survey, id_section,id_question):
     elif request.method != "POST":
         form.text.data = question.text
         form.required.data = question.required
-        form.registerTime.data = question.registerTime
         form.expectedAnswer.data = question.expectedAnswer
         form.maxNumberAttempt.data = question.maxNumberAttempt
         if isinstance(question, QuestionText):
