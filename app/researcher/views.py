@@ -564,22 +564,19 @@ def export_stats(id_survey):
                 if isinstance (ans.question, QuestionLikertScale):
                     text = ans.answerNumeric
                 if isinstance(ans.question,QuestionPartTwo):
-                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                    text = ans.question.choices[ans.answerNumeric]
                 if isinstance (ans.question,QuestionDecisionOne):
-                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                    text = ans.answerNumeric
                 if isinstance (ans.question,QuestionDecisionTwo):
-                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                    text = ans.answerNumeric
                 if isinstance (ans.question,QuestionDecisionThree):
-                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                    text = ans.answerNumeric
                 if isinstance (ans.question,QuestionDecisionFour):
-                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                    text = ans.answerNumeric
                 if isinstance (ans.question,QuestionDecisionFive):
-                    answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
+                    text = ans.answerYN
                 if isinstance (ans.question,QuestionDecisionSix):
-                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-
-
-
+                    text = ans.answerNumeric
                 l=[ans.question_id,ans.question.section_id,ans.user_id,text,
                 ans.differentialTime,ans.globalTime,ans.question.text ]
                 writer.writerow(l)
@@ -588,20 +585,22 @@ def export_stats(id_survey):
 
         writer.writerow(['QUESTION/USER:'])
         writer.writerow(['ID_QUESTION','ID_SECTION','ID_USER' 'ANSWER', 'DIFFERENTIAL TIME',\
-            'GLOBAL TIME',"QUESTION"])
+            'GLOBAL TIME',"ANSWER","QUESTION"])
         sections = Section.query.filter(Section.survey_id==id_survey).order_by(Section.sequence)
         for s in sections:
             _export_question_user(s)
 
-
-    ofile  = open('test.csv', "wb")
+    ofile = tempfile.NamedTemporaryFile()
+    # ofile  = open('test.csv', "wb")
     writer = csv.writer(ofile, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
     export_users()
     export_section()
     export_section_user()
     export_section_question()
     export_question_user()
-
+    export_question_user()
     ofile.close()
     flash ("Export stats")
-    return redirect(url_for('researcher.index'))
+    survey = Survey.querty.get(id_survey)
+    # return redirect(url_for('researcher.index'))
+    return send_file(ofile, as_attachment=True, attachment_filename="stats_"+survey.title+'.csv')
