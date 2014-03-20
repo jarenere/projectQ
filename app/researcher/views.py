@@ -528,7 +528,7 @@ def deleteQuestion(id_survey,id_section,id_question):
 def export_stats(id_survey):
     '''Export stats in csv
     '''
-    def export_users():
+    def export_users(writer):
         writer.writerow(['USERS:'])
         writer.writerow(['ID_USER', 'IP', 'STATE', 'START DATE', 'FINISH DATE'])
         sss = StateSurvey.query.filter(StateSurvey.survey_id==id_survey)
@@ -536,14 +536,14 @@ def export_stats(id_survey):
             l=[ss.user_id, ss.ip, ss.get_status(), ss.start_date, ss.endDate]
             writer.writerow(l)
 
-    def export_section():
+    def export_section(writer):
     
-        def _export_section(section):
+        def _export_section(section,writer):
             if section.children.count()!=0:
                 for s in section.children:
                     l=[s.id, s.title, s.parent.id , s.sequence, s.percent]
                     writer.writerow(l)
-                    _export_section(s)
+                    _export_section(s,writer)
 
         writer.writerow(['SECTION:'])
         writer.writerow(['ID_SECTION','TITLE','SECTION_PARENT','SEQUENCE','PERCENT'])
@@ -551,9 +551,9 @@ def export_stats(id_survey):
         for s in sections:
             l=[s.id,s.title,"None",s.sequence,s.percent]
             writer.writerow(l)
-            _export_section(s)
+            _export_section(s,writer)
 
-    def export_section_user():
+    def export_section_user(writer):
         writer.writerow(['USER/SECTION (ORDER BY SEQUENCE OF USER):'])
         writer.writerow(['USER_ID', 'SECTION_ID', 'TIME'])
         sss = StateSurvey.query.filter(StateSurvey.survey_id==id_survey)
@@ -562,23 +562,23 @@ def export_stats(id_survey):
                 l=[ss.user_id, s[0],s[1]]
                 writer.writerow(l)
 
-    def export_section_question():
-        def _export_section_question(section):
+    def export_section_question(writer):
+        def _export_section_question(section,writer):
             questions = section.questions
             for q in questions:
                 l=[section.id, q.id,q.text,q.type, q.choices]
                 writer.writerow(l)
             for s in section.children:
-                _export_section_question(s)
+                _export_section_question(s,writer)
 
         writer.writerow(['SECTION/QUESTION:'])
         writer.writerow(['SECTION', 'ID_QUESTION', 'QUESTION', 'CHOICES'])
         sections = Section.query.filter(Section.survey_id==id_survey).order_by(Section.sequence)
         for s in sections:
-            _export_section_question(s)
+            _export_section_question(s,writer)
 
-    def export_question_user():
-        def _export_question_user(section):
+    def export_question_user(writer):
+        def _export_question_user(section,writer):
             answers = Answer.query.filter(Answer.question_id==Question.id,\
                 Question.section_id==section.id)
             for ans in answers:
@@ -607,29 +607,30 @@ def export_stats(id_survey):
                 if isinstance (ans.question,QuestionDecisionSix):
                     text = ans.answerNumeric
                 l=[ans.question_id,ans.question.section_id,ans.user_id,text,
-                ans.differentialTime,ans.globalTime,ans.question.text ]
+                ans.differentialTime,ans.globalTime ]
                 writer.writerow(l)
             for s in section.children:
-                _export_question_user(s)
+                _export_question_user(s,writer)
 
         writer.writerow(['QUESTION/USER:'])
-        writer.writerow(['ID_QUESTION','ID_SECTION','ID_USER' 'ANSWER', 'DIFFERENTIAL TIME',\
-            'GLOBAL TIME',"ANSWER","QUESTION"])
+        writer.writerow(['ID_QUESTION','ID_SECTION','ID_USER', 'ANSWER', 'DIFFERENTIAL TIME',\
+            'GLOBAL TIME','QUESTION'])
         sections = Section.query.filter(Section.survey_id==id_survey).order_by(Section.sequence)
         for s in sections:
-            _export_question_user(s)
+            _export_question_user(s,writer)
 
-    ofile = tempfile.NamedTemporaryFile()
-    # ofile  = open('test.csv', "wb")
+    survey = Survey.query.get(id_survey)
+    # ofile = tempfile.NamedTemporaryFile()
+    ofile  = open('test.csv', "wb")
     writer = csv.writer(ofile, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
-    export_users()
-    export_section()
-    export_section_user()
-    export_section_question()
-    export_question_user()
-    export_question_user()
-    ofile.close()
+    export_users(writer)
+    export_section(writer)
+    export_section_user(writer)
+    export_section_question(writer)
+    export_question_user(writer)
+    l=["jaja"]
+    writer.writerow(l)
+    # ofile.close()
     flash ("Export stats")
-    survey = Survey.querty.get(id_survey)
-    # return redirect(url_for('researcher.index'))
-    return send_file(ofile, as_attachment=True, attachment_filename="stats_"+survey.title+'.csv')
+    # return send_file(ofile, as_attachment=True, attachment_filename="stats_"+survey.title+'.csv')
+    return redirect(url_for('researcher.index'))
