@@ -807,6 +807,12 @@ class User(db.Model):
     #: A researcher have zero or more Surveys
     Surveys = relationship('Survey', backref = 'researcher', lazy = 'dynamic')
 
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        if len(User.query.all())==0:
+            self.role=ROLE_RESEARCHER
+
+
     def is_authenticated(self):
         '''Returns True if the user is authenticated, i.e. they have provided 
         valid credentials. (Only authenticated users will fulfill the criteria 
