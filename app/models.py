@@ -62,7 +62,8 @@ class Survey(db.Model):
     #: Survey have zero or more sections 
     sections = relationship('Section', 
         cascade="all, delete-orphan",
-        backref = 'survey', lazy = 'dynamic')
+        backref = 'survey', lazy = 'dynamic',
+        order_by= 'Section.sequence')
     #: Survey have zero or more stateSurvey 
     stateSurveys = relationship('StateSurvey', backref = 'survey', lazy = 'dynamic')
     #: Survey belong to a one user(researcher)
@@ -229,7 +230,9 @@ class Section(db.Model):
         # cascade deletions
         cascade="all, delete-orphan",
         backref=backref('parent', remote_side=id),
-        lazy = 'dynamic', uselist = True)
+        lazy = 'dynamic', uselist = True,
+        order_by= 'Section.sequence')
+
 
     def __repr__(self):
         return "<Section(id='%s', title='%s')>" % (
