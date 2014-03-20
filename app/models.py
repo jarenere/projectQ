@@ -16,6 +16,7 @@ from sqlalchemy import event, text
 from sqlalchemy.engine import reflection
 from sqlalchemy import create_engine
 from sqlalchemy.orm.collections import attribute_mapped_collection
+from sqlalchemy import desc
 
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
@@ -360,13 +361,12 @@ class Question(db.Model):
     id = Column(Integer, primary_key = True)
     #: Text for this question
     text = Column(String, nullable = False)
+    #: position
+    position = Column(Integer)
     #: If the question is obligatory or not
     required = Column(Boolean, nullable = False)
     #: possible choices
     choices = Column(PickleType)
-    
-    #: If there is a expected answer
-    #expectedAnswer = Column(Boolean, default = False)
     #:expected answer
     expectedAnswer = Column(String(20), default="")
     #:number of attempt to answer a question with  expected Answer
@@ -382,10 +382,29 @@ class Question(db.Model):
     #: Question have zero or more answers
     answers = relationship('Answer', backref = 'question', lazy = 'dynamic')
 
+    def __init__(self, **kwargs):
+        super(Question, self).__init__(**kwargs)
+        question = Question.query.\
+            filter(Question.section_id==self.section_id).\
+            order_by(desc(Question.position))
+        if question is None:
+            self.position=1
+        else:
+            self.position= question.position+1
+
+
     def isExpectedAnswer(self):
         '''return if there is a expected answer
         '''
         return len(self.expectedAnswer)>0
+        question = self.Question.query.\
+            filter(Question.section_id==self.section_id).\
+            order_by(desc(Question.position))
+        if question is None:
+            return 1
+        else:
+            return question.position+1
+
 
     def to_xml(self):
         question = Element('question')
