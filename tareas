@@ -98,3 +98,6 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []terminar position de implementar position de question
 []fichero con investigadores
 []en produccion quitar primer user researcher
+[]xml no importo/exporto el tipo de dicision
+[x]guardo is money real por defecto a false, comprobar si lo puede quitar el defautl y dejarlo en none (no tiene sentido ya que si modifico seguramente se quede a falso)
+[]modificar el validar form de researcher (question form)

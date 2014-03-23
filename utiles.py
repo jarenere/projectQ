@@ -28,20 +28,6 @@ def verAnswers():
             print ans.answerText
         if ans.question.type== 'choice':
             print ans.answerNumeric
-        if ans.question.type== 'partTwo':
-            print ans.answerNumeric
-        if ans.question.type== 'decisionOne':
-            print ans.answerNumeric
-        if ans.question.type =='decisionTwo':
-            print ans.answerNumeric
-        if ans.question.type =='decisionThree':
-            print ans.answerNumeric
-        if ans.question.type =='decisionFour':
-            print ans.answerNumeric
-        if ans.question.type =='decisionFive':
-            print ans.answerYN
-        if ans.question.type =='decisionSix':
-            print ans.answerNumeric
         print "global:",  ans.globalTime
         print "diferencial:", ans.differentialTime 
         print '================================='
@@ -148,9 +134,7 @@ def generate_answers_fake(id_survey, number=6):
     import forgery_py
     from app.models import Survey, Consent, Section, Answer, User, StateSurvey
     from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
-    from app.models import QuestionYN ,QuestionLikertScale, QuestionPartTwo, QuestionDecisionOne,\
-      QuestionDecisionTwo, QuestionDecisionThree, QuestionDecisionFour, \
-      QuestionDecisionFive, QuestionDecisionSix    
+    from app.models import QuestionYN ,QuestionLikertScale
 
 
     def answer_question(user,q, time):
@@ -159,7 +143,25 @@ def generate_answers_fake(id_survey, number=6):
         if isinstance (q, QuestionYN):
             answer = Answer (answerYN =random.randrange(0,2)==1, user= user, question = q)
         elif isinstance (q, QuestionNumerical):
-            answer = Answer (answerNumeric =random.randrange(0,100), user= user, question = q)
+            if q.decision=="part_two":
+                answer = Answer (answerNumeric =random.randrange(0,2), user= user, question = q)
+            elif q.decision=="decision_one":
+                answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
+            elif q.decision=="decision_two":
+                answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
+            elif q.decision=="decision_three":
+                answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
+            elif q.decision=="decision_four":
+                answer=models.Answer(answerNumeric=random.choice(l2),user=user,question=q)
+            elif q.decision=="decision_five":
+                answer = Answer (answerYN =random.randrange(0,2)==1, user= user, question = q)
+            elif q.decision=="decision_six":
+                answer=models.Answer(answerNumeric=random.choice(l2),user=user,question=q)
+            elif q.decision=="none":
+                answer = Answer (answerNumeric =random.randrange(0,100), user= user, question = q)
+            else:
+                print "error de decision"
+                quit()
         elif isinstance (q, QuestionText):
             if q.isExpectedAnswer():
                 if random.choice([0,1,1])==1:
@@ -177,20 +179,6 @@ def generate_answers_fake(id_survey, number=6):
             answer = Answer (answerNumeric =random.randrange(0,len(q.choices)), user= user, question = q)
         elif isinstance (q,QuestionLikertScale):
             answer = Answer (answerNumeric =random.randrange(q.minLikert,q.maxLikert+1), user= user, question = q)
-        elif isinstance (q, QuestionPartTwo):
-            answer = Answer (answerNumeric =random.randrange(0,2), user= user, question = q)
-        elif isinstance (q, QuestionDecisionOne):
-            answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
-        elif isinstance (q, QuestionDecisionTwo):
-            answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
-        elif isinstance (q, QuestionDecisionThree):
-            answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
-        elif isinstance (q, QuestionDecisionFour):
-            answer=models.Answer(answerNumeric=random.choice(l2),user=user,question=q)
-        elif isinstance (q, QuestionDecisionFive):
-            answer = Answer (answerYN =random.randrange(0,2)==1, user= user, question = q)
-        elif isinstance (q, QuestionDecisionSix):
-            answer=models.Answer(answerNumeric=random.choice(l2),user=user,question=q)
         else:
             print "tipo de pregunta invalido"
             quit()

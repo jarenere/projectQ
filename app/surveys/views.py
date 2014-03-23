@@ -6,9 +6,7 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 from forms import LoginForm, AnswerChoiceForm, AnswerNumericalForm, AnswerTextForm, AnswerYNForm
 from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
-from app.models import QuestionYN ,QuestionLikertScale, QuestionPartTwo, QuestionDecisionOne,\
-  QuestionDecisionTwo, QuestionDecisionThree, QuestionDecisionFour, \
-  QuestionDecisionFive, QuestionDecisionSix
+from app.models import QuestionYN ,QuestionLikertScale
 from app.models import StateSurvey
 from app.models import Answer
 from flask.ext.wtf import Form
@@ -217,31 +215,6 @@ def generate_form(questions):
                 setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
                     choices = list,validators = [Optional()]))
 
-
-        if isinstance(question, QuestionPartTwo):
-            list = [(str(index),choice) for index, choice in enumerate(question.choices)]
-            setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
-                choices = list,validators = [Required()]))
-
-        if isinstance (question, QuestionDecisionOne):
-            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
-
-        if isinstance (question, QuestionDecisionTwo):
-            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
-
-        if isinstance (question, QuestionDecisionThree):
-            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
-        
-        if isinstance (question, QuestionDecisionFour):
-            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
-
-        if isinstance (question, QuestionDecisionFive):
-            setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
-                choices = [('Yes','Yes'),('No','No')],validators = [Required()]))
-
-        if isinstance (question, QuestionDecisionSix):
-            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
-
     form = AnswerForm()
     return form
 
@@ -276,20 +249,6 @@ def showQuestions(id_survey, id_section):
             if isinstance (question,QuestionChoice):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
             if isinstance (question, QuestionLikertScale):
-                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-            if isinstance(question,QuestionPartTwo):
-                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-            if isinstance (question,QuestionDecisionOne):
-                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-            if isinstance (question,QuestionDecisionTwo):
-                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-            if isinstance (question,QuestionDecisionThree):
-                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-            if isinstance (question,QuestionDecisionFour):
-                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-            if isinstance (question,QuestionDecisionFive):
-                answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
-            if isinstance (question,QuestionDecisionSix):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
 
             answer.globalTime = form["globalTimec"+str(question.id)].data

@@ -8,7 +8,7 @@ import random
 import datetime
 from sqlalchemy import BigInteger, Integer, Boolean, Unicode,\
         Float, UnicodeText, Text, String, DateTime, Numeric, PickleType,\
-        SmallInteger
+        SmallInteger, Enum
 from sqlalchemy.schema import Table, MetaData, Column, ForeignKey
 from sqlalchemy.orm import relationship, backref, class_mapper
 from sqlalchemy.types import TypeDecorator
@@ -364,7 +364,7 @@ class Question(db.Model):
     #: position
     position = Column(Integer)
     #: If the question is obligatory or not
-    required = Column(Boolean, nullable = False)
+    required = Column(Boolean, default = True)
     #: possible choices
     choices = Column(PickleType)
     #:expected answer
@@ -372,7 +372,13 @@ class Question(db.Model):
     #:number of attempt to answer a question with  expected Answer
     # zero is infinite attempt to get the right answer
     maxNumberAttempt = Column(Integer, default = 0)
-    
+    # # type of decision
+    decision = Column(Enum('none','part_two', 'decision_one', 'decision_two',
+        'decision_three','decision_four','decision_five','decision_six'),
+        default='none')
+    # decision with real money
+    is_real_money = Column(Boolean, default=False)
+
     #: Type of question, discriminate between classes
     type = Column('type', String(50))
     __mapper_args__ = {'polymorphic_on': type}
@@ -389,8 +395,8 @@ class Question(db.Model):
             order_by(desc(Question.position))
         if question is None:
             self.position=1
-        else:
-            self.position= question.position+1
+        # else:
+        #     self.position= question.position+1
 
 
     def isExpectedAnswer(self):
@@ -422,7 +428,6 @@ class Question(db.Model):
             for choice in self.choices:
                 c = SubElement(question,'choice')
                 c.text = choice
-
 
         expectedAnswer = SubElement(question,'expectedAnswer')
         expectedAnswer.text = self.expectedAnswer
@@ -496,28 +501,6 @@ class Question(db.Model):
                 maxLikert=maxLikert,
                 labelMin=labelMin,
                 labelMax=labelMax)
-
-
-        elif type == 'partTwo':
-            question = QuestionPartTwo()
-
-        elif type == 'decisionOne':
-            question = QuestionDecisionOne()
-
-
-        elif type == 'decisionTwo':
-            question = QuestionDecisionTwo()
-
-        elif type == 'decisionThree':
-            question = QuestionDecisionThree()
-
-        elif type == 'decisionFour':
-            question = QuestionDecisionFour()
-
-        elif type == 'decisionFive':
-            question = QuestionDecisionFive()
-        elif type == 'decisionSix':
-            question = QuestionDecisionSix()
         else:
             return False
 
@@ -559,8 +542,7 @@ class QuestionChoice(Question):
     '''
     __mapper_args__ = {'polymorphic_identity': 'choice'}
     #: possible choices
-    
-    
+        
     def number(self):
         return  len(self.choices)
 
@@ -572,99 +554,6 @@ class QuestionLikertScale(Question):
     maxLikert = Column(Integer)
     labelMin = Column(String(128), default="")
     labelMax = Column(String(128), default="")
-
-
-
-class QuestionPartTwo(Question):
-    '''Question to part two, addoc
-    '''
-    __mapper_args__ = {'polymorphic_identity': 'partTwo'}
-    
-    @declared_attr
-    def is_real_money(cls):
-        "Is real money column, if not present already."
-        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
-
-    def len(self):
-        return 2
-
-class QuestionDecisionOne(Question):
-    '''Question to part three, decision one, addoc
-    '''
-    __mapper_args__ = {'polymorphic_identity': 'decisionOne'}
-    
-    @declared_attr
-    def is_real_money(cls):
-        "Is real money column, if not present already."
-        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
-
-
-class QuestionDecisionTwo(Question):
-    '''Question to part three, decision two, addoc
-    '''
-    __mapper_args__ = {'polymorphic_identity': 'decisionTwo'}
-
-    @declared_attr
-    def is_real_money(cls):
-        "Is real money column, if not present already."
-        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
-
-class QuestionDecisionThree(Question):
-    '''Question to part three, decision three, addoc
-    '''
-    __mapper_args__ = {'polymorphic_identity': 'decisionThree'}
-
-    @declared_attr
-    def is_real_money(cls):
-        "Is real money column, if not present already."
-        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
-
-class QuestionDecisionFour(Question):
-    '''Question to part three, decision four, addoc
-    '''
-    __mapper_args__ = {'polymorphic_identity': 'decisionFour'}
-    
-    @declared_attr
-    def is_real_money(cls):
-        "Is real money column, if not present already."
-        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
-        
-class QuestionDecisionFive(Question):
-    '''Question to part three, decision five, addoc
-    '''
-    __mapper_args__ = {'polymorphic_identity': 'decisionFive'}
-
-    @declared_attr
-    def is_real_money(cls):
-        "Is real money column, if not present already."
-        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
-
-    def len(self):
-        return 1
-
-    @staticmethod
-    def getIntverval(section_id):
-        '''return a list witch all interval(money,question_id)
-        '''
-        l =[]
-        for q in Section.query.get(section_id).questions:
-            if isinstance (q, QuestionDecisionFive):
-                l.append((q.choices[0],q.id))
-        return l
-
-
-class QuestionDecisionSix(Question):
-    '''Question to part three, decision six, addoc
-    '''
-    __mapper_args__ = {'polymorphic_identity': 'decisionSix'}
-
-    @declared_attr
-    def is_real_money(cls):
-        "Is real money column, if not present already."
-        return Question.__table__.c.get('is_real_money', Column(Boolean, default=False))
-
-
-    
 
 
 
@@ -747,9 +636,19 @@ class Match(db.Model):
         '''userB decision to accept o refuse, section_id is where store question type decisisonfive
             if userA win, the userB have accepted the money
         '''
+        def get_intverval(section_id):
+            '''return a list witch all interval(money,question_id)
+            '''
+            l =[]
+            for q in Section.query.get(section_id).questions:
+                if q.decision=="decision_five":
+                    l.append((q.choices[0],q.id))
+            return l
         MONEY = 20
         self.type = 'decisisonFour'
-        interval = QuestionDecisionFive.getIntverval(section_id)
+        # interval = QuestionDecisionFive.getIntverval(section_id)
+        interval = get_intverval(section_id)
+
         for i in interval:
             if int(i[0])==self.cashInitA():
                 answer = Answer.query.filter(Answer.question_id == i[1],Answer.user_id == self.userB).first()

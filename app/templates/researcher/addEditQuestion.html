@@ -5,7 +5,11 @@
 {% from "researcher/_renderQuestions.html" import renderQuestions %}
 
 {% block content %}
-
+<script type="text/javascript">
+    function submitq(){
+            select_question.disabled=false;
+    }
+</script>
 <legend>
     <h1><a href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{survey.title}}</a></h1>
     {% for section in path %}
@@ -33,7 +37,7 @@
         <div class="span10">
             <!--Body content-->
             <div class="well">
-                <form method="post" class="form-horizontal">
+                <form onsubmit="submitq()" method="post" class="form-horizontal">
                     {{form.hidden_tag()}}
                     <fieldset>
                     {{ render_field3(form.text,rows = 10, style = 'width:100%') }}
@@ -67,9 +71,25 @@
                         {{ render_field3(form.answer8) }}
                         {{ render_field3(form.answer9) }}
                     </div>
-                    <div id="is_real_money">
-                        {{ render_field3(form.is_real_money)}}
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                        Options game                                    
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {{render_field3(form.decisionType)}}
+                                    {{ render_field3(form.is_real_money)}}
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                     <td></td>
                     <td>
                         {% if addQuestion %}
@@ -88,15 +108,13 @@
     </div>
 </div>
 <script language="javascript">
-    function onchange(selValue)
-    {
+    function onchange_question(selValue)
+    { 
         $("#divText").hide();
         $("#divLikert").hide();
         $("#divAnswer1").hide();
         $("#divAnswer2").hide();
         $("#divAnswers").hide();
-        $("#is_real_money").hide();
-
         if (selValue=="text")
         {
             //document.getElementById("divAnswer").style.display="none";; 
@@ -113,40 +131,39 @@
         {
             $("#divLikert").show();
         }
-        if (selValue=="partTwo")
-        {
-            $("#divAnswer1").show();
-            $("#divAnswer2").show();
-            $("#is_real_money").show();
-        }
-        if (selValue=="decisionOne")
-        {
-            $("#is_real_money").show();
-        }
-        if (selValue=="decisionOne")
-        {
-            $("#is_real_money").show();
-        }
-        if (selValue=="decisionTwo")
-        {
-            $("#is_real_money").show();
-        }
-        if (selValue=="decisionThree")
-        {
-            $("#is_real_money").show();
-        }
-        if (selValue=="decisionFour")
-        {
-            $("#is_real_money").show();
-        }
-        if (selValue=="decisionFive")
-        {
-            $("#divAnswer1").show();
-            $("#is_real_money").show();
-        }
-        if (selValue=="decisionSix")
-        {
-            $("#is_real_money").show();
+    }
+    function onchange_decision(selValue)
+    {
+
+                
+        if (selValue=="none"){
+            select_question.disabled=false;
+        }else 
+        {        
+            select_question.disabled=true;
+            $("#divText").hide();
+            $("#divLikert").hide();
+            $("#divAnswer1").hide();
+            $("#divAnswer2").hide();
+            $("#divAnswers").hide();
+            $('#collapseOne').collapse("show");
+            if (selValue=="part_two")
+            {
+                document.getElementById('questionType').value = "choice"
+                $("#divAnswer1").show();
+                $("#divAnswer2").show();
+            }
+            else if (selValue=="decision_five")
+            {   
+                document.getElementById('questionType').value = "yn"
+                $("#divAnswer1").show();
+                $("#is_real_money").show();
+            }
+            else 
+            {        
+                $("#divText").show();
+                document.getElementById('questionType').value = "text"
+            }
         }
     }
     window.onload = function() {
@@ -155,14 +172,23 @@
         $("#divAnswer1").hide();
         $("#divAnswer2").hide();
         $("#divAnswers").hide();
-        document.getElementById('questionType').value = '{{type}}';
-        onchange('{{type}}');
+        document.getElementById('questionType').value = '{{question_type}}';
+        onchange_question('{{question_type}}');
+        document.getElementById('decisionType').value = '{{decision_type}}';
+        onchange_decision('{{decision_type}}');
 }
-    var select = document.getElementById("questionType");
-    select.onchange = function() {
-    var selIndex = select.selectedIndex;
-    var selValue = select.options[selIndex].value;
-    onchange(selValue)
+    var select_question = document.getElementById("questionType");
+    select_question.onchange = function() {
+    var selIndex = select_question.selectedIndex;
+    var selValue = select_question.options[selIndex].value;
+    onchange_question(selValue);
 }
+    var select_decision = document.getElementById("decisionType");
+    select_decision.onchange = function() {
+    var selIndex = select_decision.selectedIndex;
+    var selValue = select_decision.options[selIndex].value;
+    onchange_decision(selValue);
+}
+
 </script>
 {% endblock %}

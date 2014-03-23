@@ -10,11 +10,11 @@ EXAMPLE_MARKDOWN = '## This is a example of Markdown\n**Markdown** is rendered o
 More about [markdown](http://daringfireball.net/projects/markdown/).'
 
 listQuestionType = [('yn', 'YES/NO'),('numerical','Numerical'),
-        ('text','Text'),('choice','Choice'),('likertScale','Likert Scale'),
-        ('partTwo','Part two'),('decisionOne','Decision One'),
-        ('decisionTwo','Decision Two'),('decisionThree','Decision Three'),
-        ('decisionFour','Decision Four'),('decisionFive','Decision Five'),
-        ('decisionSix','Decision Six')]
+        ('text','Text'),('choice','Choice'),('likertScale','Likert Scale')]
+listDecisions = [('none','None'),('part_two','Part two'),('decision_one','Decision One'),
+        ('decision_two','Decision Two'),('decision_three','Decision Three'),
+        ('decision_four','Decision Four'),('decision_five','Decision Five'),
+        ('decision_six','Decision Six')]
 
 class SurveyForm(Form):
     title = TextField('Title', validators = [Length(min = 1, max = 128)])
@@ -45,6 +45,9 @@ class QuestionForm(Form):
     required = BooleanField('Required', default = True)
     #: Type of response
     questionType = SelectField('Type of question', choices=listQuestionType)
+    #: Type of decisions
+    decisionType = SelectField('Type of question', choices=listDecisions)
+
 
     #:dateValidation(text)
     isNumber = BooleanField('Number')
@@ -77,14 +80,6 @@ class QuestionForm(Form):
     answer8 = TextField('Answer 8', validators = [Length(min = 0, max =400)])
     answer9 = TextField('Answer 9', validators = [Length(min = 0, max =400)])
 
-    def selectQuestionTypeDefault(self):
-        self.questionType.default = 'Numerical'
-        self.questionType.process()
-        # self.questionType = SelectField('Type of question', choices=listQuestionType, default ='Numerical')
-        # return self
-        #     default = d)
-
-
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
@@ -93,6 +88,15 @@ class QuestionForm(Form):
         if not Form.validate(self):
             return False
         if self.questionType.data == 'choice':
+            if self.decisionType.data == 'decision_five':
+                l = [self.answer1]
+                state = True
+                for i in  range (1):
+                    if len(l[i].data) == 0:
+                        l[i].errors.append('The field can not be empty')
+                        state = False
+                return state
+            
             l = [self.answer1,
             self.answer2,
             self.answer3,
@@ -109,19 +113,11 @@ class QuestionForm(Form):
             if state ==False:
                 l[0].errors.append('All field can not be empty')
             return state
-        if self.questionType.data == 'partTwo':
+        if self.decisionType.data == 'part_two':
             l = [self.answer1,
             self.answer2]
             state = True
             for i in  range (2):
-                if len(l[i].data) == 0:
-                    l[i].errors.append('The field can not be empty')
-                    state = False
-            return state
-        if self.questionType.data == 'decisionFive':
-            l = [self.answer1]
-            state = True
-            for i in  range (1):
                 if len(l[i].data) == 0:
                     l[i].errors.append('The field can not be empty')
                     state = False

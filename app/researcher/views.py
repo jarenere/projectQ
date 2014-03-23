@@ -5,9 +5,7 @@ from flask import render_template, g
 from forms import SurveyForm, EditConsentForm, SectionForm, QuestionForm
 from app.models import Survey, Consent, Section, StateSurvey, Answer
 from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
-from app.models import QuestionYN, QuestionLikertScale, QuestionPartTwo, QuestionDecisionOne, \
-    QuestionDecisionTwo, QuestionDecisionThree, QuestionDecisionFour, \
-    QuestionDecisionFive, QuestionDecisionSix
+from app.models import QuestionYN, QuestionLikertScale
 from app import app, db
 from app.decorators import researcher_required, belong_researcher
 from flask.ext.login import login_user, logout_user, current_user, login_required
@@ -369,26 +367,20 @@ def selectType(form):
         question = QuestionLikertScale(minLikert=form.minLikert.data,
             maxLikert=form.maxLikert.data, labelMin=form.labelMinLikert.data,
             labelMax=form.labelMaxLikert.data)
-    if form.questionType.data == 'partTwo':
+    
+    print (form.questionType.data)
+    #decision:
+    if form.decisionType.data !='none':
+        question.is_real_money= form.is_real_money.data
+    if form.decisionType.data == "part_two":
         l = [form.answer1.data,
         form.answer2.data]
-        question = QuestionPartTwo(choices = l[0:2],
-            is_real_money=form.is_real_money.data)
-    if form.questionType.data == 'decisionOne':
-        question = QuestionDecisionOne(is_real_money=form.is_real_money.data)
-    if form.questionType.data == 'decisionTwo':
-        question = QuestionDecisionTwo(is_real_money=form.is_real_money.data)
-    if form.questionType.data == 'decisionThree':
-        question = QuestionDecisionThree(is_real_money=form.is_real_money.data)
-    if form.questionType.data == 'decisionFour':
-        question = QuestionDecisionFour(is_real_money=form.is_real_money.data)
-    if form.questionType.data == 'decisionFive':
+        question.choices = l[0:2]
+    if form.decisionType.data == "decision_five":
         l = [form.answer1.data]
-        question = QuestionDecisionFive(choices = l[0:1],
-            is_real_money=form.is_real_money.data)
-    if form.questionType.data == 'decisionSix':
-        question = QuestionDecisionSix(is_real_money=form.is_real_money.data)
-           
+        question.choices = l[0:1]
+
+    question.decision=form.decisionType.data
     question.text = form.text.data
     question.required = form.required.data
     question.expectedAnswer = form.expectedAnswer.data
@@ -406,7 +398,6 @@ def addQuestion(id_survey, id_section):
     form = QuestionForm()
     if form.validate_on_submit():
         question = selectType(form)
-
         question.section = section
         db.session.add(question)
         db.session.commit()
@@ -421,7 +412,8 @@ def addQuestion(id_survey, id_section):
         section = section,
         questions = section.questions,
         addQuestion = True,
-        type = "yn",
+        question_type = form.questionType.data,
+        decision_type = form.decisionType.data,
         path = path)
 
 
@@ -447,6 +439,7 @@ def editQuestion(id_survey, id_section,id_question):
         form.required.data = question.required
         form.expectedAnswer.data = question.expectedAnswer
         form.maxNumberAttempt.data = question.maxNumberAttempt
+        form.is_real_money.data = question.is_real_money
         if isinstance(question, QuestionText):
             form.regularExpression.data = question.regularExpression
             form.isNumber.data = question.isNumber
@@ -471,29 +464,11 @@ def editQuestion(id_survey, id_section,id_question):
                 form.answer8.data = l[7]
             if len(l) >8:
                 form.answer9.data = l[8]
-        if isinstance (question,QuestionPartTwo):
-            l= question.choices
-            form.answer1.data = l[0]
-            form.answer2.data = l[1]
-            form.is_real_money.data = question.is_real_money
-        if isinstance (question,QuestionDecisionOne):
-            form.is_real_money.data = question.is_real_money
-        if isinstance (question,QuestionDecisionTwo):
-            form.is_real_money.data = question.is_real_money
-        if isinstance (question,QuestionDecisionThree):
-            form.is_real_money.data = question.is_real_money
-        if isinstance (question,QuestionDecisionFour):
-            form.is_real_money.data = question.is_real_money
-        if isinstance (question,QuestionDecisionFive):
-            l= question.choices
-            form.answer1.data = l[0]
-            form.is_real_money.data = question.is_real_money
-        if isinstance (question,QuestionDecisionSix):
-            form.is_real_money.data = question.is_real_money
-
         if isinstance(question, QuestionLikertScale):
             form.labelMinLikert.data=question.labelMin
             form.labelMaxLikert.data=question.labelMax
+        if question.decision=="decision_five":
+            form.answer1.data = question.choices[0]
     section =  Section.query.get(id_section)
     path=tips_path(section)
     return render_template('/researcher/addEditQuestion.html',
@@ -504,7 +479,8 @@ def editQuestion(id_survey, id_section,id_question):
         section = section,
         questions = Section.query.get(id_section).questions,
         editQuestion = True,
-        type = question.type,
+        question_type = question.type,
+        decision_type = question.decision,
         path = path)
 
 @login_required
@@ -591,20 +567,6 @@ def export_stats(id_survey):
                 if isinstance (ans.question,QuestionChoice):
                     text = ans.question.choices[ans.answerNumeric]
                 if isinstance (ans.question, QuestionLikertScale):
-                    text = ans.answerNumeric
-                if isinstance(ans.question,QuestionPartTwo):
-                    text = ans.question.choices[ans.answerNumeric]
-                if isinstance (ans.question,QuestionDecisionOne):
-                    text = ans.answerNumeric
-                if isinstance (ans.question,QuestionDecisionTwo):
-                    text = ans.answerNumeric
-                if isinstance (ans.question,QuestionDecisionThree):
-                    text = ans.answerNumeric
-                if isinstance (ans.question,QuestionDecisionFour):
-                    text = ans.answerNumeric
-                if isinstance (ans.question,QuestionDecisionFive):
-                    text = ans.answerYN
-                if isinstance (ans.question,QuestionDecisionSix):
                     text = ans.answerNumeric
                 l=[ans.question_id,ans.question.section_id,ans.user_id,text,
                 ans.differentialTime,ans.globalTime ]
