@@ -65,6 +65,10 @@ class Survey(db.Model):
         cascade="all, delete-orphan",
         backref = 'survey', lazy = 'dynamic',
         order_by= 'Section.sequence')
+    # #: Survey have zero or more questions
+    # questions = relationship('Question', 
+    #     backref = 'survey', lazy = 'dynamic')
+
     #: Survey have zero or more stateSurvey 
     stateSurveys = relationship('StateSurvey', backref = 'survey', lazy = 'dynamic')
     #: Survey belong to a one user(researcher)
@@ -262,30 +266,32 @@ class Section(db.Model):
 
         return section
 
-    @staticmethod
-    def __from_xml_subSection(root,parent,msg):
-
-        title = findField('title',root,msg)
-        description = findField('description',root,msg)
-        sequence = findField('sequence',root,msg)
-        percent = findField('percent',root,msg)
-
-        section = Section(title = title,
-            description = description,
-            sequence = sequence,
-            percent = percent,
-            parent = parent
-            )
-        db.session.add(section)
-
-        for q in root.findall('question'):
-            Question.from_xml(q, section, msg)
-
-        for s in root.findall('section'):
-            Section.__from_xml_subSection(s,section,msg)
 
     @staticmethod
     def from_xml(root,survey,msg):
+        def from_xml_subSection(root,parent,msg):
+
+            title = findField('title',root,msg)
+            description = findField('description',root,msg)
+            sequence = findField('sequence',root,msg)
+            percent = findField('percent',root,msg)
+
+            section = Section(title = title,
+                description = description,
+                sequence = sequence,
+                percent = percent,
+                parent = parent
+                )
+            db.session.add(section)
+
+            for q in root.findall('question'):
+                Question.from_xml(q, section, msg)
+
+            for s in root.findall('section'):
+                from_xml_subSection(s,section,msg)
+
+
+
         title = findField('title',root,msg)
         description = findField('description',root,msg)
         sequence = findField('sequence',root,msg)
@@ -303,7 +309,7 @@ class Section(db.Model):
             Question.from_xml(q, section, msg)
 
         for s in root.findall('section'):
-            Section.__from_xml_subSection(s,section,msg)
+            from_xml_subSection(s,section,msg)
 
 
     @staticmethod
@@ -383,6 +389,8 @@ class Question(db.Model):
     type = Column('type', String(50))
     __mapper_args__ = {'polymorphic_on': type}
     ## Relationships
+    #: question belon to one survey
+    # survey_id = Column(Integer, ForeignKey('survey.id'))
     #: Question belong to one section
     section_id = Column(Integer, ForeignKey('section.id'))
     #: Question have zero or more answers
@@ -398,6 +406,13 @@ class Question(db.Model):
         # else:
         #     self.position= question.position+1
 
+    def survey(self):
+        '''return survey 
+        '''
+        section = self.section
+        while (section.parent is not None):
+            section = section.parent
+        return section.survey
 
     def isExpectedAnswer(self):
         '''return if there is a expected answer
@@ -510,8 +525,6 @@ class Question(db.Model):
         question.maxNumberAttempt = maxNumberAttempt
         question.choices = l
         question.section = section
-        question.registerTime = False
-        
         db.session.add(question)
 
 
