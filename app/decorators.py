@@ -17,23 +17,6 @@ def researcher_required(f):  # pragma: no cover
             return abort(403)
     return decorated_function
 
-
-def is_section_researcher(f):
-    '''Check if this secction is of the research
-    '''
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        section = Section.query.get_or_404(kwargs['id_section'])
-        survey = Survey.query.get_or_404(kwargs['id_survey'])
-        while (section.parent is not None):
-            section = section.parent
-        if section.survey_id == survey.id and\
-            survey.researcher==current_user:
-            return f(*args, **kwargs)
-        else:
-            return abort(403)
-    return decorated_function
-
 def belong_researcher(check):
     '''check if section/consent/question/survey belong to researcher
     '''
@@ -59,9 +42,7 @@ def belong_researcher(check):
             def check_section(id_survey,id_section):
                 section = Section.query.get_or_404(id_section)
                 survey = Survey.query.get_or_404(id_survey)
-                while (section.parent is not None):
-                    section = section.parent
-                if section.survey_id == survey.id and\
+                if section.root.id == survey.id and\
                     survey.researcher==current_user:
                     return f(*args, **kwargs)
                 else:
@@ -73,9 +54,7 @@ def belong_researcher(check):
                 question = Question.query.get_or_404(id_question)
                 if question.section!=section:
                     return abort(403)
-                while (section.parent is not None):
-                    section = section.parent
-                if section.survey_id == survey.id and\
+                if section.root.id == survey.id and\
                     survey.researcher==current_user:
                     return f(*args, **kwargs)
                 else:
