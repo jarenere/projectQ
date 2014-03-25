@@ -10,7 +10,7 @@
                     <a href="{{ url_for('researcher.deleteSection', id_section = section.id, id_survey =  survey.id) }}">{{ ('Delete') }}</a>
                     <a href="{{ url_for('researcher.addSubSection', id_section = section.id, id_survey =  survey.id) }}">{{ ('Add subsection') }}</a>
                     <a href="{{ url_for('researcher.addQuestion', id_survey = survey.id, id_section = section.id) }}">{{ ('Add/Edit question') }}</a>
-                    <a href="{{ url_for('researcher.addQuestion', id_survey = survey.id, id_section = section.id) }}">{{ ('Duplicate section') }}</a>
+                    <a href="{{ url_for('researcher.duplicate_section', id_survey = survey.id, id_section = section.id) }}">{{ ('Duplicate section') }}</a>
                 </td>
             </table>
             {%- if section.children %}

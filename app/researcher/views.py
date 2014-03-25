@@ -272,26 +272,55 @@ def deleteSection(id_survey,id_section):
 
 @login_required
 @researcher_required
-@blueprint.route('/survey/<int:id_survey>/deleteSection/<int:id_section>')
+@blueprint.route('/survey/<int:id_survey>/duplicateSection/<int:id_section>')
 @belong_researcher('section')
 def duplicate_section(id_survey,id_section):
     def _duplicate_question(s,q):
-        pass
+        if isinstance(q, QuestionYN):
+            question_cp=QuestionYN()
+        if isinstance(q,QuestionNumerical):
+            question_cp=QuestionNumerical()
+        if isinstance (q, QuestionText):
+            question_cp = QuestionText(isNumber=q.isNumber,
+                regularExpression=q.regularExpression,
+                errorMessage=q.errorMessage)
+        if isinstance (q,QuestionChoice):
+            question_cp = QuestionChoice(choices= q.choices[:])
+        if isinstance (q, QuestionLikertScale):
+            question_cp = QuestionLikertScale(minLikert=q.minLikert,
+                maxLikert=q.maxLikert, labelMin=q.labelMinLikert,
+                labelMax=q.labelMaxLikert)
+
+        if q.decision == "decision_five":
+            question_cp.choices = q.choices[:]
+
+        question_cp.decision=q.decision
+        question_cp.is_real_money= q.is_real_money
+        question_cp.text = q.text
+        question_cp.required = q.required
+        question_cp.expectedAnswer = q.expectedAnswer
+        question_cp.maxNumberAttempt = q.maxNumberAttempt
+        question_cp.section = s
+        db.session.add(question_cp)
 
     def _duplicate_section(s_parent,section):
         section_cp = Section(title= section.title, description=section.description,\
                 sequence=section.sequence, percent=section.percent,\
                 parent= s_parent)
-
         db.session.add(section_cp)
+        
+        for question in section.questions:
+           _duplicate_question(section_cp,question)
+        
         for s in section.children:
             _duplicate_section(section_cp,s)
+
 
 
     section = Section.query.get(id_section)
     section_cp = Section(title= section.title, description=section.description,\
             sequence=section.sequence, percent=section.percent,\
-            parent= section.parent, suvey=section.survey)
+            parent= section.parent, survey=section.survey)
     db.session.add(section_cp)
     for question in section.questions:
        _duplicate_question(section_cp,question)
@@ -367,8 +396,6 @@ def selectType(form):
         question = QuestionLikertScale(minLikert=form.minLikert.data,
             maxLikert=form.maxLikert.data, labelMin=form.labelMinLikert.data,
             labelMax=form.labelMaxLikert.data)
-    
-    print (form.questionType.data)
     #decision:
     if form.decisionType.data !='none':
         question.is_real_money= form.is_real_money.data
