@@ -11,11 +11,11 @@ X hecho
 [X]fecha de inicio y fin de la encuesta | 11 de marzo
 [X] que hacer cuando un usuario a empezado una encuesta y la fecha se termina (dejo un dia y luego borrar respuestas?) (solucion la misma que con el tiempo, si empezaste 2 minutos antes, mala suerte!)|| 12 de marzo
 [X]implementar usarios para la pate de investidadores
-[/]limitar el numero maximo de participantes (falta parte del usuario, en la bbdd e investigador hecho)
+[X]limitar el numero maximo de participantes (falta parte del usuario, en la bbdd e investigador hecho)
 [] limpiar un poco el codigo cuando se responden questiones, por ejemplo la p arte de time se podria sacar, solo hacer un commit al final ..., parte de comprobacion de si la respuesta es correcta debería ir en el modelo
 [X] en next section compruebo si vacio el camino, no sería mejor cuando genero el arbol? desde luego que si| 10 de marzo
-[/] parte de pago y no pagos, tal vez algun flag en las preguntas | 13 de marzo flag de pago real
-[/]parte del match | 14 de marzo a medias
+[X] parte de pago y no pagos, tal vez algun flag en las preguntas | 13 de marzo flag de pago real
+[/]parte del match | 14 de marzo a medias | 25 de marzo
 [x]generar preguntas no obligatorias | 11 de marzo
 [x]implementar que un usuario no pueda entrar a cualquier seccion || 11 de marzo
 [X]se peude acceder a encuestas aun no publicadas, validar fecha y numero de usuarios, evitarlo! || solo hecho la fecha, fin el 18 de marzo
@@ -26,7 +26,7 @@ X hecho
 [X]cuando se modifica una pregunta, que el select field este en posición correcta || 11 de marzo
 [X]cuando se miden tiempos de preguntas, podria mirar si se vuelve a la pregunta ver si ya se ha rellenado el tiempo y sino actualizarlo de manera conveniente, guardando alguan variable || 14 de marzo
 []cuando importas de xml dar mas info cuando hay un campo que falta
-[/]copiar seccion | FALTA COPIAR PREGUNTAS
+[X]copiar seccion | FALTA COPIAR PREGUNTAS | 25 de marzo terminado
 [x]tengo un par de"mierdas" en models, ver que hace, xd | 15 de marzo
 [X]getStateSurvey comprobar fecha tambien y sino es valido eliminar respeustas y devolver none | 15 de abril
 [x]consentimiento vacios, o mas de uno, controlarlo || 17 de marzo
@@ -35,15 +35,15 @@ X hecho
 [X]no compruebo en todos los casos en los que los investigadores modifican encuestas de otros, deberia de mirarlo con calma y tener en cuenta el desarrollo del arbol para obtener el padre, eso o guardarme un enlace a la raiz, deberia de mirar desde secciones || 17 de marzo, arreglado con un decorador
 [X]repasar el codico de consent, veo algun first un tanto feo || Esta bien co el first, que lo uso para ver si es valido el investtigados 17 de marzo
 [X]No mostras encuestas terminadas!! o tal vez mostrar aviso de encuesta ya finalizada o resultados de esta || 18 de marzo
-[] tal vez guardar a que pregunta pertenence cada encuesta, aunque es algo redundante, bastante
+[X] tal vez guardar a que pregunta pertenence cada encuesta, aunque es algo redundante, bastante | 25 de marzo seccion guarda un atributo al root
 [X]caundo devuelvo none en next section, comprobar el status para dar info al usuario | 18 de marzo
 [X]cron comprobando encuestas no terminadas | 19 de marzo
 [X]logic survey cuando es feura de fecha, dar mas info, igual  que con otros estados de statusSurvey | 18 de marzo
 []en el match puedes enfrentarte a un mismo usuario varias veces, habria que evitarlo, pero es un cañazo
 []en el match decision 4-5 te puedes enfrentar a ti mismo, xd
-[]creo que me voy a cargar la herencia de las clases
+[/]creo que me voy a cargar la herencia de las clases|  23 de marzo, gran parte eliminada (tipo de decsision)
 [x]creo que mal declarada herencia http://docs.sqlalchemy.org/en/rel_0_9/orm/extensions/declarative.html || 12 de marzo
-[]xml incluir flag de dinero real
+[X]xml incluir flag de dinero real | 25 de marzo
 [X]falta es dinero real en addeditquestion.html | 13 de marzo
 [X]algun cron o algo para nuevos usuarios si son researcher o no | init del user
 []mirar xml creo que no genera part two
@@ -54,14 +54,14 @@ X hecho
 [X]parece que no controlo el input en la pregunta 5, es una pregunta de si o no, yo creo que esta bien|| 15 de marzo
 [X]question parttwo cuando escribo en la bbdd no deberia ser answer de si o no?|| es un numero porque es igual que una pregunta de tipo choice, 15 de marzo
 [/]hacer una mascara para el estado y las funcioens de acceso a la mascara (añadir quitar elemento) | 14 de febero, sin funciones
-[]tal vez añadir a question una referencia a que survey pertence
+[X]tal vez añadir a question una referencia a que survey pertence | 25 de marzo, a traves de seccionses
 []crear algun check para preguntas tipo 4-5 (rango de valores por ejemplo)
 [X]comprobar la fecha validad de la encuesta con un decorator ||18 de marzo
-[]cuando lanzo encuesta buscar matching y rellenar variables globales
+[X]cuando lanzo encuesta buscar matching y rellenar variables globales | 25 de marzo, cuando declaro la clase matching busco las preguntas y secciones de matching y las guardo en la variable
 []falta premios del matching
-[]falta parte2 del matching
+[X]falta parte2 del matching | 25 de marzo
 [X]en preguntas con respeusta esperada, meto las demas preguntas tambien en la bbdd | cuando hice el check answerd expeced, solo se mete esa pregunta ya que se almacena el numero de intentos
-[/]para respuesta esperada tal vez generar un validator, el calculo del tiempo se generara mal seguramente, proque no miro en la bbdd los datos, cosa a hacer, mirar bien en todos los casos de validar respuesta (ahora solo esta peusto en question text requerida) | validado echo! falta mirar todos los casos (15 de octubre)
+[/]para respuesta esperada tal vez generar un validator, el calculo del tiempo se generara mal seguramente, proque no miro en la bbdd los datos, cosa a hacer, mirar bien en todos los casos de validar respuesta (ahora solo esta peusto en question text requerida) | validado echo! falta mirar todos los casos (15 de marzo)
 [X]cuidado con la medicion de tiempos de preguntas con respuesta correcta || 15 de marzo (añadi un validate a este tipo de preguntas)
 []no editar encuestas que ya han empezado (error en la integridad de la bbdd)
 [X]cambiar los 403 de de la encuesta por algo del tipo tiempo para la realizacion de la encuesta terminada | 18 de marzo
@@ -73,7 +73,7 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []tal vez añadir al decorador belong_researcher el decorador cache, xd http://www.juanjoconti.com.ar/2009/12/30/decoradores-en-python-iii/
 [X]añadir flag de terminado en tiempo | 18 de marzo
 []en util.matching se puede volver a coger a un usuario que ha hehco una encuesta
-[]import xml falla cuando hay fecha
+[X]import xml falla cuando hay fecha | elimnado campo fecha 25 de marzo
 []importar xml si vacio el titulo falla y ademaas luego si pones titulo no imoprta xml sino crea encuesta con ese titulo
 []no comprobado el tiempo cuando valido xml
 [X]comprobar que sino nahy numero masximo de repondents mento 0 o vacio | 18 de marzo
@@ -98,6 +98,15 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []terminar position de implementar position de question
 []fichero con investigadores
 []en produccion quitar primer user researcher
-[]xml no importo/exporto el tipo de dicision
+[X]xml no importo/exporto el tipo de dicision | 25 de marzo
 [x]guardo is money real por defecto a false, comprobar si lo puede quitar el defautl y dejarlo en none (no tiene sentido ya que si modifico seguramente se quede a falso)
 []modificar el validar form de researcher (question form)
+[X]tengo acceso directo al root(survey), modificar decoradores y alguna que otra funcion recursiva | 25 de marzo
+
+[X]eliminar random.seed, no es necesario (ya se inicializa aleatoriamente cuando importas el modulo) | 25 de marzo
+[]rellenar status survey del matching
+[]matching cojo todos los usuarios que han finalizado la encuesta, puedes volver a cogerte otra vez, mirar el status
+[]comprobar que matching funciona, xddd
+[]falta parte de premios de la tercera parte
+[x]decision 5 falla el check || 25 de marzo
+[]csv mirar que sucede en preguntas optativas, (deberia exportar "none")

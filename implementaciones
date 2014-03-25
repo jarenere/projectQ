@@ -4,3 +4,6 @@ para añadir una nuevo tipo de cuestion
     Añadir en forms, el form para poder seleccionarlo, xd
     (addquestion)
     si se quiere añadir un nuevo tipo de pregunta ficheros a tocar: researcher.py (addquestion), forms y model
+
+problemas surgidos
+sqlalchemy con hybrid_property para expresiones no se pueden hacer autoreferenciales (seccion.parent...) fallo en el mapper, solucion consulta recursiva, problema sqlalchemy solo soporta consultas recursivas en postgresql y oracle. Mysql y sqlite no soportado por que no soporta consultas recursivas. Solucion, cuando creo una seccion busco cual es el survey root y creo una relación, sip, desnormalizo la bbdd, pero gano en rapidez, comodidas y menos lienas de codigo para algunas consultas en las que tenia que hacer una bucle externo 
