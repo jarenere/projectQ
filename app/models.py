@@ -116,11 +116,11 @@ class Survey(db.Model):
         description = SubElement(survey,'description')
         description.text = self.description
         
-        startDate = SubElement(survey,'startDate')
-        startDate.text = str(self.startDate)
+        # startDate = SubElement(survey,'startDate')
+        # startDate.text = str(self.startDate)
 
-        endDate = SubElement(survey,'endDate')
-        endDate.text = str(self.endDate)
+        # endDate = SubElement(survey,'endDate')
+        # endDate.text = str(self.endDate)
 
         maxNumberRespondents = SubElement(survey,'maxNumberRespondents')
         maxNumberRespondents.text = str(self.maxNumberRespondents)
@@ -145,13 +145,13 @@ class Survey(db.Model):
         msg = []
         title = findField('title',root,msg)
         description = findField('description',root,msg)
-        startDate = findField('startDate',root,msg)
-        endDate = findField('endDate',root,msg)
+        # startDate = findField('startDate',root,msg)
+        # endDate = findField('endDate',root,msg)
         maxNumberRespondents = findField('maxNumberRespondents',root,msg)
         duration = findField('duration',root,msg)
 
         survey = Survey(title = title, description = description,
-            startDate = startDate, endDate = endDate,
+            # startDate = startDate, endDate = endDate,
             maxNumberRespondents = maxNumberRespondents,
             duration = duration,
             researcher = user)
@@ -450,6 +450,12 @@ class Question(db.Model):
         required = SubElement(question,'required')
         required.text = str(self.required)
 
+        money = SubElement(question,'money')
+        money.text = str(self.is_real_money)
+
+        decision = SubElement(question,'decision')
+        decision.text = self.decision
+
         if self.choices !=None:
             for choice in self.choices:
                 c = SubElement(question,'choice')
@@ -491,6 +497,8 @@ class Question(db.Model):
     def from_xml(root,section,msg):
         texto = findField('text',root,msg)
         required = (findField('required',root,msg) =="True")
+        money = (findField('money',root,msg) =="True")
+        decision = findField('decision',root,msg)
 
         #CHOICES = findField('sequence',root,msg)
         l=[]
@@ -531,6 +539,8 @@ class Question(db.Model):
             return False
 
         question.text = texto
+        question.is_real_money = money
+        question.decision = decision
         question.required = required
         question.expectedAnswer = expectedAnswer
         question.maxNumberAttempt = maxNumberAttempt
