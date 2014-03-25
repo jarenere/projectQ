@@ -62,12 +62,16 @@ class Survey(db.Model):
         cascade="all, delete-orphan",
         backref = 'survey', lazy = 'dynamic')
     #: Survey have zero or more sections children 
-    sections = relationship('Section', foreign_keys="Section.survey_id",
+    sections = relationship('Section', 
+        foreign_keys="Section.survey_id",
         cascade="all, delete-orphan",
         backref = 'survey', lazy = 'dynamic',
         order_by= 'Section.sequence')
     # #: Survey have zero or more questions
-    sections_all = relationship('Section', backref = 'root', foreign_keys="Section.root_id")
+    sections_all = relationship('Section', 
+        backref = 'root', 
+        lazy = 'dynamic',
+        foreign_keys="Section.root_id")
 
     #: Survey have zero or more stateSurvey 
     stateSurveys = relationship('StateSurvey', backref = 'survey', lazy = 'dynamic')
@@ -602,6 +606,8 @@ class Match(db.Model):
     moneyA = Column(Numeric)
     #:money earned of userB
     moneyB = Column(Numeric)
+    #:prize or no
+    prize = Column(Boolean, default=False)
 
     @staticmethod
     def Matching():
@@ -615,6 +621,8 @@ class Match(db.Model):
     def cashInitB(self):
         return Answer.query.get(self.answerB).answerNumeric
 
+    def part_two(self):
+        self.type= 'part_two'
 
     def decisionOne(self):
         '''Probability:= userA_Money/(userA_Money+user_MoneyB)
@@ -623,7 +631,7 @@ class Match(db.Model):
         AWARD = 10
         INIT_MONEY = 10
         
-        self.type = 'decisionOne'
+        self.type = 'decision_one'
         percentA=self.cashInitA()/(self.cashInitA()+self.cashInitB())
         if percentA>random.random():
             #answerA win
@@ -638,7 +646,7 @@ class Match(db.Model):
     def decisionTwo(self):
         INIT_MONEY = 10
         CONSTANT_FUND = 0.8
-        self.type = 'decisionTwo'
+        self.type = 'decision_two'
         fund = (self.cashInitA()+self.cashInitB())*CONSTANT_FUND
         self.moneyA = fund + INIT_MONEY - self.cashInitA()
         self.moneyB = fund + INIT_MONEY - self.cashInitB()
@@ -646,7 +654,7 @@ class Match(db.Model):
     def decisionThree(self):
         INIT_MONEY = 10
         CONSTANT_FUND = 1.2
-        self.type = 'decisionThree'
+        self.type = 'decision_three'
         fund = (self.cashInitA()+self.cashInitB())*CONSTANT_FUND
         self.moneyA = fund + INIT_MONEY - self.cashInitA()
         self.moneyB = fund + INIT_MONEY - self.cashInitB()
@@ -665,7 +673,7 @@ class Match(db.Model):
                     l.append((q.choices[0],q.id))
             return l
         MONEY = 20
-        self.type = 'decisisonFour'
+        self.type = 'decisison_four'
         # interval = QuestionDecisionFive.getIntverval(section_id)
         interval = get_intverval(section_id)
 
@@ -690,7 +698,7 @@ class Match(db.Model):
 
     def decision_six(self):
         MONEY = 20
-        self.type = 'decisisonSix'
+        self.type = 'decisison_six'
         self.moneyA = MONEY - self.cashInitA()
         self.moneyB = self.cashInitA()
 
@@ -832,8 +840,13 @@ class StateSurvey(db.Model):
     TIMED_OUT = 0x04
     #: finished out of date
     END_DATE_OUT = 0x08
+    #:part two section with money
+    PART_TWO_MONEY = 0X10
+    #:part three section with money
+    PART_THREE_MONEY = 0X20
     #: do matching
-    MATCHING = 0X10
+    MATCHING = 0X40
+
 
     NO_ERROR = 0
     # maximum number of surveys execeeded 
