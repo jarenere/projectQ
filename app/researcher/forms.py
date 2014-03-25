@@ -44,9 +44,9 @@ class QuestionForm(Form):
     #: If the question is obligatory or not
     required = BooleanField('Required', default = True)
     #: Type of response
-    questionType = SelectField('Type of question', choices=listQuestionType)
+    questionType = SelectField('Type of question', choices=listQuestionType, default="yn")
     #: Type of decisions
-    decisionType = SelectField('Type of question', choices=listDecisions)
+    decisionType = SelectField('Type of question', choices=listDecisions, default="none")
 
 
     #:dateValidation(text)
