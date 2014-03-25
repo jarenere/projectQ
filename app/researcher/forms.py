@@ -87,16 +87,26 @@ class QuestionForm(Form):
     def validate(self):
         if not Form.validate(self):
             return False
-        if self.questionType.data == 'choice':
-            if self.decisionType.data == 'decision_five':
-                l = [self.answer1]
-                state = True
-                for i in  range (1):
-                    if len(l[i].data) == 0:
-                        l[i].errors.append('The field can not be empty')
-                        state = False
-                return state
+        if self.decisionType.data == 'part_two':
+            l = [self.answer1,
+            self.answer2]
+            state = True
+            for i in  range (2):
+                if len(l[i].data) == 0:
+                    l[i].errors.append('The field can not be empty')
+                    state = False
+            return state
+        if self.decisionType.data == 'decision_five':
+            l = [self.answer1]
+            state = True
+            for i in  range (1):
+                if len(l[i].data) == 0:
+                    l[i].errors.append('The field can not be empty')
+                    state = False
+            return state
             
+        if self.questionType.data == 'choice':
+
             l = [self.answer1,
             self.answer2,
             self.answer3,
@@ -113,14 +123,4 @@ class QuestionForm(Form):
             if state ==False:
                 l[0].errors.append('All field can not be empty')
             return state
-        if self.decisionType.data == 'part_two':
-            l = [self.answer1,
-            self.answer2]
-            state = True
-            for i in  range (2):
-                if len(l[i].data) == 0:
-                    l[i].errors.append('The field can not be empty')
-                    state = False
-            return state
-
         return True
