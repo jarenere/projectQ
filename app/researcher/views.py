@@ -439,8 +439,8 @@ def addQuestion(id_survey, id_section):
         section = section,
         questions = section.questions,
         addQuestion = True,
-        question_type = form.questionType.data,
-        decision_type = form.decisionType.data,
+        question_type = "yn",
+        decision_type = "none",
         path = path)
 
 
