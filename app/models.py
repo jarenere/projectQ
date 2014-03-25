@@ -17,7 +17,8 @@ from sqlalchemy.engine import reflection
 from sqlalchemy import create_engine
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy import desc
-
+from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
+from sqlalchemy import select, func
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
@@ -60,21 +61,20 @@ class Survey(db.Model):
     consents = relationship('Consent',
         cascade="all, delete-orphan",
         backref = 'survey', lazy = 'dynamic')
-    #: Survey have zero or more sections 
-    sections = relationship('Section', 
+    #: Survey have zero or more sections children 
+    sections = relationship('Section', foreign_keys="Section.survey_id",
         cascade="all, delete-orphan",
         backref = 'survey', lazy = 'dynamic',
         order_by= 'Section.sequence')
     # #: Survey have zero or more questions
-    # questions = relationship('Question', 
-    #     backref = 'survey', lazy = 'dynamic')
+    sections_all = relationship('Section', backref = 'root', foreign_keys="Section.root_id")
 
     #: Survey have zero or more stateSurvey 
     stateSurveys = relationship('StateSurvey', backref = 'survey', lazy = 'dynamic')
     #: Survey belong to a one user(researcher)
     researcher_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     def __repr__(self):
-        return "<User(id='%s', title='%s')>" % (
+        return "<Survey(id='%s', title='%s')>" % (
             self.id, self.title)
 
     def number_respondents(self):
@@ -221,7 +221,7 @@ class Section(db.Model):
     #created = Column(DateTime, default = make_timestamp)   
     
     ## Relationships
-    #: Section have zero or more questions 
+    #: Section have zero or more questions
     questions = relationship('Question', 
         # cascade deletions
         cascade="all, delete-orphan",
@@ -230,6 +230,9 @@ class Section(db.Model):
     survey_id = Column(Integer, ForeignKey('survey.id'))
     #: section belongs to zero or more sections
     parent_id = Column(Integer, ForeignKey(id))
+    # survey root
+    root_id = Column(Integer, ForeignKey('survey.id'))
+
 
     children = relationship('Section',
         # cascade deletions
@@ -238,7 +241,12 @@ class Section(db.Model):
         lazy = 'dynamic', uselist = True,
         order_by= 'Section.sequence')
 
-
+    def __init__(self, **kwargs):
+        super(Section, self).__init__(**kwargs)
+        section = self
+        while section.parent is not None:
+            section = section.parent
+        self.root = section.survey
     def __repr__(self):
         return "<Section(id='%s', title='%s')>" % (
             self.id, self.title)
@@ -265,7 +273,6 @@ class Section(db.Model):
             section.append(children.to_xml())
 
         return section
-
 
     @staticmethod
     def from_xml(root,survey,msg):
@@ -310,7 +317,6 @@ class Section(db.Model):
 
         for s in root.findall('section'):
             from_xml_subSection(s,section,msg)
-
 
     @staticmethod
     def sequenceSections(sections):
@@ -406,13 +412,14 @@ class Question(db.Model):
         # else:
         #     self.position= question.position+1
 
+    @hybrid_property
     def survey(self):
-        '''return survey 
-        '''
-        section = self.section
-        while (section.parent is not None):
-            section = section.parent
-        return section.survey
+        return self.section.root
+
+    # @survey.expression
+    # def survey(cls):
+    #     return select(Survey).where(Survey.id==Section.root_id,\
+    #         cls.section_id==Section.id )
 
     def isExpectedAnswer(self):
         '''return if there is a expected answer
