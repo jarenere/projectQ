@@ -42,10 +42,8 @@ def verPreguntas():
 
 def generateUserFake(count=100):
     from sqlalchemy.exc import IntegrityError
-    from random import seed
     import forgery_py
 
-    seed()
     for i in range(count):
         u = models.User(email=forgery_py.internet.email_address(),
                  nickname=forgery_py.internet.user_name(True))
@@ -90,7 +88,6 @@ def generateAnswerFakePart3(id_survey, number = 6):
     #doy por echo que existen ya lso 100 usuarios de generarUserFake1
     #relleno aleatoriamente uan encuesta con preguntas del tipo decisiones
     import random
-    random.seed()
     l=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10]
     l2=[0,2,4,6,8,10,12,14,16,18,20]
     question1 = models.QuestionDecisionOne.query.filter(models.QuestionDecisionOne.section_id==24).first()
@@ -190,7 +187,6 @@ def generate_answers_fake(id_survey, number=6):
         return time
 
     borrarRespuestas()
-    random.seed()
     for i in range(2,number+2):
         user = User.query.get(i);
         ss, error = StateSurvey.getStateSurvey(id_survey,user,forgery_py.forgery.internet.ip_v4())
