@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
-{% block content %}
 {% from "_formHelpers.html" import render_field %}
+{% from "_formHelpers.html" import render_field2 %}
+{% from "_formHelpers.html" import render_field3 %}
 {% from "researcher/_renderSections.html" import renderSections %}
 
+{% block content %}
  <legend>
     <h1><a href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{survey.title}}</a></h1>
     {% for section in path %}
@@ -31,14 +33,13 @@
         <div class="span10">
             <!--Body content-->
             <div class="well">
-                <form action="" method="post" name="secion">
+                <form action="" method="post" name="secion" class="form-horizontal">
                     {{form.hidden_tag()}}
-                    <table>
-                    {{ render_field(form.title, size = 64) }}
-                    {{ render_field(form.description) }}
-                    {{ render_field(form.sequence) }}
-                    {{ render_field(form.percent) }}
-                    </table>
+                    <fieldset>
+                    {{ render_field3(form.title, size = 64) }}
+                    {{ render_field3(form.description, rows = 4, style = 'width:100%') }}
+                    {{ render_field3(form.sequence) }}
+                    {{ render_field3(form.percent) }}
                     <div class="btn-group">
                         {% if addSection  %}
                             <input class="btn" type="submit" value="Add Section">
@@ -55,6 +56,7 @@
                         {% endif %}                    
                         <a class="btn" href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{ ('Back') }}</a>
                     </div>
+                <fieldset>
                 </form>
             </div>
                 {{ renderSections(sections, survey) }}
