@@ -110,3 +110,7 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []falta parte de premios de la tercera parte
 [x]decision 5 falla el check || 25 de marzo
 []csv mirar que sucede en preguntas optativas, (deberia exportar "none")
+[]en añaedir/editar secciones mirar porque el cuadro es pequeñico
+[]respuesta esperada preguntas si o no (decision 1, pregunta si o no)
+[]falta meter expresiones regulares para las decisiones
+[]cuando leo/cargo xml o escribo texto via web, saltarse entradas no validas

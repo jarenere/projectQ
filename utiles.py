@@ -132,7 +132,19 @@ def generate_answers_fake(id_survey, number=6):
     from app.models import Survey, Consent, Section, Answer, User, StateSurvey
     from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
     from app.models import QuestionYN ,QuestionLikertScale
-
+    
+    def generateUserFake_1(count=100):
+        from sqlalchemy.exc import IntegrityError
+        base=len(User.query.all())+1
+        for i in range(count):
+            u = models.User(email="user"+str(i+base)+"gmail.com",
+                     nickname="user"+str(i+base))
+            db.session.add(u)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+        db.session.commit()
 
     def answer_question(user,q, time):
         l=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10]
@@ -140,9 +152,9 @@ def generate_answers_fake(id_survey, number=6):
         if isinstance (q, QuestionYN):
             answer = Answer (answerYN =random.randrange(0,2)==1, user= user, question = q)
         elif isinstance (q, QuestionNumerical):
-            if q.decision=="part_two":
-                answer = Answer (answerNumeric =random.randrange(0,2), user= user, question = q)
-            elif q.decision=="decision_one":
+            answer = Answer (answerNumeric =random.randrange(0,100), user= user, question = q)
+        elif isinstance (q, QuestionText):
+            if q.decision=="decision_one":
                 answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
             elif q.decision=="decision_two":
                 answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
@@ -150,28 +162,24 @@ def generate_answers_fake(id_survey, number=6):
                 answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
             elif q.decision=="decision_four":
                 answer=models.Answer(answerNumeric=random.choice(l2),user=user,question=q)
-            elif q.decision=="decision_five":
-                answer = Answer (answerYN =random.randrange(0,2)==1, user= user, question = q)
             elif q.decision=="decision_six":
                 answer=models.Answer(answerNumeric=random.choice(l2),user=user,question=q)
             elif q.decision=="none":
-                answer = Answer (answerNumeric =random.randrange(0,100), user= user, question = q)
-            else:
-                print "error de decision"
-                quit()
-        elif isinstance (q, QuestionText):
-            if q.isExpectedAnswer():
-                if random.choice([0,1,1])==1:
-                # 66% of know the answer
-                    answer = Answer (answerText =q.expectedAnswer.lower(), user= user, question = q)
-                    answer.numberAttempt= random.range(1, q.maxNumberAttempt+1)
+                if q.isExpectedAnswer():
+                    if random.choice([0,1,1])==1:
+                    # 66% of know the answer
+                        answer = Answer (answerText =q.expectedAnswer.lower(), user= user, question = q)
+                        answer.numberAttempt= random.randrange(1, q.maxNumberAttempt+1)
+                    else:
+                        answer = Answer (answerText =forgery_py.forgery.lorem_ipsum.word(), user= user, question = q)
+                        answer.numberAttempt= q.maxNumberAttempt+1
+                elif q.isNumber:
+                    answer = Answer (answerNumeric =random.randrange(0,100), user= user, question = q)
                 else:
                     answer = Answer (answerText =forgery_py.forgery.lorem_ipsum.word(), user= user, question = q)
-                    answer.numberAttempt= q.maxNumberAttempt+1
-            elif q.isNumber:
-                answer = Answer (answerNumeric =random.randrange(0,100), user= user, question = q)
             else:
-                answer = Answer (answerText =forgery_py.forgery.lorem_ipsum.word(), user= user, question = q)
+                raise "error de decision"
+
         elif isinstance (q,QuestionChoice):
             answer = Answer (answerNumeric =random.randrange(0,len(q.choices)), user= user, question = q)
         elif isinstance (q,QuestionLikertScale):
@@ -187,6 +195,9 @@ def generate_answers_fake(id_survey, number=6):
         return time
 
     borrarRespuestas()
+    if len(User.query.all())<number+1:
+        generateUserFake_1(number+1-len(User.query.all()))
+    print "a tope"
     for i in range(2,number+2):
         user = User.query.get(i);
         ss, error = StateSurvey.getStateSurvey(id_survey,user,forgery_py.forgery.internet.ip_v4())
@@ -203,3 +214,4 @@ def generate_answers_fake(id_survey, number=6):
             db.session.commit()
             time = time + random.randrange(100, 500)
             ss.finishedSection(time)
+        print "finish", i
