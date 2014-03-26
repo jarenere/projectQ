@@ -465,7 +465,7 @@ class Question(db.Model):
         expectedAnswer.text = self.expectedAnswer
 
         maxNumberAttempt = SubElement(question,'maxNumberAttempt')
-        maxNumberAttempt.text = self.maxNumberAttempt
+        maxNumberAttempt.text = str(self.maxNumberAttempt)
 
         if isinstance (self, QuestionText):
             isNumber = SubElement(question,'isNumber')
