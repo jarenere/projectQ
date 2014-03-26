@@ -18,7 +18,7 @@ listDecisions = [('none','None'),('part_two','Part two'),('decision_one','Decisi
 
 class SurveyForm(Form):
     title = TextField('Title', validators = [Length(min = 1, max = 128)])
-    description = PageDownField('Description',validators = [Length(min = 0, max = 1200)],default = EXAMPLE_MARKDOWN)
+    description = PageDownField('Description',validators = [Length(min = 0)],default = EXAMPLE_MARKDOWN)
     startDate = DateTimeField('Day and start time', validators = [Optional()])
     endDate =DateTimeField('Day and finish time', validators = [Optional()])
     maxNumberRespondents = IntegerField('Number of respondents', validators = [Optional()])
@@ -32,7 +32,7 @@ class EditConsentForm(Form):
 
 class SectionForm(Form):
     title = TextField('Title', validators = [Length(min = 1, max = 128)])
-    description = PageDownField('Description',validators = [Length(min = 0, max = 2200)],default = EXAMPLE_MARKDOWN)
+    description = PageDownField('Description',validators = [Length(min = 0)],default = EXAMPLE_MARKDOWN)
     sequence = IntegerField('Sequence', validators = [NumberRange(min = 1)])
     # Field with two decimal, range 0-1
     percent = DecimalField ('Percent', validators = [NumberRange(min = 0, max = 1)],places=2, default=1)
