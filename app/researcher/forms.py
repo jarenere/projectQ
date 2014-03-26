@@ -79,6 +79,8 @@ class QuestionForm(Form):
     answer7 = TextField('Answer 7', validators = [Length(min = 0, max =400)])
     answer8 = TextField('Answer 8', validators = [Length(min = 0, max =400)])
     answer9 = TextField('Answer 9', validators = [Length(min = 0, max =400)])
+    answer10 = TextField('Answer 10', validators = [Length(min = 0, max =400)])
+
 
 
     def __init__(self, *args, **kwargs):
@@ -115,7 +117,8 @@ class QuestionForm(Form):
             self.answer6,
             self.answer7,
             self.answer8,
-            self.answer9]
+            self.answer9,
+            self.answer10]
             state = False
             for i in  range (9):
                 if len(l[i].data) != 0:

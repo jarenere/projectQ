@@ -386,7 +386,8 @@ def selectType(form):
         form.answer6.data,
         form.answer7.data,
         form.answer8.data,
-        form.answer9.data]
+        form.answer9.data,
+        form.answer10.data]
         l_aux=[]
         for i in l:
             if len(i)!=0:
@@ -491,6 +492,8 @@ def editQuestion(id_survey, id_section,id_question):
                 form.answer8.data = l[7]
             if len(l) >8:
                 form.answer9.data = l[8]
+            if len(l) >9:
+                form.answer10.data = l[9]
         if isinstance(question, QuestionLikertScale):
             form.labelMinLikert.data=question.labelMin
             form.labelMaxLikert.data=question.labelMax
