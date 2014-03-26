@@ -218,7 +218,7 @@ def addSection(id_survey):
     else:
         form.sequence.data =1
     return render_template('/researcher/addEditSection.html',
-        title = "consent",
+        title = "Section",
         form = form,
         survey = survey,
         sections = survey.sections.all(),
@@ -250,7 +250,7 @@ def editSection(id_survey, id_section):
         form.percent.data = section.percent
     path=tips_path(section)
     return render_template('/researcher/addEditSection.html',
-        title = "consent",
+        title = "Section",
         form = form,
         survey = Survey.query.get(id_survey),
         sections = sections,
@@ -359,7 +359,7 @@ def addSubSection(id_survey, id_section):
         form.sequence.data =1
     path=tips_path(parentSection)
     return render_template('/researcher/addEditSection.html',
-        title = "consent",
+        title = "Section",
         form = form,
         survey = Survey.query.get(id_survey),
         sections = Survey.query.get(id_survey).sections.all(),
