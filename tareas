@@ -75,7 +75,7 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []en util.matching se puede volver a coger a un usuario que ha hehco una encuesta
 [X]import xml falla cuando hay fecha | elimnado campo fecha 25 de marzo
 []importar xml si vacio el titulo falla y ademaas luego si pones titulo no imoprta xml sino crea encuesta con ese titulo
-[]no comprobado el tiempo cuando valido xml
+[X]no comprobado el tiempo cuando valido xml | el tiempo ni se importo ni se exporta
 [X]comprobar que sino nahy numero masximo de repondents mento 0 o vacio | 18 de marzo
 []se puede cambiar el relationshiyp de lado com esta peusto en sqlalchemy que la verdad es mas logico...
 []añadir algun filtro para cuando muestro informacion del estado de la encuesta al usuario
@@ -110,7 +110,15 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []falta parte de premios de la tercera parte
 [x]decision 5 falla el check || 25 de marzo
 []csv mirar que sucede en preguntas optativas, (deberia exportar "none")
-[]en añaedir/editar secciones mirar porque el cuadro es pequeñico
+[X]en añaedir/editar secciones mirar porque el cuadro es pequeñico |26 de marzo
 []respuesta esperada preguntas si o no (decision 1, pregunta si o no)
 []falta meter expresiones regulares para las decisiones
 []cuando leo/cargo xml o escribo texto via web, saltarse entradas no validas
+[X]creo que esta mal la consulta de ver los usuarios que han hecho la consulta, ya que sin terminarla me marca los 1001 | 27 de marzo
+[X] pregutna 7.3 mal (hay que indicar que es opcional) | 27 de marzo
+[] Decision 2 hay una pregunta de mas
+[]Decision 4/5 tal vez volver a copiar la info
+[]quitar saltos de lineas de las entradas de texto vacias o cambiar csv
+[]los resultados ir guardandolos en csv mientras se van finalizando, tardara menos
+[]cargarme en respuestas texto o numero (dejar solo texto)
+[X]mirar cuando almaceno respuestas que aveces es texto y aveces nop | 27 febrero

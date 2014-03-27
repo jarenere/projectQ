@@ -415,6 +415,10 @@ class Question(db.Model):
             self.position=1
         # else:
         #     self.position= question.position+1
+    
+    def __repr__(self):
+        return "<question(id='%s')>" % (
+            self.id)
 
     @hybrid_property
     def survey(self):
@@ -813,6 +817,10 @@ class Answer(db.Model):
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     #answer belong a question
     question_id = Column(Integer, ForeignKey('question.id'), nullable=False)
+
+    def __repr__(self):
+        return "<answer(id='%s', user='%s', question='%s')>" % (
+            self.id, self.user_id, self.question_id)
 
     def answerAttempt(self):
         '''Return if the answer is the correct, else increment in 1

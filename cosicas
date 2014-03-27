@@ -16,6 +16,13 @@ eliminar la herencia de la bbdd, solo voy a añadir metodos (mala idea.. metodos
 
 Creacion autimatica de forms segun el modelo: http://flask.pocoo.org/snippets/60/ http://wtforms-alchemy.readthedocs.org/en/latest/introduction.html
 
+filtros jinja2: 
+http://www.brahici.org/article/2012/05/10/create-jinja2-template-filters-flask/
+http://stackoverflow.com/questions/12288454/how-to-import-custom-jinja2-filters-from-another-file-and-using-flask
+http://jinja.pocoo.org/docs/api/#custom-filters
+http://flask.pocoo.org/mailinglist/archive/2011/10/17/jinja2-custom-filters/
+
+
 Crear utiles para los tipos de pregunta, cada uno en su fichero python, vamos un modulo con las cosas a implementar paca
 cada pregunta, esto hará mas reutilizable y mas facil añadir opciones
 

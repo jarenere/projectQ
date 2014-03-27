@@ -12,6 +12,7 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 import tempfile
 from werkzeug import secure_filename
 from . import blueprint
+from sqlalchemy.orm import aliased
 import csv
 
 
@@ -611,18 +612,64 @@ def export_stats(id_survey):
         for s in sections:
             _export_question_user(s,writer)
 
+    def export_questions(writer,id_survey):
+        qs = Question.query.filter(Question.section_id==Section.id, Section.root_id==id_survey)
+        l =[]
+        l.append("init time")
+        for q in qs:
+            l.append(q.text)
+            l.append("DIFFERENTIAL TIME")
+        writer.writerow(l)
+        sss = StateSurvey.query.filter(StateSurvey.survey_id==id_survey,\
+                    StateSurvey.status.op('&')(StateSurvey.FINISH_OK))
+        stmt1 = db.session.query(Question).\
+            filter(Question.section_id==Section.id,\
+                Section.root_id==id_survey).subquery()
+        question1= aliased(Question, stmt1)
+        for ss in sss:
+            l=[]
+            l.append("")
+            stmt2 = db.session.query(Answer).filter(Answer.user_id==ss.user_id).subquery()
+            answer1= aliased(Answer, stmt2)
+            res = db.session.query(question1, answer1).\
+                outerjoin(answer1, question1.id == answer1.question_id)
+            for i in res:
+                if i[1] is None:
+                    l.append("NONE")
+                    l.append("NONE")
+                else:
+                    ans = i[1]
+                    if isinstance (ans.question,QuestionYN):
+                        text = ans.answerYN
+                    if isinstance (ans.question,QuestionNumerical):
+                        text = ans.answerNumeric
+                    if isinstance (ans.question,QuestionText):
+                        if ans.question.isNumber:
+                            text = ans.answerNumeric
+                        else:
+                            text = ans.answerText
+                    if isinstance (ans.question,QuestionChoice):
+                        text = ans.question.choices[ans.answerNumeric]
+                    if isinstance (ans.question, QuestionLikertScale):
+                        text = ans.answerNumeric
+                    l.append(text)
+                    l.append(ans.differentialTime)
+            writer.writerow(l)
+            print "finis: ", ss.user_id
+
     survey = Survey.query.get(id_survey)
     # ofile = tempfile.NamedTemporaryFile()
     ofile  = open('test.csv', "wb")
-    writer = csv.writer(ofile, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
-    export_users(writer)
-    export_section(writer)
-    export_section_user(writer)
-    export_section_question(writer)
-    export_question_user(writer)
-    l=["jaja"]
-    writer.writerow(l)
-    # ofile.close()
+    writer = csv.writer(ofile, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
+    # export_users(writer)
+    # export_section(writer)
+    # export_section_user(writer)
+    # export_section_question(writer)
+    # export_question_user(writer)
+    # l=["jaja"]
+    # writer.writerow(l)
+    export_questions(writer,id_survey)
+    ofile.close()
     flash ("Export stats")
     # return send_file(ofile, as_attachment=True, attachment_filename="stats_"+survey.title+'.csv')
     return redirect(url_for('researcher.index'))

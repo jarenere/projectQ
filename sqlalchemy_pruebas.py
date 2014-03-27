@@ -76,3 +76,20 @@ for survey, count in db.session.query(models.Survey, stmt2.c.respondents_count).
 for survey, status, count  in db.session.query(models.Survey, stmt.c.status, stmt2.c.respondents_count).outerjoin(stmt,models.Survey.id==stmt.c.survey_id).outerjoin(stmt2,models.Survey.id==stmt2.c.survey_id): print survey, status, count
 
 surveys = db.session.query(models.Survey, stmt.c.status, stmt2.c.respondents_count).outerjoin(stmt,models.Survey.id==stmt.c.survey_id).outerjoin(stmt2,models.Survey.id==stmt2.c.survey_id)
+
+
+
+
+from app import db, models
+from app.models import Answer, Question,Section,Survey
+from sqlalchemy.orm import aliased
+
+stmt1 = db.session.query(Question).filter(Question.section_id==Section.id,Section.root_id==1).subquery()
+stmt2 = db.session.query(Answer).filter(Answer.user_id==1).subquery()
+
+question1= aliased(Question, stmt1)
+answer1= aliased(Answer, stmt2)
+
+for q, ans  in db.session.query(question1, answer1).outerjoin(answer1, question1.id == answer1.question_id): print q, ans
+
+
