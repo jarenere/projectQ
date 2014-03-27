@@ -196,7 +196,7 @@ def generate_form(questions):
                     setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
                         validators=[Optional(), Regexp(question.regularExpression,0,question.errorMessage)]))
                 elif question.isNumber:
-                    setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'),validators = [Optional()])
+                    setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer',validators = [Optional()]))
                 else:
                     setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Optional()]))
         if isinstance (question,QuestionChoice):
