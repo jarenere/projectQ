@@ -30,7 +30,9 @@ def index():
     stmt1 = db.session.query(StateSurvey.survey_id, StateSurvey.status).\
         filter(StateSurvey.user==current_user).subquery()
     
-    stmt2 = db.session.query(StateSurvey.survey_id, func.count('*').label('r_count')).group_by(StateSurvey.survey_id).subquery()
+    stmt2 = db.session.query(StateSurvey.survey_id, func.count('*').label('r_count')).\
+        filter(StateSurvey.status.op('&')(StateSurvey.FINISH_OK)).\
+        group_by(StateSurvey.survey_id).subquery()
 
     now = datetime.datetime.utcnow()
     #outerjoint Survey and StateSurvey(with the currentUser) and number of user
