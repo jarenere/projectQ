@@ -247,7 +247,10 @@ def showQuestions(id_survey, id_section):
             if isinstance (question,QuestionNumerical):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
             if isinstance (question,QuestionText):
-                answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
+                if question.isNumber:
+                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                else:
+                    answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
             if isinstance (question,QuestionChoice):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
             if isinstance (question, QuestionLikertScale):
