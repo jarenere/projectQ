@@ -1,4 +1,4 @@
-from app.models import StateSurvey, Answer, Section, Question, Match, User
+from app.models import StateSurvey, Answer, Section, Question, Match, User, Survey
 import datetime
 import random
 from app import db, models
@@ -6,22 +6,38 @@ from app import db, models
 
 class Games:
     MIN_USER_MATCH = 6
-    def __init__(self, survey):
-        self.survey=survey
+    def __init__(self, survey_id):
+        self.survey=Survey.query.get(survey_id)
         self.part_two_money=self._find_part_two(True)
         self.part_two_without_money=self._find_part_two(False)
         self.decision_one_money=self._find_decision("decision_one",True)
-        self.decision_one_without_money=self._decision("decision_one",False)
+        self.decision_one_without_money=self._find_decision("decision_one",False)
         self.decision_two_money=self._find_decision("decision_two",True)
-        self.decision_two_without_money=self._decision("decision_two",False)
+        self.decision_two_without_money=self._find_decision("decision_two",False)
         self.decision_three_money=self._find_decision("decision_three",True)
-        self.decision_three_without_money=self._decision("decision_three",False)
+        self.decision_three_without_money=self._find_decision("decision_three",False)
         self.decision_four_money=self._find_decision("decision_four",True)
-        self.decision_four_without_money=self._decision("decision_four",False)
+        self.decision_four_without_money=self._find_decision("decision_four",False)
         self.decision_five_money=self._find_section_decision_five(True)
         self.decision_five_without_money=self._find_section_decision_five(False)
         self.decision_six_money=self._find_decision("decision_six",True)
-        self.decision_six_without_money=self._decision("decision_six",False)
+        self.decision_six_without_money=self._find_decision("decision_six",False)
+
+    def __repr__(self):
+        return "<Games(part_two_money='%s', part_two_without_money='%s'\n\
+            decision_one_money='%s',decision_one_without_money='%s' \n\
+            decision_two_money='%s',decision_two_without_money='%s' \n\
+            decision_three_money='%s',decision_three_without_money='%s' \n\
+            decision_four_money='%s',decision_four_without_money='%s' \n\
+            decision_five_money='%s',decision_five_without_money='%s' \n\
+            decision_six_money='%s',decision_six_without_money='%s')>" % (
+            self.part_two_money, self.part_two_without_money,\
+            self.decision_one_money, self.decision_one_without_money,\
+            self.decision_two_money, self.decision_two_without_money,\
+            self.decision_three_money, self.decision_three_without_money,\
+            self.decision_four_money, self.decision_four_without_money,\
+            self.decision_five_money, self.decision_five_without_money,\
+            self.decision_six_money, self.decision_six_without_money)
 
     def _find_decision(self,decision,with_money):
         return Question.query.filter(\
@@ -41,53 +57,57 @@ class Games:
             Question.section_id==Section.id,\
             Section.root_id==self.survey.id,\
             Question.decision=="part_two",\
-            Question.is_real_money==with_money).first()]
+            Question.is_real_money==with_money)]
         return l
     
     def _users_part_three_money(self):
         state_surveys = StateSurvey.query.filter(\
             User.id==StateSurvey.user_id,\
             StateSurvey.status.op('&')(StateSurvey.FINISH_OK),\
+            StateSurvey.status.op('&')(StateSurvey.MATCHING)==0,\
             StateSurvey.survey_id==self.survey.id,\
-            Question.id==self.decision_one_money, \
+            Question.id==self.decision_one_money.id, \
             Answer.question_id==Question.id,\
             Answer.user_id==User.id)
         l=[]
         if state_surveys.count()%2 == 0:
-            for i in range(state_surveys.count()):
-                l.append(state_surveys[i].user_id)
-                # state_surveys[i].status=state_surveys[i].status | StateSurvey.MATCHING |\
-                #     StateSurvey.PART_THREE_MONEY
-                # db.session.add(state_surveys[i])
+            for ss in state_surveys:
+                l.append(ss.user_id)
+                ss.status=ss.status | StateSurvey.MATCHING |\
+                    StateSurvey.PART_THREE_MONEY
+                db.session.add(ss)
         else:
             # impar, last user out!
-            for i in range(state_surveys.count()-1):
-                l.append(state_surveys[i].user_id)
-                # state_surveys[i].status=state_surveys[i].status | StateSurvey.MATCHING |\
-                #     StateSurvey.PART_THREE_MONEY
-                # db.session.add(state_surveys[i])
+            for ss in state_surveys[:-1]:
+                l.append(ss.user_id)
+                ss.status=ss.status | StateSurvey.MATCHING |\
+                    StateSurvey.PART_THREE_MONEY
+                db.session.add(ss)
         return l
 
     def _users_part_three_without_money(self):
         state_surveys = StateSurvey.query.filter(\
             User.id==StateSurvey.user_id,\
             StateSurvey.status.op('&')(StateSurvey.FINISH_OK),\
+            StateSurvey.status.op('&')(StateSurvey.MATCHING)==0,\
             StateSurvey.survey_id==self.survey.id,\
-            Question.id==self.decision_one_without_money, \
+            Question.id==self.decision_one_without_money.id, \
             Answer.question_id==Question.id,\
             Answer.user_id==User.id)
         l=[]
         if state_surveys.count()%2 == 0:
-            for i in range(state_surveys.count()):
-                l.append(state_surveys[i].user_id)
-                state_surveys[i].status=state_surveys[i].status | StateSurvey.MATCHING
-                db.session.add(state_surveys[i])
+            for ss in state_surveys:
+                l.append(ss.user_id)
+                ss.status=ss.status | StateSurvey.MATCHING |\
+                    StateSurvey.PART_THREE_WITHOUT_MONEY
+                db.session.add(ss)
         else:
             # impar, last user out!
-            for i in range(state_surveys.count()-1):
-                l.append(state_surveys[i].user_id)
-                state_surveys[i].status=state_surveys[i].status | StateSurvey.MATCHING
-                db.session.add(state_surveys[i])
+            for ss in state_surveys[:-1]:
+                l.append(ss.user_id)
+                ss.status=ss.status | StateSurvey.MATCHING |\
+                    StateSurvey.PART_THREE_WITHOUT_MONEY
+                db.session.add(ss)
         return l
 
     def _generate_tupla(self,list_users):
@@ -106,6 +126,7 @@ class Games:
     def _match_decision_one(self,list_users, money):
         # pop two in two
         for i in range(len(list_users)/2):
+            print i, "of", len(list_users)/2, "decision one"
             userA = random.choice(list_users)
             list_users.remove(userA)
             userB = random.choice(list_users)
@@ -125,6 +146,7 @@ class Games:
 
     def _match_decision_two(self,list_users,money):
         for i in range(len(list_users)/2):
+            print i, "of", len(list_users)/2, "decision two"
             userA = random.choice(list_users)
             list_users.remove(userA)
             userB = random.choice(list_users)
@@ -144,6 +166,7 @@ class Games:
     
     def _match_decision_three(self, list_users, money):
         for i in range(len(list_users)/2):
+            print i, "of", len(list_users)/2, "decision trhee"
             userA = random.choice(list_users)
             list_users.remove(userA)
             userB = random.choice(list_users)
@@ -172,6 +195,8 @@ class Games:
             section_five = self.decision_five_money
         
         for i in range(len(l)):
+            print i, "of", len(l), "decision four"
+
             answerA = Answer.query.filter_by(user_id=l[i][0],question_id=question_four.id).first()
             match = Match(userA=l[i][0], userB=l[i][1],\
                 answerA = answerA.id,\
@@ -188,6 +213,8 @@ class Games:
             question = self.decision_six_without_money
 
         for i in range(len(l)):
+            print i, "of", len(l), "decision six"
+
             answerA = Answer.query.filter_by(user_id=l[i][0],question_id=question.id).first()
             match = Match(userA=l[i][0], userB=l[i][1],\
                 answerA = answerA.id,\
@@ -196,10 +223,10 @@ class Games:
             db.session.add(match)
 
     
-    def game_part_two(self,user):
+    def part_two(self,user):
         ans = Answer.query.filter(\
             Answer.user_id==user.id,\
-            Answer.question_id==self.part_two_money[0]).first
+            Answer.question_id==self.part_two_money[0]).first()
         if ans is not None:
             #game with real money
             question = random.choice(self.part_two_money)
@@ -207,7 +234,7 @@ class Games:
             match = Match(userA=user.id, answerA = answer.id, survey=self.survey.id)
             state_survey=StateSurvey.query.filter(StateSurvey.survey_id==self.survey.id,\
                 StateSurvey.user_id==user.id).first()
-            state_survey.status==state_survey.status | StateSurvey.PART_TWO_MONEY
+            state_survey.status=state_survey.status | StateSurvey.PART_TWO_MONEY
             db.session.add(state_survey)
             db.session.commit()
             if random.randint(1,10)==1:
@@ -217,6 +244,13 @@ class Games:
             question = random.choice(self.part_two_without_money)
             answer = Answer.query.filter_by(user_id=user.id,question_id=question).first()
             match = Match(userA=user.id, answerA = answer.id, survey=self.survey.id)
+            state_survey=StateSurvey.query.filter(StateSurvey.survey_id==self.survey.id,\
+                StateSurvey.user_id==user.id).first()
+            state_survey.status=state_survey.status | StateSurvey.PART_TWO_WITHOUT_MONEY
+
+            db.session.add(state_survey)
+            db.session.commit()
+        match.part_two()
         db.session.add(match)
         db.session.commit()
 
@@ -235,12 +269,6 @@ class Games:
             self._match_decision_four(l_aux, True)
             l_aux=users_money[:]
             self._match_decision_six(l_aux, True)
-            for user in users_money:
-                state_survey=StateSurvey.query.filter(StateSurvey.survey_id==self.survey.id,\
-                    StateSurvey.user_id==user.id).fisrt()
-                state_survey.status=state_survey.status | StateSurvey.MATCHING |\
-                    StateSurvey.PART_THREE_MONEY
-                db.session.add(state_survey)
 
         users_without_money=self._users_part_three_without_money()
         if len (users_money)>=self.MIN_USER_MATCH:
@@ -254,138 +282,134 @@ class Games:
             self._match_decision_four(l_aux, False)
             l_aux=users_without_money[:]
             self._match_decision_six(l_aux, False)
-            for user in users_money:
-                state_survey=StateSurvey.query.filter(StateSurvey.survey_id==self.survey.id,\
-                    StateSurvey.user_id==user.id).fisrt()
-                state_survey.status=state_survey.status | StateSurvey.MATCHING
-                db.session.add(state_survey)
+        db.session.commit()
 
 
 
-def matching(survey):
+# def matching(survey):
 
-    def generate_tupla(list_users):
-        '''can succes-> l[i][0]==l[i][1]
-        '''
-        l_aux1=list_users[:]
-        l_aux2=list_users[:]
-        l=[]
-        for i in range(len(list_users)):
-            userA = random.choice(l_aux1)
-            userB = random.choice(l_aux2)
-            l_aux1.remove(userA)
-            l_aux2.remove(userB)
-            l.append((userA,userB))
-        return l
-    def match_decision_one(list_users):
+#     def generate_tupla(list_users):
+#         '''can succes-> l[i][0]==l[i][1]
+#         '''
+#         l_aux1=list_users[:]
+#         l_aux2=list_users[:]
+#         l=[]
+#         for i in range(len(list_users)):
+#             userA = random.choice(l_aux1)
+#             userB = random.choice(l_aux2)
+#             l_aux1.remove(userA)
+#             l_aux2.remove(userB)
+#             l.append((userA,userB))
+#         return l
+#     def match_decision_one(list_users):
 
-        # pop two in two
-        for i in range(len(list_users)/2):
-            userA = random.choice(list_users)
-            list_users.remove(userA)
-            userB = random.choice(list_users)
-            list_users.remove(userB)
-            # answerA =db.session.query(Answer.id).filter(Answer.question_id==49, Answer.user_id==2).first()
-            answerA = Answer.query.filter_by(user_id=userA,question_id=DECISION_ONE).first()
-            answerB = Answer.query.filter_by(user_id=userB,question_id=DECISION_ONE).first()
-            match = Match(userA=userA, userB=userB,\
-                answerA = answerA.id, answerB = answerB.id,\
-                survey=survey.id)
-            match.decisionOne()
-            db.session.add(match)
+#         # pop two in two
+#         for i in range(len(list_users)/2):
+#             userA = random.choice(list_users)
+#             list_users.remove(userA)
+#             userB = random.choice(list_users)
+#             list_users.remove(userB)
+#             # answerA =db.session.query(Answer.id).filter(Answer.question_id==49, Answer.user_id==2).first()
+#             answerA = Answer.query.filter_by(user_id=userA,question_id=DECISION_ONE).first()
+#             answerB = Answer.query.filter_by(user_id=userB,question_id=DECISION_ONE).first()
+#             match = Match(userA=userA, userB=userB,\
+#                 answerA = answerA.id, answerB = answerB.id,\
+#                 survey=survey.id)
+#             match.decisionOne()
+#             db.session.add(match)
 
-    def match_decision_two(list_users):
-        for i in range(len(list_users)/2):
-            userA = random.choice(list_users)
-            list_users.remove(userA)
-            userB = random.choice(list_users)
-            list_users.remove(userB)
-            answerA = Answer.query.filter_by(user_id=userA,question_id=DECISION_TWO).first()
-            answerB = Answer.query.filter_by(user_id=userB,question_id=DECISION_TWO).first()
-            match = Match(userA=userA, userB=userB,\
-                answerA = answerA.id, answerB = answerB.id,\
-                survey=survey.id)
-            match.decisionTwo()
-            db.session.add(match)
+#     def match_decision_two(list_users):
+#         for i in range(len(list_users)/2):
+#             userA = random.choice(list_users)
+#             list_users.remove(userA)
+#             userB = random.choice(list_users)
+#             list_users.remove(userB)
+#             answerA = Answer.query.filter_by(user_id=userA,question_id=DECISION_TWO).first()
+#             answerB = Answer.query.filter_by(user_id=userB,question_id=DECISION_TWO).first()
+#             match = Match(userA=userA, userB=userB,\
+#                 answerA = answerA.id, answerB = answerB.id,\
+#                 survey=survey.id)
+#             match.decisionTwo()
+#             db.session.add(match)
 
-    def match_decision_three(list_users):
-        for i in range(len(list_users)/2):
-            userA = random.choice(list_users)
-            list_users.remove(userA)
-            userB = random.choice(list_users)
-            list_users.remove(userB)
-            answerA = Answer.query.filter_by(user_id=userA,question_id=DECISION_THREE).first()
-            answerB = Answer.query.filter_by(user_id=userB,question_id=DECISION_THREE).first()
-            match = Match(userA=userA, userB=userB,\
-                answerA = answerA.id, answerB = answerB.id,\
-                survey=survey.id)
-            match.decisionThree()
-            db.session.add(match)
+#     def match_decision_three(list_users):
+#         for i in range(len(list_users)/2):
+#             userA = random.choice(list_users)
+#             list_users.remove(userA)
+#             userB = random.choice(list_users)
+#             list_users.remove(userB)
+#             answerA = Answer.query.filter_by(user_id=userA,question_id=DECISION_THREE).first()
+#             answerB = Answer.query.filter_by(user_id=userB,question_id=DECISION_THREE).first()
+#             match = Match(userA=userA, userB=userB,\
+#                 answerA = answerA.id, answerB = answerB.id,\
+#                 survey=survey.id)
+#             match.decisionThree()
+#             db.session.add(match)
 
-    def match_decision_four(list_users):
+#     def match_decision_four(list_users):
 
-        l=generate_tupla(list_users)
-        for i in range(len(l)):
-            answerA = Answer.query.filter_by(user_id=l[i][0],question_id=DECISION_FOUR).first()
-            match = Match(userA=l[i][0], userB=l[i][1],\
-                answerA = answerA.id,\
-                survey=survey.id)
-            match.decisionFour(SECTION_DECISION_FIVE)
-            db.session.add(match)
+#         l=generate_tupla(list_users)
+#         for i in range(len(l)):
+#             answerA = Answer.query.filter_by(user_id=l[i][0],question_id=DECISION_FOUR).first()
+#             match = Match(userA=l[i][0], userB=l[i][1],\
+#                 answerA = answerA.id,\
+#                 survey=survey.id)
+#             match.decisionFour(SECTION_DECISION_FIVE)
+#             db.session.add(match)
 
-    def match_decision_six(list_users):
+#     def match_decision_six(list_users):
 
-        l=generate_tupla(list_users)
-        for i in range(len(l)):
-            answerA = Answer.query.filter_by(user_id=l[i][0],question_id=DECISION_SIX).first()
-            match = Match(userA=l[i][0], userB=l[i][1],\
-                answerA = answerA.id,\
-                survey=survey.id)
-            match.decision_six()
-            db.session.add(match)
+#         l=generate_tupla(list_users)
+#         for i in range(len(l)):
+#             answerA = Answer.query.filter_by(user_id=l[i][0],question_id=DECISION_SIX).first()
+#             match = Match(userA=l[i][0], userB=l[i][1],\
+#                 answerA = answerA.id,\
+#                 survey=survey.id)
+#             match.decision_six()
+#             db.session.add(match)
 
 
-    DECISION_ONE=47
-    DECISION_TWO=48
-    DECISION_THREE=49
-    DECISION_FOUR=50
-    SECTION_DECISION_FIVE=27
-    DECISION_SIX=62
-    # DEBEN SER PARES!! Y LOS USUARIOS SELECCIONADOS DEL MISMO GRUPO (PAGO Y NO PAGO)
-    # users = User.query.filter(User.id==StateSurvey.user_id,\
-    #      StateSurvey.status==StateSurvey.FINISH,\
-    #      StateSurvey.survey_id==survey.id)
-    state_surveys = StateSurvey.query.filter(User.id==StateSurvey.user_id,\
-         StateSurvey.status.op('&')(StateSurvey.FINISH_OK),\
-         StateSurvey.survey_id==survey.id)
+#     DECISION_ONE=47
+#     DECISION_TWO=48
+#     DECISION_THREE=49
+#     DECISION_FOUR=50
+#     SECTION_DECISION_FIVE=27
+#     DECISION_SIX=62
+#     # DEBEN SER PARES!! Y LOS USUARIOS SELECCIONADOS DEL MISMO GRUPO (PAGO Y NO PAGO)
+#     # users = User.query.filter(User.id==StateSurvey.user_id,\
+#     #      StateSurvey.status==StateSurvey.FINISH,\
+#     #      StateSurvey.survey_id==survey.id)
+#     state_surveys = StateSurvey.query.filter(User.id==StateSurvey.user_id,\
+#          StateSurvey.status.op('&')(StateSurvey.FINISH_OK),\
+#          StateSurvey.survey_id==survey.id)
 
-    l=[]
-    if state_surveys.count()%2 == 0:
-        for i in range(state_surveys.count()):
-            l.append(state_surveys[i].user_id)
-            state_surveys[i].status=state_surveys[i].status & StateSurvey.MATCHING
-            db.session.add(state_surveys[i])
-    else:
-        # impar, last user out!
-        for i in range(state_surveys.count()-1):
-            l.append(state_surveys[i].user_id)
-            state_surveys[i].status=state_surveys[i].status & StateSurvey.MATCHING
-            db.session.add(state_surveys[i])
+#     l=[]
+#     if state_surveys.count()%2 == 0:
+#         for i in range(state_surveys.count()):
+#             l.append(state_surveys[i].user_id)
+#             state_surveys[i].status=state_surveys[i].status & StateSurvey.MATCHING
+#             db.session.add(state_surveys[i])
+#     else:
+#         # impar, last user out!
+#         for i in range(state_surveys.count()-1):
+#             l.append(state_surveys[i].user_id)
+#             state_surveys[i].status=state_surveys[i].status & StateSurvey.MATCHING
+#             db.session.add(state_surveys[i])
 
     
-    l_aux=l[:]
-    match_decision_one(l_aux)
+#     l_aux=l[:]
+#     match_decision_one(l_aux)
 
-    l_aux=l[:]
-    match_decision_two(l_aux)
+#     l_aux=l[:]
+#     match_decision_two(l_aux)
 
-    l_aux=l[:]
-    match_decision_three(l_aux)
+#     l_aux=l[:]
+#     match_decision_three(l_aux)
 
-    l_aux=l[:]
-    match_decision_four(l_aux)
+#     l_aux=l[:]
+#     match_decision_four(l_aux)
 
-    l_aux=l[:]
-    match_decision_six(l_aux)
+#     l_aux=l[:]
+#     match_decision_six(l_aux)
 
-    db.session.commit()
+#     db.session.commit()

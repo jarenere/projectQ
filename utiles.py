@@ -83,6 +83,14 @@ def borrarMatching():
         db.session.delete(m)
     db.session.commit()
 
+def borrarDecisions():
+    ms = models.Match.query.all()
+    for m in ms:
+        if m.type!="part_two":
+            db.session.delete(m)
+            print ("borrando")
+    db.session.commit()
+
 
 def generateAnswerFakePart3(id_survey, number = 6):
     #doy por echo que existen ya lso 100 usuarios de generarUserFake1

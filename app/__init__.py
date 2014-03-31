@@ -49,6 +49,9 @@ app.register_blueprint(surveys_blueprint, url_prefix='/surveys')
 from app.auth import blueprint as auth_blueprint
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
+from app.decisions import blueprint as decisions_blueprint
+app.register_blueprint(decisions_blueprint, url_prefix='/decisions')
+
 from app.main import blueprint as main_blueprint
 app.register_blueprint(main_blueprint)
 
@@ -56,7 +59,22 @@ from datetime import datetime
 from apscheduler.scheduler import Scheduler
 from scheduler import deleteAnswers
 
+# from app.decisions.matching import Games
+# app.game = Games(1)
+
 # Start the scheduler
 sched = Scheduler()
 sched.start()
 sched.add_interval_job(deleteAnswers.deleteAnswers, hours=2)
+
+def status_part_two(status):
+    from app.models import StateSurvey
+    if status & StateSurvey.PART_TWO_MONEY:
+        return u'Money Real'
+    else:
+        return u'Untrue money'
+
+    return StateSurvey.PART_TWO_MONEY == status & StateSurvey.PART_TWO_MONEY
+
+# app.jinja_env.globals.update(status_part_two=status_part_two)
+app.jinja_env.globals['status_part_two'] = status_part_two
