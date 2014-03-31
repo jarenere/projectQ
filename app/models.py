@@ -646,16 +646,21 @@ class Match(db.Model):
         INIT_MONEY = 10
         
         self.type = 'decision_one'
-        percentA=self.cashInitA()/(self.cashInitA()+self.cashInitB())
-        if percentA>random.random():
-            #answerA win
-            self.win = self.userA
-            self.moneyA = AWARD + (INIT_MONEY - self.cashInitA())
-            self.moneyB = (INIT_MONEY - self.cashInitB())
-        else:
-            self.win = self.userB
-            self.moneyB = AWARD + (INIT_MONEY - self.cashInitB())
-            self.moneyA = (INIT_MONEY - self.cashInitA())
+        try:
+            percentA=self.cashInitA()/(self.cashInitA()+self.cashInitB())
+            if percentA>random.random():
+                #answerA win
+                self.win = self.userA
+                self.moneyA = AWARD + (INIT_MONEY - self.cashInitA())
+                self.moneyB = (INIT_MONEY - self.cashInitB())
+            else:
+                self.win = self.userB
+                self.moneyB = AWARD + (INIT_MONEY - self.cashInitB())
+                self.moneyA = (INIT_MONEY - self.cashInitA())
+        except ZeroDivisionError:
+            # nobody play lottery
+            self.moneyA = self.cashInitA()
+            self.moneyB = self.cashInitB()
 
     def decisionTwo(self):
         INIT_MONEY = 10
@@ -860,10 +865,14 @@ class StateSurvey(db.Model):
     END_DATE_OUT = 0x08
     #:part two section with money
     PART_TWO_MONEY = 0X10
+    #:part two section without money
+    PART_TWO_WITHOUT_MONEY = 0X20
     #:part three section with money
-    PART_THREE_MONEY = 0X20
+    PART_THREE_MONEY = 0X40
+    #:part three section without money
+    PART_THREE_WITHOUT_MONEY = 0X80
     #: do matching
-    MATCHING = 0X40
+    MATCHING = 0X100
 
 
     NO_ERROR = 0
