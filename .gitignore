@@ -10,3 +10,4 @@ dudas
 *.xml
 *.csv
 *.csv*
+app/app.db_cp
