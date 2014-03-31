@@ -121,4 +121,10 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []quitar saltos de lineas de las entradas de texto vacias o cambiar csv
 []los resultados ir guardandolos en csv mientras se van finalizando, tardara menos
 []cargarme en respuestas texto o numero (dejar solo texto)
-[X]mirar cuando almaceno respuestas que aveces es texto y aveces nop | 27 febrero
+[X]mirar cuando almaceno respuestas que aveces es texto y aveces nop | 27 marzo
+[] variable game (init.py) tal vez en configuracion o en algo para el experimento
+[]cuando se termine una encuesta rellenar el resultado de la segunda parte, tal vez mirar si la encuesta tiene algun tipo de matching y que se peude contestar(part_two)
+[]matching y en genereal en la bbdd añadir restrics y cosas de esas
+[]Divisiones por cero al tomar decisiones!! (puede que nadie meta pasta)
+[]cuidado con los tipos cuando relleno automaticamente las repeustas y en el matching (en un lado miro respuesta numerica en otro texto) 
+[]cuando arrancas la bbdd la primera vez  (init)   app.game = Games(1) da fallo
