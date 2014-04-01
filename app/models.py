@@ -664,8 +664,8 @@ class Match(db.Model):
                 self.moneyA = (INIT_MONEY - self.cashInitA)
         except ZeroDivisionError:
             # nobody play lottery
-            self.moneyA = self.cashInitA
-            self.moneyB = self.cashInitB
+            self.moneyA = INIT_MONEY
+            self.moneyB = INIT_MONEY
 
     def decisionTwo(self):
         INIT_MONEY = 10
