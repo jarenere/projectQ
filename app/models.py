@@ -622,16 +622,21 @@ class Match(db.Model):
     moneyB = Column(Numeric)
     #:prize or no
     prize = Column(Boolean, default=False)
+    #:prize or no
+    prizeA = Column(Boolean, default=False)
+    #:prize or no
+    prizeB = Column(Boolean, default=False)
 
     @staticmethod
     def Matching():
         '''search user/answer that no Matching with other user/answer
         '''
         pass
-
+    @hybrid_property
     def cashInitA(self):
         return Answer.query.get(self.answerA).answerNumeric
 
+    @hybrid_property
     def cashInitB(self):
         return Answer.query.get(self.answerB).answerNumeric
 
@@ -647,36 +652,36 @@ class Match(db.Model):
         
         self.type = 'decision_one'
         try:
-            percentA=self.cashInitA()/(self.cashInitA()+self.cashInitB())
+            percentA=self.cashInitA/(self.cashInitA+self.cashInitB)
             if percentA>random.random():
                 #answerA win
                 self.win = self.userA
-                self.moneyA = AWARD + (INIT_MONEY - self.cashInitA())
-                self.moneyB = (INIT_MONEY - self.cashInitB())
+                self.moneyA = AWARD + (INIT_MONEY - self.cashInitA)
+                self.moneyB = (INIT_MONEY - self.cashInitB)
             else:
                 self.win = self.userB
-                self.moneyB = AWARD + (INIT_MONEY - self.cashInitB())
-                self.moneyA = (INIT_MONEY - self.cashInitA())
+                self.moneyB = AWARD + (INIT_MONEY - self.cashInitB)
+                self.moneyA = (INIT_MONEY - self.cashInitA)
         except ZeroDivisionError:
             # nobody play lottery
-            self.moneyA = self.cashInitA()
-            self.moneyB = self.cashInitB()
+            self.moneyA = self.cashInitA
+            self.moneyB = self.cashInitB
 
     def decisionTwo(self):
         INIT_MONEY = 10
         CONSTANT_FUND = 0.8
         self.type = 'decision_two'
-        fund = (self.cashInitA()+self.cashInitB())*CONSTANT_FUND
-        self.moneyA = fund + INIT_MONEY - self.cashInitA()
-        self.moneyB = fund + INIT_MONEY - self.cashInitB()
+        fund = (self.cashInitA+self.cashInitB)*CONSTANT_FUND
+        self.moneyA = fund + INIT_MONEY - self.cashInitA
+        self.moneyB = fund + INIT_MONEY - self.cashInitB
 
     def decisionThree(self):
         INIT_MONEY = 10
         CONSTANT_FUND = 1.2
         self.type = 'decision_three'
-        fund = (self.cashInitA()+self.cashInitB())*CONSTANT_FUND
-        self.moneyA = fund + INIT_MONEY - self.cashInitA()
-        self.moneyB = fund + INIT_MONEY - self.cashInitB()
+        fund = (self.cashInitA+self.cashInitB)*CONSTANT_FUND
+        self.moneyA = fund + INIT_MONEY - self.cashInitA
+        self.moneyB = fund + INIT_MONEY - self.cashInitB
 
 
     def decisionFour(self, section_id):
@@ -692,18 +697,18 @@ class Match(db.Model):
                     l.append((q.choices[0],q.id))
             return l
         MONEY = 20
-        self.type = 'decisison_four'
+        self.type = 'decision_four'
         # interval = QuestionDecisionFive.getIntverval(section_id)
         interval = get_intverval(section_id)
 
         for i in interval:
-            if int(i[0])==self.cashInitA():
+            if int(i[0])==self.cashInitA:
                 answer = Answer.query.filter(Answer.question_id == i[1],Answer.user_id == self.userB).first()
                 self.answerB =answer.id
                 if answer.answerYN:
                     self.win = self.userA
-                    self.moneyA = MONEY - self.cashInitA()
-                    self.moneyB = self.cashInitA()
+                    self.moneyA = MONEY - self.cashInitA
+                    self.moneyB = self.cashInitA
                 else:
                     self.win = self.userB
                     self.moneyA = 0
@@ -717,9 +722,9 @@ class Match(db.Model):
 
     def decision_six(self):
         MONEY = 20
-        self.type = 'decisison_six'
-        self.moneyA = MONEY - self.cashInitA()
-        self.moneyB = self.cashInitA()
+        self.type = 'decision_six'
+        self.moneyA = MONEY - self.cashInitA
+        self.moneyB = self.cashInitA
 
 
 
