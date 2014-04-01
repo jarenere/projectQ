@@ -192,7 +192,7 @@ class Games:
             section_five = self.decision_five_money
         else:
             question_four = self.decision_four_without_money
-            section_five = self.decision_five_money
+            section_five = self.decision_five_without_money
         
         for i in range(len(l)):
             print i, "of", len(l), "decision four"
