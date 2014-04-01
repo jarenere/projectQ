@@ -127,4 +127,8 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []matching y en genereal en la bbdd añadir restrics y cosas de esas
 []Divisiones por cero al tomar decisiones!! (puede que nadie meta pasta)
 []cuidado con los tipos cuando relleno automaticamente las repeustas y en el matching (en un lado miro respuesta numerica en otro texto) 
-[]cuando arrancas la bbdd la primera vez  (init)   app.game = Games(1) da fallo
+[]cuando arrancas la bbdd la primera vez  (init)   app.game = Games(1) da fallo, y luego tambien fallara hasta que exista esa encuesta, y tampoco se entera cuando modificas la encuesta
+[] no estaria mal hacer una utilidad para comprobar si una encuesta con decisiones es valida
+[] crear una clase decente en la bbdd de match y quitar los hybrid de los status
+[]tal vez fusionar todas las tablas de decisiones en una
+[]sustituir decision_four por decision_four_five

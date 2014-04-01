@@ -81,6 +81,10 @@ def borrarMatching():
     ms = models.Match.query.all()
     for m in ms:
         db.session.delete(m)
+    sss = models.StateSurvey.query.filter(models.StateSurvey.survey_id==1)
+    for ss in sss:
+        ss.status=models.StateSurvey.FINISH | models.StateSurvey.FINISH_OK
+        db.session.add(ss)
     db.session.commit()
 
 def borrarDecisions():
@@ -88,7 +92,10 @@ def borrarDecisions():
     for m in ms:
         if m.type!="part_two":
             db.session.delete(m)
-            print ("borrando")
+    sss = models.StateSurvey.query.filter(models.StateSurvey.survey_id==1)
+    for ss in sss:
+        ss.status=ss.status &~ models.StateSurvey.MATCHING 
+    db.session.add(ss)
     db.session.commit()
 
 

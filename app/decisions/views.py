@@ -18,20 +18,41 @@ from ..main.errors import ErrorEndDateOut, ErrorExceeded, ErrorTimedOut
 from app.decorators import researcher_required, belong_researcher
 from .matching import Games
 
+ID_SURVEY=1
+
 @blueprint.route('/')
 @blueprint.route('/index')
 @login_required
 @researcher_required
 def index():
-    # survey = Survey.query.get(1)
-    # game = Games(survey)
-    ID_SURVEY=1
+    return render_template('/decisions/index.html',
+        tittle = 'decisions')
+
+@blueprint.route('/')
+@blueprint.route('/run')
+@login_required
+@researcher_required
+def run():
+    game = Games(1)
     users = StateSurvey.query.filter(StateSurvey.survey_id==ID_SURVEY,\
         StateSurvey.status.op('&')(StateSurvey.PART_TWO_MONEY)==0,\
         StateSurvey.status.op('&')(StateSurvey.PART_TWO_WITHOUT_MONEY)==0)
     for u in users:
-        app.game.part_two(u.user)
+        game.part_two(u.user)
         print u.user.id, u.user.nickname
+
+    game.matching()
+
+    return render_template('/decisions/index.html',
+        tittle = 'decisions')
+
+
+@blueprint.route('/part_two')
+@login_required
+@researcher_required
+def part_two():
+    # survey = Survey.query.get(1)
+    # game = Games(survey)
 
     matchs2 =db.session.query(Match, Answer, Question, StateSurvey).filter(\
         Match.type=="part_two",\
@@ -41,8 +62,76 @@ def index():
         StateSurvey.survey_id==ID_SURVEY,\
         StateSurvey.user_id==Match.userA)
 
-    app.game.matching()
-
-    return render_template('/decisions/decisions.html',
+    return render_template('/decisions/part_two.html',
         tittle = 'decisions',
         matchs2 = matchs2)
+
+@blueprint.route('/decision_one')
+@login_required
+@researcher_required
+def decision_one():
+    # survey = Survey.query.get(1)
+    # game = Games(survey)
+    matchs =Match.query.filter(\
+        Match.type=="decision_one",\
+        Match.survey==ID_SURVEY)
+
+    return render_template('/decisions/decision_one.html',
+        tittle = 'decisions',
+        matchs = matchs)
+
+@blueprint.route('/decision_two')
+@login_required
+@researcher_required
+def decision_two():
+    # survey = Survey.query.get(1)
+    # game = Games(survey)
+    matchs =Match.query.filter(\
+        Match.type=="decision_two",\
+        Match.survey==ID_SURVEY)
+
+    return render_template('/decisions/decision_two.html',
+        tittle = 'decisions',
+        matchs = matchs)
+
+@blueprint.route('/decision_three')
+@login_required
+@researcher_required
+def decision_three():
+    # survey = Survey.query.get(1)
+    # game = Games(survey)
+    matchs =Match.query.filter(\
+        Match.type=="decision_three",\
+        Match.survey==ID_SURVEY)
+
+    return render_template('/decisions/decision_three.html',
+        tittle = 'decisions',
+        matchs = matchs)
+
+@blueprint.route('/decision_four&five')
+@login_required
+@researcher_required
+def decision_four_five():
+    # survey = Survey.query.get(1)
+    # game = Games(survey)
+    matchs =Match.query.filter(\
+        Match.type=="decision_four",\
+        Match.survey==ID_SURVEY)
+
+    return render_template('/decisions/decision_four_five.html',
+        tittle = 'decisions',
+        matchs = matchs)
+
+@blueprint.route('/decision_six')
+@login_required
+@researcher_required
+def decision_six():
+    # survey = Survey.query.get(1)
+    # game = Games(survey)
+    matchs =Match.query.filter(\
+        Match.type=="decision_six",\
+        Match.survey==ID_SURVEY)
+
+    return render_template('/decisions/decision_six.html',
+        tittle = 'decisions',
+        matchs = matchs)
