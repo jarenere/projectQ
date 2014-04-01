@@ -640,6 +640,18 @@ class Match(db.Model):
     def cashInitB(self):
         return Answer.query.get(self.answerB).answerNumeric
 
+    @hybrid_property
+    def statusA(self):
+        ss = StateSurvey.query.filter(StateSurvey.user_id==self.userA,\
+            StateSurvey.survey_id==self.survey).first()
+        return ss.status
+
+    @hybrid_property
+    def statusB(self):
+        ss = StateSurvey.query.filter(StateSurvey.user_id==self.userB,\
+            StateSurvey.survey_id==self.survey).first()
+        return ss.status
+
     def part_two(self):
         self.type= 'part_two'
 
@@ -684,6 +696,16 @@ class Match(db.Model):
             # nobody play lottery
             self.moneyA = INIT_MONEY
             self.moneyB = INIT_MONEY
+
+    @hybrid_property
+    def fund_decision_two(self):
+        CONSTANT_FUND = 0.8
+        return (self.cashInitA+self.cashInitB)*CONSTANT_FUND
+
+    @hybrid_property
+    def fund_decision_three(self):
+        CONSTANT_FUND = 1.2
+        return (self.cashInitA+self.cashInitB)*CONSTANT_FUND
 
     def decisionTwo(self):
         INIT_MONEY = 10
@@ -732,7 +754,8 @@ class Match(db.Model):
                     self.moneyA = 0
                     self.moneyB = 0
                 return
- 
+    
+    @hybrid_property
     def decisionFourAcpet(self):
         '''return if userB accept the division of money
         '''
