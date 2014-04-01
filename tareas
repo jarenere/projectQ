@@ -132,3 +132,4 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 [] crear una clase decente en la bbdd de match y quitar los hybrid de los status
 []tal vez fusionar todas las tablas de decisiones en una
 []sustituir decision_four por decision_four_five
+[]en models, en status tenia que hacer una cosa rara para modificiar (no estoy seguro si en status o en algun otro lado, segurpamente sera porque me equivoco entre tuplas y listas(lista de lista[[],[],[]])
