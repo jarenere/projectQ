@@ -76,5 +76,15 @@ def status_part_two(status):
 
     return StateSurvey.PART_TWO_MONEY == status & StateSurvey.PART_TWO_MONEY
 
+def status_part_three(status):
+    from app.models import StateSurvey
+    if status & StateSurvey.PART_THREE_MONEY:
+        return u'Money Real'
+    else:
+        return u'Untrue money'
+
+    return StateSurvey.PART_TWO_MONEY == status & StateSurvey.PART_TWO_MONEY
+
 # app.jinja_env.globals.update(status_part_two=status_part_two)
 app.jinja_env.globals['status_part_two'] = status_part_two
+app.jinja_env.globals['status_part_three'] = status_part_three

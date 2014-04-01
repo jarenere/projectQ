@@ -643,6 +643,24 @@ class Match(db.Model):
     def part_two(self):
         self.type= 'part_two'
 
+    @hybrid_property
+    def percent_decision_one_playerA(self):
+        try:
+            percent=self.cashInitA/(self.cashInitA+self.cashInitB)
+            return percent
+        except ZeroDivisionError:
+            return 0
+
+    @hybrid_property
+    def percent_decision_one_playerB(self):
+        try:
+            percent=self.cashInitB/(self.cashInitA+self.cashInitB)
+            return percent
+        except ZeroDivisionError:
+            return 0
+
+
+
     def decisionOne(self):
         '''Probability:= userA_Money/(userA_Money+user_MoneyB)
         '''
