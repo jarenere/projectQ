@@ -479,7 +479,7 @@ class Question(db.Model):
             isNumberFloat.text = str(self.isNumberFloat)
 
             regularExpression = SubElement(question,'regularExpression')
-            regularExpression.text = regularExpression.text
+            regularExpression.text = self.regularExpression
 
             errorMessage = SubElement(question,'errorMessage')
             errorMessage.text = self.errorMessage
