@@ -11,7 +11,7 @@ from app.models import StateSurvey
 from app.models import Answer
 from flask.ext.wtf import Form
 from sqlalchemy.sql import func
-from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField
+from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField, DecimalField
 from wtforms.validators import Required, Regexp, Optional
 from wtforms import ValidationError
 import datetime
@@ -128,14 +128,6 @@ def showConsent(id_survey,n_consent = 0):
 def generate_form(questions):
     '''dynamically generates the forms for surveys
     '''
-    # def check_answer_expected(id_question):
-    #     print "VAMOS ATOMOS", id_question
-    #     def _check_answer_expected(self, field):
-    #         question = Question.query.get(id_question)
-    #         expected_answer = question.expectedAnswer
-    #         print "VAMOS ATOMOSsss"
-    #         if field.data!=expected_answer:
-    #             raise ValidationError("respuesta erronea")
     def check_answer_expected(self,field):
         '''check if the answer is the expected
         '''
@@ -182,8 +174,16 @@ def generate_form(questions):
         if isinstance (question,QuestionText):
             if question.required:
                 if question.regularExpression !="":
-                    setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
-                        validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
+                    if question.isNumber:
+                        if question.isNumberFloat:
+                            setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
+                                validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
+                        else:
+                            setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
+                                validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
+                    else:
+                        setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
+                            validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
                 elif question.isExpectedAnswer():
                     setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required(),
                         check_answer_expected]))
@@ -248,7 +248,10 @@ def showQuestions(id_survey, id_section):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
             if isinstance (question,QuestionText):
                 if question.isNumber:
-                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                    if question.isNumberFloat:
+                        answer = Answer (answerNumeric = form["c"+str(question.id)].data.replace(",","."), user= g.user, question = question)
+                    else:
+                        answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
                 else:
                     answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
             if isinstance (question,QuestionChoice):
