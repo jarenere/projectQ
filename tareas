@@ -132,4 +132,9 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 [] crear una clase decente en la bbdd de match y quitar los hybrid de los status
 []tal vez fusionar todas las tablas de decisiones en una
 []sustituir decision_four por decision_four_five
-[]en models, en status tenia que hacer una cosa rara para modificiar (no estoy seguro si en status o en algun otro lado, segurpamente sera porque me equivoco entre tuplas y listas(lista de lista[[],[],[]])
+[x]en models, en status tenia que hacer una cosa rara para modificiar (no estoy seguro si en status o en algun otro lado, segurpamente sera porque me equivoco entre tuplas y listas(lista de lista[[],[],[]]) || en en sectionTime, pero guardo una lista y meto tuplas, asi que nada error raro, 2 de abril
+[]tengo ANSWERNUMBERIC como INTEGER, tal vez mejor como FLOAT
+[]en encuestas si es un numero tal vez convertir numeros a floats
+[]wtforms dinamicos con exec string in globals(), locals()
+[]wtforms regexp con integerfield o decimalfield casca, crear un validador?
+[]NO BORRAR RESPUESTAS DE USUARIOS QUE NO HAN TERMIANDO ENCUESTA

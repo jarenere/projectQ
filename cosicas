@@ -14,6 +14,11 @@ resultado final 1,2,3| 2,3,1| 3,2,1, nunca 2,1,3 o 3,1,2
 listQuestionType podria metero en la bbdd
 eliminar la herencia de la bbdd, solo voy a añadir metodos (mala idea.. metodos distintos para clases distintas, por lo que son CLASES DISTINTAS)
 
+expresion regular [0-9]$|[0-9][\,\.]5*[0]*$|10[\,\.][0]*$
+
+[0-9]$|[0-9]\.5[0]*$|10$
+[0-9]$|[0-9]\.5[0]*$|[0-9]\,5[0]*$|10$
+
 Creacion autimatica de forms segun el modelo: http://flask.pocoo.org/snippets/60/ http://wtforms-alchemy.readthedocs.org/en/latest/introduction.html
 
 filtros jinja2: 
