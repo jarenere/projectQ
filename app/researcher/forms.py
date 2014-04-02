@@ -51,6 +51,7 @@ class QuestionForm(Form):
 
     #:dateValidation(text)
     isNumber = BooleanField('Number')
+    isNumberFloat = BooleanField('Number Float')
     regularExpression = TextField('Regular Expression', validators = [Length(min=0, max=255)])
     errorMessage = TextField('Error Message', validators = [Length(min=0, max=255)])
 

@@ -475,6 +475,9 @@ class Question(db.Model):
             isNumber = SubElement(question,'isNumber')
             isNumber.text = str(self.isNumber)
 
+            isNumberFloat = SubElement(question,'isNumberFloat')
+            isNumberFloat.text = str(self.isNumberFloat)
+
             regularExpression = SubElement(question,'regularExpression')
             regularExpression.text = regularExpression.text
 
@@ -521,9 +524,11 @@ class Question(db.Model):
 
         elif type == 'text':
             isNumber = (findField('isNumber',root,msg)=="True")
+            isNumberFloat = (findField('isNumberFloat',root,msg)=="True")
             regularExpression = findField('regularExpression',root,msg)
             errorMessage = findField('errorMessage',root,msg)
             question = QuestionText(isNumber=isNumber,
+                isNumberFloat=isNumberFloat,
                 regularExpression=regularExpression,
                 errorMessage=errorMessage)
 
@@ -571,6 +576,7 @@ class QuestionText(Question):
     '''
     __mapper_args__ = {'polymorphic_identity': 'text'}
     isNumber = Column(Boolean, default=False)
+    isNumberFloat = Column(Boolean, default=False)
     regularExpression = Column (String(256), default="") 
     #text with the error if the user answer with wrong  regular expression
     errorMessage = Column (String(256), default="") 

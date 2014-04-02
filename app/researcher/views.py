@@ -283,6 +283,7 @@ def duplicate_section(id_survey,id_section):
             question_cp=QuestionNumerical()
         if isinstance (q, QuestionText):
             question_cp = QuestionText(isNumber=q.isNumber,
+                isNumberFloat=q.isNumberFloat,
                 regularExpression=q.regularExpression,
                 errorMessage=q.errorMessage)
         if isinstance (q,QuestionChoice):
@@ -376,6 +377,7 @@ def selectType(form):
         question = QuestionNumerical()
     if form.questionType.data == 'text':
         question = QuestionText(isNumber=form.isNumber.data,
+            isNumberFloat=form.isNumberFloat.data,
             regularExpression=form.regularExpression.data,
             errorMessage=form.errorMessage.data)
     if form.questionType.data == 'choice':
@@ -472,6 +474,7 @@ def editQuestion(id_survey, id_section,id_question):
         if isinstance(question, QuestionText):
             form.regularExpression.data = question.regularExpression
             form.isNumber.data = question.isNumber
+            form.isNumberFloat.data = question.isNumberFloat
             form.errorMessage.data = question.errorMessage
         if isinstance (question,QuestionChoice):
             l= question.choices

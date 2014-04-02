@@ -45,6 +45,7 @@
                     {{ render_field3(form.questionType) }}
                     <div id="divText">
                         {{ render_field3(form.isNumber) }}
+                        {{ render_field3(form.isNumberFloat) }}
                         {{ render_field3(form.regularExpression) }}
                         {{ render_field3(form.errorMessage) }}
                     </div>
@@ -166,6 +167,23 @@
             }
         }
     }
+    function onchange_numberFloat(){   
+        if (select_numberFloat.checked==true)
+        {
+            select_number.checked=true;
+        }
+        else
+        {
+            select_number.disabled=false;
+        }
+    }
+    function onchange_number(){   
+        if (select_number.checked==false)
+        {
+            select_numberFloat.checked=false;
+        }
+    }
+
     window.onload = function() {
         $("#divText").hide();
         $("#divLikert").hide();
@@ -188,6 +206,14 @@
     var selIndex = select_decision.selectedIndex;
     var selValue = select_decision.options[selIndex].value;
     onchange_decision(selValue);
+}
+    var select_number = document.getElementById("isNumber");
+    select_number.onchange = function() {
+    onchange_number();
+}    
+    var select_numberFloat = document.getElementById("isNumberFloat");
+    select_numberFloat.onchange = function() {
+    onchange_numberFloat();
 }
 
 </script>
