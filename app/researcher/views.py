@@ -660,8 +660,137 @@ def export_stats(id_survey):
             writer.writerow(l)
             print "finis: ", ss.user_id
 
+
+    def write_header(writer,id_survey):
+
+        def export_section(id_survey,l):
+        
+            def _export_questions(section,l):
+                for q in section.questions:
+                    l.append(q.text)
+                    l.append("global Time")
+                    l.append("differential Time")
+
+            def _export_section(section,l):
+                if section.children.count()!=0:
+                    for s in section.children:
+                        l.append("Section: \n"+s.title+"\n id:\n"+str(s.id))
+                        _export_questions(s,l)
+                        _export_section(s,l)
+
+            sections = Section.query.filter(Section.survey_id==id_survey).order_by(Section.sequence)
+            for s in sections:
+                l.append("Section: \n"+s.title+"\n id:\n"+str(s.id))
+                _export_questions(s,l)
+                _export_section(s,l)
+
+
+        l=[]
+        l.append("user")
+        l.append("status")
+        l.append("start date")
+        l.append("finish date")
+        l.append("ip")
+        l.append("path")
+        export_section(id_survey,l)
+        writer.writerow(l)
+
+    def write_answers(writer,id_survey):
+        def find_time(list, id, l):
+            find=False
+            for i in list:
+                if i[0]==id:
+                    l.append(i[1])
+                    find=True
+                    break
+            if not find:
+                l.append("None")
+
+        def get_status(status):
+            string=""
+            if status & StateSurvey.FINISH_OK:
+                string="finish in time\n"
+            if status & StateSurvey.TIMED_OUT:
+                string=string+"finished out of time\n"
+            if status & StateSurvey.END_DATE_OUT:
+                string=string+"finished out of date\n"
+            if status & StateSurvey.PART_TWO_MONEY:
+                string=string+"part two with money\n"
+            if status & StateSurvey.PART_TWO_WITHOUT_MONEY:
+                string=string+"part two without money\n"
+            if status & StateSurvey.PART_THREE_MONEY:
+                string=string+"part three with money\n"
+            if status & StateSurvey.PART_THREE_WITHOUT_MONEY:
+                string=string+"part three without money\n"
+            if status & StateSurvey.MATCHING:
+                string=string+"match"
+            else:
+                string=string+"no match"
+            return string
+
+
+        def _write_answers(section,l):
+            stmt1 = db.session.query(Question).\
+                filter(Question.section_id==section.id).subquery()
+            question1= aliased(Question, stmt1)
+            stmt2 = db.session.query(Answer).filter(Answer.user_id==ss.user_id).subquery()
+            answer1= aliased(Answer, stmt2)
+            res = db.session.query(question1, answer1).\
+                outerjoin(answer1, question1.id == answer1.question_id)
+            for i in res:
+                if i[1] is None:
+                    l.append("None")
+                    l.append("None")
+                    l.append("None")
+                else:
+                    ans = i[1]
+                    if isinstance (ans.question,QuestionYN):
+                        l.append(ans.answerYN)
+                    if isinstance (ans.question,QuestionText):
+                        if ans.question.isNumber:
+                            l.append(ans.answerNumeric)
+                        else:
+                            l.append(ans.answerText)
+                    if isinstance (ans.question,QuestionChoice):
+                        l.append(ans.question.choices[ans.answerNumeric])
+                    if isinstance (ans.question, QuestionLikertScale):
+                        l.append(ans.answerNumeric)
+                    l.append(ans.globalTime)
+                    l.append(ans.differentialTime)
+
+        def _export_answers_section(section,l):
+                if section.children.count()!=0:
+                    for s in section.children:
+                        find_time(ss.sectionTime,s.id,l)
+                        _write_answers(s,l)
+                        _export_answers_section(s,l)
+
+
+        sss=StateSurvey.query.filter(StateSurvey.survey_id==id_survey)
+        i=0
+        for ss in sss:
+            l=[]
+            l.append(ss.user_id)
+            l.append(get_status(ss.status))
+            l.append(ss.start_date)
+            l.append(ss.endDate)
+            l.append(ss.ip)
+            l.append(ss.sequence)
+            sections = Section.query.filter(Section.survey_id==id_survey).order_by(Section.sequence)
+            for s in sections:
+                find_time(ss.sectionTime,s.id,l)
+                _export_answers_section(s,l)
+
+
+            print ss.id
+            writer.writerow(l)
+            i=i+1
+            if (i==1001):
+                break
+
+
     survey = Survey.query.get(id_survey)
-    # ofile = tempfile.NamedTemporaryFile()
+    #ofile = tempfile.NamedTemporaryFile()
     ofile  = open('test.csv', "wb")
     writer = csv.writer(ofile, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
     # export_users(writer)
@@ -671,8 +800,10 @@ def export_stats(id_survey):
     # export_question_user(writer)
     # l=["jaja"]
     # writer.writerow(l)
-    export_questions(writer,id_survey)
+    # export_questions(writer,id_survey)
+    write_header(writer,id_survey)
+    write_answers(writer,id_survey)
     ofile.close()
     flash ("Export stats")
-    # return send_file(ofile, as_attachment=True, attachment_filename="stats_"+survey.title+'.csv')
+    #return send_file(ofile, as_attachment=True, attachment_filename="stats_"+survey.title+'.csv')
     return redirect(url_for('researcher.index'))
