@@ -15,7 +15,30 @@ def verState():
     state = models.StateSurvey.query.all()
     for s in state:
         print "id", s.id, "user", s.user_id, "survey:", s.survey_id, "status", s.status
-    
+
+def borrarMatchingSurvey(survey):
+    for mat in models.Match.query.filter(\
+        models.Match.survey==survey):
+        db.session.delete(mat)
+    db.session.commit()
+
+
+def borrarStateSurvey(survey):
+    for s in models.StateSurvey.query.filter(\
+        models.StateSurvey.survey_id==survey):
+        db.session.delete(s)
+    db.session.commit()
+
+
+def borrarRespuestasSurvey(survey):
+    for ans in models.Answer.query.filter(\
+        models.Answer.question_id==models.Question.id,\
+        models.Question.section_id==models.Section.id,\
+        models.Section.root_id==survey):
+        db.session.delete(ans)
+    db.session.commit()
+    borrarStateSurvey(survey)
+    borrarMatchingSurvey(survey)
 
 def verAnswers():
     for ans in models.Answer.query.all():
