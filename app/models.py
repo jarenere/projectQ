@@ -954,7 +954,7 @@ class StateSurvey(db.Model):
     status = Column(Integer, default = NONE)
     #: Sequence of sections are traversed (it is a list of secction to go through )
     sequence = Column(PickleType)
-    #: list with time/section, maybe better crearte new table, in ms
+    #: list with section/time, maybe better crearte new table, in ms
     sectionTime = Column(PickleType, default = [])
     #: index the lastt sections made
     index = Column(Integer, default =0)
