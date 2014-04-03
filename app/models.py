@@ -1009,14 +1009,14 @@ class StateSurvey(db.Model):
                 print self.status
                 db.session.add(self)
                 db.session.commit()
-                self._delete_answers()
+                # self._delete_answers()
                 return StateSurvey.ERROR_TIMED_OUT
         if now > self.survey.endDate or now < self.survey.startDate:
             #answer out of date
             self.status = StateSurvey.END_DATE_OUT | StateSurvey.FINISH
             db.session.add(self)
             db.session.commit()
-            self._delete_answers()
+            # self._delete_answers()
             return StateSurvey.ERROR_END_DATE_OUT
         return StateSurvey.NO_ERROR
 
