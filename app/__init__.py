@@ -49,8 +49,8 @@ app.register_blueprint(surveys_blueprint, url_prefix='/surveys')
 from app.auth import blueprint as auth_blueprint
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
-from app.decisions import blueprint as decisions_blueprint
-app.register_blueprint(decisions_blueprint, url_prefix='/decisions')
+from app.stats import blueprint as stats_blueprint
+app.register_blueprint(stats_blueprint, url_prefix='/stats')
 
 from app.main import blueprint as main_blueprint
 app.register_blueprint(main_blueprint)

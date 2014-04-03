@@ -25,8 +25,8 @@ ID_SURVEY=1
 @login_required
 @researcher_required
 def index():
-    return render_template('/decisions/index.html',
-        tittle = 'decisions')
+    return render_template('/stats/index.html',
+        tittle = 'stats')
 
 @blueprint.route('/')
 @blueprint.route('/run')
@@ -43,8 +43,8 @@ def run():
 
     game.matching()
 
-    return render_template('/decisions/index.html',
-        tittle = 'decisions')
+    return render_template('/stats/index.html',
+        tittle = 'stats')
 
 
 @blueprint.route('/part_two')
@@ -62,8 +62,8 @@ def part_two():
         StateSurvey.survey_id==ID_SURVEY,\
         StateSurvey.user_id==Match.userA)
 
-    return render_template('/decisions/part_two.html',
-        tittle = 'decisions',
+    return render_template('/stats/part_two.html',
+        tittle = 'stats',
         matchs2 = matchs2)
 
 @blueprint.route('/decision_one')
@@ -76,8 +76,8 @@ def decision_one():
         Match.type=="decision_one",\
         Match.survey==ID_SURVEY)
 
-    return render_template('/decisions/decision_one.html',
-        tittle = 'decisions',
+    return render_template('/stats/decision_one.html',
+        tittle = 'stats',
         matchs = matchs)
 
 @blueprint.route('/decision_two')
@@ -90,8 +90,8 @@ def decision_two():
         Match.type=="decision_two",\
         Match.survey==ID_SURVEY)
 
-    return render_template('/decisions/decision_two.html',
-        tittle = 'decisions',
+    return render_template('/stats/decision_two.html',
+        tittle = 'stats',
         matchs = matchs)
 
 @blueprint.route('/decision_three')
@@ -104,8 +104,8 @@ def decision_three():
         Match.type=="decision_three",\
         Match.survey==ID_SURVEY)
 
-    return render_template('/decisions/decision_three.html',
-        tittle = 'decisions',
+    return render_template('/stats/decision_three.html',
+        tittle = 'stats',
         matchs = matchs)
 
 @blueprint.route('/decision_four&five')
@@ -118,8 +118,8 @@ def decision_four_five():
         Match.type=="decision_four",\
         Match.survey==ID_SURVEY)
 
-    return render_template('/decisions/decision_four_five.html',
-        tittle = 'decisions',
+    return render_template('/stats/decision_four_five.html',
+        tittle = 'stats',
         matchs = matchs)
 
 @blueprint.route('/decision_six')
@@ -132,6 +132,6 @@ def decision_six():
         Match.type=="decision_six",\
         Match.survey==ID_SURVEY)
 
-    return render_template('/decisions/decision_six.html',
-        tittle = 'decisions',
+    return render_template('/stats/decision_six.html',
+        tittle = 'stats',
         matchs = matchs)
