@@ -12,7 +12,6 @@ from flask.ext.bootstrap import Bootstrap
 
 
 
-basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 
@@ -33,6 +32,12 @@ lm = LoginManager()
 lm.init_app(app)
 lm.login_view = 'auth.login'
 oid = OpenID(app, os.path.join(basedir, 'tmp'))
+
+
+# Dir to stats
+stats_csv = os.path.join(basedir, 'stats_csv')
+if not os.path.exists(stats_csv):
+    os.makedirs(stats_csv)
 
 # from app import models
 # from app import views

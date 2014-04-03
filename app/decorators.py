@@ -4,7 +4,14 @@ from flask import abort
 from main.errors import ErrorEndDateOut
 from .models import Section, Survey, Consent, Question, StateSurvey
 import datetime
+from threading import Thread
 
+def async(f):
+    def wrapper(*args, **kwargs):
+        thr = Thread(target = f, args = args, kwargs = kwargs)
+        thr.start()
+    return wrapper
+    
 
 
 def researcher_required(f):  # pragma: no cover
