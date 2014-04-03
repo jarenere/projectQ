@@ -11,7 +11,7 @@ from flask.ext.pagedown import PageDown
 from flask.ext.bootstrap import Bootstrap
 
 
-
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 

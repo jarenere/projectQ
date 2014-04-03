@@ -618,6 +618,10 @@ class Match(db.Model):
     answerA = Column(Integer, ForeignKey('answer.id'))
     #:answer of User B
     answerB = Column(Integer, ForeignKey('answer.id'))
+    #:userA isn't his first Match (repeat by fault users)
+    repeatA = Column(Boolean, default=False)
+    #:userB isn't his first Match (repeat by fault users)
+    repeatB = Column(Boolean, default=False)    
     #:type of decision, each decisision have a different algorithm
     type = Column(String(20))
     #:user win

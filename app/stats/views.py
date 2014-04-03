@@ -17,6 +17,7 @@ from app.decorators import valid_survey, there_is_stateSurvey
 from ..main.errors import ErrorEndDateOut, ErrorExceeded, ErrorTimedOut
 from app.decorators import researcher_required, belong_researcher
 from .matching import Games
+import csv
 
 ID_SURVEY=1
 
@@ -45,6 +46,20 @@ def run():
 
     return render_template('/stats/index.html',
         tittle = 'stats')
+
+@blueprint.route('/stats')
+@login_required
+@researcher_required
+def stats():
+    # survey = Survey.query.get(1)
+    # game = Games(survey)
+    matchs =Match.query.filter(\
+        Match.type=="decision_one",\
+        Match.survey==ID_SURVEY)
+
+    return render_template('/stats/index.html',
+        tittle = 'stats',
+        matchs = matchs)
 
 
 @blueprint.route('/part_two')
