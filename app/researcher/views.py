@@ -696,36 +696,47 @@ def export_stats(id_survey):
         writer.writerow(l)
 
     def write_answers(writer,id_survey):
-        def find_time(list, id, l):
+
+        def find_time(list, id):
             find=False
             for i in list:
                 if i[0]==id:
-                    l.append(i[1])
+                    return str(i[1])
                     find=True
                     break
             if not find:
-                l.append("None")
+                return ("None")
+
+        def get_path(sequence,section_time):
+            string=""
+            for s in sequence:
+                string=string+Section.query.get(s).title
+                string=string+" :"+find_time(section_time,s)+"\n"
+            return string[:-1]
+
 
         def get_status(status):
             string=""
+            if status & StateSurvey.NONE:
+                string = string+"not finished yet\n"
             if status & StateSurvey.FINISH_OK:
-                string="finish in time\n"
+                string = string+"finish in time\n"
             if status & StateSurvey.TIMED_OUT:
-                string=string+"finished out of time\n"
+                string = string+"finished out of time\n"
             if status & StateSurvey.END_DATE_OUT:
-                string=string+"finished out of date\n"
+                string = string+"finished out of date\n"
             if status & StateSurvey.PART_TWO_MONEY:
-                string=string+"part two with money\n"
+                string = string+"part two with money\n"
             if status & StateSurvey.PART_TWO_WITHOUT_MONEY:
-                string=string+"part two without money\n"
+                string = string+"part two without money\n"
             if status & StateSurvey.PART_THREE_MONEY:
-                string=string+"part three with money\n"
+                string = string+"part three with money\n"
             if status & StateSurvey.PART_THREE_WITHOUT_MONEY:
-                string=string+"part three without money\n"
+                string = string+"part three without money\n"
             if status & StateSurvey.MATCHING:
-                string=string+"match"
+                string = string+"match"
             else:
-                string=string+"no match"
+                string = string+"no match"
             return string
 
 
@@ -761,7 +772,7 @@ def export_stats(id_survey):
         def _export_answers_section(section,l):
                 if section.children.count()!=0:
                     for s in section.children:
-                        find_time(ss.sectionTime,s.id,l)
+                        l.append(find_time(ss.sectionTime,s.id))
                         _write_answers(s,l)
                         _export_answers_section(s,l)
 
@@ -775,10 +786,11 @@ def export_stats(id_survey):
             l.append(ss.start_date)
             l.append(ss.endDate)
             l.append(ss.ip)
+            l.append(get_path(ss.sequence,ss.sectionTime))
             l.append(ss.sequence)
             sections = Section.query.filter(Section.survey_id==id_survey).order_by(Section.sequence)
             for s in sections:
-                find_time(ss.sectionTime,s.id,l)
+                l.append(find_time(ss.sectionTime,s.id))
                 _export_answers_section(s,l)
 
 
