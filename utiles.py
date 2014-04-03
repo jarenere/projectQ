@@ -183,6 +183,7 @@ def generate_answers_fake(id_survey, number=6):
             except IntegrityError:
                 db.session.rollback()
         db.session.commit()
+        return base
 
     def answer_question(user,q, time):
         l=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10]
@@ -232,12 +233,11 @@ def generate_answers_fake(id_survey, number=6):
         db.session.add(answer)
         return time
 
-    borrarRespuestas()
-    if len(User.query.all())<number+1:
-        generateUserFake_1(number+1-len(User.query.all()))
+
+    base = generateUserFake_1(number)
     print "a tope"
-    for i in range(2,number+2):
-        user = User.query.get(i);
+    for i in range(base,number+base):
+        user = User.query.get(i+base);
         ss, error = StateSurvey.getStateSurvey(id_survey,user,forgery_py.forgery.internet.ip_v4())
         if error != StateSurvey.NO_ERROR:
             print "error en fechas o en algo"
