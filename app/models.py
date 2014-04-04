@@ -23,7 +23,6 @@ from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
 import xml.etree.cElementTree as ET
-# import app.stats.write_stats
 
 def findField(str, root, msg = None):
     try:
@@ -1054,6 +1053,8 @@ class StateSurvey(db.Model):
     def finishedSection(self,time):
         '''Section is finished, index+1
         '''
+        import app.stats.write_stats
+
         #note, with picleType not found append (don't save), self.sectionTime.append(), bug?
         l = self.sectionTime[:]
         l.append((self.sequence[self.index], time))
@@ -1062,9 +1063,9 @@ class StateSurvey(db.Model):
         if self.index>=len(self.sequence):
             self.status = self.status | StateSurvey.FINISH | StateSurvey.FINISH_OK
             self.endDate = datetime.datetime.utcnow()
+            app.stats.write_stats.write_stats(self.user_id, self.survey_id)
         db.session.add(self)
         db.session.commit()
-        # app.stats.write_stats.write_stats(self.user_id, self.survey_id)
 
     @staticmethod
     def getStateSurvey(id_survey, user, ip = ""):

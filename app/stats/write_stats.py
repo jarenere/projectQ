@@ -1,6 +1,6 @@
-from app.models import StateSurvey, Answer, Section, Question
-from app.models import QuestionYN, QuestionChoice, QuestionNumerical, QuestionText
-from app.models import QuestionLikertScale
+from ..models import StateSurvey, Answer, Section, Question
+from ..models import QuestionYN, QuestionChoice, QuestionNumerical, QuestionText
+from ..models import QuestionLikertScale
 from app import db, stats_csv
 import fcntl
 import os
@@ -141,17 +141,20 @@ def write_answers(writer,id_survey, id_user):
 
     ss=StateSurvey.query.filter(StateSurvey.survey_id==id_survey,\
         StateSurvey.user_id==id_user).first()
-    l=[]
-    l.append(ss.user_id)
-    l.append(get_status(ss.status))
-    l.append(ss.start_date)
-    l.append(ss.endDate)
-    l.append(ss.ip)
-    l.append(get_path(ss.sequence,ss.sectionTime))
-    l.append(ss.sequence)
-    sections = Section.query.filter(Section.survey_id==id_survey).order_by(Section.sequence)
-    for s in sections:
-        l.append(find_time(ss.sectionTime,s.id))
-        _export_answers_section(s,l)
-    print ss.id
-    writer.writerow(l)
+    if (ss.status & StateSurvey.STATS)==0:  
+        ss.status = ss.status | StateSurvey.STATS
+        db.session.add(ss)
+        db.session.commit()
+        l=[]
+        l.append(ss.user_id)
+        l.append(get_status(ss.status))
+        l.append(ss.start_date)
+        l.append(ss.endDate)
+        l.append(ss.ip)
+        l.append(get_path(ss.sequence,ss.sectionTime))
+        l.append(ss.sequence)
+        sections = Section.query.filter(Section.survey_id==id_survey).order_by(Section.sequence)
+        for s in sections:
+            l.append(find_time(ss.sectionTime,s.id))
+            _export_answers_section(s,l)
+        writer.writerow(l)

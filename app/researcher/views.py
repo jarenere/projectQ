@@ -787,7 +787,6 @@ def export_stats(id_survey):
             l.append(ss.endDate)
             l.append(ss.ip)
             l.append(get_path(ss.sequence,ss.sectionTime))
-            l.append(ss.sequence)
             sections = Section.query.filter(Section.survey_id==id_survey).order_by(Section.sequence)
             for s in sections:
                 l.append(find_time(ss.sectionTime,s.id))
