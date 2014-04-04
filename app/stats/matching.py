@@ -85,7 +85,7 @@ class Games:
         return [ss.user_id for ss in StateSurvey.query.filter(\
             User.id==StateSurvey.user_id,\
             StateSurvey.status.op('&')(StateSurvey.FINISH_OK),\
-            StateSurvey.status.op('&')(StateSurvey.MATCHING)==1,\
+            StateSurvey.status.op('&')(StateSurvey.MATCHING),\
             StateSurvey.survey_id==self.survey.id,\
             Question.id==self.decision_one_money.id, \
             Answer.question_id==Question.id,\
@@ -95,7 +95,7 @@ class Games:
         return [ss.user_id for ss in StateSurvey.query.filter(\
             User.id==StateSurvey.user_id,\
             StateSurvey.status.op('&')(StateSurvey.FINISH_OK),\
-            StateSurvey.status.op('&')(StateSurvey.MATCHING)==1,\
+            StateSurvey.status.op('&')(StateSurvey.MATCHING),\
             StateSurvey.survey_id==self.survey.id,\
             Question.id==self.decision_one_without_money.id, \
             Answer.question_id==Question.id,\
@@ -234,7 +234,7 @@ class Games:
         if money:
             list_users = self._users_part_three_money_matching()
         else:
-            list_users = self._users_part_three_money_matching()
+            list_users = self._users_part_three_without_money_matching()
         userB = random.choice(list_users)
         list_users.remove(userB)
         self._match_decision_one_users(alone_user,userB,money,False,True)
@@ -395,11 +395,16 @@ class Games:
             self._match_decision_four(l_aux, True)
             l_aux=users_money[:]
             self._match_decision_six(l_aux, True)
-            if not pair:
-                self.match_alone_user(alone_user, True)
-                users_money.append(alone_user)
+            
             self._flag_matching_money(users_money)
             db.session.commit()
+            
+            if not pair:
+                self._match_alone_user(alone_user, True)
+                users_money.append(alone_user)
+                self._flag_matching_money([alone_user])
+                db.session.commit()
+
             for user in users_money:
                 self._prize(user)
             db.session.commit()
@@ -407,13 +412,14 @@ class Games:
             users_money_matching= self._users_part_three_money_matching()
             if len(users_money_matching)>=self.MIN_USER_MATCH:
                 for user in users_money:
-                    self.match.alone_user(user,True)
+                    self._match_alone_user(user,True)
                     db.session.commit()
+                self._flag_matching_money(users_money)
                 for user in users_money:
                     self._prize(user)
                 db.session.commit()
             else:
-                print"No sufficient users"
+                print"No sufficient users, money"
 
 
         users_without_money=self._users_part_three_without_money_no_matching()
@@ -435,16 +441,21 @@ class Games:
             self._match_decision_four(l_aux, False)
             l_aux=users_without_money[:]
             self._match_decision_six(l_aux, False)
-            if not pair:
-                self.match_alone_user(alone_user, False)
-                users_without_money.append(alone_user)
+
             self._flag_matching_without_money(users_without_money)
             db.session.commit()
+
+            if not pair:
+                self._match_alone_user(alone_user, False)
+                self._flag_matching_without_money([users_without_money])
+                db.session.commit()
         else:
             users_without_money_matching= self._users_part_three_without_money_matching()
             if len(users_without_money_matching)>=self.MIN_USER_MATCH:
                 for user in users_without_money:
-                    self.match.alone_user(user,True)
+                    self._match_alone_user(user,False)
                     db.session.commit()
+                self._flag_matching_without_money(users_without_money)
+                db.session.commit()
             else:
-                print"No sufficient users"
+                print"No sufficient users, no money"
