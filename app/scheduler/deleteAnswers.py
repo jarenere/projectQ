@@ -3,7 +3,7 @@ from sqlalchemy import and_
 
 def deleteAnswers():
     '''Check the time and duration of Survey and 
-    delete the answers of the surveys that have not
+    not delete the answers of the surveys that have not
     been finished
     '''
     ss = StateSurvey.query.filter(\
