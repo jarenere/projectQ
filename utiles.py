@@ -237,7 +237,7 @@ def generate_answers_fake(id_survey, number=6):
     base = generateUserFake_1(number)
     print "a tope"
     for i in range(base,number+base):
-        user = User.query.get(i+base);
+        user = User.query.get(i);
         ss, error = StateSurvey.getStateSurvey(id_survey,user,forgery_py.forgery.internet.ip_v4())
         if error != StateSurvey.NO_ERROR:
             print "error en fechas o en algo"
