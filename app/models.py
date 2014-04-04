@@ -23,6 +23,7 @@ from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
 import xml.etree.cElementTree as ET
+# import app.stats.write_stats
 
 def findField(str, root, msg = None):
     try:
@@ -929,6 +930,8 @@ class StateSurvey(db.Model):
     PART_THREE_WITHOUT_MONEY = 0X80
     #: do matching
     MATCHING = 0X100
+    #: write stat
+    STATS = 0X200
 
 
     NO_ERROR = 0
@@ -1061,6 +1064,7 @@ class StateSurvey(db.Model):
             self.endDate = datetime.datetime.utcnow()
         db.session.add(self)
         db.session.commit()
+        # app.stats.write_stats.write_stats(self.user_id, self.survey_id)
 
     @staticmethod
     def getStateSurvey(id_survey, user, ip = ""):
