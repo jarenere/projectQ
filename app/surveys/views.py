@@ -3,9 +3,9 @@ from app import app, db
 from flask import Blueprint, request, url_for, flash, redirect, abort, session, g
 from flask import render_template
 from flask.ext.login import login_user, logout_user, current_user, login_required
-from forms import LoginForm, AnswerChoiceForm, AnswerNumericalForm, AnswerTextForm, AnswerYNForm
+from forms import LoginForm
 from app.models import Survey, Consent, Section
-from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
+from app.models import Question, QuestionChoice, QuestionText
 from app.models import QuestionYN ,QuestionLikertScale
 from app.models import StateSurvey
 from app.models import Answer
@@ -166,11 +166,6 @@ def generate_form(questions):
             else:
                 setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
                     choices = [('Yes','Yes'),('No','No')],validators = [Optional()]))
-        if isinstance (question,QuestionNumerical):
-            if question.required:
-                setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
-            else:
-                setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'),validators = [Optional()])
         if isinstance (question,QuestionText):
             if question.required:
                 if question.regularExpression !="":
@@ -244,8 +239,6 @@ def showQuestions(id_survey, id_section):
         for question in questions:
             if isinstance (question,QuestionYN):
                 answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
-            if isinstance (question,QuestionNumerical):
-                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
             if isinstance (question,QuestionText):
                 if question.isNumber:
                     if question.isNumberFloat:

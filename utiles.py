@@ -168,7 +168,7 @@ def generate_answers_fake(id_survey, number=6):
     import random
     import forgery_py
     from app.models import Survey, Consent, Section, Answer, User, StateSurvey
-    from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
+    from app.models import Question, QuestionChoice, QuestionText
     from app.models import QuestionYN ,QuestionLikertScale
     
     def generateUserFake_1(count=100):
@@ -190,8 +190,6 @@ def generate_answers_fake(id_survey, number=6):
         l2=[0,2,4,6,8,10,12,14,16,18,20]
         if isinstance (q, QuestionYN):
             answer = Answer (answerYN =random.randrange(0,2)==1, user= user, question = q)
-        elif isinstance (q, QuestionNumerical):
-            answer = Answer (answerNumeric =random.randrange(0,100), user= user, question = q)
         elif isinstance (q, QuestionText):
             if q.decision=="decision_one":
                 answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)

@@ -4,7 +4,7 @@ from flask import Blueprint, request, url_for, flash, redirect, abort, send_file
 from flask import render_template, g
 from forms import SurveyForm, EditConsentForm, SectionForm, QuestionForm
 from app.models import Survey, Consent, Section, StateSurvey, Answer
-from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
+from app.models import Question, QuestionChoice, QuestionText
 from app.models import QuestionYN, QuestionLikertScale
 from app import app, db
 from app.decorators import researcher_required, belong_researcher
@@ -279,8 +279,6 @@ def duplicate_section(id_survey,id_section):
     def _duplicate_question(s,q):
         if isinstance(q, QuestionYN):
             question_cp=QuestionYN()
-        if isinstance(q,QuestionNumerical):
-            question_cp=QuestionNumerical()
         if isinstance (q, QuestionText):
             question_cp = QuestionText(isNumber=q.isNumber,
                 isNumberFloat=q.isNumberFloat,
@@ -373,8 +371,6 @@ def selectType(form):
 
     if form.questionType.data =='yn':
         question = QuestionYN()
-    if form.questionType.data == 'numerical':
-        question = QuestionNumerical()
     if form.questionType.data == 'text':
         question = QuestionText(isNumber=form.isNumber.data,
             isNumberFloat=form.isNumberFloat.data,
@@ -594,8 +590,6 @@ def export_stats(id_survey):
             for ans in answers:
                 if isinstance (ans.question,QuestionYN):
                     text = ans.answerYN
-                if isinstance (ans.question,QuestionNumerical):
-                    text = ans.answerNumeric
                 if isinstance (ans.question,QuestionText):
                     text = ans.answerText
                 if isinstance (ans.question,QuestionChoice):
@@ -644,8 +638,6 @@ def export_stats(id_survey):
                     ans = i[1]
                     if isinstance (ans.question,QuestionYN):
                         text = ans.answerYN
-                    if isinstance (ans.question,QuestionNumerical):
-                        text = ans.answerNumeric
                     if isinstance (ans.question,QuestionText):
                         if ans.question.isNumber:
                             text = ans.answerNumeric

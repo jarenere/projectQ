@@ -3,7 +3,7 @@ from flask import Blueprint, request, url_for, flash, redirect, abort, session, 
 from flask import render_template
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app.models import Survey, Consent, Section, Match
-from app.models import Question, QuestionChoice, QuestionNumerical, QuestionText
+from app.models import Question, QuestionChoice, QuestionText
 from app.models import StateSurvey
 from app.models import Answer
 from flask.ext.wtf import Form

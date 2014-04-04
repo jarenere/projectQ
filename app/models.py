@@ -518,9 +518,6 @@ class Question(db.Model):
         
         if type == 'yn':
             question = QuestionYN()
-        
-        elif type == 'numerical':
-            question = QuestionNumerical()
 
         elif type == 'text':
             isNumber = (findField('isNumber',root,msg)=="True")
@@ -563,13 +560,6 @@ class QuestionYN(Question):
     '''Question of type yes or no
     '''
     __mapper_args__ = {'polymorphic_identity': 'yn'}
-
-
-class QuestionNumerical(Question):
-    '''Question of type numerical
-    '''
-    __mapper_args__ = {'polymorphic_identity': 'numerical'}
-
 
 class QuestionText(Question):
     '''Question of type text

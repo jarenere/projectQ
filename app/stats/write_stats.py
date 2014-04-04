@@ -1,5 +1,5 @@
 from ..models import StateSurvey, Answer, Section, Question
-from ..models import QuestionYN, QuestionChoice, QuestionNumerical, QuestionText
+from ..models import QuestionYN, QuestionChoice, QuestionText
 from ..models import QuestionLikertScale
 from app import db, stats_csv
 import fcntl

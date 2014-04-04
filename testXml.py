@@ -4,7 +4,7 @@ from xml.etree.ElementTree import SubElement
 import xml.etree.cElementTree as ET
 from app import db, models
 from app.models import Section, Survey, Consent, Question, QuestionText, QuestionLikertScale,\
-    QuestionYN, QuestionNumerical, QuestionChoice, QuestionPartTwo, QuestionDecisionOne, \
+    QuestionYN, QuestionChoice, QuestionPartTwo, QuestionDecisionOne, \
     QuestionDecisionThree, QuestionDecisionThree, QuestionDecisionFour, QuestionDecisionFive, \
     QuestionDecisionTwo, QuestionDecisionSix
 
@@ -166,8 +166,6 @@ def fromXmlQuestion(root,section,msg):
     if type == 'yn':
         question = QuestionYN()
     
-    elif type == 'numerical':
-        question = QuestionNumerical()
 
     elif type == 'text':
         isNumber = (findField('isNumber',root,msg)=="True")
