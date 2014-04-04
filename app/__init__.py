@@ -64,7 +64,7 @@ from datetime import datetime
 from apscheduler.scheduler import Scheduler
 from scheduler import deleteAnswers
 
-# from app.decisions.matching import Games
+# from app.stats.matching import Games
 # app.game = Games(1)
 
 # Start the scheduler

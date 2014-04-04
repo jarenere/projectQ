@@ -18,7 +18,6 @@ import datetime
 from . import blueprint
 from app.decorators import valid_survey, there_is_stateSurvey
 from ..main.errors import ErrorEndDateOut, ErrorExceeded, ErrorTimedOut
-# import app.stats.write_stats
 
 
 @blueprint.route('/', methods=['GET', 'POST'])

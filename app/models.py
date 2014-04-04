@@ -3,7 +3,7 @@ from __future__ import division
 
 from sqlalchemy.ext.declarative import declared_attr
 from . import db, lm
-from app import db 
+from app import db
 import random
 import datetime
 from sqlalchemy import BigInteger, Integer, Boolean, Unicode,\
@@ -1003,6 +1003,8 @@ class StateSurvey(db.Model):
         db.session.commit()
 
     def check_survey_duration_and_date(self):
+        import app.stats.write_stats
+
         # return true if duration survey ok, else remove all answers
         now = datetime.datetime.utcnow()
         start = self.start_date
@@ -1016,6 +1018,7 @@ class StateSurvey(db.Model):
                 db.session.add(self)
                 db.session.commit()
                 # self._delete_answers()
+                app.stats.write_stats.write_stats(self.user_id, self.survey_id)
                 return StateSurvey.ERROR_TIMED_OUT
         if now > self.survey.endDate or now < self.survey.startDate:
             #answer out of date
@@ -1023,6 +1026,7 @@ class StateSurvey(db.Model):
             db.session.add(self)
             db.session.commit()
             # self._delete_answers()
+            app.stats.write_stats.write_stats(self.user_id, self.survey_id)
             return StateSurvey.ERROR_END_DATE_OUT
         return StateSurvey.NO_ERROR
 
@@ -1054,7 +1058,7 @@ class StateSurvey(db.Model):
         '''Section is finished, index+1
         '''
         import app.stats.write_stats
-
+        
         #note, with picleType not found append (don't save), self.sectionTime.append(), bug?
         l = self.sectionTime[:]
         l.append((self.sequence[self.index], time))
@@ -1064,8 +1068,14 @@ class StateSurvey(db.Model):
             self.status = self.status | StateSurvey.FINISH | StateSurvey.FINISH_OK
             self.endDate = datetime.datetime.utcnow()
             app.stats.write_stats.write_stats(self.user_id, self.survey_id)
-        db.session.add(self)
-        db.session.commit()
+            # from app import app
+            # print app.game
+            # app.game(self.user)
+            db.session.add(self)
+            db.session.commit()
+        else:
+            db.session.add(self)
+            db.session.commit()
 
     @staticmethod
     def getStateSurvey(id_survey, user, ip = ""):
