@@ -46,7 +46,7 @@ X hecho
 [X]xml incluir flag de dinero real | 25 de marzo
 [X]falta es dinero real en addeditquestion.html | 13 de marzo
 [X]algun cron o algo para nuevos usuarios si son researcher o no | init del user
-[]mirar xml creo que no genera part two
+[X]mirar xml creo que no genera part two
 [X]ni funciona ya el exportar|| 13 marzo, resuelto, faltaba tf.name y no solo el descriptor
 [X]buscar el "sescription" | 15 de marzo
 [X] que  escriba una secuencia ya por defecto (o incremental o la misma dependiendo de los apartados anteriroes) || 15 de marzo
@@ -55,13 +55,13 @@ X hecho
 [X]question parttwo cuando escribo en la bbdd no deberia ser answer de si o no?|| es un numero porque es igual que una pregunta de tipo choice, 15 de marzo
 [/]hacer una mascara para el estado y las funcioens de acceso a la mascara (añadir quitar elemento) | 14 de febero, sin funciones
 [X]tal vez añadir a question una referencia a que survey pertence | 25 de marzo, a traves de seccionses
-[]crear algun check para preguntas tipo 4-5 (rango de valores por ejemplo)
+[X]crear algun check para preguntas tipo 4-5 (rango de valores por ejemplo) | regular expresion
 [X]comprobar la fecha validad de la encuesta con un decorator ||18 de marzo
 [X]cuando lanzo encuesta buscar matching y rellenar variables globales | 25 de marzo, cuando declaro la clase matching busco las preguntas y secciones de matching y las guardo en la variable
-[]falta premios del matching
+[X]falta premios del matching
 [X]falta parte2 del matching | 25 de marzo
 [X]en preguntas con respeusta esperada, meto las demas preguntas tambien en la bbdd | cuando hice el check answerd expeced, solo se mete esa pregunta ya que se almacena el numero de intentos
-[/]para respuesta esperada tal vez generar un validator, el calculo del tiempo se generara mal seguramente, proque no miro en la bbdd los datos, cosa a hacer, mirar bien en todos los casos de validar respuesta (ahora solo esta peusto en question text requerida) | validado echo! falta mirar todos los casos (15 de marzo)
+[X]para respuesta esperada tal vez generar un validator, el calculo del tiempo se generara mal seguramente, proque no miro en la bbdd los datos, cosa a hacer, mirar bien en todos los casos de validar respuesta (ahora solo esta peusto en question text requerida) | validado echo! falta mirar todos los casos (15 de marzo)
 [X]cuidado con la medicion de tiempos de preguntas con respuesta correcta || 15 de marzo (añadi un validate a este tipo de preguntas)
 []no editar encuestas que ya han empezado (error en la integridad de la bbdd)
 [X]cambiar los 403 de de la encuesta por algo del tipo tiempo para la realizacion de la encuesta terminada | 18 de marzo
@@ -83,7 +83,7 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 [/]exportar resultados csv, cuando exportas el tipo de respeusta, mira si es respuesta esperada y resultado | falta respuesta esperada y resultado 20 de marzo
 []info final a los usuarios
 []log!!
-[]eliminar questionNumerica o questin texto tipo numerico
+[X]eliminar questionNumerica o questin texto tipo numerico | 4 de abril
 []tal vez mover matching y questiones "raras" a un modulo distinto (con la bbdd)
 []tal vez cambiar sectionTime por una tabla externa
 [X]ordenar las secciones por sequencia!! || 20 de marzo
@@ -93,7 +93,7 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []tal vez solo guardar en respuesta "texto, nada de si o no, numero"
 []en respuestas guardar el tipo de respeusta que guardas? eso o solo texto
 []csv algun icono de pensando
-[]comprobar cn carga real csv, no estoy seguro si lo hace bien
+[X]comprobar cn carga real csv, no estoy seguro si lo hace bien
 []csv se guarda ahora en local no se envia
 []terminar position de implementar position de question
 []fichero con investigadores
@@ -105,28 +105,28 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 
 [X]eliminar random.seed, no es necesario (ya se inicializa aleatoriamente cuando importas el modulo) | 25 de marzo
 []rellenar status survey del matching
-[]matching cojo todos los usuarios que han finalizado la encuesta, puedes volver a cogerte otra vez, mirar el status
-[]comprobar que matching funciona, xddd
-[]falta parte de premios de la tercera parte
+[X]matching cojo todos los usuarios que han finalizado la encuesta, puedes volver a cogerte otra vez, mirar el status
+[X]comprobar que matching funciona, xddd
+[X]falta parte de premios de la tercera parte
 [x]decision 5 falla el check || 25 de marzo
-[]csv mirar que sucede en preguntas optativas, (deberia exportar "none")
+[]Xcsv mirar que sucede en preguntas optativas, (deberia exportar "none")
 [X]en añaedir/editar secciones mirar porque el cuadro es pequeñico |26 de marzo
 []respuesta esperada preguntas si o no (decision 1, pregunta si o no)
-[]falta meter expresiones regulares para las decisiones
+[X]falta meter expresiones regulares para las decisiones
 []cuando leo/cargo xml o escribo texto via web, saltarse entradas no validas
 [X]creo que esta mal la consulta de ver los usuarios que han hecho la consulta, ya que sin terminarla me marca los 1001 | 27 de marzo
 [X] pregutna 7.3 mal (hay que indicar que es opcional) | 27 de marzo
-[] Decision 2 hay una pregunta de mas
+[X] Decision 2 hay una pregunta de mas
 []Decision 4/5 tal vez volver a copiar la info
-[]quitar saltos de lineas de las entradas de texto vacias o cambiar csv
-[]los resultados ir guardandolos en csv mientras se van finalizando, tardara menos
+[X]quitar saltos de lineas de las entradas de texto vacias o cambiar csv
+[X]los resultados ir guardandolos en csv mientras se van finalizando, tardara menos
 []cargarme en respuestas texto o numero (dejar solo texto)
 [X]mirar cuando almaceno respuestas que aveces es texto y aveces nop | 27 marzo
 [] variable game (init.py) tal vez en configuracion o en algo para el experimento
 []cuando se termine una encuesta rellenar el resultado de la segunda parte, tal vez mirar si la encuesta tiene algun tipo de matching y que se peude contestar(part_two)
 []matching y en genereal en la bbdd añadir restrics y cosas de esas
-[]Divisiones por cero al tomar decisiones!! (puede que nadie meta pasta)
-[]cuidado con los tipos cuando relleno automaticamente las repeustas y en el matching (en un lado miro respuesta numerica en otro texto) 
+[X]Divisiones por cero al tomar decisiones!! (puede que nadie meta pasta)
+[X]cuidado con los tipos cuando relleno automaticamente las repeustas y en el matching (en un lado miro respuesta numerica en otro texto) 
 []cuando arrancas la bbdd la primera vez  (init)   app.game = Games(1) da fallo, y luego tambien fallara hasta que exista esa encuesta, y tampoco se entera cuando modificas la encuesta
 [] no estaria mal hacer una utilidad para comprobar si una encuesta con decisiones es valida
 [] crear una clase decente en la bbdd de match y quitar los hybrid de los status
@@ -138,3 +138,4 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []wtforms dinamicos con exec string in globals(), locals()
 []wtforms regexp con integerfield o decimalfield casca, crear un validador?
 [X]NO BORRAR RESPUESTAS DE USUARIOS QUE NO HAN TERMIANDO ENCUESTA | 3 de abril
+[]user part_two puede participar mas de una vez
