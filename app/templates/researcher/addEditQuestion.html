@@ -77,12 +77,32 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseSubquestion">
+                                        SubQuestion                                  
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseSubquestion" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {{render_field3(form.operation)}}
+                                    {{render_field3(form.value)}}
+                                    {{render_field3(form.question)}}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseDecision">
                                         Options game                                    
                                     </a>
                                 </h4>
                             </div>
-                            <div id="collapseOne" class="panel-collapse collapse">
+                            <div id="collapseDecision" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     {{render_field3(form.decisionType)}}
                                     {{ render_field3(form.is_real_money)}}
@@ -146,27 +166,40 @@
             $("#divAnswer1").hide();
             $("#divAnswer2").hide();
             $("#divAnswers").hide();
-            $('#collapseOne').collapse("show");
+            $('#collapseDecision').collapse("show");
             if (selValue=="part_two")
             {
-                document.getElementById('questionType').value = "choice"
+                document.getElementById('questionType').value = "choice";
                 $("#divAnswer1").show();
                 $("#divAnswer2").show();
             }
             else if (selValue=="decision_five")
             {   
-                document.getElementById('questionType').value = "yn"
+                document.getElementById('questionType').value = "yn";
                 $("#divAnswer1").show();
                 $("#is_real_money").show();
             }
             else 
             {        
-                document.getElementById('questionType').value = "text"
+                document.getElementById('questionType').value = "text";
                 $("#divText").show();
 
             }
         }
     }
+
+
+    function load_condition(){  
+        console.log("valiendo");
+        console.log("{{operation}}")
+        document.getElementById('operation').value = "{{operation|safe}}";
+        document.getElementById('question').value = '{{question}}';
+        if ("{{operation}}"!="none")
+        {
+            $('#collapseSubquestion').collapse("show");
+        }
+    }
+
     function onchange_numberFloat(){   
         if (select_numberFloat.checked==true)
         {
@@ -190,6 +223,7 @@
         $("#divAnswer1").hide();
         $("#divAnswer2").hide();
         $("#divAnswers").hide();
+        load_condition();
         document.getElementById('questionType').value = '{{question_type}}';
         onchange_question('{{question_type}}');
         document.getElementById('decisionType').value = '{{decision_type}}';

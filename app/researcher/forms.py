@@ -1,20 +1,16 @@
 from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, RadioField, SelectField, IntegerField, TextAreaField, TextField, DecimalField, SubmitField, DateTimeField, FileField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import Required, Length, NumberRange, ValidationError, Optional
 from flask.ext.pagedown import PageDown
 from flask.ext.pagedown.fields import PageDownField
+from app.models import User
 
 
 
 EXAMPLE_MARKDOWN = '## This is a example of Markdown\n**Markdown** is rendered on the fly in the <i>preview area</i>!\n\n\
 More about [markdown](http://daringfireball.net/projects/markdown/).'
 
-listQuestionType = [('yn', 'YES/NO'),
-        ('text','Text'),('choice','Choice'),('likertScale','Likert Scale')]
-listDecisions = [('none','None'),('part_two','Part two'),('decision_one','Decision One'),
-        ('decision_two','Decision Two'),('decision_three','Decision Three'),
-        ('decision_four','Decision Four'),('decision_five','Decision Five'),
-        ('decision_six','Decision Six')]
 
 class SurveyForm(Form):
     title = TextField('Title', validators = [Length(min = 1, max = 128)])
@@ -38,6 +34,12 @@ class SectionForm(Form):
     percent = DecimalField ('Percent', validators = [NumberRange(min = 0, max = 1)],places=2, default=1)
 
 class QuestionForm(Form):
+    listQuestionType = [('yn', 'YES/NO'),
+            ('text','Text'),('choice','Choice'),('likertScale','Likert Scale')]
+    listDecisions = [('none','None'),('part_two','Part two'),('decision_one','Decision One'),
+            ('decision_two','Decision Two'),('decision_three','Decision Three'),
+            ('decision_four','Decision Four'),('decision_five','Decision Five'),
+            ('decision_six','Decision Six')]
 
     #: Text of the question
     text = PageDownField('Text',validators = [Length(min = 1)],default = EXAMPLE_MARKDOWN)
@@ -81,6 +83,13 @@ class QuestionForm(Form):
     answer8 = TextField('Answer 8', validators = [Length(min = 0, max =400)])
     answer9 = TextField('Answer 9', validators = [Length(min = 0, max =400)])
     answer10 = TextField('Answer 10', validators = [Length(min = 0, max =400)])
+
+    #condition to that question depends on the answer to another question
+    listOperations = [('none','None'),('<','<'),('=','='),('>','>')]
+    operation = SelectField('Type of operation', choices=listOperations, default='none')
+    value = TextField('Value', validators = [Length(min = 0, max =63)])
+    question = QuerySelectField('Question',get_label='text',validators=[Optional()])
+
 
 
 

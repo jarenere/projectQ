@@ -6,6 +6,7 @@ from forms import SurveyForm, EditConsentForm, SectionForm, QuestionForm
 from app.models import Survey, Consent, Section, StateSurvey, Answer
 from app.models import Question, QuestionChoice, QuestionText
 from app.models import QuestionYN, QuestionLikertScale
+from app.models import Condition
 from app import app, db
 from app.decorators import researcher_required, belong_researcher
 from flask.ext.login import login_user, logout_user, current_user, login_required
@@ -396,6 +397,14 @@ def selectType(form):
         question = QuestionLikertScale(minLikert=form.minLikert.data,
             maxLikert=form.maxLikert.data, labelMin=form.labelMinLikert.data,
             labelMax=form.labelMaxLikert.data)
+    # subquestion
+    if form.operation.data!='none':
+        condition=Condition(operation=form.operation.data,
+            value=form.value.data)
+        db.session.add(condition)
+        question.condition=condition
+        question.parent=form.question.data
+
     #decision:
     if form.decisionType.data !='none':
         question.is_real_money= form.is_real_money.data
@@ -423,6 +432,7 @@ def selectType(form):
 def addQuestion(id_survey, id_section):
     section = Section.query.get(id_section)
     form = QuestionForm()
+    form.question.query=Question.query.filter(Question.section_id==id_section)
     if form.validate_on_submit():
         question = selectType(form)
         question.section = section
@@ -441,6 +451,7 @@ def addQuestion(id_survey, id_section):
         addQuestion = True,
         question_type = form.questionType.data,
         decision_type = form.decisionType.data,
+        operation = form.operation.data,
         path = path)
 
 
@@ -450,14 +461,16 @@ def addQuestion(id_survey, id_section):
 @belong_researcher('question')
 def editQuestion(id_survey, id_section,id_question):
     question = Question.query.get(id_question)
-    form = QuestionForm()    
+    form = QuestionForm()
+    form.question.query=Question.query.filter(Question.section_id==id_section,\
+        Question.id!=id_question)
     if form.validate_on_submit():
         q = selectType(form)
         q.id = question.id
-        q.section = question.section
-        db.session.delete (question)
-        db.session.commit()
+        q.section = Section.query.get(id_question)
         db.session.add(q)
+        print "valiendo\n\n"
+        db.session.delete (question)
         db.session.commit()
         flash('Adding question')
         return redirect(url_for('researcher.addQuestion',id_survey = id_survey, id_section = id_section))
@@ -499,6 +512,10 @@ def editQuestion(id_survey, id_section,id_question):
             form.labelMaxLikert.data=question.labelMax
         if question.decision=="decision_five":
             form.answer1.data = question.choices[0]
+        # condition of subquestion
+        if question.condition is not None:
+            form.value.data =question.condition.value
+
     section =  Section.query.get(id_section)
     path=tips_path(section)
     return render_template('/researcher/addEditQuestion.html',
@@ -511,6 +528,9 @@ def editQuestion(id_survey, id_section,id_question):
         editQuestion = True,
         question_type = question.type,
         decision_type = question.decision,
+        operation = (form.operation.data if question.condition is None else\
+            question.condition.operation),
+        question = (None if question.parent is None else question.parent_id),
         path = path)
 
 @login_required

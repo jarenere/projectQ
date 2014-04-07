@@ -127,7 +127,8 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []matching y en genereal en la bbdd añadir restrics y cosas de esas
 [X]Divisiones por cero al tomar decisiones!! (puede que nadie meta pasta)
 [X]cuidado con los tipos cuando relleno automaticamente las repeustas y en el matching (en un lado miro respuesta numerica en otro texto) 
-[]cuando arrancas la bbdd la primera vez  (init)   app.game = Games(1) da fallo, y luego tambien fallara hasta que exista esa encuesta, y tampoco se entera cuando modificas la encuesta
+[]cuando arrancas la bbdd la primera vez  (i
+nit)   app.game = Games(1) da fallo, y luego tambien fallara hasta que exista esa encuesta, y tampoco se entera cuando modificas la encuesta
 [] no estaria mal hacer una utilidad para comprobar si una encuesta con decisiones es valida
 [] crear una clase decente en la bbdd de match y quitar los hybrid de los status
 []tal vez fusionar todas las tablas de decisiones en una
@@ -139,3 +140,6 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []wtforms regexp con integerfield o decimalfield casca, crear un validador?
 [X]NO BORRAR RESPUESTAS DE USUARIOS QUE NO HAN TERMIANDO ENCUESTA | 3 de abril
 []user part_two puede participar mas de una vez
+[]tal vez se peuda contestar dos veces a la misma pregunta (abriendo dos veces la misma página..)ç
+[]coerce int wtf to id http://stackoverflow.com/questions/17192595/flask-wtf-selectfield-dynamic-input-and-validation
+[]validar que subquestion no es vacio cuando está seleccionado subquestion

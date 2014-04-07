@@ -406,15 +406,30 @@ class Question(db.Model):
     #: Question have zero or more answers
     answers = relationship('Answer', backref = 'question', lazy = 'dynamic')
 
+    #: section belongs to zero or more sections
+    parent_id = Column(Integer, ForeignKey(id))
+    # Question depend on the answer of "question parent"
+    subquestions = relationship('Question',
+        # cascade deletions
+        # cascade="all, delete-orphan",
+        backref=backref('parent', remote_side=id),
+        lazy = 'dynamic', uselist = True)
+
+    condition_id = Column(Integer, ForeignKey('condition.id'))
+    condition = relationship("Condition",
+        cascade="all, delete-orphan",
+        backref=backref("question", uselist=False),
+        single_parent=True)
+
     def __init__(self, **kwargs):
         super(Question, self).__init__(**kwargs)
         question = Question.query.\
             filter(Question.section_id==self.section_id).\
-            order_by(desc(Question.position))
+            order_by(desc(Question.position)).first()
         if question is None:
             self.position=1
-        # else:
-        #     self.position= question.position+1
+        else:
+            self.position= question.position+1
     
     def __repr__(self):
         return "<question(id='%s')>" % (
@@ -588,6 +603,21 @@ class QuestionLikertScale(Question):
     maxLikert = Column(Integer)
     labelMin = Column(String(128), default="")
     labelMax = Column(String(128), default="")
+
+
+
+class Condition(db.Model):
+    '''condition to that question depends on the answer to another question
+    '''
+    
+    __tablename__ = 'condition'
+    #: unique id (automatically generated)
+    id = Column(Integer, primary_key = True)
+    # type of operation
+    operation = Column(Enum('none','<', '=', '>'),
+        default='none')
+    # value to comparate in the operation
+    value = Column(String(64))
 
 
 
