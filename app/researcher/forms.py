@@ -9,7 +9,7 @@ from flask.ext.pagedown.fields import PageDownField
 EXAMPLE_MARKDOWN = '## This is a example of Markdown\n**Markdown** is rendered on the fly in the <i>preview area</i>!\n\n\
 More about [markdown](http://daringfireball.net/projects/markdown/).'
 
-listQuestionType = [('yn', 'YES/NO'),('numerical','Numerical'),
+listQuestionType = [('yn', 'YES/NO'),
         ('text','Text'),('choice','Choice'),('likertScale','Likert Scale')]
 listDecisions = [('none','None'),('part_two','Part two'),('decision_one','Decision One'),
         ('decision_two','Decision Two'),('decision_three','Decision Three'),
