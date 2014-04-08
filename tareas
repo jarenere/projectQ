@@ -145,4 +145,6 @@ nit)   app.game = Games(1) da fallo, y luego tambien fallara hasta que exista es
 []validar que subquestion no es vacio cuando está seleccionado subquestion
 []cambiaer editQuestion de researcher, buscar como hacer update y cambiar de clase o implementar position o cargarme la herencia en tipo de pregunta que es una gran chorrada, ademas elimino en cascada por lo que las subquestiones desaparecen
 []en añadir subquestion ayudar en el form para no cagarla (si es si o no, pues solo opcion si o no, si es seleccion, mostrar las opciones posibles)
-[]mirar los tiempos parece ser que falla
+[X]mirar los tiempos parece ser que falla| falla por el onchange, ponerle nombre a la funcion de tiempo y camb 
+[]deberia de terminar de implementar position en preguntas
+[]avecs la encuesta falla al terminar no se muy bien por que

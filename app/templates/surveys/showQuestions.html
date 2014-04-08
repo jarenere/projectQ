@@ -36,7 +36,7 @@
                 </td></table>
                 <script type="text/javascript">
                     var select{{i}} = document.getElementById("{{i}}");
-                    select{{i}}.onchange = function() {
+                    function time{{i}}(){
                         var t_fin = Date.now();
                         var differentialTime{{i}} = document.getElementById("differentialTime{{i}}").value;
                         document.getElementById("globalTime{{i}}").value = t_fin - t_ini + parseInt(document.getElementById("time").value);

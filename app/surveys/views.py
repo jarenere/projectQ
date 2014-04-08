@@ -281,12 +281,18 @@ def generateJavaScriptSubquestions(questions):
     for question in questions:
         if question.isSubquestion:
             if question.parent.id not in d:
-                d[question.parent.id]=  "selectParent"+"c"+str(question.parent.id)+".onchange = "\
+                d[question.parent.id]=  "select"+"c"+str(question.parent.id)+".onchange = "\
                     +"function() {"+"\n"\
                     +"\tsubquestion"+"c"+str(question.id)+"();\n "
             else:
                 d[question.parent.id]=d[question.parent.id]\
                     +"\tsubquestion"+"c"+str(question.id)+"();\n "
+
+        d[question.id]="select"+"c"+str(question.id)+".onchange = "\
+                +"function() {"+"\n"\
+                +"\ttime"+"c"+str(question.id)+"();\n "
+
+
     for i in d:
         d[i]=d[i]+"}"
     return d
@@ -363,12 +369,14 @@ def showQuestions(id_survey, id_section):
             if isinstance (question, QuestionLikertScale) and writeQuestion(question,form):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
 
-            answer.globalTime = form["globalTimec"+str(question.id)].data
-            answer.differentialTime = form["differentialTimec"+str(question.id)].data
-            db.session.add(answer)
-            db.session.commit()
+            if writeQuestion(question, form):
+                answer.globalTime = form["globalTimec"+str(question.id)].data
+                answer.differentialTime = form["differentialTimec"+str(question.id)].data
+                db.session.add(answer)
+                db.session.commit()
 
         stateSurvey.finishedSection(form.time.data)
+        print "valiendo"
         return redirect(url_for('surveys.logicSurvey',id_survey = id_survey))
 
     return render_template('/surveys/showQuestions.html',
