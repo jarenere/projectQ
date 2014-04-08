@@ -143,3 +143,6 @@ nit)   app.game = Games(1) da fallo, y luego tambien fallara hasta que exista es
 []tal vez se peuda contestar dos veces a la misma pregunta (abriendo dos veces la misma página..)ç
 []coerce int wtf to id http://stackoverflow.com/questions/17192595/flask-wtf-selectfield-dynamic-input-and-validation
 []validar que subquestion no es vacio cuando está seleccionado subquestion
+[]cambiaer editQuestion de researcher, buscar como hacer update y cambiar de clase o implementar position o cargarme la herencia en tipo de pregunta que es una gran chorrada, ademas elimino en cascada por lo que las subquestiones desaparecen
+[]en añadir subquestion ayudar en el form para no cagarla (si es si o no, pues solo opcion si o no, si es seleccion, mostrar las opciones posibles)
+[]mirar los tiempos parece ser que falla
