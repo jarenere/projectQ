@@ -14,6 +14,7 @@ from sqlalchemy.sql import func
 from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField, DecimalField
 from wtforms.validators import Required, Regexp, Optional
 from wtforms import ValidationError
+from wtforms.validators import StopValidation
 import datetime
 from . import blueprint
 from app.decorators import valid_survey, there_is_stateSurvey
@@ -148,6 +149,51 @@ def generate_form(questions):
             else:
                 flash("wrong answer, you can continue")
 
+    def check_subquestion(self,field):
+        '''check whether to answer the question or not
+        '''
+        question = Question.query.get(field.name[1:])
+        data = form["c"+str(question.parent.id)].data
+        if isinstance (question.parent,QuestionYN):
+            if data.lower()==question.condition.value.lower():
+                pass
+                # raise ValidationError('This field is required.')
+            else:
+                # nothing to check
+                field.errors[:] = []
+                raise StopValidation()
+        if isinstance (question.parent,QuestionText):
+            if question.condition.operation=="<":
+                if data<question.condition.value:
+                    pass
+                else:
+                    # nothing to check
+                    field.errors[:] = []
+                    raise StopValidation()
+            if question.condition.operation=="==":
+                if data==question.condition.value:
+                    pass
+                else:
+                    # nothing to check
+                    field.errors[:] = []
+                    raise StopValidation()
+            if question.condition.operation==">":
+                if int(data)>int(question.condition.value):
+                    pass
+                else:
+                    # nothing to check
+                    field.errors[:] = []
+                    raise StopValidation()
+
+        if isinstance(question.parent,QuestionChoice):
+            if data==question.condition.value:
+                pass
+            else:
+                # nothing to check
+                field.errors[:] = []
+                raise StopValidation()
+
+
     class AnswerForm(Form):
         time = HiddenField('time',default=0)
 
@@ -160,48 +206,60 @@ def generate_form(questions):
         #First element must be a string, otherwise fail to valid choice
 
         if isinstance (question,QuestionYN):
-            if question.required:
+            if question.isSubquestion:
                 setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
-                    choices = [('Yes','Yes'),('No','No')],validators = [Required()]))
+                    choices = [('Yes','Yes'),('No','No')],validators = [check_subquestion]))
             else:
-                setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
-                    choices = [('Yes','Yes'),('No','No')],validators = [Optional()]))
+                if question.required:
+                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                        choices = [('Yes','Yes'),('No','No')],validators = [Required()]))
+                else:
+                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                        choices = [('Yes','Yes'),('No','No')],validators = [Optional()]))
         if isinstance (question,QuestionText):
-            if question.required:
-                if question.regularExpression !="":
-                    if question.isNumber:
-                        if question.isNumberFloat:
-                            setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
-                                validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
+            if question.isSubquestion:
+                setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer',
+                    validators = [check_subquestion]))
+            else:
+                if question.required:
+                    if question.regularExpression !="":
+                        if question.isNumber:
+                            if question.isNumberFloat:
+                                setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
+                                    validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
+                            else:
+                                setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
+                                    validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
                         else:
                             setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
                                 validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
+                    elif question.isExpectedAnswer():
+                        setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required(),
+                            check_answer_expected]))
+                    elif question.isNumber:
+                        setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
                     else:
+                        setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required()]))
+                else:
+                    if question.regularExpression !="":
                         setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
-                            validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
-                elif question.isExpectedAnswer():
-                    setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required(),
-                        check_answer_expected]))
-                elif question.isNumber:
-                    setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
-                else:
-                    setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required()]))
-            else:
-                if question.regularExpression !="":
-                    setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
-                        validators=[Optional(), Regexp(question.regularExpression,0,question.errorMessage)]))
-                elif question.isNumber:
-                    setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer',validators = [Optional()]))
-                else:
-                    setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Optional()]))
+                            validators=[Optional(), Regexp(question.regularExpression,0,question.errorMessage)]))
+                    elif question.isNumber:
+                        setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer',validators = [Optional()]))
+                    else:
+                        setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Optional()]))
         if isinstance (question,QuestionChoice):
             list = [(str(index),choice) for index, choice in enumerate(question.choices)]
-            if question.required:
-                setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
-                    choices = list,validators = [Required()]))
+            if question.isSubquestion:
+                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                        choices = list,validators = [check_subquestion]))
             else:
-                setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
-                    choices = list,validators = [Optional()]))
+                if question.required:
+                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                        choices = list,validators = [Required()]))
+                else:
+                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                        choices = list,validators = [Optional()]))
 
         if isinstance (question, QuestionLikertScale):
             list = [(str(index),index) for index in range(question.minLikert,question.maxLikert+1)]
@@ -215,6 +273,58 @@ def generate_form(questions):
     form = AnswerForm()
     return form
 
+def generateJavaScriptSubquestions(questions):
+    # generate part of javascript page
+    # call two function in one onchange (two o more subquestion that 
+    # depend of one question)
+    d={}
+    for question in questions:
+        if question.isSubquestion:
+            if question.parent.id not in d:
+                d[question.parent.id]=  "selectParent"+"c"+str(question.parent.id)+".onchange = "\
+                    +"function() {"+"\n"\
+                    +"\tsubquestion"+"c"+str(question.id)+"();\n "
+            else:
+                d[question.parent.id]=d[question.parent.id]\
+                    +"\tsubquestion"+"c"+str(question.id)+"();\n "
+    for i in d:
+        d[i]=d[i]+"}"
+    return d
+
+def writeQuestion(question, form):
+    '''return true if it isn't a subquestion or
+        if a question.parent is valid
+    '''
+    if question.parent is None:
+        return True
+    else:
+        data = form["c"+str(question.parent.id)].data
+        if isinstance (question.parent,QuestionYN):
+            if data.lower()==question.condition.value.lower():
+                return True
+            else:
+                return False
+        if isinstance (question.parent,QuestionText):
+            if question.condition.operation=="<":
+                if data<question.condition.value:
+                    return True
+                else:
+                    return False
+            if question.condition.operation=="==":
+                if data==question.condition.value:
+                    return True
+                else:
+                    return False
+            if question.condition.operation==">":
+                if int(data)>int(question.condition.value):
+                    return True
+                else:
+                    return False
+        if isinstance(question.parent,QuestionChoice):
+            if data==question.condition.value:
+                return True
+            else:
+                return False
 
 @login_required
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods=['GET', 'POST'])
@@ -235,11 +345,12 @@ def showQuestions(id_survey, id_section):
     questions = section.questions
    
     form = generate_form(questions)
+    script = generateJavaScriptSubquestions(questions)
     if form.validate_on_submit():
         for question in questions:
-            if isinstance (question,QuestionYN):
+            if isinstance (question,QuestionYN) and writeQuestion(question,form):
                 answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
-            if isinstance (question,QuestionText):
+            if isinstance (question,QuestionText) and writeQuestion(question,form):
                 if question.isNumber:
                     if question.isNumberFloat:
                         answer = Answer (answerNumeric = form["c"+str(question.id)].data.replace(",","."), user= g.user, question = question)
@@ -247,9 +358,9 @@ def showQuestions(id_survey, id_section):
                         answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
                 else:
                     answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
-            if isinstance (question,QuestionChoice):
+            if isinstance (question,QuestionChoice) and writeQuestion(question,form):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-            if isinstance (question, QuestionLikertScale):
+            if isinstance (question, QuestionLikertScale) and writeQuestion(question,form):
                 answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
 
             answer.globalTime = form["globalTimec"+str(question.id)].data
@@ -267,5 +378,6 @@ def showQuestions(id_survey, id_section):
             # form = form,
             form = form,
             questions = questions,
-            percent = stateSurvey.percentSurvey()
+            percent = stateSurvey.percentSurvey(),
+            scriptSubquestion=script
             )

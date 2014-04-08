@@ -465,12 +465,12 @@ def editQuestion(id_survey, id_section,id_question):
     form.question.query=Question.query.filter(Question.section_id==id_section,\
         Question.id!=id_question)
     if form.validate_on_submit():
-        q = selectType(form)
-        q.id = question.id
-        q.section = Section.query.get(id_question)
-        db.session.add(q)
-        print "valiendo\n\n"
         db.session.delete (question)
+        db.session.commit()
+        q = selectType(form)
+        q.id = id_question
+        q.section = Section.query.get(id_section)
+        db.session.add(q)
         db.session.commit()
         flash('Adding question')
         return redirect(url_for('researcher.addQuestion',id_survey = id_survey, id_section = id_section))

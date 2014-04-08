@@ -85,7 +85,7 @@ class QuestionForm(Form):
     answer10 = TextField('Answer 10', validators = [Length(min = 0, max =400)])
 
     #condition to that question depends on the answer to another question
-    listOperations = [('none','None'),('<','<'),('=','='),('>','>')]
+    listOperations = [('none','None'),('<','<'),('==','='),('>','>')]
     operation = SelectField('Type of operation', choices=listOperations, default='none')
     value = TextField('Value', validators = [Length(min = 0, max =63)])
     question = QuerySelectField('Question',get_label='text',validators=[Optional()])

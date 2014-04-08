@@ -411,7 +411,7 @@ class Question(db.Model):
     # Question depend on the answer of "question parent"
     subquestions = relationship('Question',
         # cascade deletions
-        # cascade="all, delete-orphan",
+        cascade="all, delete-orphan",
         backref=backref('parent', remote_side=id),
         lazy = 'dynamic', uselist = True)
 
@@ -443,6 +443,10 @@ class Question(db.Model):
     # def survey(cls):
     #     return select(Survey).where(Survey.id==Section.root_id,\
     #         cls.section_id==Section.id )
+
+    @hybrid_property
+    def isSubquestion(self):
+        return self.parent is not None
 
     def isExpectedAnswer(self):
         '''return if there is a expected answer
@@ -614,7 +618,7 @@ class Condition(db.Model):
     #: unique id (automatically generated)
     id = Column(Integer, primary_key = True)
     # type of operation
-    operation = Column(Enum('none','<', '=', '>'),
+    operation = Column(Enum('none','<', '==', '>'),
         default='none')
     # value to comparate in the operation
     value = Column(String(64))

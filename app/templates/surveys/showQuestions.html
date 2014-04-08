@@ -28,22 +28,71 @@
         <form onsubmit="timestamp()" class="form-horizontal" action="" method="post" name="question">
             {{form.hidden_tag()}}
             {% for question in questions %}
-            <table class="table table-hover"><td>
-                    {% filter markdown %}{{question.text}}{% endfilter %}
-                    {% set i= "c"'%s' % question.id %}
-                    {{render_field2(form[i])}}
-            </td></table>
-            <script type="text/javascript">
-                var select{{i}} = document.getElementById("{{i}}");
-                select{{i}}.onchange = function() {
-                    var t_fin = Date.now();
-                    var differentialTime{{i}} = document.getElementById("differentialTime{{i}}").value;
-                    document.getElementById("globalTime{{i}}").value = t_fin - t_ini + parseInt(document.getElementById("time").value);
-                    document.getElementById("differentialTime{{i}}").value = t_fin - t_diff + parseInt(differentialTime{{i}});
-                    t_diff = t_fin;
-                }
-            </script>
+                {% set i_t= "t"'%s' % question.id %}
+                <table class="table table-hover" id="{{i_t}}"><td>
+                        {% filter markdown %}{{question.text}}{% endfilter %}
+                        {% set i= "c"'%s' % question.id %}
+                        {{render_field2(form[i])}}
+                </td></table>
+                <script type="text/javascript">
+                    var select{{i}} = document.getElementById("{{i}}");
+                    select{{i}}.onchange = function() {
+                        var t_fin = Date.now();
+                        var differentialTime{{i}} = document.getElementById("differentialTime{{i}}").value;
+                        document.getElementById("globalTime{{i}}").value = t_fin - t_ini + parseInt(document.getElementById("time").value);
+                        document.getElementById("differentialTime{{i}}").value = t_fin - t_diff + parseInt(differentialTime{{i}});
+                        t_diff = t_fin;
+                    }
+                </script>
+                {% if question.isSubquestion %}
+                    <script type="text/javascript">
+                        $("#{{i_t}}").hide();
+                        {% set parent= "c"'%s' % question.parent_id %}
+                        
+                        function subquestion{{i}}() {
+                            {% if question.parent.type=="yn" %}
+                                {% if question.condition.value|lower=="yes" %}
+                                    {%set n=0 %}
+                                {% else %}
+                                    {%set n=1 %}
+                                {% endif %}
+                                if (document.getElementById("{{parent}}-{{n}}").checked) {
+                                    $("#{{i_t}}").show();
+                                }
+                                else{
+                                    $("#{{i_t}}").hide();
+                                }
+                            {% endif %}
+                            {% if question.parent.type=="choice" %}
+                                {%set n=question.condition.value %}
+                                if (document.getElementById("{{parent}}-{{n}}").checked) {
+                                    $("#{{i_t}}").show();
+                                }
+                                else{
+                                    $("#{{i_t}}").hide();
+                                }
+                            {% endif %}
+                            {% if question.parent.type=="text" %}
+                                if (document.getElementById("{{parent}}").value) {
+                                    if (document.getElementById("{{parent}}").value{{question.condition.operation|safe}}{{question.condition.value}}) {
+                                        $("#{{i_t}}").show();
+                                    }
+                                    else{
+                                        $("#{{i_t}}").hide();
+                                    }
+                                }
+                            {% endif %}
+                        }
+                        subquestion{{i}}();
+                        var selectParent{{parent}} = document.getElementById("{{parent}}");
+                    </script>                    
+                {% endif %}
             {% endfor %}
+            <script type="text/javascript">
+                {% for key, value in scriptSubquestion.iteritems() %}
+                    {{ value|e }}
+                {% endfor %}
+            </script>                    
 
             <div class="control-group">
                 <div class="controls">

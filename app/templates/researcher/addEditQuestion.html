@@ -190,8 +190,6 @@
 
 
     function load_condition(){  
-        console.log("valiendo");
-        console.log("{{operation}}")
         document.getElementById('operation').value = "{{operation|safe}}";
         document.getElementById('question').value = '{{question}}';
         if ("{{operation}}"!="none")
