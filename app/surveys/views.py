@@ -354,22 +354,22 @@ def showQuestions(id_survey, id_section):
     script = generateJavaScriptSubquestions(questions)
     if form.validate_on_submit():
         for question in questions:
-            if isinstance (question,QuestionYN) and writeQuestion(question,form):
-                answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
-            if isinstance (question,QuestionText) and writeQuestion(question,form):
-                if question.isNumber:
-                    if question.isNumberFloat:
-                        answer = Answer (answerNumeric = form["c"+str(question.id)].data.replace(",","."), user= g.user, question = question)
-                    else:
-                        answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-                else:
-                    answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
-            if isinstance (question,QuestionChoice) and writeQuestion(question,form):
-                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-            if isinstance (question, QuestionLikertScale) and writeQuestion(question,form):
-                answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-
             if writeQuestion(question, form):
+                if isinstance (question,QuestionYN):
+                    answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
+                if isinstance (question,QuestionText):
+                    if question.isNumber:
+                        if question.isNumberFloat:
+                            answer = Answer (answerNumeric = form["c"+str(question.id)].data.replace(",","."), user= g.user, question = question)
+                        else:
+                            answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                    else:
+                        answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
+                if isinstance (question,QuestionChoice):
+                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                if isinstance (question, QuestionLikertScale):
+                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+
                 answer.globalTime = form["globalTimec"+str(question.id)].data
                 answer.differentialTime = form["differentialTimec"+str(question.id)].data
                 db.session.add(answer)
