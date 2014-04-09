@@ -1,5 +1,9 @@
 lucia, necane, natalia
 
+xml:
+>>> import sys
+>>> sys.path.append("/usr/lib64/python2.7/lib-dynload/")
+
 IDEAS
 ------
 cuando se carga un xml, estaria bien que devolviera el survey para poder ir a esa encuesta
