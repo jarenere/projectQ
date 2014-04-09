@@ -87,6 +87,7 @@ def logicSurvey(id_survey):
         if stateSurvey.status & StateSurvey.END_DATE_OUT:
             return render_template('/survey/error_time_date.html',
                 title ='End date out')
+        print "\n raro\n Status: ", stateSurvey.status
         return abort(500) 
     return redirect (url_for('surveys.showQuestions',id_survey=id_survey,id_section=section.id))
 
@@ -296,30 +297,6 @@ def generate_form(questions):
     form = AnswerForm()
     return form
 
-def generateJavaScriptSubquestions(questions):
-    # generate part of javascript page
-    # call two function in one onchange (two o more subquestion that 
-    # depend of one question)
-    d={}
-    for question in questions:
-        if question.isSubquestion:
-            if question.parent.id not in d:
-                d[question.parent.id]=  "select"+"c"+str(question.parent.id)+".onchange = "\
-                    +"function() {"+"\n"\
-                    +"\tsubquestion"+"c"+str(question.id)+"();\n "
-            else:
-                d[question.parent.id]=d[question.parent.id]\
-                    +"\tsubquestion"+"c"+str(question.id)+"();\n "
-
-        d[question.id]="select"+"c"+str(question.id)+".onchange = "\
-                +"function() {"+"\n"\
-                +"\ttime"+"c"+str(question.id)+"();\n "
-
-
-    for i in d:
-        d[i]=d[i]+"}"
-    return d
-
 def writeQuestion(question, form):
     '''return true if it isn't a subquestion or
         if a question.parent is valid
@@ -374,7 +351,6 @@ def showQuestions(id_survey, id_section):
     questions = section.questions
    
     form = generate_form(questions)
-    script = generateJavaScriptSubquestions(questions)
     if form.validate_on_submit():
         for question in questions:
             if writeQuestion(question, form):
@@ -409,6 +385,5 @@ def showQuestions(id_survey, id_section):
             # form = form,
             form = form,
             questions = questions,
-            percent = stateSurvey.percentSurvey(),
-            scriptSubquestion=script
+            percent = stateSurvey.percentSurvey()
             )

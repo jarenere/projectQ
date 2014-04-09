@@ -87,13 +87,16 @@
                         var selectParent{{parent}} = document.getElementById("{{parent}}");
                     </script>                    
                 {% endif %}
+                <script type="text/javascript">
+                    select{{i}}.onchange = function(){
+                        time{{i}}();
+                        {% for subquestion in question.subquestions %}
+                            {% set j= "c"'%s' % subquestion.id %}
+                            subquestion{{j}}();                        
+                        {% endfor %}
+                    }
+                </script>                    
             {% endfor %}
-            <script type="text/javascript">
-                {% for key, value in scriptSubquestion.iteritems() %}
-                    {{ value|e }}
-                {% endfor %}
-            </script>                    
-
             <div class="control-group">
                 <div class="controls">
                     <input class="btn" type="submit" value="Next">
