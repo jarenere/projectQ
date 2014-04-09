@@ -36,10 +36,10 @@ class SectionForm(Form):
 class QuestionForm(Form):
     listQuestionType = [('yn', 'YES/NO'),
             ('text','Text'),('choice','Choice'),('likertScale','Likert Scale')]
-    listDecisions = [('none','None'),('part_two','Part two'),('decision_one','Decision One'),
-            ('decision_two','Decision Two'),('decision_three','Decision Three'),
-            ('decision_four','Decision Four'),('decision_five','Decision Five'),
-            ('decision_six','Decision Six')]
+    listDecisions = [('none','None'),('part_two','Part two'),('decision_one_v1','Decision One v1'),
+            ('decision_one_v2','Decision One v2'),('decision_two','Decision Two'),
+            ('decision_three','Decision Three'),('decision_four','Decision Four'),
+            ('decision_five','Decision Five'),('decision_six','Decision Six')]
 
     #: Text of the question
     text = PageDownField('Text',validators = [Length(min = 1)],default = EXAMPLE_MARKDOWN)

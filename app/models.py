@@ -390,9 +390,9 @@ class Question(db.Model):
     # zero is infinite attempt to get the right answer
     maxNumberAttempt = Column(Integer, default = 0)
     # # type of decision
-    decision = Column(Enum('none','part_two', 'decision_one', 'decision_two',
-        'decision_three','decision_four','decision_five','decision_six'),
-        default='none')
+    decision = Column(Enum('none','part_two', 'decision_one_v1', 'decision_one_v2',
+        'decision_two','decision_three','decision_four','decision_five',
+        'decision_six'),default='none')
     # decision with real money
     is_real_money = Column(Boolean, default=False)
 
@@ -1198,6 +1198,14 @@ class GameImpatience(db.Model):
     is_real_money = Column(Boolean, default=False)
     #:prize or no
     prize = Column(Boolean, default=False)
+    
+    def __init__(self, **kwargs):
+        super(GameImpatience, self).__init__(**kwargs)
+        if self.is_real_money:
+            if random.randint(1,10)==1:
+                #user prize
+                self.prize=True    
+
 
 class GameRentSeeking(db.Model):
     '''store the result of part three game1,2,3
