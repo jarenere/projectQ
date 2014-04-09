@@ -1180,4 +1180,206 @@ class StateSurvey(db.Model):
                             user = user, sequence =list, ip = ip, sectionTime = [])
             db.session.add(stateSurvey)
             db.session.commit()
-        return stateSurvey, stateSurvey.check_survey_duration_and_date()  
+        return stateSurvey, stateSurvey.check_survey_duration_and_date()
+
+class GameImpatience(db.Model):
+    '''store the result of part_two
+    '''
+    __tablename__ = 'game_impatience'
+    #: unique id (automatically generated)
+    id = Column(Integer, primary_key = True)
+    #: survey
+    survey = Column(Integer,ForeignKey('survey.id'))
+    #: user
+    user = Column(Integer, ForeignKey('user.id'))
+    #:answer  of User
+    answer = Column(Integer, ForeignKey('answer.id'))
+    #: if money real or no
+    is_real_money = Column(Boolean, default=False)
+    #:prize or no
+    prize = Column(Boolean, default=False)
+
+class GameRentSeeking(db.Model):
+    '''store the result of part three game1,2,3
+    '''
+    __tablename__='gameRentSeeking'
+    #: unique id (automatically generated)
+    id = Column(Integer, primary_key = True)
+    #: survey
+    survey = Column(Integer,ForeignKey('survey.id'))
+    #: userA
+    userA = Column(Integer, ForeignKey('user.id'))
+    #: userB
+    userB = Column(Integer, ForeignKey('user.id'))
+    #:answer  of UserA
+    answerA = Column(Integer, ForeignKey('answer.id'))
+    #:answer  of UserB
+    answerB = Column(Integer, ForeignKey('answer.id'))
+    #: if money real or no
+    is_real_money = Column(Boolean, default=False)
+    #:prize user A or no
+    prizeA = Column(Boolean, default=False)    
+    #:prize user B or no
+    prizeB = Column(Boolean, default=False)
+    #:userA isn't his first Match (repeat by fault users)
+    repeatA = Column(Boolean, default=False)
+    #:userB isn't his first Match (repeat by fault users)
+    repeatB = Column(Boolean, default=False)
+    #:money earned of userA
+    moneyA = Column(Numeric)
+    #:money earned of userB
+    moneyB = Column(Numeric)
+    #: if money real or no
+    is_real_money = Column(Boolean, default=False)
+    #: Type of question, discriminate between classes
+    type = Column('type', String(50))
+    __mapper_args__ = {'polymorphic_on': type}
+
+
+    @hybrid_property
+    def cashInitA(self):
+        return Answer.query.get(self.answerA).answerNumeric
+
+    @hybrid_property
+    def cashInitB(self):
+        return Answer.query.get(self.answerB).answerNumeric
+
+
+class GameLottery1(GameRentSeeking):
+    '''Lottery game version1 (part 3, decision 1)
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'gameLottery1'}
+    #:user win (A or B)
+    win = Column(Integer,ForeignKey('user.id'))
+
+
+    def __init__(self, **kwargs):
+        '''Probability:= userA_Money/(userA_Money+user_MoneyB)
+        '''
+        super(GameLotery1, self).__init__(**kwargs)
+        AWARD = 10
+        INIT_MONEY = 10
+        try:
+            percentA=self.cashInitA/(self.cashInitA+self.cashInitB)
+            if percentA>random.random():
+                #answerA win
+                self.win = self.userA
+                self.moneyA = AWARD + (INIT_MONEY - self.cashInitA)
+                self.moneyB = (INIT_MONEY - self.cashInitB)
+            else:
+                self.win = self.userB
+                self.moneyB = AWARD + (INIT_MONEY - self.cashInitB)
+                self.moneyA = (INIT_MONEY - self.cashInitA)
+        except ZeroDivisionError:
+            # nobody play lottery
+            self.moneyA = INIT_MONEY
+            self.moneyB = INIT_MONEY
+
+class GameLottery2(GameRentSeeking):
+    '''Lottery game version2 (part 3, decision 1)
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'gameLottery2'}
+
+
+    def __init__(self, **kwargs):
+        '''percent of prize: userA_Money/(userA_Money+user_MoneyB)
+        '''
+        super(GameLotery2, self).__init__(**kwargs)
+        AWARD = 10
+        INIT_MONEY = 10
+        try:
+            percentA=self.cashInitA/(self.cashInitA+self.cashInitB)
+            percentB=1-percentA
+            self.moneyA= AWARD*percentA + (INIT_MONEY - self.cashInitA())
+            self.moneyB= AWARD*percentB + (INIT_MONEY - self.cashInitB())
+        except ZeroDivisionError:
+            # nobody play lottery
+            self.moneyA = INIT_MONEY
+            self.moneyB = INIT_MONEY
+
+class GameRent1(GameRentSeeking):
+    '''Rent1 game(part 3, decision 2)
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'gameRent1'}
+
+
+    def __init__(self, **kwargs):
+        super(GameRent1, self).__init__(**kwargs)
+        INIT_MONEY = 10
+        CONSTANT_FUND = 0.8
+        fund = (self.cashInitA+self.cashInitB)*CONSTANT_FUND
+        self.moneyA = fund + INIT_MONEY - self.cashInitA
+        self.moneyB = fund + INIT_MONEY - self.cashInitB
+
+    @hybrid_property
+    def fund(self):
+        CONSTANT_FUND = 0.8
+        return (self.cashInitA+self.cashInitB)*CONSTANT_FUND
+
+class GameRent2(GameRentSeeking):
+    '''Rent 2 game(part 3, decision 3)
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'gameRent1'}
+
+
+    def __init__(self, **kwargs):
+        super(GameRent2, self).__init__(**kwargs)
+        INIT_MONEY = 10
+        CONSTANT_FUND = 1.2
+        fund = (self.cashInitA+self.cashInitB)*CONSTANT_FUND
+        self.moneyA = fund + INIT_MONEY - self.cashInitA
+        self.moneyB = fund + INIT_MONEY - self.cashInitB
+
+    @hybrid_property
+    def fund(self):
+        CONSTANT_FUND = 1.2
+        return (self.cashInitA+self.cashInitB)*CONSTANT_FUND
+
+class GameUltimatum(GameRentSeeking):
+    '''Ultimatum game(part 3, decision 4&5)
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'GameUltimatum'}
+
+    def __init__(self, **kwargs):
+        def get_intverval(section_id):
+            '''return a list witch all interval(money,question_id)
+            '''
+            l =[]
+            for q in Section.query.get(section_id).questions:
+                if q.decision=="decision_five":
+                    l.append((q.choices[0],q.id))
+            return l
+
+        super(GameUltimatum, self).__init__(**kwargs)
+        MONEY = 20
+        self.type = 'decision_four'
+        # interval = QuestionDecisionFive.getIntverval(section_id)
+        interval = get_intverval(section_id)
+
+        for i in interval:
+            if int(i[0])==self.cashInitA:
+                answer = Answer.query.filter(Answer.question_id == i[1],Answer.user_id == self.userB).first()
+                self.answerB =answer.id
+                if answer.answerYN:
+                    self.moneyA = MONEY - self.cashInitA
+                    self.moneyB = self.cashInitA
+                else:
+                    self.moneyA = 0
+                    self.moneyB = 0
+                break
+    @hybrid_property
+    def decisionAccept(self):
+        '''return if userB accept the division of money
+        '''
+        return self.win ==self.userA
+
+class GameDictador(GameRentSeeking):
+    '''Dictador game(part 3, decision 6)
+    '''
+    __mapper_args__ = {'polymorphic_identity': 'GameDictador'}
+    def __init__(self, **kwargs):
+        super(GameDictador, self).__init__(**kwargs)
+        MONEY = 20
+        self.type = 'decision_six'
+        self.moneyA = MONEY - self.cashInitA
+        self.moneyB = self.cashInitA
