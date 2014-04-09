@@ -191,7 +191,9 @@ def generate_answers_fake(id_survey, number=6):
         if isinstance (q, QuestionYN):
             answer = Answer (answerYN =random.randrange(0,2)==1, user= user, question = q)
         elif isinstance (q, QuestionText):
-            if q.decision=="decision_one":
+            if q.decision=="decision_one_v1":
+                answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
+            elif q.decision=="decision_one_v2":
                 answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
             elif q.decision=="decision_two":
                 answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
