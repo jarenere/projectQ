@@ -269,7 +269,8 @@ class Section(db.Model):
         percent = SubElement(section,'percent')
         percent.text = str(self.percent)
 
-        for question in self.questions:
+        for question in Question.query.filter\
+                (Question.section_id==self.id, Question.parent==None):
              section.append(question.to_xml())
 
 
@@ -516,62 +517,84 @@ class Question(db.Model):
 
             labelMax = SubElement(question,'labelMax')
             labelMax.text = self.labelMax
+        
+        if self.condition is not None:
+            question.append(self.condition.to_xml())
+
+        for subquestion in self.subquestions:
+            question.append(subquestion.to_xml())
 
         return question
     
     @staticmethod
     def from_xml(root,section,msg):
-        texto = findField('text',root,msg)
-        required = (findField('required',root,msg) =="True")
-        money = (findField('money',root,msg) =="True")
-        decision = findField('decision',root,msg)
+        def fill_question(root,section,msg):
+            texto = findField('text',root,msg)
+            required = (findField('required',root,msg) =="True")
+            money = (findField('money',root,msg) =="True")
+            decision = findField('decision',root,msg)
 
-        #CHOICES = findField('sequence',root,msg)
-        l=[]
-        for choice in root.findall('choice'):
-            l.append(choice.text)
+            #CHOICES = findField('sequence',root,msg)
+            l=[]
+            for choice in root.findall('choice'):
+                l.append(choice.text)
 
-        expectedAnswer = findField('expectedAnswer',root,msg)
-        maxNumberAttempt = findField('maxNumberAttempt',root,msg)
-        type = findField('type',root,msg)
-        
-        if type == 'yn':
-            question = QuestionYN()
+            expectedAnswer = findField('expectedAnswer',root,msg)
+            maxNumberAttempt = findField('maxNumberAttempt',root,msg)
+            type = findField('type',root,msg)
+            
+            if type == 'yn':
+                question = QuestionYN()
 
-        elif type == 'text':
-            isNumber = (findField('isNumber',root,msg)=="True")
-            isNumberFloat = (findField('isNumberFloat',root,msg)=="True")
-            regularExpression = findField('regularExpression',root,msg)
-            errorMessage = findField('errorMessage',root,msg)
-            question = QuestionText(isNumber=isNumber,
-                isNumberFloat=isNumberFloat,
-                regularExpression=regularExpression,
-                errorMessage=errorMessage)
+            elif type == 'text':
+                isNumber = (findField('isNumber',root,msg)=="True")
+                isNumberFloat = (findField('isNumberFloat',root,msg)=="True")
+                regularExpression = findField('regularExpression',root,msg)
+                errorMessage = findField('errorMessage',root,msg)
+                question = QuestionText(isNumber=isNumber,
+                    isNumberFloat=isNumberFloat,
+                    regularExpression=regularExpression,
+                    errorMessage=errorMessage)
 
-        elif type == 'choice':
-            question = QuestionChoice()
+            elif type == 'choice':
+                question = QuestionChoice()
 
-        elif type == 'likertScale':
-            minLikert = findField('minLikert',root,msg)
-            maxLikert = findField('maxLikert',root,msg)
-            labelMin = findField('labelMin',root,msg)
-            labelMax = findField('labelMax',root,msg)
-            question = QuestionLikertScale(minLikert=minLikert,
-                maxLikert=maxLikert,
-                labelMin=labelMin,
-                labelMax=labelMax)
-        else:
-            return False
+            elif type == 'likertScale':
+                minLikert = findField('minLikert',root,msg)
+                maxLikert = findField('maxLikert',root,msg)
+                labelMin = findField('labelMin',root,msg)
+                labelMax = findField('labelMax',root,msg)
+                question = QuestionLikertScale(minLikert=minLikert,
+                    maxLikert=maxLikert,
+                    labelMin=labelMin,
+                    labelMax=labelMax)
+            else:
+                return False
 
-        question.text = texto
-        question.is_real_money = money
-        question.decision = decision
-        question.required = required
-        question.expectedAnswer = expectedAnswer
-        question.maxNumberAttempt = maxNumberAttempt
-        question.choices = l
-        question.section = section
+            question.text = texto
+            question.is_real_money = money
+            question.decision = decision
+            question.required = required
+            question.expectedAnswer = expectedAnswer
+            question.maxNumberAttempt = maxNumberAttempt
+            question.choices = l
+            question.section = section
+            return question
+
+        def from_xml_subquestion(root,section,parent,msg):
+            question = fill_question(root,section,msg)
+            question.parent=parent
+            db.session.add(question)
+            for c in root.findall('condition'):
+                Condition.from_xml(c, question, msg)
+            for q in root.findall('question'):
+                from_xml_subquestion(q, section, question, msg)
+
+
+        question = fill_question(root,section,msg)
         db.session.add(question)
+        for q in root.findall('question'):
+            from_xml_subquestion(q, section, question, msg)
 
 
 
@@ -622,6 +645,26 @@ class Condition(db.Model):
         default='none')
     # value to comparate in the operation
     value = Column(String(64))
+    
+    def to_xml(self):
+        condition = Element('condition')
+
+        operation = SubElement(condition,'operation')
+        operation.text = str(self.operation)
+
+        value = SubElement(condition,'value')
+        value.text = str(self.value)
+
+        return condition
+
+    @staticmethod
+    def from_xml(root,question,msg):
+        operation = findField('operation',root,msg)
+        value = findField('value',root,msg)
+        condition = Condition(operation=operation,
+            value=value,
+            question=question)
+        db.session.add(condition)
 
 
 
