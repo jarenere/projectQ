@@ -965,6 +965,22 @@ class Answer(db.Model):
         else:               
             return True
 
+    def answerAttemptYN(self):
+        '''Return if the answer is the correct, else increment in 1
+        the number attempt
+        '''
+        if self.question.isExpectedAnswer():
+            if self.answerYN != (self.question.expectedAnswer.lower()=='yes'):
+                self.numberAttempt = self.numberAttempt + 1
+                db.session.add(self)
+                db.session.commit()
+                return False
+            else:
+                return True
+        else:               
+            return True
+
+
     def isMoreAttempt(self):
         '''Return if there are more attempt
         '''

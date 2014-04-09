@@ -148,6 +148,26 @@ def generate_form(questions):
                 raise ValidationError("Wrong answer")
             else:
                 flash("wrong answer, you can continue")
+    
+    def check_answer_expected_yn(self,field):
+        '''check if the answer is the expected
+        '''
+        question = Question.query.get(field.name[1:])
+        answer = Answer.query.filter(Answer.user_id==g.user.id,
+                Answer.question_id==question.id).first()
+        if answer is None:
+            answer = Answer (answerYN = field.data=='Yes', user= g.user, question = question)
+            answer.globalTime = form["globalTimec"+str(question.id)].data
+            answer.differentialTime = form["differentialTimec"+str(question.id)].data
+        else:
+            answer.answerYN = field.data=='Yes'
+        db.session.add(answer)
+        db.session.commit()
+        if not answer.answerAttemptYN():
+            if answer.isMoreAttempt():
+                raise ValidationError("Wrong answer")
+            else:
+                flash("wrong answer, you can continue")
 
     def check_subquestion(self,field):
         '''check whether to answer the question or not
@@ -210,7 +230,10 @@ def generate_form(questions):
                 setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
                     choices = [('Yes','Yes'),('No','No')],validators = [check_subquestion]))
             else:
-                if question.required:
+                if question.isExpectedAnswer():
+                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                        choices = [('Yes','Yes'),('No','No')],validators = [check_answer_expected_yn]))
+                elif question.required:
                     setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
                         choices = [('Yes','Yes'),('No','No')],validators = [Required()]))
                 else:
