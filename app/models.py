@@ -1348,6 +1348,9 @@ class GameUltimatum(GameRentSeeking):
     '''
     __mapper_args__ = {'polymorphic_identity': 'GameUltimatum'}
 
+    section = Column(Integer,ForeignKey('section.id'))
+
+
     def __init__(self, **kwargs):
         def get_intverval(section_id):
             '''return a list witch all interval(money,question_id)
@@ -1362,7 +1365,7 @@ class GameUltimatum(GameRentSeeking):
         MONEY = 20
         self.type = 'decision_four'
         # interval = QuestionDecisionFive.getIntverval(section_id)
-        interval = get_intverval(section_id)
+        interval = get_intverval(self.section)
 
         for i in interval:
             if int(i[0])==self.cashInitA:
