@@ -231,6 +231,7 @@ class Games:
 
 
     def _match_alone_user(self,alone_user, money):
+        # SI JUEGAS SOLO AL JUEGO 4 O 6 PUEDE SER QUE NUNCA TE TOQUE SER JUGADOR B
         if money:
             list_users = self._users_part_three_money_matching()
         else:

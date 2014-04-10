@@ -24,19 +24,19 @@
             </tr>
         </thead>
         <tbody>
-            {% for match in matchs %}
+            {% for result in results %}
             <tr>
-                <td>{{match.userA}}</td>
-                <td>{{match.userB}}</td>
-                <td>{{match.cashInitA | round(1)}}</td>
-                <td>{{match.moneyA | round(1)}}</td>
-                <td>{{match.moneyB | round(1)}}</td>
-                <td>{{match.prizeA}}</td>
-                <td>{{match.prizeB}}</td>
-                <td>{{ status_part_three(match.statusA)}}</td>
-                <td>{{ status_part_three(match.statusB)}}</td>
-                <td>{{match.repeatA}}</td>
-                <td>{{match.repeatB}}</td>
+                <td>{{result.userA}}</td>
+                <td>{{result.userB}}</td>
+                <td>{{result.cashInitA | round(1)}}</td>
+                <td>{{result.moneyA | round(1)}}</td>
+                <td>{{result.moneyB | round(1)}}</td>
+                <td>{{result.prizeA}}</td>
+                <td>{{result.prizeB}}</td>
+                <td>{{ status_part3(result.statusA)}}</td>
+                <td>{{ status_part3(result.statusB)}}</td>
+                <td>{{result.repeatA}}</td>
+                <td>{{result.repeatB}}</td>
 
 
             </tr>

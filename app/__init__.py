@@ -72,24 +72,22 @@ sched = Scheduler()
 sched.start()
 sched.add_interval_job(deleteAnswers.deleteAnswers, hours=2)
 
-def status_part_two(status):
+def status_part2(status):
     from app.models import StateSurvey
-    if status & StateSurvey.PART_TWO_MONEY:
+    if status & StateSurvey.PART2_MONEY:
         return u'Money Real'
     else:
         return u'Untrue money'
 
-    return StateSurvey.PART_TWO_MONEY == status & StateSurvey.PART_TWO_MONEY
 
-def status_part_three(status):
+def status_part3(status):
     from app.models import StateSurvey
-    if status & StateSurvey.PART_THREE_MONEY:
+    if status & StateSurvey.PART3_MONEY:
         return u'Money Real'
     else:
         return u'Untrue money'
 
-    return StateSurvey.PART_TWO_MONEY == status & StateSurvey.PART_TWO_MONEY
 
 # app.jinja_env.globals.update(status_part_two=status_part_two)
-app.jinja_env.globals['status_part_two'] = status_part_two
-app.jinja_env.globals['status_part_three'] = status_part_three
+app.jinja_env.globals['status_part2'] = status_part2
+app.jinja_env.globals['status_part3'] = status_part3

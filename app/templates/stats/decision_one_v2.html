@@ -5,7 +5,7 @@
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 {% from "_formHelpers.html" import render_field %}
     <h1>MATCHING!</h1>
-    <h2>Decision three</h2>
+    <h2>Decision one v2</h2>
     <div class="container-fluid">
     <table class="table data-table sort display" id="myTable1">
         <thead>
@@ -14,7 +14,8 @@
                 <th class="sorting">CashInitA<i class="fa fa-sort"></i></th>
                 <th class="sorting">UserB<i class="fa fa-sort"></i></th>
                 <th class="sorting">CashInitB<i class="fa fa-sort"></i></th>
-                <th class="sorting">Fund<i class="fa fa-sort"></i></th>
+                <th class="sorting">PercentA<i class="fa fa-sort"></i></th>
+                <th class="sorting">PercentB<i class="fa fa-sort"></i></th>
                 <th class="sorting">MoneyA<i class="fa fa-sort"></i></th>
                 <th class="sorting">MoneyB<i class="fa fa-sort"></i></th>
                 <th class="sorting">PrizeA<i class="fa fa-sort"></i></th>
@@ -23,6 +24,8 @@
                 <th class="sorting">PatchB<i class="fa fa-sort"></i></th>
                 <th class="sorting">RepeatA<i class="fa fa-sort"></i></th>
                 <th class="sorting">RepeatB<i class="fa fa-sort"></i></th>
+
+
             </tr>
         </thead>
         <tbody>
@@ -32,7 +35,8 @@
                 <td>{{result.cashInitA | round(1)}}</td>
                 <td>{{result.userB}}</td>
                 <td>{{result.cashInitB | round(1)}}</td>
-                <td>{{result.fund | round(3)}}</td>
+                <td>{{result.percent_playerA | round(3)}}</td>
+                <td>{{result.percent_playerB | round(3)}}</td>
                 <td>{{result.moneyA | round(1)}}</td>
                 <td>{{result.moneyB | round(1)}}</td>
                 <td>{{result.prizeA}}</td>

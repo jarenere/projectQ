@@ -947,7 +947,7 @@ class Answer(db.Model):
     question_id = Column(Integer, ForeignKey('question.id'), nullable=False)
 
     def __repr__(self):
-        return "<answer(id='%s', user='%s', question='%s')>" % (
+        return "<answer(id='%s', user='%s', question='%s')>\n" % (
             self.id, self.user_id, self.question_id)
 
     def answerAttempt(self):
@@ -1002,18 +1002,35 @@ class StateSurvey(db.Model):
     TIMED_OUT = 0x04
     #: finished out of date
     END_DATE_OUT = 0x08
+    
     #:part two section with money
-    PART_TWO_MONEY = 0X10
+    PART2_MONEY = 0X10
     #:part two section without money
-    PART_TWO_WITHOUT_MONEY = 0X20
+    PART2_NO_MONEY = 0X20
     #:part three section with money
-    PART_THREE_MONEY = 0X40
+    PART3_MONEY = 0X40 
     #:part three section without money
-    PART_THREE_WITHOUT_MONEY = 0X80
+    PART3_NO_MONEY = 0X80
+    
+    #:"match" game impatience, part2
+    GAME_IMPATIENCE = 0X100
+    #:"match" game lottery v1, part3, decision 1 v1
+    GAME_LOTTERY_V1 = 0X200
+    #:"match" game lottery v2, part3, decision 1 v2
+    GAME_LOTTERY_V2 = 0X400
+    #:"match" game rent1, part3, decision 2
+    GAME_RENT1 = 0X800
+    #:"match" game rent2, part3, decision 3
+    GAME_RENT2 = 0X1000
+    #:"match" game ultimatum, part3, decision 4&5
+    GAME_ULTIMATUM = 0X2000
+    #:"match" game dictador, part3, decision 6
+    GAME_DICTADOR = 0X4000
+
     #: do matching
-    MATCHING = 0X100
+    MATCHING = 0X8000
     #: write stat
-    STATS = 0X200
+    STATS = 0X10000
 
 
     NO_ERROR = 0
@@ -1101,7 +1118,7 @@ class StateSurvey(db.Model):
                 db.session.add(self)
                 db.session.commit()
                 # self._delete_answers()
-                app.stats.write_stats.write_stats(self.user_id, self.survey_id)
+                # app.stats.write_stats.write_stats(self.user_id, self.survey_id)
                 return StateSurvey.ERROR_TIMED_OUT
         if now > self.survey.endDate or now < self.survey.startDate:
             #answer out of date
@@ -1109,7 +1126,7 @@ class StateSurvey(db.Model):
             db.session.add(self)
             db.session.commit()
             # self._delete_answers()
-            app.stats.write_stats.write_stats(self.user_id, self.survey_id)
+            # app.stats.write_stats.write_stats(self.user_id, self.survey_id)
             return StateSurvey.ERROR_END_DATE_OUT
         return StateSurvey.NO_ERROR
 
@@ -1150,7 +1167,7 @@ class StateSurvey(db.Model):
         if self.index>=len(self.sequence):
             self.status = self.status | StateSurvey.FINISH | StateSurvey.FINISH_OK
             self.endDate = datetime.datetime.utcnow()
-            app.stats.write_stats.write_stats(self.user_id, self.survey_id)
+            # app.stats.write_stats.write_stats(self.user_id, self.survey_id)
             # from app import app
             # print app.game
             # app.game(self.user)
@@ -1162,7 +1179,7 @@ class StateSurvey(db.Model):
 
     @staticmethod
     def getStateSurvey(id_survey, user, ip = ""):
-        stateSurvey = StateSurvey.query.filter(StateSurvey.survey_id == id_survey, 
+        stateSurvey = StateSurvey.query.filter(StateSurvey.survey_id == id_survey,\
             StateSurvey.user_id == user.id).first()
         if stateSurvey is None:
             survey = Survey.query.get(id_survey)
@@ -1207,7 +1224,7 @@ class GameImpatience(db.Model):
                 self.prize=True    
 
 
-class GameRentSeeking(db.Model):
+class Game(db.Model):
     '''store the result of part three game1,2,3
     '''
     __tablename__='gameRentSeeking'
@@ -1252,8 +1269,20 @@ class GameRentSeeking(db.Model):
     def cashInitB(self):
         return Answer.query.get(self.answerB).answerNumeric
 
+    @hybrid_property
+    def statusA(self):
+        ss = StateSurvey.query.filter(StateSurvey.user_id==self.userA,\
+            StateSurvey.survey_id==self.survey).first()
+        return ss.status
 
-class GameLottery1(GameRentSeeking):
+    @hybrid_property
+    def statusB(self):
+        ss = StateSurvey.query.filter(StateSurvey.user_id==self.userB,\
+            StateSurvey.survey_id==self.survey).first()
+        return ss.status
+
+
+class GameLottery1(Game):
     '''Lottery game version1 (part 3, decision 1)
     '''
     __mapper_args__ = {'polymorphic_identity': 'gameLottery1'}
@@ -1264,11 +1293,11 @@ class GameLottery1(GameRentSeeking):
     def __init__(self, **kwargs):
         '''Probability:= userA_Money/(userA_Money+user_MoneyB)
         '''
-        super(GameLotery1, self).__init__(**kwargs)
+        super(GameLottery1, self).__init__(**kwargs)
         AWARD = 10
         INIT_MONEY = 10
         try:
-            percentA=self.cashInitA/(self.cashInitA+self.cashInitB)
+            percentA=self.percent_playerA
             if percentA>random.random():
                 #answerA win
                 self.win = self.userA
@@ -1283,7 +1312,23 @@ class GameLottery1(GameRentSeeking):
             self.moneyA = INIT_MONEY
             self.moneyB = INIT_MONEY
 
-class GameLottery2(GameRentSeeking):
+    @hybrid_property
+    def percent_playerA(self):
+        try:
+            return self.cashInitA/(self.cashInitA+self.cashInitB)
+        except ZeroDivisionError:
+            return 0
+
+    @hybrid_property
+    def percent_playerB(self):
+        try:
+            return self.cashInitB/(self.cashInitA+self.cashInitB)
+        except ZeroDivisionError:
+            return 0
+
+
+
+class GameLottery2(Game):
     '''Lottery game version2 (part 3, decision 1)
     '''
     __mapper_args__ = {'polymorphic_identity': 'gameLottery2'}
@@ -1292,20 +1337,34 @@ class GameLottery2(GameRentSeeking):
     def __init__(self, **kwargs):
         '''percent of prize: userA_Money/(userA_Money+user_MoneyB)
         '''
-        super(GameLotery2, self).__init__(**kwargs)
+        super(GameLottery2, self).__init__(**kwargs)
         AWARD = 10
         INIT_MONEY = 10
         try:
             percentA=self.cashInitA/(self.cashInitA+self.cashInitB)
             percentB=1-percentA
-            self.moneyA= AWARD*percentA + (INIT_MONEY - self.cashInitA())
-            self.moneyB= AWARD*percentB + (INIT_MONEY - self.cashInitB())
+            self.moneyA= AWARD*percentA + (INIT_MONEY - self.cashInitA)
+            self.moneyB= AWARD*percentB + (INIT_MONEY - self.cashInitB)
         except ZeroDivisionError:
             # nobody play lottery
             self.moneyA = INIT_MONEY
             self.moneyB = INIT_MONEY
+    
+    @hybrid_property
+    def percent_playerA(self):
+        try:
+            return self.cashInitA/(self.cashInitA+self.cashInitB)
+        except ZeroDivisionError:
+            return 0
 
-class GameRent1(GameRentSeeking):
+    @hybrid_property
+    def percent_playerB(self):
+        try:
+            return self.cashInitB/(self.cashInitA+self.cashInitB)
+        except ZeroDivisionError:
+            return 0
+
+class GameRent1(Game):
     '''Rent1 game(part 3, decision 2)
     '''
     __mapper_args__ = {'polymorphic_identity': 'gameRent1'}
@@ -1324,10 +1383,10 @@ class GameRent1(GameRentSeeking):
         CONSTANT_FUND = 0.8
         return (self.cashInitA+self.cashInitB)*CONSTANT_FUND
 
-class GameRent2(GameRentSeeking):
+class GameRent2(Game):
     '''Rent 2 game(part 3, decision 3)
     '''
-    __mapper_args__ = {'polymorphic_identity': 'gameRent1'}
+    __mapper_args__ = {'polymorphic_identity': 'gameRent2'}
 
 
     def __init__(self, **kwargs):
@@ -1343,16 +1402,18 @@ class GameRent2(GameRentSeeking):
         CONSTANT_FUND = 1.2
         return (self.cashInitA+self.cashInitB)*CONSTANT_FUND
 
-class GameUltimatum(GameRentSeeking):
+class GameUltimatum(Game):
     '''Ultimatum game(part 3, decision 4&5)
     '''
-    __mapper_args__ = {'polymorphic_identity': 'GameUltimatum'}
+    __mapper_args__ = {'polymorphic_identity': 'gameUltimatum'}
 
     section = Column(Integer,ForeignKey('section.id'))
+    #: if money is accepted or no
+    accepted = Column(Boolean)
 
 
     def __init__(self, **kwargs):
-        def get_intverval(section_id):
+        def get_interval(section_id):
             '''return a list witch all interval(money,question_id)
             '''
             l =[]
@@ -1363,9 +1424,8 @@ class GameUltimatum(GameRentSeeking):
 
         super(GameUltimatum, self).__init__(**kwargs)
         MONEY = 20
-        self.type = 'decision_four'
         # interval = QuestionDecisionFive.getIntverval(section_id)
-        interval = get_intverval(self.section)
+        interval = get_interval(self.section)
 
         for i in interval:
             if int(i[0])==self.cashInitA:
@@ -1374,23 +1434,19 @@ class GameUltimatum(GameRentSeeking):
                 if answer.answerYN:
                     self.moneyA = MONEY - self.cashInitA
                     self.moneyB = self.cashInitA
+                    self.accepted = True
                 else:
                     self.moneyA = 0
                     self.moneyB = 0
+                    self.accepted = False
                 break
-    @hybrid_property
-    def decisionAccept(self):
-        '''return if userB accept the division of money
-        '''
-        return self.win ==self.userA
 
-class GameDictador(GameRentSeeking):
+class GameDictador(Game):
     '''Dictador game(part 3, decision 6)
     '''
-    __mapper_args__ = {'polymorphic_identity': 'GameDictador'}
+    __mapper_args__ = {'polymorphic_identity': 'gameDictador'}
     def __init__(self, **kwargs):
         super(GameDictador, self).__init__(**kwargs)
         MONEY = 20
-        self.type = 'decision_six'
         self.moneyA = MONEY - self.cashInitA
         self.moneyB = self.cashInitA

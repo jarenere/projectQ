@@ -162,6 +162,33 @@ def generateAnswerFakePart3(id_survey, number = 6):
 
     db.session.commit()
 
+def borrarUsuarios():
+    for user in models.User.query.all():
+        if user.id !=1:
+            db.session.delete(user)
+    db.session.commit()
+
+def borrarImpaciencia():
+    for i in models.GameImpatience().query.all():
+        db.session.delete(i)
+    db.session.commit()
+
+def borrarJuegos():
+    for i in models.Game.query.all():
+        db.session.delete(i)
+    for ss in models.StateSurvey.query.all():
+        ss.status=ss.status &~ models.StateSurvey.MATCHING
+        ss.status=ss.status &~ models.StateSurvey.GAME_LOTTERY_V1
+        ss.status=ss.status &~ models.StateSurvey.GAME_LOTTERY_V2
+        ss.status=ss.status &~ models.StateSurvey.GAME_RENT1
+        ss.status=ss.status &~ models.StateSurvey.GAME_RENT2
+        ss.status=ss.status &~ models.StateSurvey.GAME_ULTIMATUM
+        ss.status=ss.status &~ models.StateSurvey.GAME_DICTADOR
+        db.session.add(ss)
+    db.session.commit()
+
+
+
 def generate_answers_fake(id_survey, number=6):
     '''responding to the survey(id_survey) randomly 
     '''
@@ -175,8 +202,9 @@ def generate_answers_fake(id_survey, number=6):
         from sqlalchemy.exc import IntegrityError
         base=len(User.query.all())+1
         for i in range(count):
-            u = models.User(email="user"+str(i+base)+"gmail.com",
-                     nickname="user"+str(i+base))
+            j=i+base
+            u = models.User(email="user"+str(j)+"gmail.com",
+                     nickname="user"+str(j))
             db.session.add(u)
             try:
                 db.session.commit()
