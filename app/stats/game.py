@@ -408,6 +408,7 @@ class Games:
             for user in users_part3_no_match: 
                 self._flag_status(user, "match")
                 self._flag_status(user,("part3",money))
+            db.session.commit()
 
 
     def match(self):
@@ -418,20 +419,24 @@ class Games:
         '''select random answer to game of part2 (GameImpatience)
             store in db
         '''
-        ans = Answer.query.filter(\
-            Answer.user_id==user.id,\
-            Answer.question_id==self.select_game["part2",True][0]).first()
-        if ans is not None:
-            #game with real money
-            question = random.choice(self.select_game["part2",True])
-            is_real_money=True
-        else:
-            question = random.choice(self.select_game["part2",False])
-            is_real_money=False
+        ss = StateSurvey.query.filter(StateSurvey.user_id==user.id,\
+                StateSurvey.survey_id==self.survey.id)
+        if (not (ss.status & StateSurvey.StateSurvey.PART2_MONEY) and
+            not (ss.status & StateSurvey.StateSurvey.PART2_NO_MONEY)):
+            ans = Answer.query.filter(\
+                Answer.user_id==user.id,\
+                Answer.question_id==self.select_game["part2",True][0]).first()
+            if ans is not None:
+                #game with real money
+                question = random.choice(self.select_game["part2",True])
+                is_real_money=True
+            else:
+                question = random.choice(self.select_game["part2",False])
+                is_real_money=False
 
-        answer = Answer.query.filter_by(user_id=user.id,question_id=question).first()
-        game = GameImpatience(user=user.id, answer = answer.id,\
-            survey=self.survey.id, is_real_money=is_real_money)
-        self._flag_status(user.id, ("part2",is_real_money))
-        db.session.add(game)
-        db.session.commit()
+            answer = Answer.query.filter_by(user_id=user.id,question_id=question).first()
+            game = GameImpatience(user=user.id, answer = answer.id,\
+                survey=self.survey.id, is_real_money=is_real_money)
+            self._flag_status(user.id, ("part2",is_real_money))
+            db.session.add(game)
+            db.session.commit()
