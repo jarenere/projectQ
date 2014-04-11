@@ -9,6 +9,7 @@ from app.models import Answer
 from app.models import GameImpatience, GameLottery1, GameLottery2
 from app.models import GameRent1, GameRent2, GameUltimatum, GameDictador
 from app.models import Game
+from app.models import Raffle
 from flask.ext.wtf import Form
 from sqlalchemy.sql import func
 from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField
@@ -33,13 +34,13 @@ def index():
     return render_template('/stats/index.html',
         tittle = 'stats')
 
-@blueprint.route('/')
 @blueprint.route('/run')
 @login_required
 @researcher_required
 def run():
     game = Games(1)
     users = StateSurvey.query.filter(StateSurvey.survey_id==ID_SURVEY,\
+        StateSurvey.status.op('&')(StateSurvey.FINISH_OK),\
         StateSurvey.status.op('&')(StateSurvey.PART2_MONEY)==0,\
         StateSurvey.status.op('&')(StateSurvey.PART2_NO_MONEY)==0)
     for u in users:
@@ -48,22 +49,27 @@ def run():
 
     game.match()
 
-    return render_template('/stats/index.html',
-        tittle = 'stats')
+    for u in  StateSurvey.query.filter(StateSurvey.survey_id==ID_SURVEY,\
+            StateSurvey.status.op('&')(StateSurvey.FINISH_OK)):
+        game.raffle(u)
+        print u.id
 
-@blueprint.route('/stats')
+    return redirect(url_for('stats.index'))
+
+
+@blueprint.route('/raffle')
 @login_required
 @researcher_required
-def stats():
+def raffle():
     # survey = Survey.query.get(1)
     # game = Games(survey)
-    matchs =Match.query.filter(\
-        Match.type=="decision_one",\
-        Match.survey==ID_SURVEY)
 
-    return render_template('/stats/index.html',
+    raffle = Raffle.query.filter(Raffle.survey_id==ID_SURVEY)
+
+    return render_template('/stats/raffle.html',
         tittle = 'stats',
-        matchs = matchs)
+        raffle = raffle)
+
 
 
 @blueprint.route('/part_two')
@@ -73,13 +79,6 @@ def part_two():
     # survey = Survey.query.get(1)
     # game = Games(survey)
 
-    # matchs2 =db.session.query(Match, Answer, Question, StateSurvey).filter(\
-    #     Match.type=="part_two",\
-    #     Match.survey==ID_SURVEY,\
-    #     Match.answerA==Answer.id,\
-    #     Answer.question_id==QuestionChoice.id,\
-    #     StateSurvey.survey_id==ID_SURVEY,\
-    #     StateSurvey.user_id==Match.userA)
     part2 =db.session.query(GameImpatience, Answer, Question, StateSurvey).filter(\
         GameImpatience.survey==ID_SURVEY,\
         GameImpatience.answer==Answer.id,\

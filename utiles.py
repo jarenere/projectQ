@@ -192,6 +192,10 @@ def borrarJuegos():
         db.session.add(ss)
     db.session.commit()
 
+def borrarRaffle():
+    for i in models.Raffle.query.all():
+        db.session.delete(i)
+    db.session.commit()
 
 
 def generate_answers_fake(id_survey, number=6):

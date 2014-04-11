@@ -19,6 +19,7 @@ from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy import desc
 from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
 from sqlalchemy import select, func
+from sqlalchemy.schema import UniqueConstraint
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
@@ -1453,3 +1454,33 @@ class GameDictador(Game):
         MONEY = 20
         self.moneyA = MONEY - self.cashInitA
         self.moneyB = self.cashInitA
+
+class Raffle(db.Model):
+    '''store the result of raffle (users that have game allways with untrue money)
+    '''
+    __tablename__ = 'raffle'
+    #: unique id (automatically generated)
+    id = Column(Integer, primary_key = True)
+    #: survey
+    survey_id = Column(Integer,ForeignKey('survey.id'),nullable=False)
+    #: user
+    user_id = Column(Integer, ForeignKey('user.id'),nullable=False)
+    #:answer  of Prize
+    prize = Column(Integer, default = 0)
+    __table_args__ = (UniqueConstraint('user_id', 'survey_id'),)
+    def __init__(self, **kwargs):
+        super(Raffle, self).__init__(**kwargs)
+        if random.randint(1,10)==1:
+            i = random.randint(1,4)
+            if i==1:
+                self.prize=5
+            elif i==2:
+                self.prize=10
+            elif i==3:
+                self.prize=20
+            elif i==4:
+                self.prize=40
+            else:
+                raise "opcion invalid"
+        else:
+            self.prize=0

@@ -2,6 +2,7 @@ from app.models import StateSurvey, Answer, Section, Question, User, Survey
 from app.models import GameImpatience, GameLottery1, GameLottery2
 from app.models import GameRent1, GameRent2, GameUltimatum, GameDictador
 from app.models import Game
+from app.models import Raffle
 from sqlalchemy import or_
 import random
 from app import db, models
@@ -321,7 +322,7 @@ class Games:
                 alone_user = users[-1]
                 users = users[:-1]
             for i in range(len(users)/2):
-                print i, "of", len(users)/2, decision
+                print i, "of", len(users)/2, decision, "money", money
                 userA = random.choice(users)
                 users.remove(userA)
                 userB = random.choice(users)
@@ -440,3 +441,17 @@ class Games:
             self._flag_status(user.id, ("part2",is_real_money))
             db.session.add(game)
             db.session.commit()
+
+    def raffle(self, user):
+        '''only if user have game allways with untrue money
+        '''
+        answer = Answer.query.filter(\
+            Answer.user_id==user.id,
+            or_(Answer.question_id==self.select_game["part2",True][0],\
+                Answer.question_id==self.select_game["decision2",True].id)).first()
+        if answer is None:
+            if  Raffle.query.filter(Raffle.user_id==user.id,\
+                    Raffle.survey_id==self.survey.id).first() is None:
+                raffle = Raffle(user_id=user.id,survey_id=self.survey.id)
+                db.session.add(raffle)
+                db.session.commit()
