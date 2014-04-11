@@ -191,3 +191,47 @@ def index(id_user=2):
         diff5 = total5-n5,  
         tittle = 'feedback')
 
+
+
+@blueprint.route('/decision1_v1')
+@blueprint.route('/<int:id_user>', methods=['GET', 'POST'])
+@login_required
+@researcher_required
+def decision1_v1(id_user=2):
+    decision1_v1=Question.query.filter(\
+            Question.section_id==Section.id,\
+            Section.root_id==ID_SURVEY,\
+            Question.decision=="decision_one_v1")
+
+    ans1_v1=Answer.query.filter(\
+            Answer.user_id==id_user,\
+            or_(Answer.question==decision1_v1[0],Answer.question==decision1_v1[1])).first()
+    if ans1_v1 is not None:
+        ans1 = ans1_v1.answerNumeric
+        decision1=decision1_v1
+    else:
+        decision1=Question.query.filter(\
+                Question.section_id==Section.id,\
+                Section.root_id==ID_SURVEY,\
+                Question.decision=="decision_one_v2")
+
+        ans1=Answer.query.filter(Answer.user_id==id_user,\
+                or_(Answer.question==decision1[0],Answer.question==decision1[1])).\
+                first().answerNumeric
+
+    n1 = Answer.query.filter(\
+            or_(Answer.question==decision1[0],Answer.question==decision1[1]),\
+            Answer.answerNumeric==ans1).count()
+    
+    total1 = Answer.query.filter(\
+                or_(Answer.question==decision1[0],Answer.question==decision1[1])).count()
+    
+    percent1 = n1/total1
+    avg1 = db.session.query(func.avg(Answer.answerNumeric)).filter(\
+        or_(Answer.question==decision1[0],Answer.question==decision1[1])).first()[0] 
+    
+    return render_template('/feedback/feedback.html',
+            ans1 = ans1,
+            avg1 = avg1,
+            same1 = n1, 
+            diff1 = total1-n1)
