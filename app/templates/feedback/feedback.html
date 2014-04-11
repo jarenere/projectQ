@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+{% from "_formHelpers.html" import render_field %}
+    <h1>Feedback!</h1>
+    <div class="container-fluid">
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['game', 'user', 'average'],
+          ['1',  {{ans1}},      {{avg1}}],
+          ['2',  {{ans2}},      {{avg2}}],
+          ['3', {{ans3}},   {{avg3}}],
+          ['4', {{ans4}},   {{avg4}}],
+          ['6', {{ans6}},   {{avg6}}]
+
+
+        ]);
+
+        var options = {
+          minPointLength: 10,
+          title: 'Average',
+          hAxis: {title: 'Game', titleTextStyle: {color: 'red'}}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Results', ''],
+          ['equal',     {{same1}}],
+          ['different',      {{diff1}}],
+        ]);
+
+        var options = {
+          title: 'Decision1'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('decision1'));
+        chart.draw(data, options);
+      }
+    </script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Results', ''],
+          ['equal',     {{same2}}],
+          ['different',      {{diff2}}],
+        ]);
+
+        var options = {
+          title: 'Decision2'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('decision2'));
+        chart.draw(data, options);
+      }
+    </script>
+        <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Results', ''],
+          ['equal',     {{same3}}],
+          ['different',      {{diff3}}],
+        ]);
+
+        var options = {
+          title: 'Decision3'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('decision3'));
+        chart.draw(data, options);
+      }
+    </script>
+        <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Results', ''],
+          ['equal',     {{same4}}],
+          ['different',      {{diff4}}],
+        ]);
+
+        var options = {
+          title: 'Decision4'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('decision4'));
+        chart.draw(data, options);
+      }
+    </script>
+        <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Results', ''],
+          ['equal',     {{same5}}],
+          ['different',      {{diff5}}],
+        ]);
+
+        var options = {
+          title: 'Decision5'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('decision5'));
+        chart.draw(data, options);
+      }
+    </script>
+        <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Results', ''],
+          ['equal',     {{same6}}],
+          ['different',      {{diff6}}],
+        ]);
+
+        var options = {
+          title: 'Decision6'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('decision6'));
+        chart.draw(data, options);
+      }
+    </script>
+
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+    <h2>Answers equal to yours % </h2>
+    <div id="decision1" style="width: 900px; height: 500px;"></div>
+    <div id="decision2" style="width: 900px; height: 500px;"></div>
+    <div id="decision3" style="width: 900px; height: 500px;"></div>
+    <div id="decision4" style="width: 900px; height: 500px;"></div>
+    <div id="decision5" style="width: 900px; height: 500px;"></div>
+    <div id="decision6" style="width: 900px; height: 500px;"></div>
+
+
+
+
+{% endblock %}

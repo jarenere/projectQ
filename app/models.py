@@ -370,6 +370,9 @@ class Section(db.Model):
                 Section.parent_id==section.id).order_by(Section.sequence)))
         return l2Aux
 
+
+def are_elements_equal(x, y):
+    return x == y
 class Question(db.Model):
     '''A table with Questions
     '''
@@ -383,7 +386,7 @@ class Question(db.Model):
     #: If the question is obligatory or not
     required = Column(Boolean, default = True)
     #: possible choices
-    choices = Column(PickleType)
+    choices = Column(PickleType(comparator=are_elements_equal))
     #:expected answer
     expectedAnswer = Column(String(20), default="")
     #:number of attempt to answer a question with  expected Answer

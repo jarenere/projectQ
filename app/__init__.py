@@ -60,6 +60,10 @@ app.register_blueprint(stats_blueprint, url_prefix='/stats')
 from app.main import blueprint as main_blueprint
 app.register_blueprint(main_blueprint)
 
+from app.feedback import blueprint as feedback_blueprint
+app.register_blueprint(feedback_blueprint, url_prefix='/feedback')
+
+
 from datetime import datetime
 from apscheduler.scheduler import Scheduler
 from scheduler import deleteAnswers
