@@ -171,6 +171,11 @@ def borrarUsuarios():
 def borrarImpaciencia():
     for i in models.GameImpatience().query.all():
         db.session.delete(i)
+    for ss in models.StateSurvey.query.all():
+        ss.status=ss.status &~ models.StateSurvey.GAME_IMPATIENCE
+        ss.status=ss.status &~ models.StateSurvey.PART2_MONEY
+        ss.status=ss.status &~ models.StateSurvey.PART2_NO_MONEY
+        db.session.add(ss)
     db.session.commit()
 
 def borrarJuegos():
