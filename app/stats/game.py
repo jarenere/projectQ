@@ -421,9 +421,9 @@ class Games:
             store in db
         '''
         ss = StateSurvey.query.filter(StateSurvey.user_id==user.id,\
-                StateSurvey.survey_id==self.survey.id)
-        if (not (ss.status & StateSurvey.StateSurvey.PART2_MONEY) and
-            not (ss.status & StateSurvey.StateSurvey.PART2_NO_MONEY)):
+                StateSurvey.survey_id==self.survey.id).first()
+        if (not (ss.status & StateSurvey.PART2_MONEY) and
+            not (ss.status & StateSurvey.PART2_NO_MONEY)):
             ans = Answer.query.filter(\
                 Answer.user_id==user.id,\
                 Answer.question_id==self.select_game["part2",True][0]).first()
