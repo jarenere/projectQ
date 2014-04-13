@@ -24,6 +24,19 @@ def researcher_required(f):  # pragma: no cover
             return abort(403)
     return decorated_function
 
+def finished_survey(f):  # pragma: no cover
+    """Checks if the user is and researcher or not"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        ss = StateSurvey.query.filter(StateSurvey.survey_id == kwargs['id_survey'], 
+                    StateSurvey.user_id == current_user.id).first_or_404()
+        if ss.status & StateSurvey.FINISH_OK:
+            return f(*args, **kwargs)
+        else:
+            return abort(403)
+    return decorated_function
+
+
 def belong_researcher(check):
     '''check if section/consent/question/survey belong to researcher
     '''

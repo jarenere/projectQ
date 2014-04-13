@@ -150,3 +150,4 @@ gat[]en añadir subquestion ayudar en el form para no cagarla (si es si o no, pu
 [X]se peuede eliminar el generatejavascriptsubquestions, (cada pregunta mira si tiene hijos y completa)| 9 de abril
 [X]SORTEO DE DINERO SINO JUEGAS NUNCA CON DINERO REAL | 11 de abril
 []normalizar los datos usados, a vececes decision2 otras decision_two otras gameRent1...
+[]crear un flag para ejecutarse en modo ¿como son nuestros voluntarios? y otro para normal
