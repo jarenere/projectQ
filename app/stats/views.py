@@ -49,10 +49,10 @@ def run():
 
     game.match()
 
-    for u in  StateSurvey.query.filter(StateSurvey.survey_id==ID_SURVEY,\
+    for ss in  StateSurvey.query.filter(StateSurvey.survey_id==ID_SURVEY,\
             StateSurvey.status.op('&')(StateSurvey.FINISH_OK)):
-        game.raffle(u)
-        print u.id
+        game.raffle(ss.user)
+        print ss.id, ss.user_id
 
     return redirect(url_for('stats.index'))
 
