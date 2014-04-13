@@ -10,4 +10,5 @@ from . import blueprint
 def index():
     f = open(basedir+"/app/static/index.re", "r")
     text =  f.read()
+    f.close()
     return render_template('index.html', text = text)
