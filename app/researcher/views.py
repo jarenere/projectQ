@@ -368,7 +368,7 @@ def addSubSection(id_survey, id_section):
         path = path)
 
 
-def selectType(form):
+def selectType(form,section):
 
     if form.questionType.data =='yn':
         question = QuestionYN()
@@ -421,6 +421,8 @@ def selectType(form):
     question.required = form.required.data
     question.expectedAnswer = form.expectedAnswer.data
     question.maxNumberAttempt = form.maxNumberAttempt.data
+    question.section=section
+    question.last_position()
     return question
 
 
@@ -434,8 +436,7 @@ def addQuestion(id_survey, id_section):
     form = QuestionForm()
     form.question.query=Question.query.filter(Question.section_id==id_section)
     if form.validate_on_submit():
-        question = selectType(form)
-        question.section = section
+        question = selectType(form,section)
         db.session.add(question)
         db.session.commit()
         flash('Adding question')
@@ -465,11 +466,12 @@ def editQuestion(id_survey, id_section,id_question):
     form.question.query=Question.query.filter(Question.section_id==id_section,\
         Question.id!=id_question)
     if form.validate_on_submit():
+        position = question.position
         db.session.delete (question)
         db.session.commit()
-        q = selectType(form)
+        q = selectType(form,Section.query.get(id_section))
         q.id = id_question
-        q.section = Section.query.get(id_section)
+        q.position=position
         db.session.add(q)
         db.session.commit()
         flash('Adding question')

@@ -230,7 +230,8 @@ class Section(db.Model):
     questions = relationship('Question', 
         # cascade deletions
         cascade="all, delete-orphan",
-        backref = 'section', lazy = 'dynamic')
+        backref = 'section', lazy = 'dynamic',
+        order_by = 'Question.position')
     #: section belongs to zero or one surveys 
     survey_id = Column(Integer, ForeignKey('survey.id'))
     #: section belongs to zero or more sections
@@ -296,9 +297,9 @@ class Section(db.Model):
                 parent = parent
                 )
             db.session.add(section)
-
+            position=1
             for q in root.findall('question'):
-                Question.from_xml(q, section, msg)
+                position = Question.from_xml(q, section,position, msg)
 
             for s in root.findall('section'):
                 from_xml_subSection(s,section,msg)
@@ -317,9 +318,9 @@ class Section(db.Model):
             survey = survey
             )
         db.session.add(section)
-
+        position = 1
         for q in root.findall('question'):
-            Question.from_xml(q, section, msg)
+            position = Question.from_xml(q, section, position, msg)
 
         for s in root.findall('section'):
             from_xml_subSection(s,section,msg)
@@ -383,7 +384,7 @@ class Question(db.Model):
     #: Text for this question
     text = Column(String, nullable = False)
     #: position
-    position = Column(Integer)
+    position = Column(Integer, default =1)
     #: If the question is obligatory or not
     required = Column(Boolean, default = True)
     #: possible choices
@@ -402,7 +403,8 @@ class Question(db.Model):
 
     #: Type of question, discriminate between classes
     type = Column('type', String(50))
-    __mapper_args__ = {'polymorphic_on': type}
+    __mapper_args__ = {'polymorphic_on': type,
+            'order_by':position}
     ## Relationships
     #: question belon to one survey
     # survey_id = Column(Integer, ForeignKey('survey.id'))
@@ -426,19 +428,11 @@ class Question(db.Model):
         backref=backref("question", uselist=False),
         single_parent=True)
 
-    def __init__(self, **kwargs):
-        super(Question, self).__init__(**kwargs)
-        question = Question.query.\
-            filter(Question.section_id==self.section_id).\
-            order_by(desc(Question.position)).first()
-        if question is None:
-            self.position=1
-        else:
-            self.position= question.position+1
     
     def __repr__(self):
         return "<question(id='%s')>" % (
             self.id)
+
 
     @hybrid_property
     def survey(self):
@@ -448,6 +442,18 @@ class Question(db.Model):
     # def survey(cls):
     #     return select(Survey).where(Survey.id==Section.root_id,\
     #         cls.section_id==Section.id )
+    
+    def last_position(self):
+        print self.section,"jaja\n"
+        question = Question.query.\
+            filter(Question.section==self.section).\
+            order_by(desc(Question.position)).first()
+        if question is None:
+            self.position=1
+        else:
+            self.position= question.position+1
+
+
 
     @hybrid_property
     def isSubquestion(self):
@@ -457,13 +463,6 @@ class Question(db.Model):
         '''return if there is a expected answer
         '''
         return len(self.expectedAnswer)>0
-        question = self.Question.query.\
-            filter(Question.section_id==self.section_id).\
-            order_by(desc(Question.position))
-        if question is None:
-            return 1
-        else:
-            return question.position+1
 
 
     def to_xml(self):
@@ -531,8 +530,8 @@ class Question(db.Model):
         return question
     
     @staticmethod
-    def from_xml(root,section,msg):
-        def fill_question(root,section,msg):
+    def from_xml(root,section,position,msg):
+        def fill_question(root,section,position,msg):
             texto = findField('text',root,msg)
             required = (findField('required',root,msg) =="True")
             money = (findField('money',root,msg) =="True")
@@ -583,23 +582,25 @@ class Question(db.Model):
             question.maxNumberAttempt = maxNumberAttempt
             question.choices = l
             question.section = section
-            return question
+            question.position=position
+            return question, position+1
 
-        def from_xml_subquestion(root,section,parent,msg):
-            question = fill_question(root,section,msg)
+        def from_xml_subquestion(root,section,parent,position,msg):
+            question,position = fill_question(root,section,position,msg)
             question.parent=parent
             db.session.add(question)
             for c in root.findall('condition'):
                 Condition.from_xml(c, question, msg)
             for q in root.findall('question'):
-                from_xml_subquestion(q, section, question, msg)
+                position = from_xml_subquestion(q, section, question,position, msg)
+            return position 
 
-
-        question = fill_question(root,section,msg)
+        question, position = fill_question(root,section,position,msg)
         db.session.add(question)
         for q in root.findall('question'):
-            from_xml_subquestion(q, section, question, msg)
+            position = from_xml_subquestion(q, section, question,position, msg)
 
+        return position
 
 
 class QuestionYN(Question):
