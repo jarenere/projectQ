@@ -105,7 +105,10 @@
             </div>
         </form>
     </div>
+    percent of survey:
     <div class="progress progress-info">
-        <div class="bar" style="width: {{percent}}%"></div>
+        <div class="bar" style="width: {{percent}}%">
+        <span class="sr-only">{{percent}}% Complete</span>
+        </div>
     </div>
 {% endblock %}
