@@ -302,6 +302,7 @@ def duplicate_section(id_survey,id_section):
         question_cp.expectedAnswer = q.expectedAnswer
         question_cp.maxNumberAttempt = q.maxNumberAttempt
         question_cp.section = s
+        question_cp.position = q.position
         db.session.add(question_cp)
 
     def _duplicate_section(s_parent,section):
