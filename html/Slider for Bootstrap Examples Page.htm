@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" style="" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Examples for bootstrap-slider plugin">
+    <meta name="author" content="">
+
+    <title>Slider for Bootstrap Examples Page</title>
+
+    <!-- core CSS -->
+    <link href="Slider%20for%20Bootstrap%20Examples%20Page_files/bootstrap.css" rel="stylesheet">
+    <link href="Slider%20for%20Bootstrap%20Examples%20Page_files/slider.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <style type="text/css">
+    	/* Space out content a bit */
+		body {
+		  padding-top: 20px;
+		  padding-bottom: 20px;
+		}
+
+		h1 small {
+			font-size: 51%;
+		}
+
+		/* Everything but the jumbotron gets side spacing for mobile first views */
+		.header,
+		.marketing,
+		.footer {
+		  padding-left: 15px;
+		  padding-right: 15px;
+		}
+
+		/* Custom page header */
+		.header {
+		  border-bottom: 1px solid #e5e5e5;
+		}
+		/* Make the masthead heading the same height as the navigation */
+		.header h3 {
+		  margin-top: 0;
+		  margin-bottom: 0;
+		  line-height: 40px;
+		  padding-bottom: 19px;
+		}
+
+		/* Custom page footer */
+		.footer {
+		  padding-top: 19px;
+		  color: #777;
+		  border-top: 1px solid #e5e5e5;
+		}
+
+		/* Customize container */
+		.container {
+			min-width: 640px;
+		}
+		@media (min-width: 768px) {
+		  .container {
+		    max-width: 1000px;
+		  }
+		}
+		.container-narrow > hr {
+		  margin: 30px 0;
+		}
+
+		/* Main marketing message and sign up button */
+		.title {
+		  text-align: center;
+		  border-bottom: 1px solid #e5e5e5;
+		}
+
+		/* Responsive: Portrait tablets and up */
+		@media screen and (min-width: 768px) {
+		  /* Remove the padding we set earlier */
+		  .header,
+		  .footer {
+		    padding-left: 0;
+		    padding-right: 0;
+		  }
+		  /* Space out the masthead */
+		  .header {
+		    margin-bottom: 30px;
+		  }
+		  /* Remove the bottom border on the jumbotron for visual effect */
+		  .title {
+		    border-bottom: 0;
+		  }
+		}
+
+		.well {
+			background-color: #E0E0E0;
+		}
+
+		.slider-example {
+			padding: 10px 0;
+			margin: 35px 0;
+		}
+
+		#destroyEx5Slider, #ex6CurrentSliderValLabel, #ex7-enabled {
+			margin-left: 45px;
+		}
+
+		#ex6SliderVal {
+			color: green;
+		}
+    </style>
+
+    <style type="text/css">
+		/* Example 1 custom styles */
+		#ex1Slider .slider-selection {
+   			background: #BABABA;
+  		}
+
+    	/* Example 3 custom styles */
+		#RGB {
+    		height: 20px;
+    		background: rgb(128, 128, 128);
+  		}
+		#RC .slider-selection {
+		    background: #FF8282;
+		}
+		#RC .slider-handle {
+			background: red;
+		}
+		#GC .slider-selection {
+			background: #428041;
+		}
+		#GC .slider-handle {
+			background: green;
+		}
+		#BC .slider-selection {
+			background: #8283FF;
+		}
+		#BC .slider-handle {
+			border-bottom-color: blue;
+		}
+		#R, #G, #B {
+			width: 300px;
+		}
+    </style>
+	<script type="text/javascript" src="Slider%20for%20Bootstrap%20Examples%20Page_files/modernizr.js"></script>
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <div class="jumbotron">
+        <h1>Slider for Bootstrap <small>bootstrap-slider.js</small></h1>
+        <p class="lead">Examples for the bootstrap-slider component.</p><p>
+      </p></div>
+
+      <div class="examples">
+      	<div class="slider-example">
+      		<h3>Example 1:</h3>
+      		<p>Basic example with custom formater and colored selected region via CSS.</p>
+      		<div class="well">
+				<div id="ex1Slider" class="slider slider-horizontal"><div class="slider-track"><div style="left: 0%; width: 70%;" class="slider-selection"></div><div tabindex="0" style="left: 70%;" class="slider-handle round"></div><div tabindex="0" style="left: 0%;" class="slider-handle round hide"></div></div><div style="top: -30px; left: 92.5px;" class="tooltip top"><div class="tooltip-arrow"></div><div class="tooltip-inner">Current value: 14</div></div><input style="display: none;" id="ex1" data-slider-id="ex1Slider" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="10" data-slider-enabled="false" type="text"></div>
+			</div>
+			<pre><code>
+###################
+       HTML	
+###################
+
+&lt;input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/&gt;
+
+
+
+###################
+    JavaScript	
+###################
+
+$('#ex1').slider({
+	formater: function(value) {
+		return 'Current value: ' + value;
+	}
+});
+
+
+
+###################
+       CSS	
+###################
+
+#ex1Slider .slider-selection {
+	background: #BABABA;
+}
+
+            </code></pre>
+      	</div>
+
+      	<div class="slider-example">
+      		<h3>Example 2:</h3>
+      		<p>Range selector, options specified via data attribute.</p>
+      		<div class="well">
+      			Filter by price interval: <b>€ 10</b> <div class="slider slider-horizontal"><div class="slider-track"><div style="left: 24.2424%; width: 20.202%;" class="slider-selection"></div><div tabindex="0" style="left: 24.2424%;" class="slider-handle round"></div><div tabindex="0" style="left: 44.4444%;" class="slider-handle round"></div></div><div style="top: -30px; left: 38.6212px;" class="tooltip top"><div class="tooltip-arrow"></div><div class="tooltip-inner">250 : 450</div></div><input style="display: none;" id="ex2" class="span2" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]" type="text"></div> <b>€ 1000</b>
+      		</div>
+      		<pre><code>
+###################
+       HTML	
+###################
+
+Filter by price interval: &lt;b&gt;€ 10&lt;/b&gt; &lt;input id="ex2" type="text" class="span2" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]"/&gt; &lt;b&gt;€ 1000&lt;/b&gt;
+
+
+###################
+    JavaScript	
+###################
+
+$("#ex2").slider({});
+
+            </code></pre>
+      	</div>
+
+      	<div class="slider-example">
+      		<h3>Example 3:</h3>
+      		<p>Using events to work with the values and style the selection 
+and handles via CSS. The tooltip is disabled and diferent shapes for the
+ handles.</p>
+      		<div class="well">
+      			<p>
+	        	<b>R</b> <div id="RC" class="slider slider-horizontal"><div class="slider-track"><div style="left: 0%; width: 50.1961%;" class="slider-selection"></div><div tabindex="0" style="left: 50.1961%;" class="slider-handle"></div><div tabindex="0" style="left: 0%;" class="slider-handle hide"></div></div><div style="top: -30px; left: 86.9118px;" class="tooltip top hide"><div class="tooltip-arrow"></div><div class="tooltip-inner">128</div></div><input style="display: none;" class="span2" data-slider-min="0" data-slider-max="255" data-slider-step="1" data-slider-value="128" data-slider-id="RC" id="R" data-slider-tooltip="hide" data-slider-handle="square" type="text"></div>
+	            </p>
+	            <p>
+	            <b>G</b> <div id="GC" class="slider slider-horizontal"><div class="slider-track"><div style="left: 0%; width: 50.1961%;" class="slider-selection"></div><div tabindex="0" style="left: 50.1961%;" class="slider-handle round"></div><div tabindex="0" style="left: 0%;" class="slider-handle round hide"></div></div><div style="top: -30px; left: 86.9118px;" class="tooltip top hide"><div class="tooltip-arrow"></div><div class="tooltip-inner">128</div></div><input style="display: none;" class="span2" data-slider-min="0" data-slider-max="255" data-slider-step="1" data-slider-value="128" data-slider-id="GC" id="G" data-slider-tooltip="hide" data-slider-handle="round" type="text"></div>
+	            </p>
+	            <p>
+	            <b>B</b> <div id="BC" class="slider slider-horizontal"><div class="slider-track"><div style="left: 0%; width: 50.1961%;" class="slider-selection"></div><div tabindex="0" style="left: 50.1961%;" class="slider-handle triangle"></div><div tabindex="0" style="left: 0%;" class="slider-handle triangle hide"></div></div><div style="top: -30px; left: 86.9118px;" class="tooltip top hide"><div class="tooltip-arrow"></div><div class="tooltip-inner">128</div></div><input style="display: none;" class="span2" data-slider-min="0" data-slider-max="255" data-slider-step="1" data-slider-value="128" data-slider-id="BC" id="B" data-slider-tooltip="hide" data-slider-handle="triangle" type="text"></div>
+	            </p>
+	            <div id="RGB"></div>
+      		</div>
+      		<pre><code>
+###################
+       HTML	
+###################
+
+&lt;p&gt;
+&lt;b&gt;R&lt;/b&gt; &lt;input type="text" class="span2" value="" data-slider-min="0" data-slider-max="255" data-slider-step="1" data-slider-value="128" data-slider-id="RC" id="R" data-slider-tooltip="hide" data-slider-handle="square" /&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;b&gt;G&lt;/b&gt; &lt;input type="text" class="span2" value="" data-slider-min="0" data-slider-max="255" data-slider-step="1" data-slider-value="128" data-slider-id="GC" id="G" data-slider-tooltip="hide" data-slider-handle="round" /&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;b&gt;B&lt;/b&gt; &lt;input type="text" class="span2" value="" data-slider-min="0" data-slider-max="255" data-slider-step="1" data-slider-value="128" data-slider-id="BC" id="B" data-slider-tooltip="hide" data-slider-handle="triangle" /&gt;
+&lt;/p&gt;
+&lt;div id="RGB"&gt;&lt;/div&gt;
+
+
+###################
+    JavaScript	
+###################
+
+var RGBChange = function() {
+	$('#RGB').css('background', 'rgb('+r.getValue()+','+g.getValue()+','+b.getValue()+')')
+};
+
+var r = $('#R').slider()
+		.on('slide', RGBChange)
+		.data('slider');
+var g = $('#G').slider()
+		.on('slide', RGBChange)
+		.data('slider');
+var b = $('#B').slider()
+		.on('slide', RGBChange)
+		.data('slider');
+
+
+###################
+       CSS	
+###################
+
+#RGB {
+	height: 20px;
+	background: rgb(128, 128, 128);
+}
+#RC .slider-selection {
+	background: #FF8282;
+}
+#RC .slider-handle {
+	background: red;
+}
+#GC .slider-selection {
+	background: #428041;
+}
+#GC .slider-handle {
+	background: green;
+}
+#BC .slider-selection {
+	background: #8283FF;
+}
+#BC .slider-handle {
+	border-bottom-color: blue;
+}
+#R, #G, #B {
+	width: 300px;
+}
+
+            </code></pre>
+      	</div>
+
+      	<div class="slider-example">
+      		<h3>Example 4:</h3>
+      		<p>Vertical Slider with reversed values (largest to smallest).</p>
+      		<div class="well">
+      			<div class="slider slider-vertical"><div class="slider-track"><div style="top: 0%; height: 92%;" class="slider-selection"></div><div tabindex="0" style="top: 92%;" class="slider-handle round"></div><div tabindex="0" style="top: 0%;" class="slider-handle round hide"></div></div><div style="left: 100%; top: 181.7px;" class="tooltip right"><div class="tooltip-arrow"></div><div class="tooltip-inner">-3</div></div><input style="display: none;" id="ex4" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="-3" data-slider-orientation="vertical" type="text"></div>
+      		</div>
+      		<pre><code>
+###################
+       HTML	
+###################
+
+&lt;input id="ex4" type="text" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="-3" data-slider-orientation="vertical"/&gt;
+
+
+###################
+    JavaScript	
+###################
+
+$("#ex4").slider({
+	reversed : true
+});
+
+            </code></pre>
+      	</div>
+
+      	<div class="slider-example">
+      		<h3>Example 5:</h3>
+      		<p>Destroy instance of slider by calling destroy() method on slider instance via JavaScript.
+      		</p><div class="well">
+      			<div class="slider slider-horizontal"><div class="slider-track"><div style="left: 0%; width: 20%;" class="slider-selection"></div><div tabindex="0" style="left: 20%;" class="slider-handle round"></div><div tabindex="0" style="left: 0%;" class="slider-handle round hide"></div></div><div style="top: -30px; left: 30.5px;" class="tooltip top"><div class="tooltip-arrow"></div><div class="tooltip-inner">0</div></div><input style="display: none;" id="ex5" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="0" type="text"></div>
+      			<button id="destroyEx5Slider" class="btn btn-danger">Click to Destroy</button>
+      		</div>
+      		<pre><code>
+###################
+       HTML	
+###################
+
+&lt;input id="ex5" type="text" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="0"/&gt;
+&lt;button id="destroyEx5Slider" class='btn btn-danger'&gt;Click to Destroy&lt;/button&gt;
+
+
+###################
+    JavaScript	
+###################
+
+$("#ex5").slider();
+$("#destroyEx5Slider").click(function() {
+	$("#ex5").slider('destroy');
+});
+
+            </code></pre>
+      	</div>
+
+      	<div class="slider-example">
+      		<h3>Example 6:</h3>
+      		<p>Able to bind to 'slide' JQuery event on slider, which is triggered whenever the slider is used.</p>
+      		<div class="well">
+      			<div class="slider slider-horizontal"><div class="slider-track"><div style="left: 0%; width: 32%;" class="slider-selection"></div><div tabindex="0" style="left: 32%;" class="slider-handle round"></div><div tabindex="0" style="left: 0%;" class="slider-handle round hide"></div></div><div style="top: -30px; left: 55.7px;" class="tooltip top"><div class="tooltip-arrow"></div><div class="tooltip-inner">3</div></div><input style="display: none;" id="ex6" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="3" type="text"></div>
+      			<span id="ex6CurrentSliderValLabel">Current Slider Value: <span id="ex6SliderVal">3</span></span>
+      		</div>
+      		<pre><code>
+###################
+       HTML	
+###################
+
+&lt;input id="ex6" type="text" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="3"/&amp;t
+&lt;span id="ex6CurrentSliderValLabel"&gt;Current Slider Value: &lt;span id="ex6SliderVal"&gt;3&lt;/span&gt;&lt;/span&gt;
+
+
+###################
+    JavaScript	
+###################
+
+$("#ex6").slider();
+$("#ex6").on('slide', function(slideEvt) {
+	$("#ex6SliderVal").text(slideEvt.value);
+});
+
+            </code></pre>
+      	</div>
+
+      	<div class="slider-example">
+      		<h3>Example 7:</h3>
+      		<p>Sliders can be enabled and disabled.</p>
+      		<div class="well">
+      			<div class="slider slider-horizontal slider-disabled"><div class="slider-track"><div style="left: 0%; width: 25%;" class="slider-selection"></div><div style="left: 25%;" class="slider-handle round"></div><div style="left: 0%;" class="slider-handle round hide"></div></div><div style="top: -30px; left: 41px;" class="tooltip top"><div class="tooltip-arrow"></div><div class="tooltip-inner">5</div></div><input style="display: none;" id="ex7" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="5" data-slider-enabled="false" type="text"></div>
+      			<input id="ex7-enabled" type="checkbox"> Enabled
+      		</div>
+      		<pre><code>
+###################
+       HTML	
+###################
+
+&lt;input id="ex7" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="5" data-slider-enabled="false"/&gt;
+&lt;input id="ex7-enabled" type="checkbox"/&gt; Enabled
+
+
+###################
+    JavaScript	
+###################
+
+$("#ex7").slider();
+$("#ex7-enabled").click(function() {
+	if(this.checked) {
+		$("#ex7").slider("enable");
+	}
+	else {
+		$("#ex7").slider("disable");
+	}
+});
+
+            </code></pre>
+      	</div>
+      </div>
+
+      <div class="slider-example">
+  		<h3>Example 8:</h3>
+  		<p>Tooltip can always be displayed.</p>
+  		<div class="well">
+				<div id="ex1Slider" class="slider slider-horizontal"><div class="slider-track"><div style="left: 0%; width: 70%;" class="slider-selection"></div><div tabindex="0" style="left: 70%;" class="slider-handle round"></div><div tabindex="0" style="left: 0%;" class="slider-handle round hide"></div></div><div style="top: -30px; left: 132px;" class="tooltip top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">14</div></div><input style="display: none;" id="ex8" data-slider-id="ex1Slider" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14" type="text"></div>
+  		</div>
+  		<pre><code>
+###################
+       HTML	
+###################
+
+&lt;input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/&gt;
+
+
+###################
+    JavaScript	
+###################
+
+$("#ex8").slider({
+	tooltip: 'always'
+});
+
+            </code></pre>
+      	</div>
+      </div>
+
+     <!-- /container -->
+
+
+    <!-- core JavaScript
+    ================================================== -->
+    <script type="text/javascript" src="Slider%20for%20Bootstrap%20Examples%20Page_files/jquery.js"></script>
+    <script type="text/javascript" src="Slider%20for%20Bootstrap%20Examples%20Page_files/bootstrap-slider.js"></script>
+    <script type="text/javascript">
+    	$(document).ready(function() {
+    		/* Example 1 */
+	    	$('#ex1').slider({
+	          	formater: function(value) {
+	            	return 'Current value: ' + value;
+	          	}
+	        });
+
+	    	/* Example 2 */
+	        $("#ex2").slider({});
+
+	        /* Example 3 */
+	        var RGBChange = function() {
+	          $('#RGB').css('background', 'rgb('+r.getValue()+','+g.getValue()+','+b.getValue()+')')
+	        };
+
+	        var r = $('#R').slider()
+	                	.on('slide', RGBChange)
+	                	.data('slider');
+	        var g = $('#G').slider()
+	                	.on('slide', RGBChange)
+	                	.data('slider');
+	        var b = $('#B').slider()
+	                	.on('slide', RGBChange)
+	                	.data('slider');
+
+	        /* Example 4 */
+	        $("#ex4").slider({
+	        	reversed : true
+	        });
+
+	        /* Example 5 */
+	        $("#ex5").slider();
+			$("#destroyEx5Slider").click(function() {
+				$("#ex5").slider('destroy');
+			});
+
+			/* Example 6 */
+			$("#ex6").slider();
+			$("#ex6").on('slide', function(slideEvt) {
+				$("#ex6SliderVal").text(slideEvt.value);
+			});
+
+			/* Example 7 */
+			$("#ex7").slider();
+			$("#ex7-enabled").click(function() {
+				if(this.checked) {
+					$("#ex7").slider("enable");
+				}
+				else {
+					$("#ex7").slider("disable");
+				}
+			});
+
+			/* Example 8 */
+			$("#ex8").slider({
+				tooltip: 'always'
+			});
+    	});
+    </script>
+    <!-- Placed at the end of the document so the pages load faster -->
+  
+</body></html>

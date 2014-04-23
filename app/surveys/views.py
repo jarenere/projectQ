@@ -378,7 +378,16 @@ def showQuestions(id_survey, id_section):
         print "valiendo"
         return redirect(url_for('surveys.logicSurvey',id_survey = id_survey))
 
-    return render_template('/surveys/showQuestions.html',
+    # return render_template('/surveys/showQuestions.html',
+    #         title = survey.title,
+    #         survey = survey,
+    #         section = section,
+    #         # form = form,
+    #         form = form,
+    #         questions = questions,
+    #         percent = stateSurvey.percentSurvey()
+    #         )
+    return render_template('/surveys/likert.html',
             title = survey.title,
             survey = survey,
             section = section,

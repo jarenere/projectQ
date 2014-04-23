@@ -1,0 +1,385 @@
+ 
+<head>
+    <style type="text/css">
+    .likert ul
+    {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .likert li
+    {
+        float: left;
+        text-align: left;
+        list-style-type: none;
+    }
+    </style>
+</head>
+
+<body>
+
+    <div>
+        <ul class="likert">
+            <li class="likert"> Not Guilty <input id="radGuiltyStart" type="radio" name="Guilty" value="1" />
+            <li class="likert"><input type="radio" name="Guilty" value="2" />
+            <li class="likert"><input type="radio" name="Guilty" value="3" />
+            <li class="likert"><input type="radio" name="Guilty" value="4" />
+            <li class="likert"><input id="radGuiltyEnd" type="radio" name="Guilty" value="5" /> Very Guilty
+        </ul>
+    </div>
+
+</body>
+
+
+<style type="text/css">
+th+th, td+td{width:auto;text-align: center}
+th  {text-align:left; background: #ccc; text-transform:capitalize;width:15em}
+td,th {padding:10px;}
+tr:nth-child(2n) td{background: #eee}
+td label {height: 0; overflow: hidden; display: block}
+</style>
+<table>
+        <thead>
+                <tr>
+                        <th>the Question </th>
+                        <th>most</th>
+                        <th>almost</th>
+                        <th>some</label></th>
+                        <th>barely</th>
+                        <th>none</th>
+                </tr>
+                <thead>
+<tr>
+        <td>1) Question</td>
+        <td><label for="most1">most</label></label><input type="radio" id="most1" name="q1"></td>
+        <td><label for="almost1">most</label><input type="radio" id="almost1"name="q1"> </td>
+        <td><label for="some1">most</label><input type="radio" id="some1" name="q1"></td>
+        <td><label for="barely1">most</label><input type="radio" id="barely1" name="q1"> </td>
+        <td><label for="none1">most</label><input type="radio" id="none1" name="q1"> </td>
+</tr>
+<tr>
+        <td>2) Question</td>
+        <td><label for="most2">most</label></label><input type="radio" id="most2" name="q2"></td>
+        <td><label for="almost2">most</label><input type="radio" id="almost2"name="q2"> </td>
+        <td><label for="some2">most</label><input type="radio" id="some2" name="q2"></td>
+        <td><label for="barely2">most</label><input type="radio" id="barely2" name="q2"> </td>
+        <td><label for="none2">most</label><input type="radio" id="none2" name="q2"> </td>
+</tr>
+<tr>
+        <td>3) Question</td>
+        <td><label for="most3">most</label></label><input type="radio" id="most3" name="q3"></td>
+        <td><label for="almost3">most</label><input type="radio" id="almost3"name="q3"> </td>
+        <td><label for="some3">most</label><input type="radio" id="some3" name="q3"></td>
+        <td><label for="barely3">most</label><input type="radio" id="barely3" name="q3"> </td>
+        <td><label for="none3">most</label><input type="radio" id="none3" name="q3"> </td>
+</tr>
+</table>
+
+
+
+<style type="text/css">
+ol {padding-top:2em}
+li em, li label, li input {display:inline-block; padding:0 10px 10px 10px; vertical-align: top}
+li {position: relative; }
+li em{ width:10.5em}
+li label{position: absolute;width:4em; bottom: 100% ; margin-left: -2em; font-weight: bold}
+li input, li label { width:4em ; text-align: center}
+li+ li label {left:-9999em ;}
+</style>
+<ol>
+        <li> 
+         <em>Question </em>
+         <label for="most1">most</label><input type="radio" id="most1" name="q1"> 
+         <label for="almost1">almost</label><input type="radio" id="almost1"name="q1">  
+         <label for="some1">some</label><input type="radio" id="some1" name="q1"> 
+         <label for="barely1">barely</label><input type="radio" id="barely1" name="q1">  
+         <label for="none1">none</label><input type="radio" id="none1" name="q1">  
+</li>
+<li>
+         <em> A really much longer Longer Question </em>
+         <label for="most2">most</label><input type="radio" id="most2" name="q2"> 
+         <label for="almost2">almost</label><input type="radio" id="almost2"name="q2">  
+         <label for="some2">some</label><input type="radio" id="some2" name="q2"> 
+         <label for="barely2">barely</label><input type="radio" id="barely2" name="q2">  
+         <label for="none2">most</label><input type="radio" id="none2" name="q2">  
+</li>
+<li>
+         <em>Question </em>
+         <label for="most3">most</label><input type="radio" id="most3" name="q3"> 
+         <label for="almost3">almost</label><input type="radio" id="almost3"name="q3">  
+         <label for="some3">some</label><input type="radio" id="some3" name="q3"> 
+         <label for="barely3">barely</label><input type="radio" id="barely3" name="q3">  
+         <label for="none3">none</label><input type="radio" id="none3" name="q3">  
+</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+/****************************/
+/* RATE THIS ARTICLE Styles     */
+/****************************/
+#rateThisArticle{
+        width: 800px;
+}
+ 
+#rateThisArticle fieldset{
+        padding: 30px 48px 50px 48px;           /**/
+}
+ 
+#rateThisArticle legend{
+        margin: 0 0 0 -2.5em;           /**/
+}
+ 
+form#rateThisArticle label{
+        display: inline;
+        font-weight: bold;
+}
+ 
+#rateThisArticle table{
+        margin: 0;
+        border-collapse: collapse;
+}
+ 
+#rateThisArticle th{
+        padding: 4px 5px 2px 5px;
+        text-align: center;
+        border: 1px solid #AAA;
+        background-color: #DDD;
+}
+ 
+#rateThisArticle td{
+        padding: 6px 5px 6px 5px;
+        text-align: center;
+        border: 1px solid #AAA;
+}
+ 
+#rateThisArticle .colQuestion{
+        width: 350px;
+        text-align: left;
+}
+
+
+<!-- TABLE #2 -->
+        <table border='1'  cellspacing='1'>
+                <!-- Heading Data -->
+                <thead>
+                        <!-- Column Headings -->
+                        <tr>
+                                <th class='colQuestion'><br /><br />Question</th>
+                                <th id='col1'>Strongly<br />Disagree<br />1</th>
+                                <th id='col2'><br />Disagree<br />2</th>
+                                <th id='col3'><br />Neither<br />3</th>
+                                <th id='col4'><br />Agree<br />4</th>
+                                <th id='col5'>Strongly<br />Agree<br />5</th>
+                        </tr>
+                </thead>
+
+                <!-- Body Data -->
+                <tbody>
+                        <tr>
+                                <td class="colQuestion">5.) This article was informative.</td>
+                                <td>
+                                        <input id="Question5_Opt1" name="responseToQuestion[1]" type="radio" value="1" />
+                                </td>
+                                <td>
+                                        <input id="Question5_Opt2" name="responseToQuestion[1]" type="radio" value="2" />
+                                </td>
+                                <td>
+                                        <input id="Question5_Opt3" name="responseToQuestion[1]" type="radio" value="3" />
+                                </td>
+                                <td>
+                                        <input id="Question5_Opt4" name="responseToQuestion[1]" type="radio" value="4" checked="checked" />
+                                </td>
+                                <td>
+                                        <input id="Question5_Opt5" name="responseToQuestion[1]" type="radio" value="5" />
+                                </td>
+                        </tr>
+                        <tr>
+                                <td class="colQuestion">6.) This article was interesting.</td>
+                                <td>
+                                        <input id="Question6_Opt1" name="responseToQuestion[2]" type="radio" value="1" />
+                                </td>
+                                <td>
+                                        <input id="Question6_Opt2" name="responseToQuestion[2]" type="radio" value="2" />
+                                </td>
+                                <td>
+                                        <input id="Question6_Opt3" name="responseToQuestion[2]" type="radio" value="3" checked="checked"/>
+                                </td>
+                                <td>
+                                        <input id="Question6_Opt4" name="responseToQuestion[2]" type="radio" value="4" />
+                                </td>
+                                <td>
+                                        <input id="Question6_Opt5" name="responseToQuestion[2]" type="radio" value="5" />
+                                </td>
+                        </tr>
+                </tbody>
+        </table>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+<!-- TABLE #2 -->
+<table border='1'  cellspacing='1'>
+        <!-- Heading Data -->
+        <thead>
+                <!-- Column Headings -->
+                <tr>
+                        <th class='colQuestion'><br /><br />Question</th>
+                        <th id='col1'>Strongly<br />Disagree<br />1</th>
+                        <th id='col2'><br />Disagree<br />2</th>
+                        <th id='col3'><br />Neither<br />3</th>
+                        <th id='col4'><br />Agree<br />4</th>
+                        <th id='col5'>Strongly<br />Agree<br />5</th>
+                </tr>
+        </thead>
+
+        <!-- Body Data -->
+        <tbody>
+                <tr>
+                        <td class="colQuestion" id="q5">5.) This article was informative.</td>
+                        <td>
+                                <input id="Question5_Opt1" name="responseToQuestion[1]" type="radio" value="1" aria-labelledby="q5 col1" />
+                        </td>
+                        <td>
+                                <input id="Question5_Opt2" name="responseToQuestion[1]" type="radio" value="2" aria-labelledby="q5 col2" />
+                        </td>
+                        <td>
+                                <input id="Question5_Opt3" name="responseToQuestion[1]" type="radio" value="3" aria-labelledby="q5 col3" />
+                        </td>
+                        <td>
+                                <input id="Question5_Opt4" name="responseToQuestion[1]" type="radio" value="4" aria-labelledby="q5 col4" checked="checked" />
+                        </td>
+                        <td>
+                                <input id="Question5_Opt5" name="responseToQuestion[1]" type="radio" value="5" aria-labelledby="q5 col5" />
+                        </td>
+                </tr>
+                <tr>
+                        <td class="colQuestion" id="q6">6.) This article was interesting.</td>
+                        <td>
+                                <input id="Question6_Opt1" name="responseToQuestion[2]" type="radio" value="1" aria-labelledby="q6 col1" />
+                        </td>
+                        <td>
+                                <input id="Question6_Opt2" name="responseToQuestion[2]" type="radio" value="2" aria-labelledby="q6 col2" />
+                        </td>
+                        <td>
+                                <input id="Question6_Opt3" name="responseToQuestion[2]" type="radio" value="3" aria-labelledby="q6 col3" checked="checked"/>
+                        </td>
+                        <td>
+                                <input id="Question6_Opt4" name="responseToQuestion[2]" type="radio" value="4" aria-labelledby="q6 col4" />
+                        </td>
+                        <td>
+                                <input id="Question6_Opt5" name="responseToQuestion[2]" type="radio" value="5" aria-labelledby="q6 col5" />
+                        </td>
+                </tr>
+        </tbody>
+</table>
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Survey example</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<h1>Presidential Survey</h1>    
+<form action= ""  method="POST" id="form1">
+        
+George W. Bush was a good president:<br />
+
+<span class="answers">
+        Strongly Disagree
+                <input type="radio" name="q1" value="1" />      
+                <input type="radio" name="q1" value="2" />      
+                <input type="radio" name="q1" value="3" />      
+                <input type="radio" name="q1" value="4" />      
+                <input type="radio" name="q1" value="5" />      
+        Strongly Agree
+</span>
+
+<br />
+<br />
+
+
+Bill Clinton was a good president:<br />
+
+<span class="answers">
+        Strongly Disagree
+                <input type="radio" name="q2" value="1" />      
+                <input type="radio" name="q2" value="2" />      
+                <input type="radio" name="q2" value="3" />      
+                <input type="radio" name="q2" value="4" />      
+                <input type="radio" name="q2" value="5" />      
+        Strongly Agree
+</span>
+
+<br />
+<br />
+
+Abe Lincoln was a good president:<br />
+
+<span class="answers">
+        Strongly Disagree
+                <input type="radio" name="q3" value="1" />      
+                <input type="radio" name="q3" value="2" />      
+                <input type="radio" name="q3" value="3" />      
+                <input type="radio" name="q3" value="4" />      
+                <input type="radio" name="q3" value="5" />      
+        Strongly Agree
+</span>
+
+</form> 
+
+<input type='button'   value='score' onclick="score()"  />      
+
+<script type='text/javascript'>
+        function el(tid) {return document.getElementById(tid);}
+
+        function score(){
+                var ems = el("form1").elements;
+                var buff=[], count=0;
+                for(var i=0, mx=ems.length;i<mx;i++){
+                        if(ems[i].checked){ buff[buff.length]="Question "+(count++)+" : "+ems[i].value; }               
+                }
+                alert(buff.join("\n"));
+        }
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+<div class="ss-form-entry"><label class="ss-q-item-label" for="entry_998627400"><div class="ss-q-title">likert
+</div>
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+
+<table id="entry_427342406" border="0" cellpadding="5" cellspacing="0"><tbody><tr aria-hidden="true"><td class="ss-scalenumbers"></td>
+    <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_427342406_1">0</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_427342406_2">1</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_427342406_3">2</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_427342406_4">3</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_427342406_5">4</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_427342406_6">5</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_427342406_7">6</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_427342406_8">7</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_427342406_9">8</label></td>
+    <td class="ss-scalenumbers"></td></tr>
+    <tr role="radiogroup" aria-label="likert  Selecciona un valor en el intervalo de 0,bueno, a 8,malo, ."><td class="ss-scalerow ss-leftlabel"><div aria-hidden="true" class="aria-todo">bueno</div></td>
+        <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input name="entry.427342406" value="0" id="group_427342406_1" role="radio" class="ss-q-radio" aria-label="0" type="radio"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input name="entry.427342406" value="1" id="group_427342406_2" role="radio" class="ss-q-radio" aria-label="1" type="radio"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input name="entry.427342406" value="2" id="group_427342406_3" role="radio" class="ss-q-radio" aria-label="2" type="radio"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input name="entry.427342406" value="3" id="group_427342406_4" role="radio" class="ss-q-radio" aria-label="3" type="radio"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input name="entry.427342406" value="4" id="group_427342406_5" role="radio" class="ss-q-radio" aria-label="4" type="radio"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input name="entry.427342406" value="5" id="group_427342406_6" role="radio" class="ss-q-radio" aria-label="5" type="radio"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input name="entry.427342406" value="6" id="group_427342406_7" role="radio" class="ss-q-radio" aria-label="6" type="radio"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input name="entry.427342406" value="7" id="group_427342406_8" role="radio" class="ss-q-radio" aria-label="7" type="radio"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input name="entry.427342406" value="8" id="group_427342406_9" role="radio" class="ss-q-radio" aria-label="8" type="radio"></div></td>
+        <td class="ss-scalerow ss-rightlabel" aria-hidden="true">malo</td></tr></tbody></table>
+        <div class="required-message">Esta pregunta es obligatoria.</div>
+    </div>
