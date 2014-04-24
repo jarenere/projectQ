@@ -12,3 +12,7 @@ def index():
     text =  f.read()
     f.close()
     return render_template('index.html', text = text)
+
+@blueprint.route('/pruebas')
+def pruebas():
+    return render_template('pruebas.html')
