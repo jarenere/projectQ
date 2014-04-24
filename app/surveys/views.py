@@ -11,10 +11,12 @@ from app.models import StateSurvey
 from app.models import Answer
 from flask.ext.wtf import Form
 from sqlalchemy.sql import func
-from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField, DecimalField
+from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField, DecimalField,StringField
 from wtforms.validators import Required, Regexp, Optional
 from wtforms import ValidationError
+from wtforms.fields import Field
 from wtforms.validators import StopValidation
+from wtforms.widgets import ListWidget, TextInput
 import datetime
 from . import blueprint
 from app.decorators import valid_survey, there_is_stateSurvey
@@ -214,10 +216,100 @@ def generate_form(questions):
                 field.errors[:] = []
                 raise StopValidation()
 
+    class ClassedWidgetMixin(object):
+        """Adds the field's name as a class 
+        when subclassed with any WTForms Field type.
+
+        Has not been tested - may not work."""
+        def __init__(self, *args, **kwargs):
+            super(ClassedWidgetMixin, self).__init__(*args, **kwargs)
+
+        def __call__(self, field, **kwargs):
+            c = kwargs.pop('class', '') or kwargs.pop('class_', '')
+            kwargs['class'] = u'%s %s' % (field.short_name, c)
+            print kwargs['class'],"jeje\n"
+            return super(ClassedWidgetMixin, self).__call__(field, **kwargs)
+
+
+    class TagListField(Field):
+        widget = TextInput()
+
+        def _value(self):
+            if self.data:
+                return u', '.join(self.data)
+            else:
+                return u''
+
+        def process_formdata(self, valuelist):
+            if valuelist:
+                self.data = [x.strip() for x in valuelist[0].split(',')]
+            else:
+                self.data = []
+
+        def __call__(self, **kwargs):
+            print "jeje\n"
+            print super(TagListField, self).__call__(**kwargs)
+            return super(TagListField, self).__call__(**kwargs)
+
+    class LikertForm(RadioField):
+        def __init__(self, label='', validators=None, labelMin="", labelMax="", **kwargs):
+            self.labelMin=labelMin
+            self.labelMax=labelMax
+            super(LikertForm, self).__init__(label, validators, **kwargs)
+
+        def __call__(self, **kwargs):
+            '''render likert as table
+            '''
+            from wtforms.widgets.core import html_params, HTMLString
+            kwargs.setdefault('id', self.id)
+            kwargs.setdefault('class_', " table table-condensed likert")
+            html = ['<%s %s>' % ("table", html_params(**kwargs))]
+            html.append('<tr>')
+            html.append('<td></td>')
+            for subfield in self:
+                html.append('<td>%s</td>' % (subfield.label))
+            html.append('</tr>')
+            html.append('<tr>')
+            html.append('<td class="type-info">%s</td>' % (self.labelMin))
+            for subfield in self:
+                    html.append('<td>%s</td>' % (subfield()))
+            html.append('<td class="type-info">%s</td>' % (self.labelMax))
+            html.append('</tr>')
+
+            html.append('</%s>' % "table")
+            return  HTMLString(''.join(html))
+            # return super(RadioField, self).__call__(**kwargs)
+
+
+        def __call1__(self, **kwargs):
+            '''render likert as list
+            '''
+            from wtforms.widgets.core import html_params, HTMLString
+            kwargs.setdefault('id', self.id)
+            kwargs.setdefault('class_', "likert")
+            html = ['<%s %s>' % (self.widget.html_tag, html_params(**kwargs))]
+            html.append('<li>%s</li>' % (self.labelMin))
+
+            for subfield in self:
+                if self.widget.prefix_label:
+                    html.append('<li>%s %s</li>' % (subfield.label, subfield()))
+                else:
+                    html.append('<li>%s %s</li>' % (subfield(), subfield.label))
+            html.append('<li>%s</li>' % (self.labelMax))
+            html.append('</%s>' % self.widget.html_tag)
+            return  HTMLString(''.join(html))
+            # return super(RadioField, self).__call__(**kwargs)
+
+
+    # class Likert(ClassedWidgetMixin, ListWidget):
+    #     pass
+
+    class ClassedTextInput(ClassedWidgetMixin, TextInput):
+        pass
 
     class AnswerForm(Form):
         time = HiddenField('time',default=0)
-
+        
     for question in questions:
 
         setattr(AnswerForm,"globalTimec"+str(question.id),HiddenField('globalTimec'+str(question.id),default=0))
@@ -288,13 +380,28 @@ def generate_form(questions):
         if isinstance (question, QuestionLikertScale):
             list = [(str(index),index) for index in range(question.minLikert,question.maxLikert+1)]
             if question.required:
-                setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
-                    choices = list,validators = [Required()]))
+                setattr(AnswerForm,"c"+str(question.id),LikertForm('Answer', 
+                    choices = list,
+                    labelMin= question.labelMin,
+                    labelMax=question.labelMax,
+                    validators = [Required()]))
+                # setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                #     choices = list,widget=Likert,validators = [Required()]))
+                # AnswerForm["c"+str(question.id)](class_="likert")
+                # form.field(class_="text_blob")
             else:
                 setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
                     choices = list,validators = [Optional()]))
 
     form = AnswerForm()
+    # for question in questions:
+    #     if isinstance (question, QuestionLikertScale):
+    #         form["c"+str(question.id)].flags.likert=True
+    #         form["c"+str(question.id)].flags.labelMin=question.labelMin
+    #         form["c"+str(question.id)].flags.labelMax=question.labelMax
+    #         form["c"+str(question.id)].class_= "likert"
+    #         print form["c"+str(question.id)].class_
+    #             # form.c253.flags.likert=True
     return form
 
 def writeQuestion(question, form):
