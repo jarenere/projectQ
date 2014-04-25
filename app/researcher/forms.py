@@ -73,6 +73,8 @@ class QuestionForm(Form):
     labelMaxLikert = TextField('max',validators = [Length(min = 0, max = 128)], description = 'label optional')
 
     #: text of possible answers of the choice questions
+    range_min = IntegerField('Range min', validators = [Optional()])
+    range_max = IntegerField('Range max', validators = [Optional()])
     answer1 = TextField('Answer 1', validators = [Length(min = 0, max =400)])
     answer2 = TextField('Answer 2', validators = [Length(min = 0, max =400)])
     answer3 = TextField('Answer 3', validators = [Length(min = 0, max =400)])
@@ -134,6 +136,12 @@ class QuestionForm(Form):
                 if len(l[i].data) != 0:
                     state = True
             if state ==False:
-                l[0].errors.append('All field can not be empty')
+                if (self.range_min.data is not None and self.range_max.data is not None):
+                    if self.range_min.data<self.range_max.data:
+                        state = True
+                    else:
+                        self.range_min.errors.append("Range min must be less than Range max")
+                else:
+                    l[0].errors.append('All field can not be empty')
             return state
         return True

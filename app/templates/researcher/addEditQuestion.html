@@ -57,6 +57,10 @@
                         {{ render_field3(form.labelMinLikert,placeholder='label optional') }}
                         {{ render_field3(form.labelMaxLikert, placeholder='label optional') }}
                     </div>
+                    <div id="divRange">
+                        {{ render_field3(form.range_min) }}
+                        {{ render_field3(form.range_max) }}
+                    </div>
                     <div id="divAnswer1">
                         {{ render_field3(form.answer1) }}
                     </div>
@@ -137,6 +141,7 @@
         $("#divAnswer1").hide();
         $("#divAnswer2").hide();
         $("#divAnswers").hide();
+        $("#divRange").hide();
         if (selValue=="text")
         {
             //document.getElementById("divAnswer").style.display="none";; 
@@ -147,6 +152,7 @@
             $("#divAnswer1").show();
             $("#divAnswer2").show();
             $("#divAnswers").show();
+            $("#divRange").show();
 
         }
         if (selValue=="likertScale")
