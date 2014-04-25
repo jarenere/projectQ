@@ -79,6 +79,7 @@ class QuestionForm(Form):
     #: text of possible answers of the choice questions
     range_min = IntegerField('Range min', validators = [Optional()])
     range_max = IntegerField('Range max', validators = [Optional()])
+    range_step = DecimalField ('Range step', validators = [NumberRange(min = 0.1)],places=2, default=1)
     answer1 = TextField('Answer 1', validators = [Length(min = 0, max =400)])
     answer2 = TextField('Answer 2', validators = [Length(min = 0, max =400)])
     answer3 = TextField('Answer 3', validators = [Length(min = 0, max =400)])

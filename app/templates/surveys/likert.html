@@ -14,7 +14,11 @@
         list-style-type: none;
         padding: 10;
     }
-    
+
+    .radiofield_vertical ul, li {
+        list-style-type: none;
+    }
+
 
     .likert tr:first-child td {
         border-top: none;
@@ -39,6 +43,8 @@
 {% from "_formHelpers.html" import render_field2 %}
 {% from "_formHelpers.html" import render_likert %}
 {% from "_formHelpers.html" import render_field3 %}
+{% from "forms_questions.html" import form_field %}
+
 
     <div class="container">
         {% filter markdown %}{{section.description}}{% endfilter %}

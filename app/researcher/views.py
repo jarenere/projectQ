@@ -381,7 +381,8 @@ def selectType(form,section):
     if form.questionType.data == 'choice':
         if form.range_min.data is not None:
             question = QuestionChoice(range_min=form.range_min.data,
-                range_max=form.range_max.data)
+                range_max=form.range_max.data,
+                range_step = form.range_step.data)
         else:
             l = [form.answer1.data,
             form.answer2.data,
@@ -497,6 +498,7 @@ def editQuestion(id_survey, id_section,id_question):
             if question.is_range:
                 form.range_min.data = question.range_min
                 form.range_max.data = question.range_max
+                form.range_step.data = question.range_step
             else:
                 l= question.choices
                 if len(l) >0:

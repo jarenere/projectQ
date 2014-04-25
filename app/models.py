@@ -487,14 +487,7 @@ class Question(db.Model):
             for choice in self.choices:
                 c = SubElement(question,'choice')
                 c.text = choice
-            if self.range_min is not None:
-                range_min = SubElement(question,'range_min')
-                range_min.text = str(self.range_min)
-            if self.range_max is not None:
-                range_max = SubElement(question,'range_max')
-                range_max.text = str(self.range_max)
-            render_horizontal = SubElement(question,'render_horizontal')
-            render_horizontal.text = str(self.render_horizontal)
+
 
         expectedAnswer = SubElement(question,'expectedAnswer')
         expectedAnswer.text = self.expectedAnswer
@@ -514,6 +507,19 @@ class Question(db.Model):
 
             errorMessage = SubElement(question,'errorMessage')
             errorMessage.text = self.errorMessage
+
+        if isinstance(self, QuestionChoice):
+            if self.range_min is not None:
+                range_min = SubElement(question,'range_min')
+                range_min.text = str(self.range_min)
+            if self.range_max is not None:
+                range_max = SubElement(question,'range_max')
+                range_max.text = str(self.range_max)
+            if self.range_step is not None:
+                range_step = SubElement(question,'range_step')
+                range_step.text = str(self.range_step)
+            render_horizontal = SubElement(question,'render_horizontal')
+            render_horizontal.text = str(self.render_horizontal)
 
         if isinstance (self, QuestionLikertScale):
 
@@ -570,9 +576,11 @@ class Question(db.Model):
             elif type == 'choice':
                 range_min = findField('range_min',root,msg)
                 range_max = findField('range_max',root,msg)
+                range_step = findField('range_step',root,msg)
                 render_horizontal = (findField('render_horizontal',root,msg) =="True")
                 question = QuestionChoice(range_min=range_min,
                     range_max= range_max,
+                    range_step = range_step,
                     render_horizontal=render_horizontal)
 
 
@@ -639,6 +647,7 @@ class QuestionChoice(Question):
     is_range = Column(Boolean, default=False)
     range_min = Column(Integer, default="")
     range_max = Column(Integer,default="")
+    range_step = Column(Numeric, default = 1)
     render_horizontal = Column(Boolean, default=False)
     #: possible choices
     

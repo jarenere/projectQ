@@ -308,7 +308,6 @@ def generate_form(questions):
     class MyRadioField(RadioField):
         def __init__(self, label='', validators=None, horizontal=False,**kwargs):
             self.horizontal=horizontal
-            print "hola, horizonal:", self.horizontal
             super(MyRadioField, self).__init__(label, validators, **kwargs)
 
         def __call__(self, **kwargs):
@@ -389,7 +388,7 @@ def generate_form(questions):
                         setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Optional()]))
         if isinstance (question,QuestionChoice):
             if question.is_range:
-                list = [(str(index),index) for index in range(question.range_min,question.range_max+1)]
+                list = [(str(index),choice) for index,choice in enumerate(range(question.range_min,question.range_max+1))]
                 list.insert(0,("",""))
             else:
                 list = [(str(index),choice) for index, choice in enumerate(question.choices)]
@@ -409,7 +408,7 @@ def generate_form(questions):
                         choices = list,validators = [Optional()]))
 
         if isinstance (question, QuestionLikertScale):
-            list = [(str(index),index) for index in range(question.minLikert,question.maxLikert+1)]
+            list = [(str(index),choice) for index,choice in enumerate(range(question.minLikert,question.maxLikert+1))]
             if question.required:
                 setattr(AnswerForm,"c"+str(question.id),LikertField('Answer', 
                     choices = list,
@@ -504,8 +503,11 @@ def showQuestions(id_survey, id_section):
                         answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
                 if isinstance (question,QuestionChoice):
                     answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                    answer.answerText = form["c"+str(question.id)].choices[int(form["c"+str(question.id)].data)][1]
                 if isinstance (question, QuestionLikertScale):
                     answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                    answer.answerText = form["c"+str(question.id)].choices[int(form["c"+str(question.id)].data)][1]
+
 
                 answer.globalTime = form["globalTimec"+str(question.id)].data
                 answer.differentialTime = form["differentialTimec"+str(question.id)].data

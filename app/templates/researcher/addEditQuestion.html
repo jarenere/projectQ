@@ -61,6 +61,7 @@
                         {{ render_field3(form.render_horizontal) }}
                     </div>
                     <div id="divRange">
+                        {{ render_field3(form.range_step) }}
                         {{ render_field3(form.range_min) }}
                         {{ render_field3(form.range_max) }}
                     </div>
@@ -191,8 +192,10 @@
             }
             else 
             {        
-                document.getElementById('questionType').value = "text";
-                $("#divText").show();
+                document.getElementById('questionType').value = "choice";
+                $("#divAnswer1").show();
+                $("#divAnswer2").show();
+                $("#divAnswers").show();
 
             }
         }
