@@ -487,6 +487,14 @@ class Question(db.Model):
             for choice in self.choices:
                 c = SubElement(question,'choice')
                 c.text = choice
+            if self.range_min is not None:
+                range_min = SubElement(question,'range_min')
+                range_min.text = str(self.range_min)
+            if self.range_max is not None:
+                range_max = SubElement(question,'range_max')
+                range_max.text = str(self.range_max)
+            render_horizontal = SubElement(question,'render_horizontal')
+            render_horizontal.text = str(self.render_horizontal)
 
         expectedAnswer = SubElement(question,'expectedAnswer')
         expectedAnswer.text = self.expectedAnswer
@@ -560,7 +568,13 @@ class Question(db.Model):
                     errorMessage=errorMessage)
 
             elif type == 'choice':
-                question = QuestionChoice()
+                range_min = findField('range_min',root,msg)
+                range_max = findField('range_max',root,msg)
+                render_horizontal = (findField('render_horizontal',root,msg) =="True")
+                question = QuestionChoice(range_min=range_min,
+                    range_max= range_max,
+                    render_horizontal=render_horizontal)
+
 
             elif type == 'likertScale':
                 minLikert = findField('minLikert',root,msg)
@@ -622,8 +636,16 @@ class QuestionChoice(Question):
     '''Question of type choice
     '''
     __mapper_args__ = {'polymorphic_identity': 'choice'}
+    is_range = Column(Boolean, default=False)
+    range_min = Column(Integer, default="")
+    range_max = Column(Integer,default="")
+    render_horizontal = Column(Boolean, default=False)
     #: possible choices
-        
+    
+    @hybrid_property
+    def is_range(self):
+        return self.range_min !="" and self.range_max !=""
+
     def number(self):
         return  len(self.choices)
 

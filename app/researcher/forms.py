@@ -72,6 +72,10 @@ class QuestionForm(Form):
     labelMinLikert= TextField('min', validators = [Length(min = 0, max = 128)], description = 'label optional')
     labelMaxLikert = TextField('max',validators = [Length(min = 0, max = 128)], description = 'label optional')
 
+
+    #: as to render the field
+    render_horizontal = BooleanField('Render horizontal', default = False)
+
     #: text of possible answers of the choice questions
     range_min = IntegerField('Range min', validators = [Optional()])
     range_max = IntegerField('Range max', validators = [Optional()])

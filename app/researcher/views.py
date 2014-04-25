@@ -379,21 +379,26 @@ def selectType(form,section):
             regularExpression=form.regularExpression.data,
             errorMessage=form.errorMessage.data)
     if form.questionType.data == 'choice':
-        l = [form.answer1.data,
-        form.answer2.data,
-        form.answer3.data,
-        form.answer4.data,
-        form.answer5.data,
-        form.answer6.data,
-        form.answer7.data,
-        form.answer8.data,
-        form.answer9.data,
-        form.answer10.data]
-        l_aux=[]
-        for i in l:
-            if len(i)!=0:
-                l_aux.append(i)    
-        question = QuestionChoice(choices = l_aux)
+        if form.range_min.data is not None:
+            question = QuestionChoice(range_min=form.range_min.data,
+                range_max=form.range_max.data)
+        else:
+            l = [form.answer1.data,
+            form.answer2.data,
+            form.answer3.data,
+            form.answer4.data,
+            form.answer5.data,
+            form.answer6.data,
+            form.answer7.data,
+            form.answer8.data,
+            form.answer9.data,
+            form.answer10.data]
+            l_aux=[]
+            for i in l:
+                if len(i)!=0:
+                    l_aux.append(i)    
+            question = QuestionChoice(choices = l_aux)
+        question.render_horizontal=form.render_horizontal.data
     if form.questionType.data == 'likertScale':
         question = QuestionLikertScale(minLikert=form.minLikert.data,
             maxLikert=form.maxLikert.data, labelMin=form.labelMinLikert.data,
@@ -489,27 +494,32 @@ def editQuestion(id_survey, id_section,id_question):
             form.isNumberFloat.data = question.isNumberFloat
             form.errorMessage.data = question.errorMessage
         if isinstance (question,QuestionChoice):
-            l= question.choices
-            if len(l) >0:
-                form.answer1.data = l[0]
-            if len(l) >1:
-                form.answer2.data = l[1]
-            if len(l) >2:
-                form.answer3.data = l[2]
-            if len(l) >3:
-                form.answer4.data = l[3]
-            if len(l) >4:
-                form.answer5.data = l[4]
-            if len(l) >5:
-                form.answer6.data = l[5]
-            if len(l) >6:
-                form.answer7.data = l[6]
-            if len(l) >7:
-                form.answer8.data = l[7]
-            if len(l) >8:
-                form.answer9.data = l[8]
-            if len(l) >9:
-                form.answer10.data = l[9]
+            if question.is_range:
+                form.range_min.data = question.range_min
+                form.range_max.data = question.range_max
+            else:
+                l= question.choices
+                if len(l) >0:
+                    form.answer1.data = l[0]
+                if len(l) >1:
+                    form.answer2.data = l[1]
+                if len(l) >2:
+                    form.answer3.data = l[2]
+                if len(l) >3:
+                    form.answer4.data = l[3]
+                if len(l) >4:
+                    form.answer5.data = l[4]
+                if len(l) >5:
+                    form.answer6.data = l[5]
+                if len(l) >6:
+                    form.answer7.data = l[6]
+                if len(l) >7:
+                    form.answer8.data = l[7]
+                if len(l) >8:
+                    form.answer9.data = l[8]
+                if len(l) >9:
+                    form.answer10.data = l[9]
+            form.render_horizontal.data = question.render_horizontal
         if isinstance(question, QuestionLikertScale):
             form.labelMinLikert.data=question.labelMin
             form.labelMaxLikert.data=question.labelMax

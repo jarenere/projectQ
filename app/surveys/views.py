@@ -12,6 +12,7 @@ from app.models import Answer
 from flask.ext.wtf import Form
 from sqlalchemy.sql import func
 from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField, DecimalField,StringField
+from wtforms import SelectField
 from wtforms.validators import Required, Regexp, Optional
 from wtforms import ValidationError
 from wtforms.fields import Field
@@ -216,6 +217,11 @@ def generate_form(questions):
                 field.errors[:] = []
                 raise StopValidation()
 
+    def check_valid_select_field(self,field):
+        if field.data=="":
+            raise ValidationError("Option not valid")
+
+
     class ClassedWidgetMixin(object):
         """Adds the field's name as a class 
         when subclassed with any WTForms Field type.
@@ -251,11 +257,11 @@ def generate_form(questions):
             print super(TagListField, self).__call__(**kwargs)
             return super(TagListField, self).__call__(**kwargs)
 
-    class LikertForm(RadioField):
+    class LikertField(RadioField):
         def __init__(self, label='', validators=None, labelMin="", labelMax="", **kwargs):
             self.labelMin=labelMin
             self.labelMax=labelMax
-            super(LikertForm, self).__init__(label, validators, **kwargs)
+            super(LikertField, self).__init__(label, validators, **kwargs)
 
         def __call__(self, **kwargs):
             '''render likert as table
@@ -280,7 +286,6 @@ def generate_form(questions):
             return  HTMLString(''.join(html))
             # return super(RadioField, self).__call__(**kwargs)
 
-
         def __call1__(self, **kwargs):
             '''render likert as list
             '''
@@ -299,6 +304,24 @@ def generate_form(questions):
             html.append('</%s>' % self.widget.html_tag)
             return  HTMLString(''.join(html))
             # return super(RadioField, self).__call__(**kwargs)
+
+    class MyRadioField(RadioField):
+        def __init__(self, label='', validators=None, horizontal=False,**kwargs):
+            self.horizontal=horizontal
+            print "hola, horizonal:", self.horizontal
+            super(MyRadioField, self).__init__(label, validators, **kwargs)
+
+        def __call__(self, **kwargs):
+            if self.horizontal:
+                kwargs.setdefault('class_', "radioField_horizontal")
+                self.widget.prefix_label=True
+            else:
+                kwargs.setdefault('class_', "radioField_vertical")
+                self.widget.prefix_label=False
+            print "prefix: ",self.widget.prefix_label
+            return super(MyRadioField, self).__call__(**kwargs)
+
+
 
 
     # class Likert(ClassedWidgetMixin, ListWidget):
@@ -365,13 +388,21 @@ def generate_form(questions):
                     else:
                         setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Optional()]))
         if isinstance (question,QuestionChoice):
-            list = [(str(index),choice) for index, choice in enumerate(question.choices)]
-            if question.isSubquestion:
-                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+            if question.is_range:
+                list = [(str(index),index) for index in range(question.range_min,question.range_max+1)]
+                list.insert(0,("",""))
+            else:
+                list = [(str(index),choice) for index, choice in enumerate(question.choices)]
+            if question.is_range:
+                    setattr(AnswerForm,"c"+str(question.id),SelectField('Answer', 
+                        choices = list,validators = [check_valid_select_field]))
+            elif question.isSubquestion:
+                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer',
                         choices = list,validators = [check_subquestion]))
             else:
                 if question.required:
-                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                    setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
+                        horizontal=question.render_horizontal,
                         choices = list,validators = [Required()]))
                 else:
                     setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
@@ -380,7 +411,7 @@ def generate_form(questions):
         if isinstance (question, QuestionLikertScale):
             list = [(str(index),index) for index in range(question.minLikert,question.maxLikert+1)]
             if question.required:
-                setattr(AnswerForm,"c"+str(question.id),LikertForm('Answer', 
+                setattr(AnswerForm,"c"+str(question.id),LikertField('Answer', 
                     choices = list,
                     labelMin= question.labelMin,
                     labelMax=question.labelMax,
