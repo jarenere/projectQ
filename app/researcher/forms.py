@@ -40,6 +40,7 @@ class QuestionForm(Form):
             ('decision_one_v2','Decision One v2'),('decision_two','Decision Two'),
             ('decision_three','Decision Three'),('decision_four','Decision Four'),
             ('decision_five','Decision Five'),('decision_six','Decision Six')]
+    list_render = [('vertical','vertical'),('horizontal','horizontal'),('select','select')]
 
     #: Text of the question
     text = PageDownField('Text',validators = [Length(min = 1)],default = EXAMPLE_MARKDOWN)
@@ -72,9 +73,11 @@ class QuestionForm(Form):
     labelMinLikert= TextField('min', validators = [Length(min = 0, max = 128)], description = 'label optional')
     labelMaxLikert = TextField('max',validators = [Length(min = 0, max = 128)], description = 'label optional')
 
+    #to decision five
+    container = TextField('Decision five', validators = [Length(min = 0, max =400)])
 
     #: as to render the field
-    render_horizontal = BooleanField('Render horizontal', default = False)
+    render = SelectField('Render', choices=list_render, default="vertical")
 
     #: text of possible answers of the choice questions
     range_min = IntegerField('Range min', validators = [Optional()])

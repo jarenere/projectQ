@@ -293,7 +293,7 @@ def duplicate_section(id_survey,id_section):
                 labelMax=q.labelMaxLikert)
 
         if q.decision == "decision_five":
-            question_cp.choices = q.choices[:]
+            question_cp.container = q.container[:]
 
         question_cp.decision=q.decision
         question_cp.is_real_money= q.is_real_money
@@ -399,7 +399,7 @@ def selectType(form,section):
                 if len(i)!=0:
                     l_aux.append(i)    
             question = QuestionChoice(choices = l_aux)
-        question.render_horizontal=form.render_horizontal.data
+        question.render = form.render.data
     if form.questionType.data == 'likertScale':
         question = QuestionLikertScale(minLikert=form.minLikert.data,
             maxLikert=form.maxLikert.data, labelMin=form.labelMinLikert.data,
@@ -420,8 +420,8 @@ def selectType(form,section):
         form.answer2.data]
         question.choices = l[0:2]
     if form.decisionType.data == "decision_five":
-        l = [form.answer1.data]
-        question.choices = l[0:1]
+        l = [form.container.data]
+        question.container = l[0:1]
 
     question.decision=form.decisionType.data
     question.text = form.text.data
@@ -521,12 +521,11 @@ def editQuestion(id_survey, id_section,id_question):
                     form.answer9.data = l[8]
                 if len(l) >9:
                     form.answer10.data = l[9]
-            form.render_horizontal.data = question.render_horizontal
         if isinstance(question, QuestionLikertScale):
             form.labelMinLikert.data=question.labelMin
             form.labelMaxLikert.data=question.labelMax
         if question.decision=="decision_five":
-            form.answer1.data = question.choices[0]
+            form.container.data = question.container[0]
         # condition of subquestion
         if question.condition is not None:
             form.value.data =question.condition.value
@@ -543,6 +542,7 @@ def editQuestion(id_survey, id_section,id_question):
         editQuestion = True,
         question_type = question.type,
         decision_type = question.decision,
+        render = question.render if isinstance(question,QuestionChoice) else "vertical",
         operation = (form.operation.data if question.condition is None else\
             question.condition.operation),
         question = (None if question.parent is None else question.parent_id),

@@ -58,13 +58,16 @@
                         {{ render_field3(form.labelMaxLikert, placeholder='label optional') }}
                     </div>
                     <div id="divRender">
-                        {{ render_field3(form.render_horizontal) }}
+                        {{ render_field3(form.render) }}
                     </div>
                     <div id="divRange">
                         {{ render_field3(form.range_step) }}
                         {{ render_field3(form.range_min) }}
                         {{ render_field3(form.range_max) }}
                     </div>
+                     <div id="divContainer">
+                        {{ render_field3(form.container) }}
+                    </div>                   
                     <div id="divAnswer1">
                         {{ render_field3(form.answer1) }}
                     </div>
@@ -186,8 +189,9 @@
             }
             else if (selValue=="decision_five")
             {   
-                document.getElementById('questionType').value = "yn";
+                document.getElementById('questionType').value = "choice";
                 $("#divAnswer1").show();
+                $("#divContainer").show();
                 $("#is_real_money").show();
             }
             else 
@@ -239,6 +243,8 @@
         onchange_question('{{question_type}}');
         document.getElementById('decisionType').value = '{{decision_type}}';
         onchange_decision('{{decision_type}}');
+        document.getElementById('render').value = '{{render}}';
+
 }
     var select_question = document.getElementById("questionType");
     select_question.onchange = function() {

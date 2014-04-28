@@ -133,6 +133,13 @@ def showConsent(id_survey,n_consent = 0):
 def generate_form(questions):
     '''dynamically generates the forms for surveys
     '''
+    def frange(x, y, jump):
+        '''implement of range to floats:
+        '''
+        while x < y:
+            yield  '{0:g}'.format(float(x))
+            x += jump
+
     def check_answer_expected(self,field):
         '''check if the answer is the expected
         '''
@@ -315,10 +322,11 @@ def generate_form(questions):
                 kwargs.setdefault('class_', "radioField_horizontal")
                 self.widget.prefix_label=True
             else:
-                kwargs.setdefault('class_', "radioField_vertical")
+                kwargs.setdefault('class_', "radio")
                 self.widget.prefix_label=False
             print "prefix: ",self.widget.prefix_label
             return super(MyRadioField, self).__call__(**kwargs)
+
 
 
 
@@ -388,24 +396,38 @@ def generate_form(questions):
                         setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Optional()]))
         if isinstance (question,QuestionChoice):
             if question.is_range:
-                list = [(str(index),choice) for index,choice in enumerate(range(question.range_min,question.range_max+1))]
-                list.insert(0,("",""))
+                list = [(str(index),choice) for index,choice in enumerate(
+                    frange(question.range_min,
+                        question.range_max+question.range_step,
+                        question.range_step))]
             else:
                 list = [(str(index),choice) for index, choice in enumerate(question.choices)]
-            if question.is_range:
-                    setattr(AnswerForm,"c"+str(question.id),SelectField('Answer', 
-                        choices = list,validators = [check_valid_select_field]))
-            elif question.isSubquestion:
+            if question.render == "select":
+                list.insert(0,("",""))
+
+            # if question.is_range:
+            #         setattr(AnswerForm,"c"+str(question.id),SelectField('Answer', 
+            #             choices = list,validators = [check_valid_select_field]))
+            if question.isSubquestion:
                     setattr(AnswerForm,"c"+str(question.id),RadioField('Answer',
                         choices = list,validators = [check_subquestion]))
             else:
                 if question.required:
-                    setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
-                        horizontal=question.render_horizontal,
-                        choices = list,validators = [Required()]))
+                    if question.render =="select":
+                        setattr(AnswerForm,"c"+str(question.id),SelectField('Answer', 
+                            choices = list,validators = [check_valid_select_field]))
+                    else:
+                        setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
+                            horizontal=question.render=="horizontal",
+                            choices = list,validators = [Required()]))
                 else:
-                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
-                        choices = list,validators = [Optional()]))
+                    if question.render =="select":
+                        setattr(AnswerForm,"c"+str(question.id),SelectField('Answer', 
+                            choices = list,validators = [check_valid_select_field]))
+                    else:
+                        setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer',
+                            horizontal=question.render=="horizontal",
+                            choices = list,validators = [Optional()]))
 
         if isinstance (question, QuestionLikertScale):
             list = [(str(index),choice) for index,choice in enumerate(range(question.minLikert,question.maxLikert+1))]

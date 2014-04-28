@@ -389,6 +389,8 @@ class Question(db.Model):
     required = Column(Boolean, default = True)
     #: possible choices
     choices = Column(PickleType(comparator=are_elements_equal))
+    #: container to save whatever you want
+    container = Column(PickleType(comparator=are_elements_equal))
     #:expected answer
     expectedAnswer = Column(String(20), default="")
     #:number of attempt to answer a question with  expected Answer
@@ -488,6 +490,10 @@ class Question(db.Model):
                 c = SubElement(question,'choice')
                 c.text = choice
 
+        if self.container !=None:
+            for element in self.container:
+                c = SubElement(question,'container')
+                c.text = element
 
         expectedAnswer = SubElement(question,'expectedAnswer')
         expectedAnswer.text = self.expectedAnswer
@@ -518,8 +524,8 @@ class Question(db.Model):
             if self.range_step is not None:
                 range_step = SubElement(question,'range_step')
                 range_step.text = str(self.range_step)
-            render_horizontal = SubElement(question,'render_horizontal')
-            render_horizontal.text = str(self.render_horizontal)
+            render = SubElement(question,'render')
+            render.text = str(self.render)
 
         if isinstance (self, QuestionLikertScale):
 
@@ -556,6 +562,10 @@ class Question(db.Model):
             for choice in root.findall('choice'):
                 l.append(choice.text)
 
+            l1=[]
+            for choice in root.findall('container'):
+                l1.append(choice.text)
+
             expectedAnswer = findField('expectedAnswer',root,msg)
             maxNumberAttempt = findField('maxNumberAttempt',root,msg)
             type = findField('type',root,msg)
@@ -577,11 +587,11 @@ class Question(db.Model):
                 range_min = findField('range_min',root,msg)
                 range_max = findField('range_max',root,msg)
                 range_step = findField('range_step',root,msg)
-                render_horizontal = (findField('render_horizontal',root,msg) =="True")
+                render = (findField('render',root,msg))
                 question = QuestionChoice(range_min=range_min,
                     range_max= range_max,
                     range_step = range_step,
-                    render_horizontal=render_horizontal)
+                    render=render)
 
 
             elif type == 'likertScale':
@@ -603,6 +613,7 @@ class Question(db.Model):
             question.expectedAnswer = expectedAnswer
             question.maxNumberAttempt = maxNumberAttempt
             question.choices = l
+            question.container = l1
             question.section = section
             question.position=position
             return question, position+1
@@ -648,9 +659,10 @@ class QuestionChoice(Question):
     range_min = Column(Integer, default="")
     range_max = Column(Integer,default="")
     range_step = Column(Numeric, default = 1)
-    render_horizontal = Column(Boolean, default=False)
+    render = Column(Enum('vertical','horizontal','select'), default="vertical")
     #: possible choices
-    
+
+
     @hybrid_property
     def is_range(self):
         return self.range_min !="" and self.range_max !=""
@@ -1455,7 +1467,7 @@ class GameUltimatum(Game):
             l =[]
             for q in Section.query.get(section_id).questions:
                 if q.decision=="decision_five":
-                    l.append((q.choices[0],q.id))
+                    l.append((q.container[0],q.id))
             return l
 
         super(GameUltimatum, self).__init__(**kwargs)
