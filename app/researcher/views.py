@@ -286,7 +286,11 @@ def duplicate_section(id_survey,id_section):
                 regularExpression=q.regularExpression,
                 errorMessage=q.errorMessage)
         if isinstance (q,QuestionChoice):
-            question_cp = QuestionChoice(choices= q.choices[:])
+            if q.is_range:
+                question_cp = QuestionChoice(range_min = q.range_min,
+                    range_max = q.range_max, range_step = q.range_step)
+            else:
+                question_cp = QuestionChoice(choices= q.choices[:])
         if isinstance (q, QuestionLikertScale):
             question_cp = QuestionLikertScale(minLikert=q.minLikert,
                 maxLikert=q.maxLikert, labelMin=q.labelMinLikert,
@@ -393,7 +397,9 @@ def selectType(form,section):
             form.answer7.data,
             form.answer8.data,
             form.answer9.data,
-            form.answer10.data]
+            form.answer10.data,
+            form.answer11.data,
+            form.answer12.data]
             l_aux=[]
             for i in l:
                 if len(i)!=0:
@@ -521,11 +527,15 @@ def editQuestion(id_survey, id_section,id_question):
                     form.answer9.data = l[8]
                 if len(l) >9:
                     form.answer10.data = l[9]
+                if len(l) >10:
+                    form.answer11.data = l[10]
+                if len(l) >11:
+                    form.answer12.data = l[11]
         if isinstance(question, QuestionLikertScale):
             form.labelMinLikert.data=question.labelMin
             form.labelMaxLikert.data=question.labelMax
         if question.decision=="decision_five":
-            form.container.data = question.container[0]
+            form.container.data = question.container[0] if len(question.container)>0 else 0
         # condition of subquestion
         if question.condition is not None:
             form.value.data =question.condition.value
