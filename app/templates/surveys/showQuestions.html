@@ -64,13 +64,12 @@
                                 }
                             {% endif %}
                             {% if question.parent.type=="choice" %}
-                                {%set n=question.condition.value %}
-                                if (document.getElementById("{{parent}}-{{n}}").checked) {
-                                    $("#{{i_t}}").show();
-                                }
-                                else{
-                                    $("#{{i_t}}").hide();
-                                }
+                                    if  ($('input[name="{{parent}}"]:checked').val(){{question.condition.operation|safe}}{{question.condition.value}}) {
+                                        $("#{{i_t}}").show();
+                                    }
+                                    else{
+                                        $("#{{i_t}}").hide();
+                                    }
                             {% endif %}
                             {% if question.parent.type=="text" %}
                                 if (document.getElementById("{{parent}}").value) {
