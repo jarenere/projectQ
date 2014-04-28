@@ -369,13 +369,10 @@ def generate_form(questions):
             else:
                 if question.required:
                     if question.regularExpression !="":
-                        if question.isNumber:
-                            if question.isNumberFloat:
-                                setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
-                                    validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
-                            else:
-                                setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
-                                    validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
+                        if question.isExpectedAnswer():
+                            setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
+                                validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage),
+                                check_answer_expected]))
                         else:
                             setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
                                 validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
@@ -409,7 +406,8 @@ def generate_form(questions):
             #         setattr(AnswerForm,"c"+str(question.id),SelectField('Answer', 
             #             choices = list,validators = [check_valid_select_field]))
             if question.isSubquestion:
-                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer',
+                    setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer',
+                        horizontal=question.render=="horizontal",
                         choices = list,validators = [check_subquestion]))
             else:
                 if question.required:
@@ -549,7 +547,7 @@ def showQuestions(id_survey, id_section):
     #         questions = questions,
     #         percent = stateSurvey.percentSurvey()
     #         )
-    return render_template('/surveys/likert.html',
+    return render_template('/surveys/showQuestions.html',
             title = survey.title,
             survey = survey,
             section = section,
