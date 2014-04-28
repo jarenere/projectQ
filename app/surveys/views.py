@@ -547,7 +547,7 @@ def showQuestions(id_survey, id_section):
     #         questions = questions,
     #         percent = stateSurvey.percentSurvey()
     #         )
-    return render_template('/surveys/showQuestions.html',
+    return render_template('/surveys/likert.html',
             title = survey.title,
             survey = survey,
             section = section,

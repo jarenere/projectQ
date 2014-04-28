@@ -83,6 +83,8 @@
                         {{ render_field3(form.answer8) }}
                         {{ render_field3(form.answer9) }}
                         {{ render_field3(form.answer10) }}
+                        {{ render_field3(form.answer11) }}
+                        {{ render_field3(form.answer12) }}
                     </div>
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default">
@@ -149,7 +151,8 @@
         $("#divAnswer2").hide();
         $("#divAnswers").hide();
         $("#divRange").hide();
-        $("#divRender").hide();        
+        $("#divRender").hide();
+        $("#divContainer").hide();
         if (selValue=="text")
         {
             //document.getElementById("divAnswer").style.display="none";; 
@@ -181,6 +184,8 @@
             $("#divAnswer2").hide();
             $("#divAnswers").hide();
             $('#collapseDecision').collapse("show");
+            $("#divContainer").hide();
+
             if (selValue=="part_two")
             {
                 document.getElementById('questionType').value = "choice";
@@ -191,15 +196,14 @@
             {   
                 document.getElementById('questionType').value = "choice";
                 $("#divAnswer1").show();
+                $("#divAnswer2").show();
                 $("#divContainer").show();
                 $("#is_real_money").show();
             }
             else 
             {        
                 document.getElementById('questionType').value = "choice";
-                $("#divAnswer1").show();
-                $("#divAnswer2").show();
-                $("#divAnswers").show();
+                $("#divRange").show();
 
             }
         }

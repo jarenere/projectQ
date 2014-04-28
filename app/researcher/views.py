@@ -291,6 +291,7 @@ def duplicate_section(id_survey,id_section):
                     range_max = q.range_max, range_step = q.range_step)
             else:
                 question_cp = QuestionChoice(choices= q.choices[:])
+            question_cp.render = q.render
         if isinstance (q, QuestionLikertScale):
             question_cp = QuestionLikertScale(minLikert=q.minLikert,
                 maxLikert=q.maxLikert, labelMin=q.labelMinLikert,

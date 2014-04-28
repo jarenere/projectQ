@@ -4,6 +4,10 @@ xml:
 >>> import sys
 >>> sys.path.append("/usr/lib64/python2.7/lib-dynload/")
 
+
+en subquestions choice, value hace referencia a la posicion no al valor
+en subquestion yes/no, respuesta yes /no
+
 IDEAS
 ------
 cuando se carga un xml, estaria bien que devolviera el survey para poder ir a esa encuesta

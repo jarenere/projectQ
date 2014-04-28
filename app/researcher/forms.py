@@ -93,6 +93,8 @@ class QuestionForm(Form):
     answer8 = TextField('Answer 8', validators = [Length(min = 0, max =400)])
     answer9 = TextField('Answer 9', validators = [Length(min = 0, max =400)])
     answer10 = TextField('Answer 10', validators = [Length(min = 0, max =400)])
+    answer11 = TextField('Answer 11', validators = [Length(min = 0, max =400)])
+    answer12 = TextField('Answer 12', validators = [Length(min = 0, max =400)])
 
     #condition to that question depends on the answer to another question
     listOperations = [('none','None'),('<','<'),('==','='),('>','>')]
@@ -119,7 +121,7 @@ class QuestionForm(Form):
                     state = False
             return state
         if self.decisionType.data == 'decision_five':
-            l = [self.answer1]
+            l = [self.container]
             state = True
             for i in  range (1):
                 if len(l[i].data) == 0:
@@ -138,7 +140,9 @@ class QuestionForm(Form):
             self.answer7,
             self.answer8,
             self.answer9,
-            self.answer10]
+            self.answer10,
+            self.answer11,
+            self.answer12]
             state = False
             for i in  range (9):
                 if len(l[i].data) != 0:
