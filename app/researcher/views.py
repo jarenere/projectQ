@@ -297,7 +297,7 @@ def duplicate_section(id_survey,id_section):
                 maxLikert=q.maxLikert, labelMin=q.labelMinLikert,
                 labelMax=q.labelMaxLikert)
 
-        if q.decision == "decision_five":
+        if q.container is not None:
             question_cp.container = q.container[:]
 
         question_cp.decision=q.decision
@@ -430,6 +430,10 @@ def selectType(form,section):
         l = [form.container.data]
         question.container = l[0:1]
 
+
+    if form.feedback.data:
+        question.container = ["feedback"]
+
     question.decision=form.decisionType.data
     question.text = form.text.data
     question.required = form.required.data
@@ -537,6 +541,11 @@ def editQuestion(id_survey, id_section,id_question):
             form.labelMaxLikert.data=question.labelMax
         if question.decision=="decision_five":
             form.container.data = question.container[0] if len(question.container)>0 else 0
+        
+        if question.container is not None:
+            if question.container[0]=="feedback":
+                form.feedback.data=True
+
         # condition of subquestion
         if question.condition is not None:
             form.value.data =question.condition.value

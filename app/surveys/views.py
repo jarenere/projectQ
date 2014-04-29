@@ -66,6 +66,23 @@ def get_stateSurvey_or_error(id_survey,user,ip = None):
             return abort(404)
         return abort(500)    
 
+def check_feedback(id_survey):
+    '''check if survey have feedback
+    '''
+    ans = Answer.query.filter(Answer.user_id==current_user.id,
+        Answer.question_id==Question.id,
+        Question.section_id==Section.id, 
+        Section.root_id==id_survey,
+        Question.container==["feedback"]).first()
+    if ans is not None:
+        if ans.answerYN:
+            return redirect(url_for('feedback.logic_feedback', id_survey = id_survey))
+
+            # return render_template('/surveys/finish.html', 
+            #     title = 'Finish')
+    return render_template('/surveys/finish.html', 
+        title = 'Finish')
+
 
 
 @login_required
@@ -82,8 +99,11 @@ def logicSurvey(id_survey):
     section = stateSurvey.nextSection()
     if section is None:
         if stateSurvey.status & StateSurvey.FINISH_OK:
-            return render_template('/surveys/finish.html', 
-                title = 'Finish')
+            if True: 
+                # check if there are feedback
+                return check_feedback(id_survey)
+                # return render_template('/surveys/finish.html', 
+                #     title = 'Finish')
         if stateSurvey.status & StateSurvey.TIMED_OUT:
             return render_template('/survey/error_time_date.html',
                 title ='time out')
@@ -230,40 +250,6 @@ def generate_form(questions):
             raise ValidationError("Option not valid")
 
 
-    class ClassedWidgetMixin(object):
-        """Adds the field's name as a class 
-        when subclassed with any WTForms Field type.
-
-        Has not been tested - may not work."""
-        def __init__(self, *args, **kwargs):
-            super(ClassedWidgetMixin, self).__init__(*args, **kwargs)
-
-        def __call__(self, field, **kwargs):
-            c = kwargs.pop('class', '') or kwargs.pop('class_', '')
-            kwargs['class'] = u'%s %s' % (field.short_name, c)
-            print kwargs['class'],"jeje\n"
-            return super(ClassedWidgetMixin, self).__call__(field, **kwargs)
-
-
-    class TagListField(Field):
-        widget = TextInput()
-
-        def _value(self):
-            if self.data:
-                return u', '.join(self.data)
-            else:
-                return u''
-
-        def process_formdata(self, valuelist):
-            if valuelist:
-                self.data = [x.strip() for x in valuelist[0].split(',')]
-            else:
-                self.data = []
-
-        def __call__(self, **kwargs):
-            print "jeje\n"
-            print super(TagListField, self).__call__(**kwargs)
-            return super(TagListField, self).__call__(**kwargs)
 
     class LikertField(RadioField):
         def __init__(self, label='', validators=None, labelMin="", labelMax="", **kwargs):
@@ -335,8 +321,7 @@ def generate_form(questions):
     # class Likert(ClassedWidgetMixin, ListWidget):
     #     pass
 
-    class ClassedTextInput(ClassedWidgetMixin, TextInput):
-        pass
+
 
     class AnswerForm(Form):
         time = HiddenField('time',default=0)

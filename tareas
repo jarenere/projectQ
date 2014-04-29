@@ -155,3 +155,5 @@ gat[]en añadir subquestion ayudar en el form para no cagarla (si es si o no, pu
 []range mejor crearlo de otra manera...(tambien deberia eliminar el choice..)
 [] mmm.. actualizar bootstrap?
 []creacion de forms fusionar yes/no con choice.. es lo mismo..
+[]check pregunta feedback yes/no
+[]feedback decision 5 fallarara (linea 197)

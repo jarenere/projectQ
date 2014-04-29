@@ -225,39 +225,55 @@ def generate_answers_fake(id_survey, number=6):
     def answer_question(user,q, time):
         l=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10]
         l2=[0,2,4,6,8,10,12,14,16,18,20]
-        if isinstance (q, QuestionYN):
+        if q.decision=="decision_one_v1":
+            i=random.choice(l)
+            answer=models.Answer(answerNumeric=i,user=user,question=q)
+            answer.answerText=(i)
+        elif q.decision=="decision_one_v2":
+            i=random.choice(l)
+            answer=models.Answer(answerNumeric=i,user=user,question=q)
+            answer.answerText=(i)
+        elif q.decision=="decision_two":
+            i=random.choice(l)
+            answer=models.Answer(answerNumeric=i,user=user,question=q)
+            answer.answerText=(i)
+        elif q.decision=="decision_three":
+            i=random.choice(l)
+            answer=models.Answer(answerNumeric=i,user=user,question=q)
+            answer.answerText=(i)
+        elif q.decision=="decision_four":
+            i=random.choice(l2)
+            answer=models.Answer(answerNumeric=i,user=user,question=q)
+            answer.answerText=(i)
+        elif q.decision=="decision_six":
+            i=random.choice(l2)
+            answer=models.Answer(answerNumeric=i,user=user,question=q)
+            answer.answerText=(i)
+        elif q.decision=="decision_five":
+            i=random.randrange(0,2)
+            answer=models.Answer(answerNumeric=i,user=user,question=q)
+            answer.answerText=(i)
+        elif isinstance (q, QuestionYN):
             answer = Answer (answerYN =random.randrange(0,2)==1, user= user, question = q)
         elif isinstance (q, QuestionText):
-            if q.decision=="decision_one_v1":
-                answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
-            elif q.decision=="decision_one_v2":
-                answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
-            elif q.decision=="decision_two":
-                answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
-            elif q.decision=="decision_three":
-                answer=models.Answer(answerNumeric=random.choice(l),user=user,question=q)
-            elif q.decision=="decision_four":
-                answer=models.Answer(answerNumeric=random.choice(l2),user=user,question=q)
-            elif q.decision=="decision_six":
-                answer=models.Answer(answerNumeric=random.choice(l2),user=user,question=q)
-            elif q.decision=="none":
-                if q.isExpectedAnswer():
-                    if random.choice([0,1,1])==1:
-                    # 66% of know the answer
-                        answer = Answer (answerText =q.expectedAnswer.lower(), user= user, question = q)
-                        answer.numberAttempt= random.randrange(1, q.maxNumberAttempt+1)
-                    else:
-                        answer = Answer (answerText =forgery_py.forgery.lorem_ipsum.word(), user= user, question = q)
-                        answer.numberAttempt= q.maxNumberAttempt+1
-                elif q.isNumber:
-                    answer = Answer (answerNumeric =random.randrange(0,100), user= user, question = q)
+            if q.isExpectedAnswer():
+                if random.choice([0,1,1])==1:
+                # 66% of know the answer
+                    answer = Answer (answerText =q.expectedAnswer.lower(), user= user, question = q)
+                    answer.numberAttempt= random.randrange(1, q.maxNumberAttempt+1)
                 else:
                     answer = Answer (answerText =forgery_py.forgery.lorem_ipsum.word(), user= user, question = q)
+                    answer.numberAttempt= q.maxNumberAttempt+1
+            elif q.isNumber:
+                answer = Answer (answerNumeric =random.randrange(0,100), user= user, question = q)
             else:
-                raise "error de decision"
-
+                answer = Answer (answerText =forgery_py.forgery.lorem_ipsum.word(), user= user, question = q)
         elif isinstance (q,QuestionChoice):
-            answer = Answer (answerNumeric =random.randrange(0,len(q.choices)), user= user, question = q)
+            if q.is_range:
+                answer = Answer (answerNumeric =random.randrange(q.range_min,q.range_max), user= user, question = q)
+            else:
+                answer = Answer (answerNumeric =random.randrange(0,len(q.choices)), user= user, question = q)
+        
         elif isinstance (q,QuestionLikertScale):
             answer = Answer (answerNumeric =random.randrange(q.minLikert,q.maxLikert+1), user= user, question = q)
         else:

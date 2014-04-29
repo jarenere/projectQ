@@ -50,6 +50,10 @@ class QuestionForm(Form):
     questionType = SelectField('Type of question', choices=listQuestionType, default="yn")
     #: Type of decisions
     decisionType = SelectField('Type of question', choices=listDecisions, default="none")
+    #:is_money_real for part two and decision
+    is_real_money = BooleanField('It is with money real', default = False)
+    #:feedback
+    feedback = BooleanField('feedback', default = False)
 
 
     #:dateValidation(text)
@@ -63,8 +67,7 @@ class QuestionForm(Form):
         description='none if There isnt correct answer')
     maxNumberAttempt = IntegerField('Number of attempt', validators = [Optional()])
 
-    #:is_money_real for part two and decision
-    is_real_money = BooleanField('It is with money real', default = False)
+
 
     #likert Scale
     minLikert = SelectField('Scale',choices=[('0','0'),('1','1')], default=('1'))
