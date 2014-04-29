@@ -1479,7 +1479,8 @@ class GameUltimatum(Game):
             if int(i[0])==self.cashInitA:
                 answer = Answer.query.filter(Answer.question_id == i[1],Answer.user_id == self.userB).first()
                 self.answerB =answer.id
-                if answer.answerYN:
+                if answer.answerNumeric==0:
+                    # answer accept
                     self.moneyA = MONEY - self.cashInitA
                     self.moneyB = self.cashInitA
                     self.accepted = True
