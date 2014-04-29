@@ -351,17 +351,17 @@ def generate_form(questions):
 
         if isinstance (question,QuestionYN):
             if question.isSubquestion:
-                setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
                     choices = [('Yes','Yes'),('No','No')],validators = [check_subquestion]))
             else:
                 if question.isExpectedAnswer():
-                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                    setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
                         choices = [('Yes','Yes'),('No','No')],validators = [check_answer_expected_yn]))
                 elif question.required:
-                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                    setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
                         choices = [('Yes','Yes'),('No','No')],validators = [Required()]))
                 else:
-                    setattr(AnswerForm,"c"+str(question.id),RadioField('Answer', 
+                    setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
                         choices = [('Yes','Yes'),('No','No')],validators = [Optional()]))
         if isinstance (question,QuestionText):
             if question.isSubquestion:
