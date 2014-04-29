@@ -668,6 +668,8 @@ class QuestionChoice(Question):
         return self.range_min !="" and self.range_max !=""
 
     def number(self):
+        if self.is_range:
+            return self.range_max + 1 - self.range_min
         return  len(self.choices)
 
 class QuestionLikertScale(Question):
@@ -1311,11 +1313,11 @@ class Game(db.Model):
 
     @hybrid_property
     def cashInitA(self):
-        return Answer.query.get(self.answerA).answerNumeric
+        return float(Answer.query.get(self.answerA).answerText)
 
     @hybrid_property
     def cashInitB(self):
-        return Answer.query.get(self.answerB).answerNumeric
+        return float(Answer.query.get(self.answerB).answerText)
 
     @hybrid_property
     def statusA(self):
