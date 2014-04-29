@@ -1,3 +1,52 @@
+<head>
+    <style type="text/css">
+    .progresslabel{
+        
+        min-width:40px;
+    }
+    .radioField_horizontal ul
+    {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .radioField_horizontal li
+    {
+        float: left;
+        text-align: center;
+        list-style-type: none;
+        padding: 10;
+    }
+
+    .radiofield_vertical ul, li {
+        list-style-type: none;
+    }
+
+
+    .likert tr:first-child td {
+        border-top: none;
+    }
+    .likert {
+    border-collapse: collapse;
+        text-align: center;
+        float: right;
+        clear: left;
+        list-style-type: none;
+        margin:0;
+        padding:0;
+
+    }
+
+    .type-info{color:#999;vertical-align:middle}
+
+    .question tr:first-child td {
+    border-top: none;
+    }
+
+    </style>
+</head>
+
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
@@ -5,7 +54,9 @@
 {% block content %}
 {% from "_formHelpers.html" import render_field %}
 {% from "_formHelpers.html" import render_field2 %}
+{% from "_formHelpers.html" import render_likert %}
 {% from "_formHelpers.html" import render_field3 %}
+{% from "forms_questions.html" import form_field %}
 
 <script type="text/javascript">
     function timestamp(){
@@ -22,18 +73,21 @@
 }
 </script>
 
-    <div class="container">
+    <div class="container-fluid">
         {% filter markdown %}{{section.description}}{% endfilter %}
 
         <form onsubmit="timestamp()" class="form-horizontal" action="" method="post" name="question">
             {{form.hidden_tag()}}
             {% for question in questions %}
                 {% set i_t= "t"'%s' % question.id %}
-                <table class="table table-hover" id="{{i_t}}"><td>
+<!--                 <table class="table" id="{{i_t}}"><td> -->                
+                <div id="{{i_t}}">
                         {% filter markdown %}{{question.text}}{% endfilter %}
                         {% set i= "c"'%s' % question.id %}
                         {{render_field2(form[i])}}
-                </td></table>
+                        <hr>
+                </div>
+<!--                 </td></table> -->
                 <script type="text/javascript">
                     var select{{i}} = document.getElementById("{{i}}");
                     function time{{i}}(){
