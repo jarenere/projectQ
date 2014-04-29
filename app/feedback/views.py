@@ -190,13 +190,20 @@ def decision4(id_survey):
             Section.root_id==id_survey,\
             Question.decision=="decision_five").all()]
 
+    # decisions5 = [q.id for q in Question.query.filter(\
+    #         Question.id.in_(all_decision5),\
+    #         Question.choices==[str(ans)]).all()]
+
     decisions5 = [q.id for q in Question.query.filter(\
             Question.id.in_(all_decision5),\
-            Question.choices==[str(ans)]).all()]
+            Question.container==[str(ans)]).all()]
 
+    # n5 = Answer.query.filter(\
+    #         Answer.question_id.in_(decisions5),\
+    #         Answer.answerYN==True).count()
     n5 = Answer.query.filter(\
             Answer.question_id.in_(decisions5),\
-            Answer.answerYN==True).count()
+            Answer.answerNumeric==0).count()
     total5 = Answer.query.filter(\
                 Answer.question_id.in_(decisions5)).count()
 
