@@ -193,7 +193,8 @@ def generate_form(questions):
                 # nothing to check
                 field.errors[:] = []
                 raise StopValidation()
-        if isinstance (question.parent,QuestionText):
+        if isinstance (question.parent,QuestionText) or \
+            isinstance(question.parent,QuestionChoice):
             if question.condition.operation=="<":
                 if data<question.condition.value:
                     pass
@@ -216,13 +217,13 @@ def generate_form(questions):
                     field.errors[:] = []
                     raise StopValidation()
 
-        if isinstance(question.parent,QuestionChoice):
-            if data==question.condition.value:
-                pass
-            else:
-                # nothing to check
-                field.errors[:] = []
-                raise StopValidation()
+        # if isinstance(question.parent,QuestionChoice):
+        #     if data==question.condition.value:
+        #         pass
+        #     else:
+        #         # nothing to check
+        #         field.errors[:] = []
+        #         raise StopValidation()
 
     def check_valid_select_field(self,field):
         if field.data=="":
@@ -406,6 +407,10 @@ def generate_form(questions):
             #         setattr(AnswerForm,"c"+str(question.id),SelectField('Answer', 
             #             choices = list,validators = [check_valid_select_field]))
             if question.isSubquestion:
+                if question.render=="select":
+                    setattr(AnswerForm,"c"+str(question.id),SelectField('Answer', 
+                        choices = list,validators = [check_valid_select_field,check_subquestion]))
+                else:
                     setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer',
                         horizontal=question.render=="horizontal",
                         choices = list,validators = [check_subquestion]))
