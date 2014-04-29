@@ -467,7 +467,8 @@ def writeQuestion(question, form):
                 return True
             else:
                 return False
-        if isinstance (question.parent,QuestionText):
+        if isinstance (question.parent,QuestionText) or\
+         isinstance(question.parent,QuestionChoice):
             if question.condition.operation=="<":
                 if data<question.condition.value:
                     return True
@@ -483,11 +484,7 @@ def writeQuestion(question, form):
                     return True
                 else:
                     return False
-        if isinstance(question.parent,QuestionChoice):
-            if data==question.condition.value:
-                return True
-            else:
-                return False
+
 
 @login_required
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods=['GET', 'POST'])
@@ -538,16 +535,7 @@ def showQuestions(id_survey, id_section):
         print "valiendo"
         return redirect(url_for('surveys.logicSurvey',id_survey = id_survey))
 
-    # return render_template('/surveys/showQuestions.html',
-    #         title = survey.title,
-    #         survey = survey,
-    #         section = section,
-    #         # form = form,
-    #         form = form,
-    #         questions = questions,
-    #         percent = stateSurvey.percentSurvey()
-    #         )
-    return render_template('/surveys/likert.html',
+    return render_template('/surveys/showQuestions.html',
             title = survey.title,
             survey = survey,
             section = section,
@@ -556,3 +544,12 @@ def showQuestions(id_survey, id_section):
             questions = questions,
             percent = stateSurvey.percentSurvey()
             )
+    # return render_template('/surveys/likert.html',
+    #         title = survey.title,
+    #         survey = survey,
+    #         section = section,
+    #         # form = form,
+    #         form = form,
+    #         questions = questions,
+    #         percent = stateSurvey.percentSurvey()
+    #         )
