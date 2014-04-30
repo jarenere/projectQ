@@ -76,7 +76,7 @@ def decision1(id_survey):
             Answer.user_id==current_user.id,\
             or_(Answer.question==decision1_v1[0],Answer.question==decision1_v1[1])).first()
     if ans1_v1 is not None:
-        ans1 = ans1_v1.answerNumeric
+        ans1 = ans1_v1.answerText
         decision1=decision1_v1
         f = open(basedir+"/app/static/feedback1_v1.re", "r")
         text =  f.read()
@@ -89,20 +89,20 @@ def decision1(id_survey):
 
         ans1=Answer.query.filter(Answer.user_id==current_user.id,\
                 or_(Answer.question==decision1[0],Answer.question==decision1[1])).\
-                first().answerNumeric
+                first().answerText
         f = open(basedir+"/app/static/feedback1_v2.re", "r")
         text =  f.read()
         f.close()
 
     n1 = Answer.query.filter(\
             or_(Answer.question==decision1[0],Answer.question==decision1[1]),\
-            Answer.answerNumeric==ans1).count()
+            Answer.answerText==ans1).count()
     
     total1 = Answer.query.filter(\
                 or_(Answer.question==decision1[0],Answer.question==decision1[1])).count()
     
     percent1 = n1/total1
-    avg1 = db.session.query(func.avg(Answer.answerNumeric)).filter(\
+    avg1 = db.session.query(func.avg(Answer.answerText)).filter(\
         or_(Answer.question==decision1[0],Answer.question==decision1[1])).first()[0] 
 
     return render_template('/feedback/feedback.html',
@@ -121,17 +121,17 @@ def get_percent(decision, user_id, survey_id):
 
     
     ans=Answer.query.filter(Answer.user_id==user_id,\
-            Answer.question_id.in_(decisions)).first().answerNumeric
+            Answer.question_id.in_(decisions)).first().answerText
 
     n = Answer.query.filter(\
             Answer.question_id.in_(decisions),\
-            Answer.answerNumeric==ans).count()
+            Answer.answerText==ans).count()
     
     total = Answer.query.filter(\
                 Answer.question_id.in_(decisions)).count()
     
     percent = n/total
-    avg = db.session.query(func.avg(Answer.answerNumeric)).filter(\
+    avg = db.session.query(func.avg(Answer.answerText)).filter(\
         Answer.question_id.in_(decisions)).first()[0] 
 
     return ans, avg, percent
