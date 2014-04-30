@@ -33,7 +33,6 @@ def index(id_survey):
             )
 
 
-
 @blueprint.route('/<int:id_survey>', methods=['GET', 'POST'])
 @blueprint.route('/<int:id_survey>/<int:feedback>', methods=['GET', 'POST'])
 @login_required
@@ -206,17 +205,10 @@ def decision4(id_survey,index=False):
             Section.root_id==id_survey,\
             Question.decision=="decision_five").all()]
 
-    # decisions5 = [q.id for q in Question.query.filter(\
-    #         Question.id.in_(all_decision5),\
-    #         Question.choices==[str(ans)]).all()]
-
     decisions5 = [q.id for q in Question.query.filter(\
             Question.id.in_(all_decision5),\
             Question.container==[str(ans)]).all()]
 
-    # n5 = Answer.query.filter(\
-    #         Answer.question_id.in_(decisions5),\
-    #         Answer.answerYN==True).count()
     n5 = Answer.query.filter(\
             Answer.question_id.in_(decisions5),\
             Answer.answerNumeric==0).count()
@@ -253,7 +245,7 @@ def decision6(id_survey,index=False):
             percent = percent,
             index = index,
             id_survey = id_survey)
-    
+
 def get_date_decision(decision, user_id,id_survey):
     '''return date when answered 
     '''
