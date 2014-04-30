@@ -83,7 +83,14 @@
     {% if percent5 is defined %}
         <div id="decision5" style="width: 900px; height: 500px;"></div>
     {% endif %}
+    {% if index %}
+    <div>
+        <a class="btn btn-default" href="{{ url_for('feedback.index',id_survey = id_survey) }}">{{ ('Back') }}</a>
+    </div>
+    {% else %}
     <form action="" method="post" name="secion">
       <input class="btn" type="submit" value="Next">
     </form>
+    {% endif %}
+
 {% endblock %}

@@ -23,6 +23,14 @@ from sqlalchemy import or_
 from config import basedir
 
 
+@blueprint.route('/<int:id_survey>/index', methods=['GET', 'POST'])
+@login_required
+@finished_survey
+def index(id_survey):
+    return render_template('/feedback/index.html',
+            id_survey=id_survey,
+            tittle = "feedback"
+            )
 
 
 
@@ -44,10 +52,11 @@ def logic_feedback(id_survey,feedback=0):
         feedback=feedback+1
         return redirect(url_for('feedback.logic_feedback',id_survey = id_survey, feedback = feedback))
     if feedback >4:
-        return render_template('/feedback/index.html',
-                id_survey=id_survey,
-                tittle = "feedback"
-                )
+        return redirect(url_for('feedback.index',id_survey = id_survey))
+        # return render_template('/feedback/index.html',
+        #         id_survey=id_survey,
+        #         tittle = "feedback"
+        #         )
 
     decision = list_date[feedback][1]
     if decision == "decision1":
@@ -62,10 +71,11 @@ def logic_feedback(id_survey,feedback=0):
         return decision6(id_survey = id_survey)
 
 
-@blueprint.route('/<int:id_survey>/decision1')
+@blueprint.route('/<int:id_survey>/decision1', methods=['GET', 'POST'])
 @login_required
 @finished_survey
-def decision1(id_survey):
+def decision1(id_survey,index=False):
+    index = request.args.get('index')
     current_user.id = current_user.id
     decision1_v1=Question.query.filter(\
             Question.section_id==Section.id,\
@@ -110,7 +120,9 @@ def decision1(id_survey):
             text = text,
             ans = ans1,
             avg = avg1,
-            percent = percent1)
+            percent = percent1,
+            index = index,
+            id_survey = id_survey)
 
 
 def get_percent(decision, user_id, survey_id):
@@ -140,11 +152,11 @@ def get_percent(decision, user_id, survey_id):
 
 
 
-@blueprint.route('/<int:id_survey>/decision2')
+@blueprint.route('/<int:id_survey>/decision2', methods=['GET', 'POST'])
 @login_required
 @finished_survey
-def decision2(id_survey):
-
+def decision2(id_survey,index=False):
+    index = request.args.get('index')
     ans,avg,percent = get_percent("decision_two", current_user.id,id_survey)
     f = open(basedir+"/app/static/feedback2.re", "r")
     text =  f.read()
@@ -155,13 +167,15 @@ def decision2(id_survey):
             text = text,
             ans = ans,
             avg = avg,
-            percent = percent)
+            percent = percent,
+            index = index,
+            id_survey = id_survey)
 
-@blueprint.route('/<int:id_survey>/decision3')
+@blueprint.route('/<int:id_survey>/decision3', methods=['GET', 'POST'])
 @login_required
 @finished_survey
-def decision3(id_survey):
-
+def decision3(id_survey,index=False):
+    index = request.args.get('index')
     ans,avg,percent = get_percent("decision_three", current_user.id,id_survey)
     f = open(basedir+"/app/static/feedback3.re", "r")
     text =  f.read()
@@ -172,14 +186,16 @@ def decision3(id_survey):
             text = text,
             ans = ans,
             avg = avg,
-            percent = percent)
+            percent = percent,
+            index = index,
+            id_survey = id_survey)
 
-@blueprint.route('/<int:id_survey>/decision4')
-@blueprint.route('/<int:id_survey>/decision4&5')
+@blueprint.route('/<int:id_survey>/decision4', methods=['GET', 'POST'])
+@blueprint.route('/<int:id_survey>/decision4&5', methods=['GET', 'POST'])
 @login_required
 @finished_survey
-def decision4(id_survey):
-
+def decision4(id_survey,index=False):
+    index = request.args.get('index')
     ans,avg,percent = get_percent("decision_four", current_user.id,id_survey)
     f = open(basedir+"/app/static/feedback4&5.re", "r")
     text =  f.read()
@@ -215,13 +231,15 @@ def decision4(id_survey):
             ans = ans,
             avg = avg,
             percent = percent,
-            percent5 = percent5)
+            percent5 = percent5,
+            index = index,
+            id_survey = id_survey)
 
-@blueprint.route('/<int:id_survey>/decision6')
+@blueprint.route('/<int:id_survey>/decision6', methods=['GET', 'POST'])
 @login_required
 @finished_survey
-def decision6(id_survey):
-
+def decision6(id_survey,index=False):
+    index = request.args.get('index')
     ans,avg,percent = get_percent("decision_six", current_user.id,id_survey)
     f = open(basedir+"/app/static/feedback6.re", "r")
     text =  f.read()
@@ -232,8 +250,10 @@ def decision6(id_survey):
             text = text,
             ans = ans,
             avg = avg,
-            percent = percent)
-
+            percent = percent,
+            index = index,
+            id_survey = id_survey)
+    
 def get_date_decision(decision, user_id,id_survey):
     '''return date when answered 
     '''

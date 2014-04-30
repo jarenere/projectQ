@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}   
-<a href="{{ url_for('feedback.decision1', id_survey = id_survey) }}">decision lottery</a> <br/>
-<a href="{{ url_for('feedback.decision2', id_survey = id_survey) }}">decision rent (0.80)</a> <br/>
-<a href="{{ url_for('feedback.decision3', id_survey = id_survey) }}">decision rent(1.2)</a> <br/>
-<a href="{{ url_for('feedback.decision4', id_survey = id_survey) }}">decision ultimatum</a> <br/>
-<a href="{{ url_for('feedback.decision6', id_survey = id_survey) }}">decision dictador</a> <br/>
+<a href="{{ url_for('feedback.decision1', id_survey = id_survey,index=True) }}">decision lottery</a> <br/>
+<a href="{{ url_for('feedback.decision2', id_survey = id_survey,index=True) }}">decision rent (0.80)</a> <br/>
+<a href="{{ url_for('feedback.decision3', id_survey = id_survey,index=True) }}">decision rent(1.2)</a> <br/>
+<a href="{{ url_for('feedback.decision4', id_survey = id_survey,index=True) }}">decision ultimatum</a> <br/>
+<a href="{{ url_for('feedback.decision6', id_survey = id_survey,index=True) }}">decision dictador</a> <br/>
 {% endblock %}
