@@ -3,7 +3,7 @@ from sqlalchemy import or_
 import random
 from app import db, models
 
-
+# DEPRECATED!!!!
 class Games:
     MIN_USER_MATCH = 10 #8 is sufficient
     def __init__(self, survey_id):
