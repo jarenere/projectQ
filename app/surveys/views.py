@@ -22,6 +22,7 @@ import datetime
 from . import blueprint
 from app.decorators import valid_survey, there_is_stateSurvey
 from ..main.errors import ErrorEndDateOut, ErrorExceeded, ErrorTimedOut
+from app.stats.game import Games
 
 
 @blueprint.route('/', methods=['GET', 'POST'])
@@ -83,6 +84,19 @@ def check_feedback(id_survey):
     return render_template('/surveys/finish.html', 
         title = 'Finish')
 
+def run_part2_raffle(id_survey):
+    '''run part2 and raffle if user no always game with untrue money
+    '''
+    game = Games(id_survey)
+    ss = StateSurvey.query.filter(StateSurvey.survey_id==id_survey,
+        StateSurvey.user_id==current_user.id).first()
+    print "valiendo\n"
+    if (ss.status & StateSurvey.FINISH_OK) and \
+        (ss.status & StateSurvey.PART2_MONEY)==0 and \
+        (ss.status & StateSurvey.PART2_NO_MONEY)==0:
+        print ("part2 and rifa")
+        game.part2(current_user)
+        game.raffle(current_user)
 
 
 @login_required
@@ -99,11 +113,8 @@ def logicSurvey(id_survey):
     section = stateSurvey.nextSection()
     if section is None:
         if stateSurvey.status & StateSurvey.FINISH_OK:
-            if True: 
-                # check if there are feedback
-                return check_feedback(id_survey)
-                # return render_template('/surveys/finish.html', 
-                #     title = 'Finish')
+            run_part2_raffle(id_survey)
+            return check_feedback(id_survey)
         if stateSurvey.status & StateSurvey.TIMED_OUT:
             return render_template('/survey/error_time_date.html',
                 title ='time out')
