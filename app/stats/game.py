@@ -255,11 +255,11 @@ class Games:
             elif n==4:
                 self._prize_decision4_6_playerA(user,"gameUltimatum")
             elif n==5:
-                self._prize_decision4_6_playerA(user,"gameUltimatum")
+                self._prize_decision4_6_playerB(user,"gameUltimatum")
             elif n==6:
                 self._prize_decision4_6_playerA(user,"gameDictador")
             elif n==7:
-                self._prize_decision4_6_playerA(user,"gameDictador")
+                self._prize_decision4_6_playerB(user,"gameDictador")
 
     def _match_alone_user(self,decision,user, money):
         if decision == "decision1_v1":
