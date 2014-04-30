@@ -10,9 +10,9 @@
       google.setOnLoadCallback(drawChart);
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['user', 'answer' ],
-          ['you',  {{ans}} ],
-          ['avg',  {{avg}}]
+          ['user', '{{ _('answer') }}' ],
+          ['{{ _('you') }}',  {{ans}} ],
+          ['{{ _('avg') }}',  {{avg}}]
         ]);
 
       var view = new google.visualization.DataView(data);
@@ -25,7 +25,7 @@
 
         var options = {
           minPointLength: 10,
-          title: 'Average',
+          title: '{{ _('Average') }}',
           legend: { position: "none" },
         };
 
@@ -39,12 +39,12 @@
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['Answer', '%'],
-          ['Same',     {{percent}}],
-          ['Different',      {{1-percent}}]
+          ['{{ _('Same') }}',     {{percent}}],
+          ['{{ _('Different') }}',      {{1-percent}}]
         ]);
 
         var options = {
-          title: '% with same answer',
+          title: '% {{ _('with same answer') }}',
           legend: 'labeled',
           pieSliceText: 'none',
           tooltip: { trigger: 'none' },
@@ -61,12 +61,12 @@
             function drawChart() {
               var data = google.visualization.arrayToDataTable([
                 ['Answer', '%'],
-                ['Accept',     {{percent}}],
-                ['refuse',      {{1-percent}}]
+                ['{{ _('Accepted') }}',     {{percent}}],
+                ['{{ _('Refused') }}',      {{1-percent}}]
               ]);
 
               var options = {
-                title: '% user than have accepted your division',
+                title: '% {{ _('user than have accepted your division') }}',
                 legend: 'labeled',
                 pieSliceText: 'none',
                 tooltip: { trigger: 'none' },
@@ -85,11 +85,11 @@
     {% endif %}
     {% if index %}
     <div>
-        <a class="btn btn-default" href="{{ url_for('feedback.index',id_survey = id_survey) }}">{{ ('Back') }}</a>
+        <a class="btn btn-default" href="{{ url_for('feedback.index',id_survey = id_survey) }}">{{ _('Back') }}</a>
     </div>
     {% else %}
     <form action="" method="post" name="secion">
-      <input class="btn" type="submit" value="Next">
+      <input class="btn" type="submit" value="{{ _('Next') }}">
     </form>
     {% endif %}
 

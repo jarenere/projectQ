@@ -33,6 +33,10 @@ lm.init_app(app)
 lm.login_view = 'auth.login'
 oid = OpenID(app, os.path.join(basedir, 'tmp'))
 
+#flask-babel
+from flask.ext.babel import Babel
+babel = Babel(app)
+
 
 # Dir to stats
 stats_csv = os.path.join(basedir, 'stats_csv')

@@ -2,18 +2,17 @@
 
 {% block content %}
     <div class="container-fluid">
-        <h1>User!</h1>
         {% for survey in surveys %}
             <table class="table table-hover">
                 <td>
                     <h2><a href="{{ url_for('surveys.logicSurvey', id_survey = survey.Survey.id) }}">{{survey.Survey.title}}</a></h2>
                     {% filter markdown %}{{survey.Survey.description}}{% endfilter %}
-                    State:
+                    {{ _('State:') }}
                     {% if survey.status == None %}
-                        without starting
+                        {{ _('without starting') }}
                     {% endif %}
                     {% if survey.status == 0 %}
-                        without finish
+                        {{ _('without finish') }}
                     {% endif %}
                     <br>Respondents {{survey.r_count}} of {{survey.Survey.maxNumberRespondents}} 
                 </td>

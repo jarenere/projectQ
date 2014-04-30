@@ -1,3 +1,38 @@
+<head>
+    <style type="text/css">
+    .progresslabel{
+        
+        min-width:40px;
+    }
+
+    .radiofield_vertical ul, li {
+        list-style-type: none;
+    }
+
+
+    .likert tr:first-child td {
+        border-top: none;
+    }
+    .likert {
+    border-collapse: collapse;
+        text-align: center;
+        float: right;
+        clear: left;
+        list-style-type: none;
+        margin:0;
+        padding:0;
+
+    }
+
+    .type-info{color:#999;vertical-align:middle}
+
+    .question tr:first-child td {
+    border-top: none;
+    }
+
+    </style>
+</head>
+
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
@@ -108,16 +143,16 @@
             {% endfor %}
             <div class="control-group">
                 <div class="controls">
-                    <input class="btn" type="submit" value="Next">
-                   {# <input class="btn btn-primary" type="submit" value="Next">#}
+                    <input class="btn" type="submit" value="{{ _('Next') }}">
+                   {# <input class="btn btn-primary" type="submit" value="{{ _('Next') }}">#}
                 </div>
             </div>
         </form>
     </div>
-    percent of survey:
+    {{ _('Percent of survey:') }}
     <div class="progress progress-info">
         <div class="bar" style="width: {{percent}}%">
-        <span class="sr-only">{{percent}}% Complete</span>
+        <span class="sr-only">{{percent}}% {{ _('Complete') }}</span>
         </div>
     </div>
 {% endblock %}

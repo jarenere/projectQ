@@ -28,6 +28,7 @@ from ..main.errors import ErrorEndDateOut, ErrorExceeded, ErrorTimedOut
 from app.stats.game import Games
 from sqlalchemy import or_
 from sqlalchemy import and_
+from flask.ext.babel import gettext
 
 
 @blueprint.route('/', methods=['GET', 'POST'])
@@ -117,7 +118,7 @@ def get_stateSurvey_or_error(id_survey,user,ip = None):
 def check_feedback(id_survey):
     '''check if survey have feedback
     '''
-    ans = Answer.query.filter(Answer.user==current_user.id,
+    ans = Answer.query.filter(Answer.user_id==current_user.id,
         Answer.question_id==Question.id,
         Question.section_id==Section.id, 
         Section.root_id==id_survey,
@@ -136,7 +137,7 @@ def run_part2_raffle(id_survey):
     '''
     game = Games(id_survey)
     ss = StateSurvey.query.filter(StateSurvey.survey_id==id_survey,
-        StateSurvey.user==current_user.id).first()
+        StateSurvey.user_id==current_user.id).first()
     print "valiendo\n"
     if (ss.status & StateSurvey.FINISH_OK) and \
         (ss.status & StateSurvey.PART2_MONEY)==0 and \
@@ -222,7 +223,7 @@ def generate_form(questions):
         '''check if the answer is the expected
         '''
         question = Question.query.get(field.name[1:])
-        answer = Answer.query.filter(Answer.user==g.user.id,
+        answer = Answer.query.filter(Answer.user_id==g.user.id,
                 Answer.question_id==question.id).first()
         if answer is None:
             answer = Answer (answerText = field.data, user= g.user, question = question)
@@ -234,15 +235,15 @@ def generate_form(questions):
         db.session.commit()
         if not answer.answerAttempt():
             if answer.isMoreAttempt():
-                raise ValidationError("Wrong answer")
+                raise ValidationError(gettext("Wrong answer"))
             else:
-                flash("wrong answer, you can continue")
+                flash(gettext("wrong answer, you can continue"))
     
     def check_answer_expected_yn(self,field):
         '''check if the answer is the expected
         '''
         question = Question.query.get(field.name[1:])
-        answer = Answer.query.filter(Answer.user==g.user.id,
+        answer = Answer.query.filter(Answer.user_id==g.user.id,
                 Answer.question_id==question.id).first()
         if answer is None:
             answer = Answer (answerYN = field.data=='Yes', user= g.user, question = question)
@@ -254,9 +255,9 @@ def generate_form(questions):
         db.session.commit()
         if not answer.answerAttemptYN():
             if answer.isMoreAttempt():
-                raise ValidationError("Wrong answer")
+                raise ValidationError(gettext("Wrong answer"))
             else:
-                flash("wrong answer, you can continue")
+                flash(gettext("wrong answer, you can continue"))
 
     def check_subquestion(self,field):
         '''check whether to answer the question or not
@@ -305,7 +306,7 @@ def generate_form(questions):
 
     def check_valid_select_field(self,field):
         if field.data=="":
-            raise ValidationError("Option not valid")
+            raise ValidationError(gettext("Option not valid"))
 
 
 
@@ -336,7 +337,7 @@ def generate_form(questions):
 
             html.append('</%s>' % "table")
             return  HTMLString(''.join(html))
-            # return super(RadioField, self).__call__(**kwargs)
+            # return super(RadioFeild, self).__call__(**kwargs)
 
         def __call1__(self, **kwargs):
             '''render likert as list
@@ -393,19 +394,20 @@ def generate_form(questions):
         #First element must be a string, otherwise fail to valid choice
 
         if isinstance (question,QuestionYN):
+            choices = [('Yes',gettext('Yes')),('No',gettext('No'))]
             if question.isSubquestion:
                 setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
-                    choices = [('Yes','Yes'),('No','No')],validators = [check_subquestion]))
+                    choices = choices,validators = [check_subquestion]))
             else:
                 if question.isExpectedAnswer():
                     setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
-                        choices = [('Yes','Yes'),('No','No')],validators = [check_answer_expected_yn]))
+                        choices = choices, validators = [check_answer_expected_yn]))
                 elif question.required:
                     setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
-                        choices = [('Yes','Yes'),('No','No')],validators = [Required()]))
+                        choices = choices,validators = [Required()]))
                 else:
                     setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
-                        choices = [('Yes','Yes'),('No','No')],validators = [Optional()]))
+                        choices = choices,validators = [Optional()]))
         if isinstance (question,QuestionText):
             if question.isSubquestion:
                 setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer',
@@ -545,7 +547,7 @@ def showQuestions(id_survey, id_section):
     stateSurvey = get_stateSurvey_or_error(id_survey,g.user,request.remote_addr)
     section = stateSurvey.nextSection()
     if section is None or section.id !=id_section:
-        flash ("access denied")
+        flash (gettext("access denied"))
         return abort (403)
         
     survey = Survey.query.get(id_survey)

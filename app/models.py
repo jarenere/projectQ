@@ -782,6 +782,7 @@ class User(db.Model):
     def is_researcher(self):
         return self.role == ROLE_RESEARCHER
 
+
 @lm.user_loader
 def load_user(user_id):
         return User.query.get(int(user_id))

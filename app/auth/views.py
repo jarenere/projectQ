@@ -5,6 +5,8 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 from forms import LoginForm
 from . import blueprint
 from ..models import User, ROLE_USER
+from flask.ext.babel import gettext
+
 
 
 @blueprint.route('/login', methods=['GET', 'POST'])
@@ -37,10 +39,12 @@ def logout():
 def before_request():
     g.user = current_user
 
+
+
 @oid.after_login
 def after_login(resp):
     if resp.email is None or resp.email == "":
-        flash('Invalid login. Please try again.')
+        flash(gettext('Invalid login. Please try again.'))
         return redirect(url_for('login'))
     user = User.query.filter_by(email = resp.email).first()
     if user is None:
