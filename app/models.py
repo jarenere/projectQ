@@ -1089,7 +1089,12 @@ class GameImpatience(db.Model):
         if self.is_real_money:
             if random.randint(1,10)==1:
                 #user prize
-                self.prize=True    
+                self.prize=True
+
+    @hybrid_property
+    def answer_text(self):
+        return Answer.query.get(self.answer).answerText
+
 
 
 class Game(db.Model):

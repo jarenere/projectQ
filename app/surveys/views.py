@@ -9,6 +9,9 @@ from app.models import Question, QuestionChoice, QuestionText
 from app.models import QuestionYN ,QuestionLikertScale
 from app.models import StateSurvey
 from app.models import Answer
+from app.models import Raffle
+from app.models import GameImpatience
+from app.models import GameLottery1, GameLottery2, GameRent1, GameRent2, GameUltimatum, GameDictador
 from flask.ext.wtf import Form
 from sqlalchemy.sql import func
 from wtforms import TextField, BooleanField, RadioField, IntegerField, HiddenField, DecimalField,StringField
@@ -23,6 +26,8 @@ from . import blueprint
 from app.decorators import valid_survey, there_is_stateSurvey
 from ..main.errors import ErrorEndDateOut, ErrorExceeded, ErrorTimedOut
 from app.stats.game import Games
+from sqlalchemy import or_
+from sqlalchemy import and_
 
 
 @blueprint.route('/', methods=['GET', 'POST'])
@@ -52,6 +57,48 @@ def index():
         # surveys= [s.Survey for s in surveys],
         surveys = surveys) 
 
+def info_games(id_survey):
+    '''get info of game, raffle and impacience of the user
+    '''
+    raffle = Raffle.query.filter(Raffle.user==current_user.id,
+        Raffle.survey==id_survey).first()
+    part2 = GameImpatience.query.filter(GameImpatience.user==current_user.id,
+        GameImpatience.survey==id_survey).first()
+    lottery1 = GameLottery1.query.filter(GameLottery1.survey==id_survey,
+        or_(and_(GameLottery1.userA==current_user.id,GameLottery1.repeatA==False),
+            and_(GameLottery1.userB==current_user.id,GameLottery1.repeatB==False))).first()
+    lottery2 = GameLottery2.query.filter(GameLottery2.survey==id_survey,
+        or_(and_(GameLottery2.userA==current_user.id,GameLottery2.repeatA==False),
+            and_(GameLottery2.userB==current_user.id,GameLottery2.repeatB==False))).first()
+    rent1 = GameRent1.query.filter(GameRent1.survey==id_survey,
+        or_(and_(GameRent1.userA==current_user.id,GameRent1.repeatA==False),
+            and_(GameRent1.userB==current_user.id,GameRent1.repeatB==False))).first()
+    rent2 = GameRent2.query.filter(GameRent2.survey==id_survey,
+        or_(and_(GameRent2.userA==current_user.id,GameRent2.repeatA==False),
+            and_(GameRent2.userB==current_user.id,GameRent2.repeatB==False))).first()
+    ultimatum1 = GameUltimatum.query.filter(GameUltimatum.survey==id_survey,
+        GameUltimatum.userA==current_user.id, GameUltimatum.repeatA==False).first()
+    ultimatum2 = GameUltimatum.query.filter(GameUltimatum.survey==id_survey,
+        GameUltimatum.userB==current_user.id, GameUltimatum.repeatB==False).first()
+    dictador1 = GameDictador.query.filter(GameDictador.survey==id_survey,
+        GameDictador.userA==current_user.id, GameDictador.repeatA==False).first()
+    dictador2 = GameDictador.query.filter(GameDictador.survey==id_survey,
+        GameDictador.userB==current_user.id, GameDictador.repeatB==False).first()
+    return render_template('/surveys/results.html',
+        title = "Resutls",
+        user_id = current_user.id,
+        raffle = raffle,
+        part2 = part2,
+        lottery1 = lottery1,
+        lottery2 = lottery2,
+        rent1 = rent1,
+        rent2 = rent2,
+        ultimatum1 = ultimatum1,
+        ultimatum2 = ultimatum2,
+        dictador1 = dictador1,
+        dictador2 = dictador2)
+
+
 def get_stateSurvey_or_error(id_survey,user,ip = None):
     stateSurvey, status = StateSurvey.getStateSurvey(id_survey,user,ip)
     if status == StateSurvey.NO_ERROR:
@@ -70,7 +117,7 @@ def get_stateSurvey_or_error(id_survey,user,ip = None):
 def check_feedback(id_survey):
     '''check if survey have feedback
     '''
-    ans = Answer.query.filter(Answer.user_id==current_user.id,
+    ans = Answer.query.filter(Answer.user==current_user.id,
         Answer.question_id==Question.id,
         Question.section_id==Section.id, 
         Section.root_id==id_survey,
@@ -89,7 +136,7 @@ def run_part2_raffle(id_survey):
     '''
     game = Games(id_survey)
     ss = StateSurvey.query.filter(StateSurvey.survey_id==id_survey,
-        StateSurvey.user_id==current_user.id).first()
+        StateSurvey.user==current_user.id).first()
     print "valiendo\n"
     if (ss.status & StateSurvey.FINISH_OK) and \
         (ss.status & StateSurvey.PART2_MONEY)==0 and \
@@ -175,7 +222,7 @@ def generate_form(questions):
         '''check if the answer is the expected
         '''
         question = Question.query.get(field.name[1:])
-        answer = Answer.query.filter(Answer.user_id==g.user.id,
+        answer = Answer.query.filter(Answer.user==g.user.id,
                 Answer.question_id==question.id).first()
         if answer is None:
             answer = Answer (answerText = field.data, user= g.user, question = question)
@@ -195,7 +242,7 @@ def generate_form(questions):
         '''check if the answer is the expected
         '''
         question = Question.query.get(field.name[1:])
-        answer = Answer.query.filter(Answer.user_id==g.user.id,
+        answer = Answer.query.filter(Answer.user==g.user.id,
                 Answer.question_id==question.id).first()
         if answer is None:
             answer = Answer (answerYN = field.data=='Yes', user= g.user, question = question)
