@@ -452,6 +452,7 @@ def selectType(form,section):
 def addQuestion(id_survey, id_section):
     section = Section.query.get(id_section)
     form = QuestionForm()
+    # get list of question of this section, to that question depends on the answer to another question
     form.question.query=Question.query.filter(Question.section_id==id_section)
     if form.validate_on_submit():
         question = selectType(form,section)
@@ -481,16 +482,19 @@ def addQuestion(id_survey, id_section):
 def editQuestion(id_survey, id_section,id_question):
     question = Question.query.get(id_question)
     form = QuestionForm()
+    # get list of question of this section, to that question depends on the answer to another question
     form.question.query=Question.query.filter(Question.section_id==id_section,\
         Question.id!=id_question)
     if form.validate_on_submit():
-        position = question.position
+        q = selectType(form,Section.query.get(id_section))
+        for subquestion in question.subquestions:
+            subquestion.parent = q
+            db.session.add(subquestion)
+        q.position=question.position
+        db.session.add(q)
+        db.session.commit()
         db.session.delete (question)
         db.session.commit()
-        q = selectType(form,Section.query.get(id_section))
-        q.id = id_question
-        q.position=position
-        db.session.add(q)
         db.session.commit()
         flash('Adding question')
         return redirect(url_for('researcher.addQuestion',id_survey = id_survey, id_section = id_section))

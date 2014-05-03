@@ -103,6 +103,7 @@ class QuestionForm(Form):
     listOperations = [('none','None'),('<','<'),('==','='),('>','>')]
     operation = SelectField('Type of operation', choices=listOperations, default='none')
     value = TextField('Value', validators = [Length(min = 0, max =63)])
+    #:list of questions parents
     question = QuerySelectField('Question',get_label='text',validators=[Optional()])
 
 
