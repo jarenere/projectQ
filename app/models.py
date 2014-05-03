@@ -446,7 +446,6 @@ class Question(db.Model):
     #         cls.section_id==Section.id )
     
     def last_position(self):
-        print self.section,"jaja\n"
         question = Question.query.\
             filter(Question.section==self.section).\
             order_by(desc(Question.position)).first()
