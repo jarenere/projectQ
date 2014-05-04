@@ -255,6 +255,7 @@ def generate_answers_fake(id_survey, number=6):
             answer.answerText=(i)
         elif isinstance (q, QuestionYN):
             answer = Answer (answerYN =random.randrange(0,2)==1, user= user, question = q)
+            answer.answerText = answer.answerYN
         elif isinstance (q, QuestionText):
             if q.isExpectedAnswer():
                 if random.choice([0,1,1])==1:
@@ -266,16 +267,19 @@ def generate_answers_fake(id_survey, number=6):
                     answer.numberAttempt= q.maxNumberAttempt+1
             elif q.isNumber:
                 answer = Answer (answerNumeric =random.randrange(0,100), user= user, question = q)
+                answer.answerText = answer.answerNumeric
             else:
                 answer = Answer (answerText =forgery_py.forgery.lorem_ipsum.word(), user= user, question = q)
         elif isinstance (q,QuestionChoice):
             if q.is_range:
                 answer = Answer (answerNumeric =random.randrange(q.range_min,q.range_max), user= user, question = q)
+                answer.answerText = answer.answerNumeric
             else:
                 answer = Answer (answerNumeric =random.randrange(0,len(q.choices)), user= user, question = q)
-        
+                answer.answerText = q.choices[answer.answerNumeric]
         elif isinstance (q,QuestionLikertScale):
             answer = Answer (answerNumeric =random.randrange(q.minLikert,q.maxLikert+1), user= user, question = q)
+            answer.answerText = answer.answerNumeric
         else:
             print "tipo de pregunta invalido"
             quit()
@@ -293,8 +297,7 @@ def generate_answers_fake(id_survey, number=6):
         user = User.query.get(i);
         ss, error = StateSurvey.getStateSurvey(id_survey,user,forgery_py.forgery.internet.ip_v4())
         if error != StateSurvey.NO_ERROR:
-            print "error en fechas o en algo"
-            quit()
+            raise "error en fechas o en algo"
         ss.accept_consent()
         while not ss.is_finished():
             section = ss.nextSection()
