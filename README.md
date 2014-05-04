@@ -17,7 +17,7 @@ Flask-Markdown-0.3
 forgery forgerypy (to testing)
 Flask-Bootstrap-3.1.1.1
 apscheduler
-flask-babel
+flask-babel 0.9
 
 (datetimerange: and form... no usado por ahora..)
 WTForms-Alchemy-0.12.2.
