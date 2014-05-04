@@ -157,3 +157,4 @@ gat[]en añadir subquestion ayudar en el form para no cagarla (si es si o no, pu
 []creacion de forms fusionar yes/no con choice.. es lo mismo..
 []check pregunta feedback yes/no
 []feedback decision 5 fallarara (linea 197)
+[]convertir sectiontime en un diccionario en vez de una lista

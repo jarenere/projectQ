@@ -1,5 +1,8 @@
 lucia, necane, natalia
 
+http://stackoverflow.com/questions/7443243/sqlalchemy-order-by-field
+http://stackoverflow.com/questions/23381644/how-to-order-data-in-sqlalchemy-by-list
+http://stackoverflow.com/questions/20361017/sqlalchemy-full-outer-join
 xml:
 >>> import sys
 >>> sys.path.append("/usr/lib64/python2.7/lib-dynload/")
