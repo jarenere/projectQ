@@ -818,6 +818,18 @@ class Answer(db.Model):
         return "<answer(id='%s', user='%s', question='%s')>\n" % (
             self.id, self.user_id, self.question_id)
 
+    @hybrid_property
+    def section(self):
+        return self.question.section_id
+
+    @section.expression
+    def section(cls):
+        return Question.section_id
+
+    # @hybrid_property
+    # def survey(self):
+    #     return self.question.section.survey_id
+
     def answerAttempt(self):
         '''Return if the answer is the correct, else increment in 1
         the number attempt
