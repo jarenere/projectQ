@@ -560,12 +560,14 @@ def showQuestions(id_survey, id_section):
             if writeQuestion(question, form):
                 if isinstance (question,QuestionYN):
                     answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
+                    answer.answerText = answer.answerYN
                 if isinstance (question,QuestionText):
                     if question.isNumber:
                         if question.isNumberFloat:
                             answer = Answer (answerNumeric = form["c"+str(question.id)].data.replace(",","."), user= g.user, question = question)
                         else:
                             answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
+                        answer.answerText= answer.answerNumeric
                     else:
                         answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
                 if isinstance (question,QuestionChoice):
