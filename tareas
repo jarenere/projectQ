@@ -12,7 +12,7 @@ X hecho
 [X] que hacer cuando un usuario a empezado una encuesta y la fecha se termina (dejo un dia y luego borrar respuestas?) (solucion la misma que con el tiempo, si empezaste 2 minutos antes, mala suerte!)|| 12 de marzo
 [X]implementar usarios para la pate de investidadores
 [X]limitar el numero maximo de participantes (falta parte del usuario, en la bbdd e investigador hecho)
-[] limpiar un poco el codigo cuando se responden questiones, por ejemplo la p arte de time se podria sacar, solo hacer un commit al final ..., parte de comprobacion de si la respuesta es correcta debería ir en el modelo
+[/] limpiar un poco el codigo cuando se responden questiones, por ejemplo la p arte de time se podria sacar, solo hacer un commit al final ..., parte de comprobacion de si la respuesta es correcta debería ir en el modelo | 5 de mayo commit fuera
 [X] en next section compruebo si vacio el camino, no sería mejor cuando genero el arbol? desde luego que si| 10 de marzo
 [X] parte de pago y no pagos, tal vez algun flag en las preguntas | 13 de marzo flag de pago real
 [/]parte del match | 14 de marzo a medias | 25 de marzo
@@ -21,8 +21,8 @@ X hecho
 [X]se peude acceder a encuestas aun no publicadas, validar fecha y numero de usuarios, evitarlo! || solo hecho la fecha, fin el 18 de marzo
 [X]sacar la validacion del usuario || 10/11 de marzo
 [X]implementar paginas de errores ||14 marzo
-[]traduccion
-[]encuestas multidioma
+[/]traduccion
+[]encuestas multidioma | 30 de abril, falta parte del investigador, fuerzo el español
 [X]cuando se modifica una pregunta, que el select field este en posición correcta || 11 de marzo
 [X]cuando se miden tiempos de preguntas, podria mirar si se vuelve a la pregunta ver si ya se ha rellenado el tiempo y sino actualizarlo de manera conveniente, guardando alguan variable || 14 de marzo
 []cuando importas de xml dar mas info cuando hay un campo que falta
@@ -70,9 +70,9 @@ X hecho
 []tal vez añadir una cabecera en toda la parte de creacion de encuestas, que siempre repito lo miso, igual que sacar la barra lateral
 []mejorar la forma de añadir campos chocies(copiar a googe)
 http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-code
-[]tal vez añadir al decorador belong_researcher el decorador cache, xd http://www.juanjoconti.com.ar/2009/12/30/decoradores-en-python-iii/
+[X]tal vez añadir al decorador belong_researcher el decorador cache, xd http://www.juanjoconti.com.ar/2009/12/30/decoradores-en-python-iii/ | no veo por que hacerlo
 [X]añadir flag de terminado en tiempo | 18 de marzo
-[]en util.matching se puede volver a coger a un usuario que ha hehco una encuesta
+[X]en util.matching se puede volver a coger a un usuario que ha hehco una encuesta
 [X]import xml falla cuando hay fecha | elimnado campo fecha 25 de marzo
 []importar xml si vacio el titulo falla y ademaas luego si pones titulo no imoprta xml sino crea encuesta con ese titulo
 [X]no comprobado el tiempo cuando valido xml | el tiempo ni se importo ni se exporta
@@ -85,17 +85,16 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []log!!
 [X]eliminar questionNumerica o questin texto tipo numerico | 4 de abril
 []tal vez mover matching y questiones "raras" a un modulo distinto (con la bbdd)
-[]tal vez cambiar sectionTime por una tabla externa
+[X]tal vez cambiar sectionTime por una tabla externa | convertido a un diccionario
 [X]ordenar las secciones por sequencia!! || 20 de marzo
 [X]los hijos ordenados por sequence cuando accedo a ellos (modificar bbdd, es el relationship)| 20 de marzo
 []comprobar la longitud de todos los campos (bbdd, y forms)
 [x]quitar registro de tiempo | 20 marzo
-[]tal vez solo guardar en respuesta "texto, nada de si o no, numero"
-[]en respuestas guardar el tipo de respeusta que guardas? eso o solo texto
+[X]tal vez solo guardar en respuesta "texto, nada de si o no, numero" | en answerText siempre esta el resultado en texto escrito
 []csv algun icono de pensando
 [X]comprobar cn carga real csv, no estoy seguro si lo hace bien
 []csv se guarda ahora en local no se envia
-[]terminar position de implementar position de question
+[/]terminar position de implementar position de question | terminado, tal vez solo falte hacerlo mas inteligente y permitir mover la posicion de las encuestas
 []fichero con investigadores
 []en produccion quitar primer user researcher
 [X]xml no importo/exporto el tipo de dicision | 25 de marzo
@@ -111,7 +110,7 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 [x]decision 5 falla el check || 25 de marzo
 []Xcsv mirar que sucede en preguntas optativas, (deberia exportar "none")
 [X]en añaedir/editar secciones mirar porque el cuadro es pequeñico |26 de marzo
-[]respuesta esperada preguntas si o no (decision 1, pregunta si o no)
+[X]respuesta esperada preguntas si o no (decision 1, pregunta si o no)
 [X]falta meter expresiones regulares para las decisiones
 []cuando leo/cargo xml o escribo texto via web, saltarse entradas no validas
 [X]creo que esta mal la consulta de ver los usuarios que han hecho la consulta, ya que sin terminarla me marca los 1001 | 27 de marzo
@@ -123,29 +122,28 @@ http://stackoverflow.com/questions/12285903/flask-how-to-create-custom-abort-cod
 []cargarme en respuestas texto o numero (dejar solo texto)
 [X]mirar cuando almaceno respuestas que aveces es texto y aveces nop | 27 marzo
 [] variable game (init.py) tal vez en configuracion o en algo para el experimento
-[]cuando se termine una encuesta rellenar el resultado de la segunda parte, tal vez mirar si la encuesta tiene algun tipo de matching y que se peude contestar(part_two)
+[X]cuando se termine una encuesta rellenar el resultado de la segunda parte, tal vez mirar si la encuesta tiene algun tipo de matching y que se peude contestar(part_two) | hago matching parte2 y rifa, la parte 3 en un scheduler
 []matching y en genereal en la bbdd añadir restrics y cosas de esas
 [X]Divisiones por cero al tomar decisiones!! (puede que nadie meta pasta)
 [X]cuidado con los tipos cuando relleno automaticamente las repeustas y en el matching (en un lado miro respuesta numerica en otro texto) 
 []cuando arrancas la bbdd la primera vez  (i
 nit)   app.game = Games(1) da fallo, y luego tambien fallara hasta que exista esa encuesta, y tampoco se entera cuando modificas la encuesta
 [] no estaria mal hacer una utilidad para comprobar si una encuesta con decisiones es valida
-[] crear una clase decente en la bbdd de match y quitar los hybrid de los status
-[]tal vez fusionar todas las tablas de decisiones en una
-[]sustituir decision_four por decision_four_five
+[X] crear una clase decente en la bbdd de match y quitar los hybrid de los status | reescrito la bbdd de la parte de games y decisiones
+[X]tal vez fusionar todas las tablas de decisiones en una | reescrito
+[X]sustituir decision_four por decision_four_five | reescrito codigo
 [x]en models, en status tenia que hacer una cosa rara para modificiar (no estoy seguro si en status o en algun otro lado, segurpamente sera porque me equivoco entre tuplas y listas(lista de lista[[],[],[]]) || en en sectionTime, pero guardo una lista y meto tuplas, asi que nada error raro, 2 de abril
 []tengo ANSWERNUMBERIC como INTEGER, tal vez mejor como FLOAT
 [X]en encuestas si es un numero tal vez convertir numeros a floats | 2 de marzo 
 []wtforms dinamicos con exec string in globals(), locals()
 []wtforms regexp con integerfield o decimalfield casca, crear un validador?
 [X]NO BORRAR RESPUESTAS DE USUARIOS QUE NO HAN TERMIANDO ENCUESTA | 3 de abril
-[]user part_two puede participar mas de una vez
+[X]user part_two puede participar mas de una vez
 []tal vez se peuda contestar dos veces a la misma pregunta (abriendo dos veces la misma página..)ç
 []coerce int wtf to id http://stackoverflow.com/questions/17192595/flask-wtf-selectfield-dynamic-input-and-validation
 []validar que subquestion no es vacio cuando está seleccionado subquestion
-gat[]en añadir subquestion ayudar en el form para no cagarla (si es si o no, pues solo opcion si o no, si es seleccion, mostrar las opciones posibles)
+[]en añadir subquestion ayudar en el form para no cagarla (si es si o no, pues solo opcion si o no, si es seleccion, mostrar las opciones posibles)
 [X]mirar los tiempos parece ser que falla| falla por el onchange, ponerle nombre a la funcion de tiempo y camb 
-[]deberia de terminar de implementar position en preguntas
 []avecs la encuesta falla al terminar no se muy bien por que
 [X]se peuede eliminar el generatejavascriptsubquestions, (cada pregunta mira si tiene hijos y completa)| 9 de abril
 [X]SORTEO DE DINERO SINO JUEGAS NUNCA CON DINERO REAL | 11 de abril
@@ -155,6 +153,7 @@ gat[]en añadir subquestion ayudar en el form para no cagarla (si es si o no, pu
 []range mejor crearlo de otra manera...(tambien deberia eliminar el choice..)
 [] mmm.. actualizar bootstrap?
 []creacion de forms fusionar yes/no con choice.. es lo mismo..
-[]check pregunta feedback yes/no
-[]feedback decision 5 fallarara (linea 197)
-[]convertir sectiontime en un diccionario en vez de una lista
+[x]check pregunta feedback yes/no
+[x]feedback decision 5 fallarara (linea 197)
+[x]convertir sectiontime en un diccionario en vez de una lista 5 de mayo
+[]bug, cuando hay una subquestion, dentro de otra, 1, 1.1, 1.1.1. si se cumple la condicion, muestro 1.1, si al responder 1.1 se cumple la condicion, muestro 1.1.1, lueg cambio de parecer, y cambio la respuesta de 1, 1.1 se oculta, pero 1.1.1 se sigue mostrando, posibles soluciones: cuando hago el hide mirar si tengo subquestiones y ocultarlas, otra meter la estructura del div una dentro de otra,. Me gusta ms la 1º, inconveniente, cuando haga el show no sabre si tengo que desocultar la 1.1.1, tal vez forzar la llamada de la funcion 
