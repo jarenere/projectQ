@@ -941,7 +941,7 @@ class StateSurvey(db.Model):
     #: Sequence of sections are traversed (it is a list of secction to go through )
     sequence = Column(PickleType)
     #: list with section/time, maybe better crearte new table, in ms
-    sectionTime = Column(PickleType, default = [])
+    sectionTime = Column(PickleType, default = {})
     #: index the lastt sections made
     index = Column(Integer, default =0)
     ## Relationships
@@ -1040,9 +1040,9 @@ class StateSurvey(db.Model):
         import app.stats.write_stats
         
         #note, with picleType not found append (don't save), self.sectionTime.append(), bug?
-        l = self.sectionTime[:]
-        l.append((self.sequence[self.index], time))
-        self.sectionTime = l
+        d1 = self.sectionTime.copy()
+        d1[self.sequence[self.index]] = time
+        self.sectionTime = d1.copy()
         self.index=self.index+1
         if self.index>=len(self.sequence):
             self.status = self.status | StateSurvey.FINISH | StateSurvey.FINISH_OK
@@ -1074,7 +1074,7 @@ class StateSurvey(db.Model):
             list = Section.sequenceSections(sections)
 
             stateSurvey = StateSurvey(survey = Survey.query.get(id_survey),
-                            user = user, sequence =list, ip = ip, sectionTime = [])
+                            user = user, sequence =list, ip = ip, sectionTime = {})
             db.session.add(stateSurvey)
             db.session.commit()
         return stateSurvey, stateSurvey.check_survey_duration_and_date()
