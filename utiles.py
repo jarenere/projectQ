@@ -255,7 +255,7 @@ def generate_answers_fake(id_survey, number=6):
             answer.answerText=(i)
         elif isinstance (q, QuestionYN):
             answer = Answer (answerYN =random.randrange(0,2)==1, user= user, question = q)
-            answer.answerText = answer.answerYN
+            answer.answerText = str(answer.answerYN)
         elif isinstance (q, QuestionText):
             if q.isExpectedAnswer():
                 if random.choice([0,1,1])==1:
