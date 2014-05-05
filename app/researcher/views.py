@@ -547,7 +547,7 @@ def editQuestion(id_survey, id_section,id_question):
             form.container.data = question.container[0] if len(question.container)>0 else 0
         
         if question.container is not None:
-            if question.container[0]=="feedback":
+            if len(question.container)>0 and question.container[0]=="feedback":
                 form.feedback.data=True
 
         # condition of subquestion
