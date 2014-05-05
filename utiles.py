@@ -252,7 +252,7 @@ def generate_answers_fake(id_survey, number=6):
         elif q.decision=="decision_five":
             i=random.randrange(0,2)
             answer=models.Answer(answerNumeric=i,user=user,question=q)
-            answer.answerText=(i)
+            answer.answerText = q.choices[answer.answerNumeric]
         elif isinstance (q, QuestionYN):
             answer = Answer (answerYN =random.randrange(0,2)==1, user= user, question = q)
             answer.answerText = str(answer.answerYN)
