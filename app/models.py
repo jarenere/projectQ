@@ -950,6 +950,9 @@ class StateSurvey(db.Model):
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     #stateSurvey belong a survey
     survey_id = Column(Integer, ForeignKey('survey.id'), nullable=False)
+
+    __table_args__ = (UniqueConstraint('user_id', 'survey_id'),)
+
     
     def __repr__(self):
         return "<StateSurvey(id='%s', survey='%s', user='%s', status='%s')>" % (
