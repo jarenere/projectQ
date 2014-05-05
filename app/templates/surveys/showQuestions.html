@@ -46,14 +46,16 @@
 
 <script type="text/javascript">
     function timestamp(){
+    // get the total time the user has been on page
         var t_fin = Date.now();
         document.getElementById("time").value = t_fin - t_ini;
-        //alert(document.getElementById("time").value);
+        // console.log(document.getElementById("time").value);
     }
 </script>
 
 <script type="text/javascript">
     window.onload = function() {
+    // get the time when load page
         t_ini = Date.now();
         t_diff = t_ini;
 }
@@ -66,17 +68,16 @@
             {{form.hidden_tag()}}
             {% for question in questions %}
                 {% set i_t= "t"'%s' % question.id %}
-<!--                 <table class="table" id="{{i_t}}"><td> -->                
                 <div id="{{i_t}}">
                         {% filter markdown %}{{question.text}}{% endfilter %}
                         {% set i= "c"'%s' % question.id %}
                         {{render_field2(form[i])}}
                         <hr>
                 </div>
-<!--                 </td></table> -->
                 <script type="text/javascript">
                     var select{{i}} = document.getElementById("{{i}}");
                     function time{{i}}(){
+                        // get the time global and differential(answer other question)
                         var t_fin = Date.now();
                         var differentialTime{{i}} = document.getElementById("differentialTime{{i}}").value;
                         document.getElementById("globalTime{{i}}").value = t_fin - t_ini + parseInt(document.getElementById("time").value);
@@ -133,6 +134,8 @@
                 {% endif %}
                 <script type="text/javascript">
                     select{{i}}.onchange = function(){
+                        // when change a form (answer a question) call a time to get the time
+                        // and subquestion to calculate if there are show the questions
                         time{{i}}();
                         {% for subquestion in question.subquestions %}
                             {% set j= "c"'%s' % subquestion.id %}
