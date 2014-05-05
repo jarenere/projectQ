@@ -251,6 +251,7 @@ def generate_form(questions):
             answer.differentialTime = form["differentialTimec"+str(question.id)].data
         else:
             answer.answerYN = field.data=='Yes'
+            answer.answerText = str(answer.answerYN)
         db.session.add(answer)
         db.session.commit()
         if not answer.answerAttemptYN():
@@ -581,7 +582,7 @@ def showQuestions(id_survey, id_section):
                 answer.globalTime = form["globalTimec"+str(question.id)].data
                 answer.differentialTime = form["differentialTimec"+str(question.id)].data
                 db.session.add(answer)
-                db.session.commit()
+        db.session.commit()
 
         stateSurvey.finishedSection(form.time.data)
         print "valiendo"
