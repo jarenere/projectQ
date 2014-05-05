@@ -48,8 +48,8 @@
     function timestamp(){
     // get the total time the user has been on page
         var t_fin = Date.now();
-        document.getElementById("time").value = t_fin - t_ini;
-        // console.log(document.getElementById("time").value);
+        document.getElementById("time").value = t_fin - t_ini + parseInt(document.getElementById("time").value);;
+        console.log(document.getElementById("time").value);
     }
 </script>
 
