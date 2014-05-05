@@ -1099,7 +1099,8 @@ class GameImpatience(db.Model):
     is_real_money = Column(Boolean, default=False)
     #:prize or no
     prize = Column(Boolean, default=False)
-    
+    __table_args__ = (UniqueConstraint('user', 'survey'),)
+
     def __init__(self, **kwargs):
         super(GameImpatience, self).__init__(**kwargs)
         if self.is_real_money:
