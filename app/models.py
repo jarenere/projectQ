@@ -813,6 +813,7 @@ class Answer(db.Model):
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     #answer belong a question
     question_id = Column(Integer, ForeignKey('question.id'), nullable=False)
+    __table_args__ = (UniqueConstraint('user_id', 'question_id'),)
 
     def __repr__(self):
         return "<answer(id='%s', user='%s', question='%s')>\n" % (
