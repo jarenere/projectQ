@@ -732,7 +732,7 @@ class User(db.Model):
     #: email address ...
     email = Column(Unicode(length=254), unique=True, nullable=False)
     #: user name
-    nickname = Column(String(64), unique = True)
+    nickname = Column(String(64))
     #: role of user
     role = Column(SmallInteger, default = ROLE_USER)
     ## Relationships
