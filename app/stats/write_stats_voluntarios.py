@@ -27,8 +27,14 @@ def write_stats(id_survey):
 def write_header(writer,id_survey):
     def header_time(s,l):
         l.append(s)
-        l.append("globaltime"+s)
-        l.append("diftime"+s)
+        l.append(s+"globaltime")
+        l.append(s+"diftime")
+
+    def header_range_answer_expected(s1,s2,i,j,l):
+        l.append(s1)
+        for k in range(i,j+1):
+            header_time(s2+str(k), l)
+            l.append(s2+str(k)+"attempts")
 
     def header_range(s1,s2,i,j,l):
         l.append(s1)
@@ -82,16 +88,19 @@ def write_header(writer,id_survey):
     header_range("part1bloque5","parte1b5p",45,47,l)
     header_range("part2bloque1","parte2b1p",1,10,l)
     header_range("part2bloque1","parte2b2p",1,10,l)
-    header_range("part3dec1v1,b1","parte3d1v1b1p",1,4,l)
-    header_range("part3dec1v1,b2","parte3d1v1b2p",1,1,l)
-    header_range("part3dec1v1,b3","parte3d1v1b3p",1,7,l)
-    header_range("part3dec1v2,b1","parte3d1v2b1p",1,5,l)
-    header_range("part3dec1v2,b2","parte3d1v2b2p",1,1,l)
-    header_range("part3dec1v2,b3","parte3d1v2b3p",1,7,l)
-    header_range("part3dec2b1","parte3d2b1p",1,3,l)
+    header_range_answer_expected("part3dec1b1","parte3d1b1p",1,5,l)
+    header_range("part3dec1b2","parte3d1b2p",1,1,l)
+    header_range("part3dec1b3","parte3d1b3p",1,7,l)
+    # header_range("part3dec1v1b1","parte3d1v1b1p",1,4,l)
+    # header_range("part3dec1v1b2","parte3d1v1b2p",1,1,l)
+    # header_range("part3dec1v1b3","parte3d1v1b3p",1,7,l)
+    # header_range("part3dec1v2b1","parte3d1v2b1p",1,5,l)
+    # header_range("part3dec1v2b2","parte3d1v2b2p",1,1,l)
+    # header_range("part3dec1v2b3","parte3d1v2b3p",1,7,l)
+    header_range_answer_expected("part3dec2b1","parte3d2b1p",1,3,l)
     header_range("part3dec2b2","parte3d2b2p",1,1,l)
     header_range("part3dec2b3","parte3d2b3p",1,7,l)
-    header_range("part3dec3b1","parte3d3b1p",1,3,l)
+    header_range_answer_expected("part3dec3b1","parte3d3b1p",1,3,l)
     header_range("part3dec3b2","parte3d3b2p",1,1,l)
     header_range("part3dec3b3","parte3d3b3p",1,7,l)
     header_range("part3dec4","parte3d4p",1,1,l)
@@ -171,10 +180,17 @@ def write_answers(writer,user_id):
     SECTIONS_PARTE2REAL=[16,17]
     SECTIONS_PARTE2UNTRUE=[18,19]
 
-    SECTIONS_PARTE3REAL=[40,41,42,43,44,45,46,47,48,49,50,51,32,33,23]
-    SECTIONS_PARTE3UNTRUE=[52,53,54,55,56,57,58,59,60,61,62,63,38,39,27]
+    SECTIONS_PARTE3REAL=[46,47,48,49,50,51,32,33,23]
+    DEC1_V1_REAL = [40,41,42]
+    DEC1_V2_REAL = [43,44,45]
+    DEC1_V1_UNTRUE = [52,53,54]
+    DEC1_V2_UNTRUE = [55,56,57]
+    SECTIONS_PARTE3UNTRUE=[58,59,60,61,62,63,38,39,27]
     
     SECTIONS_OTHER=[6,7,8,9,14,15]
+
+    DEC1_V1=[40,52]
+    DEC1_V2=[43,55]
 
     l=[]
 
@@ -190,9 +206,19 @@ def write_answers(writer,user_id):
         list_sections=list_sections+SECTIONS_PARTE2UNTRUE
 
     if PARTE3 in ss.sequence:
+        if 40 in ss.sequence:
+            list_sections = list_sections + DEC1_V1_REAL
+        else:
+            list_sections = list_sections + DEC1_V2_REAL
         list_sections=list_sections+SECTIONS_PARTE3REAL
     else:
+        if 52 in ss.sequence:
+            list_sections = list_sections + DEC1_V1_UNTRUE
+        else:
+            list_sections = list_sections + DEC1_V2_UNTRUE
         list_sections=list_sections+SECTIONS_PARTE3UNTRUE
+
+
 
     list_sections=list_sections+SECTIONS_OTHER
 
@@ -259,6 +285,12 @@ def write_answers(writer,user_id):
     l.append(ss.sectionTime.get(section))
     for i in res:
         if i[0].section_id!=section:
+            if section in DEC1_V1:
+                # section with question less
+                l.append("")
+                l.append("")
+                l.append("")
+                l.append("")
             section = i[0].section_id
             l.append(ss.sectionTime.get(section))
 
@@ -266,10 +298,13 @@ def write_answers(writer,user_id):
             l.append("")
             l.append("")
             l.append("")
+
         else:
             ans = i[1]
             l.append(ans.answerText)
             l.append(ans.globalTime)
             l.append(ans.differentialTime)
+            if ans.question.isExpectedAnswer():
+                l.append(ans.numberAttempt)
 
     writer.writerow(l)
