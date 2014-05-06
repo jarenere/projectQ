@@ -99,3 +99,23 @@ def status_part3(status):
 # app.jinja_env.globals.update(status_part_two=status_part_two)
 app.jinja_env.globals['status_part2'] = status_part2
 app.jinja_env.globals['status_part3'] = status_part3
+
+# if not app.debug:
+#     import logging
+#     from logging.handlers import SMTPHandler
+#     credentials = None
+#     if MAIL_USERNAME or MAIL_PASSWORD:
+#         credentials = (MAIL_USERNAME, MAIL_PASSWORD)
+#     mail_handler = SMTPHandler((MAIL_SERVER, MAIL_PORT), 'no-reply@' + MAIL_SERVER, ADMINS, 'microblog failure', credentials)
+#     mail_handler.setLevel(logging.ERROR)
+#     app.logger.addHandler(mail_handler)
+
+if not app.debug:
+    import logging
+    from logging.handlers import RotatingFileHandler
+    file_handler = RotatingFileHandler('tmp/swarms.log', 'a', 1 * 1024 * 1024, 10)
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+    app.logger.addHandler(file_handler)
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('swarms startup')
