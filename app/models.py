@@ -710,7 +710,6 @@ class QuestionChoice(Question):
     '''Question of type choice
     '''
     __mapper_args__ = {'polymorphic_identity': 'choice'}
-    is_range = Column(Boolean, default=False)
     range_min = Column(Integer, default="")
     range_max = Column(Integer,default="")
     range_step = Column(Numeric, default = 1)
