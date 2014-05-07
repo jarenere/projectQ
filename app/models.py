@@ -174,7 +174,7 @@ class Survey(db.Model):
             raise
             db.session.rollback()
         
-        return msg
+        return msg, survey if survey is not None else None
 
 class Consent(db.Model):
     '''A table with Consents to a Survey
@@ -1042,9 +1042,7 @@ class StateSurvey(db.Model):
         db.session.commit()
 
     def check_survey_duration_and_date(self):
-        import app.stats.write_stats
-
-        # return true if duration survey ok, else remove all answers
+        # return true if duration survey ok
         now = datetime.datetime.utcnow()
         start = self.start_date
         elapsedTime = now - start
@@ -1053,19 +1051,14 @@ class StateSurvey(db.Model):
                     not (self.status & StateSurvey.FINISH):
                 # time has run out, delete all cuestions
                 self.status = StateSurvey.TIMED_OUT | StateSurvey.FINISH
-                print self.status
                 db.session.add(self)
                 db.session.commit()
-                # self._delete_answers()
-                # app.stats.write_stats.write_stats(self.user_id, self.survey_id)
                 return StateSurvey.ERROR_TIMED_OUT
         if now > self.survey.endDate or now < self.survey.startDate:
             #answer out of date
             self.status = StateSurvey.END_DATE_OUT | StateSurvey.FINISH
             db.session.add(self)
             db.session.commit()
-            # self._delete_answers()
-            # app.stats.write_stats.write_stats(self.user_id, self.survey_id)
             return StateSurvey.ERROR_END_DATE_OUT
         return StateSurvey.NO_ERROR
 
@@ -1095,9 +1088,7 @@ class StateSurvey(db.Model):
 
     def finishedSection(self,time):
         '''Section is finished, index+1
-        '''
-        import app.stats.write_stats
-        
+        '''      
         #note, with picleType not found append (don't save), self.sectionTime.append(), bug?
         d1 = self.sectionTime.copy()
         d1[self.sequence[self.index]] = time
@@ -1106,15 +1097,8 @@ class StateSurvey(db.Model):
         if self.index>=len(self.sequence):
             self.status = self.status | StateSurvey.FINISH | StateSurvey.FINISH_OK
             self.endDate = datetime.datetime.utcnow()
-            # app.stats.write_stats.write_stats(self.user_id, self.survey_id)
-            # from app import app
-            # print app.game
-            # app.game(self.user)
-            db.session.add(self)
-            db.session.commit()
-        else:
-            db.session.add(self)
-            db.session.commit()
+        db.session.add(self)
+        db.session.commit()
 
     @staticmethod
     def getStateSurvey(id_survey, user, ip = ""):
