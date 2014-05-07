@@ -452,6 +452,6 @@ class Games:
         if answer is None:
             if  Raffle.query.filter(Raffle.user_id==user.id,\
                     Raffle.survey_id==self.survey.id).first() is None:
-                raffle = Raffle(user_id=user.id,survey_id=self.survey.id)
+                raffle = Raffle(user=user,survey=self.survey)
                 db.session.add(raffle)
                 db.session.commit()

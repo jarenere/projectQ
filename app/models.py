@@ -1397,7 +1397,12 @@ class Raffle(db.Model):
     user_id = Column(Integer, ForeignKey('user.id'),nullable=False)
     #:answer  of Prize
     prize = Column(Integer, default = 0)
+
+    ## Relationships
+    user = relationship("User")
+    survey = relationship("Survey")
     __table_args__ = (UniqueConstraint('user_id', 'survey_id'),)
+
     def __init__(self, **kwargs):
         super(Raffle, self).__init__(**kwargs)
         if random.randint(1,10)==1:

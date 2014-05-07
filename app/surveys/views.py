@@ -61,8 +61,8 @@ def index():
 def info_games(id_survey):
     '''get info of game, raffle and impacience of the user
     '''
-    raffle = Raffle.query.filter(Raffle.user==current_user.id,
-        Raffle.survey==id_survey).first()
+    raffle = Raffle.query.filter(Raffle.user_id==current_user.id,
+        Raffle.survey_id==id_survey).first()
     part2 = GameImpatience.query.filter(GameImpatience.user_id==current_user.id,
         GameImpatience.survey_id==id_survey).first()
     lottery1 = GameLottery1.query.filter(GameLottery1.survey==id_survey,
