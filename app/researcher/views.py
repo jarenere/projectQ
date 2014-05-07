@@ -277,63 +277,8 @@ def deleteSection(id_survey,id_section):
 @blueprint.route('/survey/<int:id_survey>/duplicateSection/<int:id_section>')
 @belong_researcher('section')
 def duplicate_section(id_survey,id_section):
-    def _duplicate_question(s,q):
-        if isinstance(q, QuestionYN):
-            question_cp=QuestionYN()
-        if isinstance (q, QuestionText):
-            question_cp = QuestionText(isNumber=q.isNumber,
-                isNumberFloat=q.isNumberFloat,
-                regularExpression=q.regularExpression,
-                errorMessage=q.errorMessage)
-        if isinstance (q,QuestionChoice):
-            if q.is_range:
-                question_cp = QuestionChoice(range_min = q.range_min,
-                    range_max = q.range_max, range_step = q.range_step)
-            else:
-                question_cp = QuestionChoice(choices= q.choices[:])
-            question_cp.render = q.render
-        if isinstance (q, QuestionLikertScale):
-            question_cp = QuestionLikertScale(minLikert=q.minLikert,
-                maxLikert=q.maxLikert, labelMin=q.labelMinLikert,
-                labelMax=q.labelMaxLikert)
-
-        if q.container is not None:
-            question_cp.container = q.container[:]
-
-        question_cp.decision=q.decision
-        question_cp.is_real_money= q.is_real_money
-        question_cp.text = q.text
-        question_cp.required = q.required
-        question_cp.expectedAnswer = q.expectedAnswer
-        question_cp.maxNumberAttempt = q.maxNumberAttempt
-        question_cp.section = s
-        question_cp.position = q.position
-        db.session.add(question_cp)
-
-    def _duplicate_section(s_parent,section):
-        section_cp = Section(title= section.title, description=section.description,\
-                sequence=section.sequence, percent=section.percent,\
-                parent= s_parent)
-        db.session.add(section_cp)
-        
-        for question in section.questions:
-           _duplicate_question(section_cp,question)
-        
-        for s in section.children:
-            _duplicate_section(section_cp,s)
-
-
-
     section = Section.query.get(id_section)
-    section_cp = Section(title= section.title, description=section.description,\
-            sequence=section.sequence, percent=section.percent,\
-            parent= section.parent, survey=section.survey)
-    db.session.add(section_cp)
-    for question in section.questions:
-       _duplicate_question(section_cp,question)
-    for s in section.children:
-        _duplicate_section(section_cp,s)
-    db.session.commit()
+    section.duplicate()
     flash('Section duplicated')
     return redirect(url_for('researcher.editSurvey',id_survey = id_survey))   
 

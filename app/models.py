@@ -257,6 +257,33 @@ class Section(db.Model):
         return "<Section(id='%s', title='%s')>" % (
             self.id, self.title)
 
+    def duplicate(self):
+        '''duplicate a section'''
+        def _duplicate(s_parent,section):
+            section_cp = Section(title= section.title, description=section.description,\
+                    sequence=section.sequence, percent=section.percent,\
+                    parent= s_parent)
+            db.session.add(section_cp)
+            
+            for question in section.questions:
+               question.duplicate(section_cp)
+            
+            for s in section.children:
+                _duplicate(section_cp,s)
+
+
+        section_cp = Section(title= self.title, description=self.description,\
+                sequence=self.sequence, percent=self.percent,\
+                parent= self.parent, survey=self.survey)
+        db.session.add(section_cp)
+        for question in self.questions:
+            question.duplicate(section_cp)
+           # _duplicate_question(section_cp,question)
+        for s in self.children:
+            _duplicate(section_cp,s)
+        db.session.commit()
+
+
     def to_xml(self):
         section = Element('section')
         title = SubElement(section,'title')
@@ -435,16 +462,10 @@ class Question(db.Model):
         return "<question(id='%s')>" % (
             self.id)
 
-
     @hybrid_property
     def survey(self):
         return self.section.root
 
-    # @survey.expression
-    # def survey(cls):
-    #     return select(Survey).where(Survey.id==Section.root_id,\
-    #         cls.section_id==Section.id )
-    
     def last_position(self):
         question = Question.query.\
             filter(Question.section==self.section).\
@@ -455,7 +476,6 @@ class Question(db.Model):
             self.position= question.position+1
 
 
-
     @hybrid_property
     def isSubquestion(self):
         return self.parent is not None
@@ -464,6 +484,42 @@ class Question(db.Model):
         '''return if there is a expected answer
         '''
         return len(self.expectedAnswer)>0
+
+    def duplicate(self,section):
+        '''no check if is a subquestions...
+        '''
+        if isinstance(self, QuestionYN):
+            question=QuestionYN()
+        if isinstance (self, QuestionText):
+            question = QuestionText(isNumber=self.isNumber,
+                isNumberFloat=self.isNumberFloat,
+                regularExpression=self.regularExpression,
+                errorMessage=self.errorMessage)
+        if isinstance (self,QuestionChoice):
+            if self.is_range:
+                question = QuestionChoice(range_min = self.range_min,
+                    range_max = self.range_max, range_step = self.range_step)
+            else:
+                question = QuestionChoice(choices= self.choices[:])
+            question.render = self.render
+        if isinstance (self, QuestionLikertScale):
+            question = QuestionLikertScale(minLikert=self.minLikert,
+                maxLikert=self.maxLikert, labelMin=self.labelMinLikert,
+                labelMax=self.labelMaxLikert)
+
+        if self.container is not None:
+            question.container = self.container[:]
+
+        question.decision=self.decision
+        question.is_real_money= self.is_real_money
+        question.text = self.text
+        question.required = self.required
+        question.expectedAnswer = self.expectedAnswer
+        question.maxNumberAttempt = self.maxNumberAttempt
+        question.section = section
+        question.position = self.position
+        db.session.add(question)
+
 
 
     def to_xml(self):
