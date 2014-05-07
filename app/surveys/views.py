@@ -63,8 +63,8 @@ def info_games(id_survey):
     '''
     raffle = Raffle.query.filter(Raffle.user==current_user.id,
         Raffle.survey==id_survey).first()
-    part2 = GameImpatience.query.filter(GameImpatience.user==current_user.id,
-        GameImpatience.survey==id_survey).first()
+    part2 = GameImpatience.query.filter(GameImpatience.user_id==current_user.id,
+        GameImpatience.survey_id==id_survey).first()
     lottery1 = GameLottery1.query.filter(GameLottery1.survey==id_survey,
         or_(and_(GameLottery1.userA==current_user.id,GameLottery1.repeatA==False),
             and_(GameLottery1.userB==current_user.id,GameLottery1.repeatB==False))).first()

@@ -1129,16 +1129,20 @@ class GameImpatience(db.Model):
     #: unique id (automatically generated)
     id = Column(Integer, primary_key = True)
     #: survey
-    survey = Column(Integer,ForeignKey('survey.id'))
+    survey_id = Column(Integer,ForeignKey('survey.id'))
     #: user
-    user = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
     #:answer  of User
-    answer = Column(Integer, ForeignKey('answer.id'))
+    answer_id = Column(Integer, ForeignKey('answer.id'))
     #: if money real or no
     is_real_money = Column(Boolean, default=False)
     #:prize or no
     prize = Column(Boolean, default=False)
-    __table_args__ = (UniqueConstraint('user', 'survey'),)
+    ## Relationships
+    user = relationship("User")
+    answer = relationship("Answer")
+    survey = relationship("Survey")
+    __table_args__ = (UniqueConstraint('user_id', 'survey_id'),)
 
     def __init__(self, **kwargs):
         super(GameImpatience, self).__init__(**kwargs)

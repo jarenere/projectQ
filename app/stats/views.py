@@ -80,11 +80,11 @@ def part_two():
     # game = Games(survey)
 
     part2 =db.session.query(GameImpatience, Answer, Question, StateSurvey).filter(\
-        GameImpatience.survey==ID_SURVEY,\
-        GameImpatience.answer==Answer.id,\
+        GameImpatience.survey_id==ID_SURVEY,\
+        GameImpatience.answer_id==Answer.id,\
         Answer.question_id==QuestionChoice.id,\
         StateSurvey.survey_id==ID_SURVEY,\
-        StateSurvey.user_id==GameImpatience.user)
+        StateSurvey.user_id==GameImpatience.user_id)
 
     return render_template('/stats/part_two.html',
         tittle = 'stats',

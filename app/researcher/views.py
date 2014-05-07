@@ -39,7 +39,7 @@ def new():
         if filename:
             tf = tempfile.NamedTemporaryFile()
             form.surveyXml.data.save(tf.name)
-            msg = Survey.from_xml(tf.name, g.user)
+            msg, survey = Survey.from_xml(tf.name, g.user)
             tf.close()
             for m in msg:
                 flash(m)

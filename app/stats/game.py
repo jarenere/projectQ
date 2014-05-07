@@ -436,8 +436,8 @@ class Games:
                 is_real_money=False
 
             answer = Answer.query.filter_by(user_id=user.id,question_id=question).first()
-            game = GameImpatience(user=user.id, answer = answer.id,\
-                survey=self.survey.id, is_real_money=is_real_money)
+            game = GameImpatience(user=user, answer = answer,\
+                survey=self.survey, is_real_money=is_real_money)
             self._flag_status(user.id, ("part2",is_real_money))
             db.session.add(game)
             db.session.commit()
