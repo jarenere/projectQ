@@ -92,20 +92,20 @@ class Games:
         question = self.select_game["decision1_v1",money]
         answerA = Answer.query.filter_by(user_id=userA,question_id=question.id).first()
         answerB = Answer.query.filter_by(user_id=userB,question_id=question.id).first()        
-        game = GameLottery1(userA=userA, userB=userB,\
-            answerA = answerA.id, answerB = answerB.id,\
+        game = GameLottery1(userA=User.query.get(userA), userB=User.query.get(userB),\
+            answerA = answerA, answerB = answerB,\
             repeatA = repeatA, repeatB = repeatB,\
-            survey=self.survey.id)
+            survey=self.survey)
         db.session.add(game)
 
     def _match_decision1_v2_users(self,userA,userB,money,repeatA=False,repeatB=False):
         question = self.select_game["decision1_v2",money]
         answerA = Answer.query.filter_by(user_id=userA,question_id=question.id).first()
         answerB = Answer.query.filter_by(user_id=userB,question_id=question.id).first()        
-        game = GameLottery2(userA=userA, userB=userB,\
-            answerA = answerA.id, answerB = answerB.id,\
+        game = GameLottery2(userA=User.query.get(userA), userB=User.query.get(userB),\
+            answerA = answerA, answerB = answerB,\
             repeatA = repeatA, repeatB = repeatB,\
-            survey=self.survey.id)
+            survey=self.survey)
         db.session.add(game)
 
 

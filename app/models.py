@@ -1129,11 +1129,11 @@ class GameImpatience(db.Model):
     #: unique id (automatically generated)
     id = Column(Integer, primary_key = True)
     #: survey
-    survey_id = Column(Integer,ForeignKey('survey.id'))
+    survey_id = Column(Integer,ForeignKey('survey.id'),nullable=False)
     #: user
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.id'),nullable=False)
     #:answer  of User
-    answer_id = Column(Integer, ForeignKey('answer.id'))
+    answer_id = Column(Integer, ForeignKey('answer.id'),nullable=False)
     #: if money real or no
     is_real_money = Column(Boolean, default=False)
     #:prize or no
@@ -1164,15 +1164,15 @@ class Game(db.Model):
     #: unique id (automatically generated)
     id = Column(Integer, primary_key = True)
     #: survey
-    survey = Column(Integer,ForeignKey('survey.id'))
+    survey_id = Column(Integer,ForeignKey('survey.id'))
     #: userA
-    userA = Column(Integer, ForeignKey('user.id'))
+    userA_id = Column(Integer, ForeignKey('user.id'))
     #: userB
-    userB = Column(Integer, ForeignKey('user.id'))
+    userB_id = Column(Integer, ForeignKey('user.id'))
     #:answer  of UserA
-    answerA = Column(Integer, ForeignKey('answer.id'))
+    answerA_id = Column(Integer, ForeignKey('answer.id'))
     #:answer  of UserB
-    answerB = Column(Integer, ForeignKey('answer.id'))
+    answerB_id = Column(Integer, ForeignKey('answer.id'))
     #: if money real or no
     is_real_money = Column(Boolean, default=False)
     #:prize user A or no
@@ -1192,6 +1192,12 @@ class Game(db.Model):
     #: Type of question, discriminate between classes
     type = Column('type', String(50))
     __mapper_args__ = {'polymorphic_on': type}
+    ## Relationships
+    userA = relationship("User", foreign_keys = "Game.userA_id")
+    userB = relationship("User", foreign_keys = "Game.userB_id")
+    answerA = relationship("Answer", foreign_keys = "Game.answerA_id")
+    answerB = relationship("Answer", foreign_keys = "Game.answerB_id")
+    survey = relationship("Survey")
 
 
     @hybrid_property

@@ -95,7 +95,7 @@ def part_two():
 @researcher_required
 def decision_one_v1():
     results = GameLottery1.query.filter(\
-        GameLottery1.survey==ID_SURVEY)
+        GameLottery1.survey_id==ID_SURVEY)
 
     return render_template('/stats/decision_one_v1.html',
         tittle = 'stats',
@@ -106,7 +106,7 @@ def decision_one_v1():
 @researcher_required
 def decision_one_v2():
     results = GameLottery2.query.filter(\
-        GameLottery2.survey==ID_SURVEY)
+        GameLottery2.survey_id==ID_SURVEY)
 
     return render_template('/stats/decision_one_v2.html',
         tittle = 'stats',
