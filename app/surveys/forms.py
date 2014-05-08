@@ -81,6 +81,110 @@ class MyRadioField(RadioField):
         print "prefix: ",self.widget.prefix_label
         return super(MyRadioField, self).__call__(**kwargs)
 
+class CheckAnswerExpected(object):
+    def __init__(self, message=None):
+        if not message:
+            self.message = gettext("wrong answer")
+        else:  # pragma: no cover
+            self.message = message
+
+    def __call__(self, form, field):
+        question = Question.query.get(field.name[1:])
+        answer = Answer.query.filter(Answer.user_id==g.user.id,
+                Answer.question_id==question.id).first()
+        if answer is None:
+            answer = Answer (answerText = field.data, user= g.user, question = question)
+        else:
+            answer.answerText = field.data
+        answer.globalTime = form["globalTimec"+str(question.id)].data
+        answer.differentialTime = form["differentialTimec"+str(question.id)].data
+        db.session.add(answer)
+        db.session.commit()
+        if not answer.answerAttempt():
+            if answer.isMoreAttempt():
+                 raise ValidationError(self.message)
+            else:
+                flash(gettext("wrong answer, you can continue"))
+
+class CheckAnswerExpectedYN(object):
+    def __init__(self, message=None):
+        if not message:
+            self.message = gettext("wrong answer")
+        else:  # pragma: no cover
+            self.message = message
+
+    def __call__(self, form, field):
+        question = Question.query.get(field.name[1:])
+        answer = Answer.query.filter(Answer.user_id==g.user.id,
+                Answer.question_id==question.id).first()
+        if answer is None:
+            answer = Answer (answerYN = field.data=='Yes', user= g.user, question = question)
+        else:
+            answer.answerYN = field.data=='Yes'
+            answer.answerText = str(answer.answerYN)
+        answer.globalTime = form["globalTimec"+str(question.id)].data
+        answer.differentialTime = form["differentialTimec"+str(question.id)].data
+        db.session.add(answer)
+        db.session.commit()
+        if not answer.answerAttemptYN():
+            if answer.isMoreAttempt():
+                 raise ValidationError(self.message)
+            else:
+                flash(gettext("wrong answer, you can continue"))
+
+class CheckSubquestion(object):
+    '''check whether to answer the question or not
+    '''
+    def __call__(self, form, field):
+        question = Question.query.get(field.name[1:])
+        data = form["c"+str(question.parent.id)].data
+        if isinstance (question.parent,QuestionYN):
+            if data.lower()==question.condition.value.lower():
+                pass
+                # raise ValidationError('This field is required.')
+            else:
+                # nothing to check
+                field.errors[:] = []
+                raise StopValidation()
+        if isinstance (question.parent,QuestionText) or \
+            isinstance(question.parent,QuestionChoice):
+            if question.condition.operation=="<":
+                if data<question.condition.value:
+                    pass
+                else:
+                    # nothing to check
+                    field.errors[:] = []
+                    raise StopValidation()
+            if question.condition.operation=="==":
+                if data==question.condition.value:
+                    pass
+                else:
+                    # nothing to check
+                    field.errors[:] = []
+                    raise StopValidation()
+            if question.condition.operation==">":
+                if int(data)>int(question.condition.value):
+                    pass
+                else:
+                    # nothing to check
+                    field.errors[:] = []
+                    raise StopValidation()
+
+class checkValidSelectField(object):
+    def __init__(self, message=None):
+        if not message:
+            self.message = gettext("Option not valid")
+        else:  # pragma: no cover
+            self.message = message
+    def __call__(self, form, field):
+        if field.data=="":
+            raise ValidationError(gettext("Option not valid"))
+
+
+def check_valid_select_field(self,field):
+    if field.data=="":
+        raise ValidationError(gettext("Option not valid"))
+
 
 def check_answer_expected(self,field):
     '''check if the answer is the expected
@@ -90,10 +194,10 @@ def check_answer_expected(self,field):
             Answer.question_id==question.id).first()
     if answer is None:
         answer = Answer (answerText = field.data, user= g.user, question = question)
-        answer.globalTime = self["globalTimec"+str(question.id)].data
-        answer.differentialTime = self["differentialTimec"+str(question.id)].data
     else:
         answer.answerText = field.data
+    answer.globalTime = self["globalTimec"+str(question.id)].data
+    answer.differentialTime = self["differentialTimec"+str(question.id)].data
     db.session.add(answer)
     db.session.commit()
     if not answer.answerAttempt():
@@ -225,13 +329,13 @@ def generate_form(questions):
                         if question.isExpectedAnswer():
                             setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
                                 validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage),
-                                check_answer_expected]))
+                                CheckAnswerExpected()]))
                         else:
                             setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
                                 validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
                     elif question.isExpectedAnswer():
                         setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required(),
-                            check_answer_expected]))
+                            CheckAnswerExpected()]))
                     elif question.isNumber:
                         setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
                     else:
