@@ -21,7 +21,6 @@ import os
 from config import basedir
 
 
-
 class ModelsTestCase(unittest.TestCase):
     '''test models'''
 

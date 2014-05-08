@@ -16,22 +16,23 @@ def test(coverage=False):
     COV = True
     if COV:
         import coverage
-        COV = coverage.coverage(branch=True, include='app/*')
-        COV.start()
+        cov = coverage.coverage(branch=True, include='app/*')
+        cov.start()
 
     import unittest
-    tests = unittest.TestLoader().discover('tests')
+    # tests = unittest.TestLoader().discover('tests')
+    tests = unittest.loader.discover('tests', pattern = "Test*.py") 
     unittest.TextTestRunner(verbosity=2).run(tests)
     if COV:
-        COV.stop()
-        COV.save()
+        cov.stop()
+        cov.save()
         print('Coverage Summary:')
-        COV.report()
+        cov.report()
         basedir = os.path.abspath(os.path.dirname(__file__))
         covdir = os.path.join(basedir, 'tmp/coverage')
-        COV.html_report(directory=covdir)
+        cov.html_report(directory=covdir)
         print('HTML version: file://%s/index.html' % covdir)
-        COV.erase()
+        cov.erase()
 if __name__ == "__main__":
     app.debug = True
     manager.run()
