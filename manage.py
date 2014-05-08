@@ -5,11 +5,6 @@ from app import app
 from flask.ext.script import Manager
 from flask.ext.migrate import MigrateCommand
 import os
-COV = None
-if os.environ.get('FLASK_COVERAGE'):
-    import coverage
-    COV = coverage.coverage(branch=True, include='app/*')
-    COV.start()
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
@@ -18,10 +13,12 @@ manager.add_command('db', MigrateCommand)
 @manager.command
 def test(coverage=False):
     """Run the unit tests."""
-    if coverage and not os.environ.get('FLASK_COVERAGE'):
-        import sys
-        os.environ['FLASK_COVERAGE'] = '1'
-        os.execvp(sys.executable, [sys.executable] + sys.argv)
+    COV = True
+    if COV:
+        import coverage
+        COV = coverage.coverage(branch=True, include='app/*')
+        COV.start()
+
     import unittest
     tests = unittest.TestLoader().discover('tests')
     unittest.TextTestRunner(verbosity=2).run(tests)
