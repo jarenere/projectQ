@@ -438,7 +438,7 @@ class Question(db.Model):
     #: question belon to one survey
     # survey_id = Column(Integer, ForeignKey('survey.id'))
     #: Question belong to one section
-    section_id = Column(Integer, ForeignKey('section.id'))
+    section_id = Column(Integer, ForeignKey('section.id'),nullable=False)
     #: Question have zero or more answers
     answers = relationship('Answer', backref = 'question', lazy = 'dynamic')
 
@@ -1164,7 +1164,7 @@ class Game(db.Model):
     #: unique id (automatically generated)
     id = Column(Integer, primary_key = True)
     #: survey
-    survey_id = Column(Integer,ForeignKey('survey.id'))
+    survey_id = Column(Integer,ForeignKey('survey.id'), nullable=False)
     #: userA
     userA_id = Column(Integer, ForeignKey('user.id'))
     #: userB
@@ -1236,21 +1236,22 @@ class GameLottery1(Game):
         super(GameLottery1, self).__init__(**kwargs)
         AWARD = 10
         INIT_MONEY = 10
-        try:
-            percentA=self.percent_playerA
-            if percentA>random.random():
-                #answerA win
-                self.win = self.userA
-                self.moneyA = AWARD + (INIT_MONEY - self.cashInitA)
-                self.moneyB = (INIT_MONEY - self.cashInitB)
-            else:
-                self.win = self.userB
-                self.moneyB = AWARD + (INIT_MONEY - self.cashInitB)
-                self.moneyA = (INIT_MONEY - self.cashInitA)
-        except ZeroDivisionError:
+        percentA = self.percent_playerA
+        percentB = self.percent_playerB
+        if percentA == 0 and percentB ==0 :
             # nobody play lottery
             self.moneyA = INIT_MONEY
             self.moneyB = INIT_MONEY
+        elif percentA>random.random():
+            #answerA win
+            self.win = self.userA
+            self.moneyA = AWARD + (INIT_MONEY - self.cashInitA)
+            self.moneyB = (INIT_MONEY - self.cashInitB)
+        else:
+            self.win = self.userB
+            self.moneyB = AWARD + (INIT_MONEY - self.cashInitB)
+            self.moneyA = (INIT_MONEY - self.cashInitA)
+
 
     @hybrid_property
     def percent_playerA(self):
@@ -1280,15 +1281,9 @@ class GameLottery2(Game):
         super(GameLottery2, self).__init__(**kwargs)
         AWARD = 10
         INIT_MONEY = 10
-        try:
-            percentA=self.cashInitA/(self.cashInitA+self.cashInitB)
-            percentB=1-percentA
-            self.moneyA= AWARD*percentA + (INIT_MONEY - self.cashInitA)
-            self.moneyB= AWARD*percentB + (INIT_MONEY - self.cashInitB)
-        except ZeroDivisionError:
-            # nobody play lottery
-            self.moneyA = INIT_MONEY
-            self.moneyB = INIT_MONEY
+        self.moneyA= AWARD*self.percent_playerA + (INIT_MONEY - self.cashInitA)
+        self.moneyB= AWARD*self.percent_playerB + (INIT_MONEY - self.cashInitB)
+
     
     @hybrid_property
     def percent_playerA(self):
@@ -1314,9 +1309,8 @@ class GameRent1(Game):
         super(GameRent1, self).__init__(**kwargs)
         INIT_MONEY = 10
         CONSTANT_FUND = 0.8
-        fund = (self.cashInitA+self.cashInitB)*CONSTANT_FUND
-        self.moneyA = fund + INIT_MONEY - self.cashInitA
-        self.moneyB = fund + INIT_MONEY - self.cashInitB
+        self.moneyA = self.fund + INIT_MONEY - self.cashInitA
+        self.moneyB = self.fund + INIT_MONEY - self.cashInitB
 
     @hybrid_property
     def fund(self):
@@ -1354,33 +1348,34 @@ class GameUltimatum(Game):
 
     def __init__(self, **kwargs):
         def get_interval(section_id):
-            '''return a list witch all interval(money,question_id)
+            '''return a dic witch all interval(money:question_id)
             '''
-            l =[]
+            dic ={}
             for q in Section.query.get(section_id).questions:
                 if q.decision=="decision_five":
-                    l.append((q.container[0],q.id))
-            return l
+                    dic[int(q.container[0])]=q.id
+            return dic
 
         super(GameUltimatum, self).__init__(**kwargs)
         MONEY = 20
         # interval = QuestionDecisionFive.getIntverval(section_id)
-        interval = get_interval(self.section)
-
-        for i in interval:
-            if int(i[0])==self.cashInitA:
-                answer = Answer.query.filter(Answer.question_id == i[1],Answer.user_id == self.userB.id).first()
-                self.answerB =answer
-                if answer.answerNumeric==0:
-                    # answer accept
-                    self.moneyA = MONEY - self.cashInitA
-                    self.moneyB = self.cashInitA
-                    self.accepted = True
-                else:
-                    self.moneyA = 0
-                    self.moneyB = 0
-                    self.accepted = False
-                break
+        dic = get_interval(self.section)
+        if dic.has_key(self.cashInitA):
+            answer = Answer.query.filter(
+                Answer.question_id == dic[self.cashInitA],
+                Answer.user_id == self.userB.id).first()
+            self.answerB =answer
+            if answer.answerNumeric==0:
+                # answer accept
+                self.moneyA = MONEY - self.cashInitA
+                self.moneyB = self.cashInitA
+                self.accepted = True
+            else:
+                self.moneyA = 0
+                self.moneyB = 0
+                self.accepted = False
+        else:
+            raise "survey with bad gameUltimatum, there are not all keys\n"
 
 class GameDictador(Game):
     '''Dictador game(part 3, decision 6)
