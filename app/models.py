@@ -1226,8 +1226,9 @@ class GameLottery1(Game):
     '''
     __mapper_args__ = {'polymorphic_identity': 'gameLottery1'}
     #:user win (A or B)
-    win = Column(Integer,ForeignKey('user.id'))
-
+    win_id = Column(Integer,ForeignKey('user.id'))
+    ## Relationships
+    win = relationship("User", foreign_keys = "GameLottery1.win_id")
 
     def __init__(self, **kwargs):
         '''Probability:= userA_Money/(userA_Money+user_MoneyB)
