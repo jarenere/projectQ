@@ -113,39 +113,39 @@ class Games:
         question = self.select_game["decision2",money]
         answerA = Answer.query.filter_by(user_id=userA,question_id=question.id).first()
         answerB = Answer.query.filter_by(user_id=userB,question_id=question.id).first()
-        game = GameRent1(userA=userA, userB=userB,\
-            answerA = answerA.id, answerB = answerB.id,\
+        game = GameRent1(userA=User.query.get(userA), userB=User.query.get(userB),\
+            answerA = answerA, answerB = answerB,\
             repeatA = repeatA, repeatB = repeatB,\
-            survey=self.survey.id)
+            survey=self.survey)
         db.session.add(game)
    
     def _match_decision3_users(self,userA,userB,money,repeatA=False,repeatB=False):
         question = self.select_game["decision3",money]
         answerA = Answer.query.filter_by(user_id=userA,question_id=question.id).first()
         answerB = Answer.query.filter_by(user_id=userB,question_id=question.id).first()
-        game = GameRent2(userA=userA, userB=userB,\
-            answerA = answerA.id, answerB = answerB.id,\
+        game = GameRent2(userA=User.query.get(userA), userB=User.query.get(userB),\
+            answerA = answerA, answerB = answerB,\
             repeatA = repeatA, repeatB = repeatB,\
-            survey=self.survey.id)
+            survey=self.survey)
         db.session.add(game)
 
     def _match_decision4_users(self,userA,userB,money,repeatA=False,repeatB=False):
         question4 = self.select_game["decision4",money]
         section5 = self.select_game["decision5",money].id
         answerA = Answer.query.filter_by(user_id=userA,question_id=question4.id).first()
-        game = GameUltimatum(userA=userA, userB=userB,\
-            answerA = answerA.id,\
+        game = GameUltimatum(userA=User.query.get(userA), userB=User.query.get(userB),\
+            answerA = answerA,\
             repeatA = repeatA, repeatB = repeatB,\
-            survey=self.survey.id, section = section5)
+            survey=self.survey, section = section5)
         db.session.add(game)
 
     def _match_decision6_users(self,userA,userB,money,repeatA=False,repeatB=False):
         question = self.select_game["decision6",money]
         answerA = Answer.query.filter_by(user_id=userA,question_id=question.id).first()
-        game = GameDictador(userA=userA, userB=userB,\
-            answerA = answerA.id,\
+        game = GameDictador(userA=User.query.get(userA), userB=User.query.get(userB),\
+            answerA = answerA,\
             repeatA = repeatA, repeatB = repeatB,\
-            survey=self.survey.id)
+            survey=self.survey)
         db.session.add(game)
 
     def _users_part3_no_match(self, money):
@@ -201,12 +201,12 @@ class Games:
 
     def _prize_decision1(self,user):
         game = Game.query.filter(\
-            Game.survey==self.survey.id,\
+            Game.survey_id==self.survey.id,\
             or_(Game.type=="gameLottery1",Game.type=="gameLottery2"),\
-            or_(Game.userA==user, Game.userB==user)).first()
-        if game.userA==user:
+            or_(Game.userA_id==user, Game.userB_id==user)).first()
+        if game.userA_id==user:
             game.prizeA=True
-        elif game.userB==user:
+        elif game.userB_id==user:
             game.prizeB=True
         else:
             raise "error, user in decision one not found"
@@ -214,12 +214,12 @@ class Games:
 
     def _prize_decision2_3(self,user,decision):
         game = Game.query.filter(\
-            Game.survey==self.survey.id,\
+            Game.survey_id==self.survey.id,\
             Game.type==decision,\
-            or_(Game.userA==user, Game.userB==user)).first()
-        if game.userA==user:
+            or_(Game.userA_id==user, Game.userB_id==user)).first()
+        if game.userA_id==user:
             game.prizeA=True
-        elif game.userB==user:
+        elif game.userB_id==user:
             game.prizeB=True
         else:
             raise "error, user in decision one not found"
@@ -227,17 +227,17 @@ class Games:
 
     def _prize_decision4_6_playerA(self,user,decision):
         game = Game.query.filter(\
-            Game.survey==self.survey.id,\
+            Game.survey_id==self.survey.id,\
             Game.type==decision,\
-            Game.userA==user).first()
+            Game.userA_id==user).first()
         game.prizeA=True
         db.session.add(game)
 
     def _prize_decision4_6_playerB(self,user,decision):
         game = Game.query.filter(\
-            Game.survey==self.survey.id,\
+            Game.survey_id==self.survey.id,\
             Game.type==decision,\
-            Game.userB==user).first()
+            Game.userB_id==user).first()
         game.prizeB=True
         db.session.add(game)
 

@@ -1202,22 +1202,22 @@ class Game(db.Model):
 
     @hybrid_property
     def cashInitA(self):
-        return float(Answer.query.get(self.answerA).answerText)
+        return float(self.answerA.answerText)
 
     @hybrid_property
     def cashInitB(self):
-        return float(Answer.query.get(self.answerB).answerText)
+        return float(self.answerB.answerText)
 
     @hybrid_property
     def statusA(self):
-        ss = StateSurvey.query.filter(StateSurvey.user_id==self.userA,\
-            StateSurvey.survey_id==self.survey).first()
+        ss = StateSurvey.query.filter(StateSurvey.user_id==self.userA_id,\
+            StateSurvey.survey_id==self.survey_id).first()
         return ss.status
 
     @hybrid_property
     def statusB(self):
-        ss = StateSurvey.query.filter(StateSurvey.user_id==self.userB,\
-            StateSurvey.survey_id==self.survey).first()
+        ss = StateSurvey.query.filter(StateSurvey.user_id==self.userB_id,\
+            StateSurvey.survey_id==self.survey_id).first()
         return ss.status
 
 
@@ -1369,8 +1369,8 @@ class GameUltimatum(Game):
 
         for i in interval:
             if int(i[0])==self.cashInitA:
-                answer = Answer.query.filter(Answer.question_id == i[1],Answer.user_id == self.userB).first()
-                self.answerB =answer.id
+                answer = Answer.query.filter(Answer.question_id == i[1],Answer.user_id == self.userB.id).first()
+                self.answerB =answer
                 if answer.answerNumeric==0:
                     # answer accept
                     self.moneyA = MONEY - self.cashInitA

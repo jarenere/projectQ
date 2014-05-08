@@ -32,13 +32,13 @@
         <tbody>
             {% for result in results %}
             <tr>
-                <td>{{result.userA}}</td>
+                <td>{{result.userA_id}}</td>
                 <td>{{result.cashInitA | round(1)}}</td>
-                <td>{{result.userB}}</td>
+                <td>{{result.userB_id}}</td>
                 <td>{{result.cashInitB | round(1)}}</td>
                 <td>{{result.percent_playerA | round(3)}}</td>
                 <td>{{result.percent_playerB | round(3)}}</td>
-                <td>{{result.win}}</td>
+                <td>{{result.win_id}}</td>
                 <td>{{result.moneyA | round(1)}}</td>
                 <td>{{result.moneyB | round(1)}}</td>
                 <td>{{result.prizeA}}</td>

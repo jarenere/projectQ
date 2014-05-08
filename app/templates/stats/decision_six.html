@@ -5,7 +5,7 @@
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 {% from "_formHelpers.html" import render_field %}
     <h1>MATCHING!</h1>
-    <h2>Decision four & five</h2>
+    <h2>Decision six</h2>
     <div class="container-fluid">
     <table class="table data-table sort display" id="myTable1">
         <thead>
@@ -26,8 +26,8 @@
         <tbody>
             {% for result in results %}
             <tr>
-                <td>{{result.userA}}</td>
-                <td>{{result.userB}}</td>
+                <td>{{result.userA_id}}</td>
+                <td>{{result.userB_id}}</td>
                 <td>{{result.cashInitA | round(1)}}</td>
                 <td>{{result.moneyA | round(1)}}</td>
                 <td>{{result.moneyB | round(1)}}</td>

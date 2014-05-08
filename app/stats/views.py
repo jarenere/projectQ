@@ -119,7 +119,7 @@ def decision_two():
     # survey = Survey.query.get(1)
     # game = Games(survey)
     results = GameRent1.query.filter(\
-        GameRent1.survey==ID_SURVEY)
+        GameRent1.survey_id==ID_SURVEY)
 
     return render_template('/stats/decision_two.html',
         tittle = 'stats',
@@ -132,7 +132,7 @@ def decision_three():
     # survey = Survey.query.get(1)
     # game = Games(survey)
     results = GameRent2.query.filter(\
-        GameRent2.survey==ID_SURVEY)
+        GameRent2.survey_id==ID_SURVEY)
 
     return render_template('/stats/decision_three.html',
         tittle = 'stats',
@@ -145,7 +145,7 @@ def decision_four_five():
     # survey = Survey.query.get(1)
     # game = Games(survey)
     results = GameUltimatum.query.filter(\
-        GameUltimatum.survey==ID_SURVEY)
+        GameUltimatum.survey_id==ID_SURVEY)
 
 
     return render_template('/stats/decision_four_five.html',
@@ -159,7 +159,7 @@ def decision_six():
     # survey = Survey.query.get(1)
     # game = Games(survey)
     results = GameDictador.query.filter(\
-        GameDictador.survey==ID_SURVEY)
+        GameDictador.survey_id==ID_SURVEY)
 
     return render_template('/stats/decision_six.html',
         tittle = 'stats',
