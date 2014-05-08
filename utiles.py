@@ -92,36 +92,6 @@ def generateUserFake1(count=100):
         except IntegrityError:
             db.session.rollback()
 
-def verMatching():
-    for m in models.Match.query.all():
-        print "userA: " , m.userA, "userB: ", m.userB
-        print "win: ", m.win
-        print "moneyA: ", m.moneyA, "moneyB", m.moneyB
-        print "type: ", m.type
-        print "__________________"
-
-def borrarMatching():
-    ms = models.Match.query.all()
-    for m in ms:
-        db.session.delete(m)
-    sss = models.StateSurvey.query.filter(models.StateSurvey.survey_id==1)
-    for ss in sss:
-        ss.status=models.StateSurvey.FINISH | models.StateSurvey.FINISH_OK
-        db.session.add(ss)
-    db.session.commit()
-
-def borrarDecisions():
-    ms = models.Match.query.all()
-    for m in ms:
-        if m.type!="part_two":
-            db.session.delete(m)
-    sss = models.StateSurvey.query.filter(models.StateSurvey.survey_id==1)
-    for ss in sss:
-        ss.status=ss.status &~ models.StateSurvey.MATCHING 
-    db.session.add(ss)
-    db.session.commit()
-
-
 def generateAnswerFakePart3(id_survey, number = 6):
     #doy por echo que existen ya lso 100 usuarios de generarUserFake1
     #relleno aleatoriamente uan encuesta con preguntas del tipo decisiones
