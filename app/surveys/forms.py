@@ -90,6 +90,7 @@ class CheckAnswerExpected(object):
             self.message = gettext("wrong answer")
         else:  # pragma: no cover
             self.message = message
+        self.message_continue = gettext("wrong answer, you can continue")
 
     def __call__(self, form, field):
         question = Question.query.get(field.name[1:])
@@ -100,7 +101,7 @@ class CheckAnswerExpected(object):
             if answer.isMoreAttempt():
                  raise ValidationError(self.message)
             else:
-                flash(gettext("wrong answer, you can continue"))
+                flash(self.message_continue)
 
 class CheckSubquestion(object):
     '''check whether to answer the question or not
