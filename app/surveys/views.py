@@ -5,7 +5,6 @@ from flask import render_template
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from forms import LoginForm
 from forms import LikertField, MyRadioField
-from forms import check_answer_expected, check_answer_expected_yn, check_subquestion,check_valid_select_field
 from forms import generate_form
 from utiles import generate_answer
 from app.models import Survey, Consent, Section
