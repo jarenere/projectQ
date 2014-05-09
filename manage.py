@@ -20,8 +20,9 @@ def test(coverage=False):
         cov.start()
 
     import unittest
-    # tests = unittest.TestLoader().discover('tests')
-    tests = unittest.loader.discover('tests', pattern = "Test*.py") 
+    # tests = unittest.TestLoader().discover('testing_tests')
+    tests = unittest.TestLoader().discover('tests')
+
     unittest.TextTestRunner(verbosity=2).run(tests)
     if COV:
         cov.stop()

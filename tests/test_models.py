@@ -190,7 +190,8 @@ class ModelsTestCase(unittest.TestCase):
         l=["thing1","thing2","thing3"]  
         q3 = QuestionChoice(text="q3",section=s11,choices =l)
         db.session.add(q3)
-        condition=Condition(operation="==",value=0)
+        condition=Condition(operation="==",value="0")
+        db.session.add(condition)
         q4 = QuestionYN(text="q4", section=s11, condition=condition,
             parent = q3)
         db.session.add(q4)
@@ -246,10 +247,26 @@ class ModelsTestCase(unittest.TestCase):
         db.session.add(ans)
         db.session.commit()
         self.assertTrue(ans.isMoreAttempt())
-        self.assertFalse(ans.answerAttemptYN())
+        self.assertFalse(ans.answerAttempt())
         ans.answerYN=True
-        self.assertTrue(ans.answerAttemptYN())
+        self.assertTrue(ans.answerAttempt())
 
+    def test_answer(self):
+        u1 = User(nickname = 'john', email = 'john1@example.com',role = ROLE_RESEARCHER)
+        survey = Survey(title = "test",researcher = u1)
+        s1 = Section (title = "1",description = "a",survey = survey)
+        q1 = QuestionText(text="q1",section=s1)
+        ans1 = Answer(user=u1,question=q1,answerText="1.5")
+        db.session.add(u1)
+        db.session.add(survey)
+        db.session.add(s1)
+        db.session.add(q1)
+        db.session.add(ans1)
+        db.session.commit()
+        ans1 = Answer(user=u1,question=q1,answerText="1.5")
+        db.session.add(ans1)
+        self.assertRaises(IntegrityError, db.session.commit)
+        db.session.rollback()
 
     def test_game_impatience(self):
         u = User(nickname = 'john', email = 'john1@example.com', 
