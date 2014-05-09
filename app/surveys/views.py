@@ -7,6 +7,7 @@ from forms import LoginForm
 from forms import LikertField, MyRadioField
 from forms import check_answer_expected, check_answer_expected_yn, check_subquestion,check_valid_select_field
 from forms import generate_form
+from utiles import generate_answer
 from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionText
 from app.models import QuestionYN ,QuestionLikertScale
@@ -258,31 +259,8 @@ def showQuestions(id_survey, id_section):
     form = generate_form(questions)
     if form.validate_on_submit():
         for question in questions:
-            if writeQuestion(question, form) and not question.isExpectedAnswer():
-                # if isExpectedAnswer write the answers when check the answer
-                if isinstance (question,QuestionYN):
-                    answer = Answer (answerYN = (form["c"+str(question.id)].data=='Yes'), user= g.user, question = question)
-                    answer.answerText = str(answer.answerYN)
-                if isinstance (question,QuestionText):
-                    if question.isNumber:
-                        if question.isNumberFloat:
-                            answer = Answer (answerNumeric = form["c"+str(question.id)].data.replace(",","."), user= g.user, question = question)
-                        else:
-                            answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-                        answer.answerText= answer.answerNumeric
-                    else:
-                        answer = Answer (answerText = form["c"+str(question.id)].data, user= g.user, question = question)
-                if isinstance (question,QuestionChoice):
-                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-                    answer.answerText = form["c"+str(question.id)].choices[int(form["c"+str(question.id)].data)][1]
-                if isinstance (question, QuestionLikertScale):
-                    answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= g.user, question = question)
-                    answer.answerText = form["c"+str(question.id)].choices[int(form["c"+str(question.id)].data)][1]
-
-
-                answer.globalTime = form["globalTimec"+str(question.id)].data
-                answer.differentialTime = form["differentialTimec"+str(question.id)].data
-                db.session.add(answer)
+            answer = generate_answer(question,form,g.user)
+            db.session.add(answer)
         db.session.commit()
 
         stateSurvey.finishedSection(form.time.data)

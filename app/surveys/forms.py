@@ -9,6 +9,7 @@ from wtforms import SelectField
 from app.models import Question, QuestionChoice, QuestionYN, QuestionText,Answer, QuestionLikertScale
 from flask import g, flash
 from app import db
+from utiles import generate_answer
 
 
 class LoginForm(Form):
@@ -82,6 +83,8 @@ class MyRadioField(RadioField):
         return super(MyRadioField, self).__call__(**kwargs)
 
 class CheckAnswerExpected(object):
+    '''check if the answer is the expected
+    '''
     def __init__(self, message=None):
         if not message:
             self.message = gettext("wrong answer")
@@ -90,43 +93,10 @@ class CheckAnswerExpected(object):
 
     def __call__(self, form, field):
         question = Question.query.get(field.name[1:])
-        answer = Answer.query.filter(Answer.user_id==g.user.id,
-                Answer.question_id==question.id).first()
-        if answer is None:
-            answer = Answer (answerText = field.data, user= g.user, question = question)
-        else:
-            answer.answerText = field.data
-        answer.globalTime = form["globalTimec"+str(question.id)].data
-        answer.differentialTime = form["differentialTimec"+str(question.id)].data
+        answer = generate_answer(question, form, g.user)
         db.session.add(answer)
         db.session.commit()
         if not answer.answerAttempt():
-            if answer.isMoreAttempt():
-                 raise ValidationError(self.message)
-            else:
-                flash(gettext("wrong answer, you can continue"))
-
-class CheckAnswerExpectedYN(object):
-    def __init__(self, message=None):
-        if not message:
-            self.message = gettext("wrong answer")
-        else:  # pragma: no cover
-            self.message = message
-
-    def __call__(self, form, field):
-        question = Question.query.get(field.name[1:])
-        answer = Answer.query.filter(Answer.user_id==g.user.id,
-                Answer.question_id==question.id).first()
-        if answer is None:
-            answer = Answer (answerYN = field.data=='Yes', user= g.user, question = question)
-        else:
-            answer.answerYN = field.data=='Yes'
-            answer.answerText = str(answer.answerYN)
-        answer.globalTime = form["globalTimec"+str(question.id)].data
-        answer.differentialTime = form["differentialTimec"+str(question.id)].data
-        db.session.add(answer)
-        db.session.commit()
-        if not answer.answerAttemptYN():
             if answer.isMoreAttempt():
                  raise ValidationError(self.message)
             else:
@@ -170,7 +140,9 @@ class CheckSubquestion(object):
                     field.errors[:] = []
                     raise StopValidation()
 
-class checkValidSelectField(object):
+class RequiredSelectField(object):
+    ''' check if there is answer
+    '''
     def __init__(self, message=None):
         if not message:
             self.message = gettext("Option not valid")
@@ -181,13 +153,10 @@ class checkValidSelectField(object):
             raise ValidationError(gettext("Option not valid"))
 
 
-def check_valid_select_field(self,field):
-    if field.data=="":
-        raise ValidationError(gettext("Option not valid"))
-
 
 def check_answer_expected(self,field):
     '''check if the answer is the expected
+        DEPRECATED!
     '''
     question = Question.query.get(field.name[1:])
     answer = Answer.query.filter(Answer.user_id==g.user.id,
@@ -208,6 +177,7 @@ def check_answer_expected(self,field):
 
 def check_answer_expected_yn(self,field):
     '''check if the answer is the expected
+        DEPRECATED
     '''
     question = Question.query.get(field.name[1:])
     answer = Answer.query.filter(Answer.user_id==g.user.id,
@@ -229,6 +199,7 @@ def check_answer_expected_yn(self,field):
 
 def check_subquestion(self,field):
     '''check whether to answer the question or not
+        DEPRECATED
     '''
     question = Question.query.get(field.name[1:])
     data = self["c"+str(question.parent.id)].data
@@ -264,15 +235,8 @@ def check_subquestion(self,field):
                 field.errors[:] = []
                 raise StopValidation()
 
-    # if isinstance(question.parent,QuestionChoice):
-    #     if data==question.condition.value:
-    #         pass
-    #     else:
-    #         # nothing to check
-    #         field.errors[:] = []
-    #         raise StopValidation()
-
 def check_valid_select_field(self,field):
+    # DEPRECATED
     if field.data=="":
         raise ValidationError(gettext("Option not valid"))
 
@@ -285,13 +249,6 @@ def generate_form(questions):
         while x < y:
             yield  '{0:g}'.format(float(x))
             x += jump
-
-
-
-    # class Likert(ClassedWidgetMixin, ListWidget):
-    #     pass
-
-
 
     class AnswerForm(Form):
         time = HiddenField('time',default=0)
@@ -308,11 +265,11 @@ def generate_form(questions):
             choices = [('Yes',gettext('Yes')),('No',gettext('No'))]
             if question.isSubquestion:
                 setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
-                    choices = choices,validators = [check_subquestion]))
+                    choices = choices,validators = [CheckSubquestion()]))
             else:
                 if question.isExpectedAnswer():
                     setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
-                        choices = choices, validators = [check_answer_expected_yn]))
+                        choices = choices, validators = [CheckAnswerExpected()]))
                 elif question.required:
                     setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
                         choices = choices,validators = [Required()]))
@@ -322,7 +279,7 @@ def generate_form(questions):
         if isinstance (question,QuestionText):
             if question.isSubquestion:
                 setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer',
-                    validators = [check_subquestion]))
+                    validators = [CheckSubquestion()]))
             else:
                 if question.required:
                     if question.regularExpression !="":
@@ -362,16 +319,16 @@ def generate_form(questions):
             if question.isSubquestion:
                 if question.render=="select":
                     setattr(AnswerForm,"c"+str(question.id),SelectField('Answer', 
-                        choices = list,validators = [check_valid_select_field,check_subquestion]))
+                        choices = list,validators = [RequiredSelectField(),CheckSubquestion()]))
                 else:
                     setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer',
                         horizontal=question.render=="horizontal",
-                        choices = list,validators = [check_subquestion]))
+                        choices = list,validators = [CheckSubquestion()]))
             else:
                 if question.required:
                     if question.render =="select":
                         setattr(AnswerForm,"c"+str(question.id),SelectField('Answer', 
-                            choices = list,validators = [check_valid_select_field]))
+                            choices = list,validators = [RequiredSelectField()]))
                     else:
                         setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
                             horizontal=question.render=="horizontal",
@@ -379,7 +336,7 @@ def generate_form(questions):
                 else:
                     if question.render =="select":
                         setattr(AnswerForm,"c"+str(question.id),SelectField('Answer', 
-                            choices = list,validators = [check_valid_select_field]))
+                            choices = list,validators = [RequiredSelectField()]))
                     else:
                         setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer',
                             horizontal=question.render=="horizontal",

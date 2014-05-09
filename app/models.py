@@ -891,31 +891,34 @@ class Answer(db.Model):
         the number attempt
         '''
         if self.question.isExpectedAnswer():
-            if self.answerText.lower() != self.question.expectedAnswer.lower():
-                self.numberAttempt = self.numberAttempt + 1
-                db.session.add(self)
-                db.session.commit()
-                return False
-            else:
-                return True
+            if isinstance(self.question, QuestionText):
+                if self.answerText.lower() != self.question.expectedAnswer.lower():
+                    self.numberAttempt = self.numberAttempt + 1
+                    db.session.add(self)
+                    db.session.commit()
+                    return False
+                else:
+                    return True
+            if isinstance(self.question,QuestionYN):
+                if self.answerYN != (self.question.expectedAnswer.lower()=='yes'):
+                    self.numberAttempt = self.numberAttempt + 1
+                    db.session.add(self)
+                    db.session.commit()
+                    return False
+                else:
+                    return True
+            if isinstance(self.question,QuestionChoice):
+                if self.answerText.lower() != self.question.expectedAnswer.lower() or \
+                        str(self.answerNumeric) == self.question.expectedAnswer:
+                    self.numberAttempt = self.numberAttempt + 1
+                    db.session.add(self)
+                    db.session.commit()
+                    return False
+                else:
+                    return True
+
         else:               
             return True
-
-    def answerAttemptYN(self):
-        '''Return if the answer is the correct, else increment in 1
-        the number attempt
-        '''
-        if self.question.isExpectedAnswer():
-            if self.answerYN != (self.question.expectedAnswer.lower()=='yes'):
-                self.numberAttempt = self.numberAttempt + 1
-                db.session.add(self)
-                db.session.commit()
-                return False
-            else:
-                return True
-        else:               
-            return True
-
 
     def isMoreAttempt(self):
         '''Return if there are more attempt
