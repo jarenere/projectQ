@@ -185,11 +185,10 @@ def generate_answers_fake(id_survey, number=6):
             u = models.User(email="user"+str(j)+"gmail.com",
                      nickname="user"+str(j))
             db.session.add(u)
-            try:
-                db.session.commit()
-            except IntegrityError:
-                db.session.rollback()
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
         return base
 
     def answer_question(user,q, time):

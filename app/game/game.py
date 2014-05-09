@@ -5,7 +5,7 @@ from app.models import Game
 from app.models import Raffle
 from sqlalchemy import or_
 import random
-from app import db, models
+from app import db
 
 
 class Games:

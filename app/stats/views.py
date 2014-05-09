@@ -21,7 +21,7 @@ from app.decorators import valid_survey, there_is_stateSurvey
 from ..main.errors import ErrorEndDateOut, ErrorExceeded, ErrorTimedOut
 from app.decorators import researcher_required, belong_researcher
 # from .matching import Games
-from .game import Games
+from app.game.game import Games
 import csv
 
 ID_SURVEY=1

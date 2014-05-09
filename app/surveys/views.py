@@ -21,7 +21,7 @@ import datetime
 from . import blueprint
 from app.decorators import valid_survey, there_is_stateSurvey
 from ..main.errors import ErrorEndDateOut, ErrorExceeded, ErrorTimedOut
-from app.stats.game import Games
+from app.game.game import Games
 from sqlalchemy import or_
 from sqlalchemy import and_
 from flask.ext.babel import gettext
