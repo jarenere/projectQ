@@ -257,12 +257,11 @@ def showQuestions(id_survey, id_section):
     form = generate_form(questions)
     if form.validate_on_submit():
         for question in questions:
-            answer = generate_answer(question,form,g.user)
+            if writeQuestion(question, form):
+                answer = generate_answer(question,form,g.user)
             db.session.add(answer)
         db.session.commit()
-
         stateSurvey.finishedSection(form.time.data)
-        print "valiendo"
         return redirect(url_for('surveys.logicSurvey',id_survey = id_survey))
 
     return render_template('/surveys/showQuestions.html',

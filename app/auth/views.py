@@ -65,6 +65,12 @@ def logout():
 @blueprint.before_app_request
 def before_request():
     g.user = current_user
+    # if current_user.is_authenticated():
+    #     current_user.ping()
+    #     if not current_user.confirmed \
+    #             and request.endpoint[:5] != 'auth.':
+    #         return redirect(url_for('auth.unconfirmed'))
+
 
 
 

@@ -24,7 +24,7 @@ def new_answer(question,form,user):
             answer.answerText= answer.answerNumeric
         else:
             answer = Answer (answerText = form["c"+str(question.id)].data, user= user, question = question)
-    if isinstance (question,QuestionChoice) or isinstance(question,QuestionLikertScale):
+    if isinstance (question,QuestionChoice):
         answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= user, question = question)
         answer.answerText = form["c"+str(question.id)].choices[int(form["c"+str(question.id)].data)][1]
     if isinstance (question, QuestionLikertScale):
