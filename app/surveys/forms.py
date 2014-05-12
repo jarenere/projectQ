@@ -12,11 +12,6 @@ from app import db
 from utiles import generate_answer
 
 
-class LoginForm(Form):
-    openid = TextField('openid', validators = [Required()])
-    remember_me = BooleanField('remember_me', default = False)
-
-
 class LikertField(RadioField):
     '''my implement of likert field'''
     def __init__(self, label='', validators=None, labelMin="", labelMax="", **kwargs):

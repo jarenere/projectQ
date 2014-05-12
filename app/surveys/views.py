@@ -3,7 +3,6 @@ from app import app, db
 from flask import Blueprint, request, url_for, flash, redirect, abort, session, g
 from flask import render_template
 from flask.ext.login import login_user, logout_user, current_user, login_required
-from forms import LoginForm
 from forms import LikertField, MyRadioField
 from forms import generate_form
 from utiles import generate_answer

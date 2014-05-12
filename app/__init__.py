@@ -15,7 +15,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 
-Bootstrap(app)
+bootstrap = Bootstrap()
+bootstrap.init_app(app)
+
 #markdown editor
 pagedown = PageDown(app)
 markdown = Markdown(app)

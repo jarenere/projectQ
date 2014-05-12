@@ -162,3 +162,4 @@ nit)   app.game = Games(1) da fallo, y luego tambien fallara hasta que exista es
 []def run_part2_raffle(id_survey) falla en las encuestas que no son "como son nuestros voluntarios"
 []cambiar opcion no valida por opcion invalida
 []chekanswerexpected puede no funcionar bien, 
+[]Games part2 comprobar que el usuario haya terminado la encuesta!

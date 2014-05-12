@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from sqlalchemy.ext.declarative import declared_attr
 from . import db, lm
 from app import db
@@ -788,6 +790,10 @@ class User(db.Model):
     email = Column(Unicode(length=254), unique=True, nullable=False)
     #: user name
     nickname = Column(String(64))
+    #: password ...
+    password_hash = db.Column(db.String(128))
+    #: user confirmed ...
+    confirmed = db.Column(db.Boolean, default=False)
     #: role of user
     role = Column(SmallInteger, default = ROLE_USER)
     ## Relationships
@@ -802,7 +808,17 @@ class User(db.Model):
         super(User, self).__init__(**kwargs)
         if len(User.query.all())==0:
             self.role=ROLE_RESEARCHER
+    
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attribute')
 
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def is_authenticated(self):
         '''Returns True if the user is authenticated, i.e. they have provided 
