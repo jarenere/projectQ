@@ -74,7 +74,6 @@ class MyRadioField(RadioField):
         else:
             kwargs.setdefault('class_', "radio")
             self.widget.prefix_label=False
-        print "prefix: ",self.widget.prefix_label
         return super(MyRadioField, self).__call__(**kwargs)
 
 class CheckAnswerExpected(object):
