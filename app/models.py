@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.ext.declarative import declared_attr
 from . import db, lm
 from app import db
+from app import app
 import random
 import datetime
 from sqlalchemy import BigInteger, Integer, Boolean, Unicode,\
@@ -1032,6 +1033,16 @@ class StateSurvey(db.Model):
         return "<StateSurvey(id='%s', survey='%s', user='%s', status='%s')>" % (
             self.id, self.survey_id, self.user_id, self.status)
 
+    def __init__(self, **kwargs):
+        super(StateSurvey, self).__init__(**kwargs)
+        sections = Section.query.filter(Section.survey== self.survey).order_by(Section.sequence)
+        list = Section.sequenceSections(sections)
+        # to load test
+        if app.config["JMETER"]:
+            list = app.config["SEQUENCE"]
+        self.sequence=list
+        self.sectionTime={}
+
     def get_status(self):
         '''return a string with the status
         '''
@@ -1131,12 +1142,8 @@ class StateSurvey(db.Model):
                     StateSurvey.status.op('&')(StateSurvey.FINISH_OK),
                     StateSurvey.survey_id==survey.id).count():
                 return None, StateSurvey.ERROR_EXCEEDED
-            #generamos arbol
-            sections = Section.query.filter(Section.survey_id == id_survey).order_by(Section.sequence)
-            list = Section.sequenceSections(sections)
-
             stateSurvey = StateSurvey(survey = Survey.query.get(id_survey),
-                            user = user, sequence =list, ip = ip, sectionTime = {})
+                            user = user, ip = ip)
             db.session.add(stateSurvey)
             db.session.commit()
         return stateSurvey, stateSurvey.check_survey_duration_and_date()
