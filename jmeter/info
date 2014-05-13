@@ -1,0 +1,8 @@
+desactivar csrf de los wtforms, 
+
+modificado logic, para que de siempre el mismo camino (hace el gasto computacional igual, pero el luego la cadena es la misma que la copiada en la grabacin de de jmeter, para no tener problemas)
+
+mm.. uso puerto 8088 en el proxy, mymobiler usa el 8080
+cuando configuro el proxy, en firefox, quitar la opcion para localhost y 127.0.0.1
+
+manual de grabacion, http://jmeter.apache.org/usermanual/jmeter_proxy_step_by_step.pdf activar cookies

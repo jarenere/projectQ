@@ -34,6 +34,17 @@ def test(coverage=False):
         cov.html_report(directory=covdir)
         print('HTML version: file://%s/index.html' % covdir)
         cov.erase()
+
+@manager.command
+def p80():
+    app.run(port = 80, host='0.0.0.0')
+
+@manager.command
+def jmeter():
+    app.config['WTF_CSRF_ENABLED'] = False
+    app.config['JMETER'] = True
+    app.run(port = 80, host='0.0.0.0')
+
 if __name__ == "__main__":
     app.debug = True
     manager.run()

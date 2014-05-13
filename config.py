@@ -4,8 +4,11 @@
 
 import os
 
-CSRF_ENABLED = True
+WTF_CSRF_ENABLED = True
 SECRET_KEY = 'Chamber of Secrets :D'
+# config tu jmeter
+JMETER = False
+SEQUENCE = [5, 6, 7, 8, 9, 10, 17, 16, 12, 23, 22, 32, 33, 40, 41, 42, 49, 50, 51, 46, 47, 48, 14, 15]
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
