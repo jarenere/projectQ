@@ -7,7 +7,7 @@ from app.models import Survey, Consent, Section, StateSurvey, Answer
 from app.models import Question, QuestionChoice, QuestionText
 from app.models import QuestionYN, QuestionLikertScale
 from app.models import Condition
-from app import app, db
+from app import db
 from app.decorators import researcher_required, belong_researcher
 from flask.ext.login import login_user, logout_user, current_user, login_required
 import tempfile

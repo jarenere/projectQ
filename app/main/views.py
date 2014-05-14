@@ -4,8 +4,8 @@ from flask import render_template, Flask, url_for, session, request
 from config import basedir
 from . import blueprint
 from app import babel
-from config import LANGUAGES
-from config import LOCALES
+# from config import LANGUAGES
+# from config import LOCALES
     
 @blueprint.route('/')
 @blueprint.route('/index')

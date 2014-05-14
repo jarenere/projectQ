@@ -1,12 +1,17 @@
 #!flask/bin/python
 
 # from app import app, manager
-from app import app
+from app import app, db
 from flask.ext.script import Manager
-from flask.ext.migrate import MigrateCommand
+from flask.ext.migrate import MigrateCommand, Migrate
 import os
 
+
+# app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+
 manager = Manager(app)
+migrate = Migrate(app, db)
+
 manager.add_command('db', MigrateCommand)
 
 
@@ -46,5 +51,4 @@ def jmeter():
     app.run(port = 80, host='0.0.0.0')
 
 if __name__ == "__main__":
-    app.debug = True
     manager.run()

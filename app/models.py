@@ -6,7 +6,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.ext.declarative import declared_attr
 from . import db, lm
 from app import db
-from app import app
+# from app import app
+from flask import current_app
 import random
 import datetime
 from sqlalchemy import BigInteger, Integer, Boolean, Unicode,\
@@ -1038,8 +1039,8 @@ class StateSurvey(db.Model):
         sections = Section.query.filter(Section.survey== self.survey).order_by(Section.sequence)
         list = Section.sequenceSections(sections)
         # to load test
-        if app.config["JMETER"]:
-            list = app.config["SEQUENCE"]
+        if current_app.config["JMETER"]:
+            list = current_app.config["SEQUENCE"]
         self.sequence=list
         self.sectionTime={}
 
