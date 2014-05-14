@@ -10,8 +10,8 @@ from app import app
 import random
 import datetime
 from sqlalchemy import BigInteger, Integer, Boolean, Unicode,\
-        Float, UnicodeText, Text, String, DateTime, Numeric, PickleType,\
-        SmallInteger, Enum
+        Float, UnicodeText, Text, String, DateTime, PickleType,\
+        SmallInteger, Enum, Float
 from sqlalchemy.schema import Table, MetaData, Column, ForeignKey
 from sqlalchemy.orm import relationship, backref, class_mapper
 from sqlalchemy.types import TypeDecorator
@@ -224,7 +224,7 @@ class Section(db.Model):
     # is chosen at random which is done first
     sequence = Column(Integer, default = 1)
     #:Percentage of Respondents who pass through this section
-    percent = Column(Numeric, default = 1)
+    percent = Column(Float, default = 1)
     #: created timestamp (automatically set)
     #created = Column(DateTime, default = make_timestamp)   
     
@@ -715,7 +715,7 @@ class QuestionChoice(Question):
     __mapper_args__ = {'polymorphic_identity': 'choice'}
     range_min = Column(Integer, default="")
     range_max = Column(Integer,default="")
-    range_step = Column(Numeric, default = 1)
+    range_step = Column(Float, default = 1)
     render = Column(Enum('vertical','horizontal','select'), default="vertical")
     #: possible choices
 
@@ -1210,9 +1210,9 @@ class Game(db.Model):
     #:userB isn't his first Match (repeat by fault users)
     repeatB = Column(Boolean, default=False)
     #:money earned of userA
-    moneyA = Column(Numeric)
+    moneyA = Column(Float)
     #:money earned of userB
-    moneyB = Column(Numeric)
+    moneyB = Column(Float)
     #: if money real or no
     is_real_money = Column(Boolean, default=False)
     #: Type of question, discriminate between classes
@@ -1334,7 +1334,6 @@ class GameRent1(Game):
     def __init__(self, **kwargs):
         super(GameRent1, self).__init__(**kwargs)
         INIT_MONEY = 10
-        CONSTANT_FUND = 0.8
         self.moneyA = self.fund + INIT_MONEY - self.cashInitA
         self.moneyB = self.fund + INIT_MONEY - self.cashInitB
 
@@ -1352,10 +1351,8 @@ class GameRent2(Game):
     def __init__(self, **kwargs):
         super(GameRent2, self).__init__(**kwargs)
         INIT_MONEY = 10
-        CONSTANT_FUND = 1.2
-        fund = (self.cashInitA+self.cashInitB)*CONSTANT_FUND
-        self.moneyA = fund + INIT_MONEY - self.cashInitA
-        self.moneyB = fund + INIT_MONEY - self.cashInitB
+        self.moneyA = self.fund + INIT_MONEY - self.cashInitA
+        self.moneyB = self.fund + INIT_MONEY - self.cashInitB
 
     @hybrid_property
     def fund(self):
