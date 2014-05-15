@@ -16,8 +16,8 @@ config_name = 'default'
 
 app = Flask(__name__)
 app.config.from_object(config[config_name])
+app.config.from_pyfile(app.config["SETTINGS"])
 config[config_name].init_app(app)
-
 
 bootstrap = Bootstrap()
 bootstrap.init_app(app)
@@ -53,23 +53,9 @@ if not os.path.exists(stats_csv):
 # sched.start()
 # sched.add_interval_job(deleteAnswers.deleteAnswers, hours=2)
 
-def status_part2(status):
-    from app.models import StateSurvey
-    if status & StateSurvey.PART2_MONEY:
-        return u'Money Real'
-    else:
-        return u'Untrue money'
 
 
-def status_part3(status):
-    from app.models import StateSurvey
-    if status & StateSurvey.PART3_MONEY:
-        return u'Money Real'
-    else:
-        return u'Untrue money'
-
-
-
+from app.function_jinja.functions import status_part2, status_part3
 
 # app.jinja_env.globals.update(status_part_two=status_part_two)
 app.jinja_env.globals['status_part2'] = status_part2
