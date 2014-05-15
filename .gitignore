@@ -12,3 +12,4 @@ dudas
 *.csv*
 app/app.db_cp
 app.db-journal
+*.sqlite
