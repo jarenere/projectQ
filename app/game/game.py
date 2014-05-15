@@ -442,6 +442,30 @@ class Games:
             db.session.add(game)
             db.session.commit()
 
+    def part2_reimplement(self,user):
+        '''select random answer to game of part2 (GameImpatience)
+            store in db
+        '''
+        if  GameImpatience.query.filter(GameImpatience.user_id==user.id,\
+                    GameImpatience.survey_id==self.survey.id).first() is None:
+            ans = Answer.query.filter(\
+                Answer.user_id==user.id,\
+                Answer.question_id==self.select_game["part2",True][0]).first()
+            if ans is not None:
+                #game with real money
+                question = random.choice(self.select_game["part2",True])
+                is_real_money=True
+            else:
+                question = random.choice(self.select_game["part2",False])
+                is_real_money=False
+
+            answer = Answer.query.filter_by(user_id=user.id,question_id=question).first()
+            game = GameImpatience(user=user, answer = answer,\
+                survey=self.survey, is_real_money=is_real_money)
+            self._flag_status(user.id, ("part2",is_real_money))
+            db.session.add(game)
+            db.session.commit()
+
     def raffle(self, user):
         '''only if user have game allways with untrue money
         '''
