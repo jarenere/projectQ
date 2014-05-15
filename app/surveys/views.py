@@ -2,6 +2,7 @@
 from app import app, db
 from flask import Blueprint, request, url_for, flash, redirect, abort, session, g
 from flask import render_template
+from flask import current_app
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from forms import LikertField, MyRadioField
 from forms import generate_form
@@ -120,24 +121,15 @@ def check_feedback(id_survey):
     if ans is not None:
         if ans.answerYN:
             return redirect(url_for('feedback.logic_feedback', id_survey = id_survey))
-
-            # return render_template('/surveys/finish.html', 
-            #     title = 'Finish')
     return render_template('/surveys/finish.html', 
         title = 'Finish')
 
 def run_part2_raffle(id_survey):
     '''run part2 and raffle if user no always game with untrue money
     '''
-    if id_survey==1:
-        game = Games(id_survey)
-        ss = StateSurvey.query.filter(StateSurvey.survey_id==id_survey,
-            StateSurvey.user_id==current_user.id).first()
-        if (ss.status & StateSurvey.FINISH_OK) and \
-            (ss.status & StateSurvey.PART2_MONEY)==0 and \
-            (ss.status & StateSurvey.PART2_NO_MONEY)==0:
-            game.part2(current_user)
-            game.raffle(current_user)
+    game = Games(id_survey)
+    game.part2(current_user)
+    game.raffle(current_user)
 
 
 @blueprint.route('/survey/<int:id_survey>', methods=['GET', 'POST'])
@@ -154,8 +146,11 @@ def logicSurvey(id_survey):
     section = stateSurvey.nextSection()
     if section is None:
         if stateSurvey.status & StateSurvey.FINISH_OK:
-            run_part2_raffle(id_survey)
-            return check_feedback(id_survey)
+            if current_app.config.get('MODE_GAMES',False):
+                run_part2_raffle(id_survey)
+                return check_feedback(id_survey)
+            else:
+                return render_template('/surveys/finish.html',title = 'Finish')
         if stateSurvey.status & StateSurvey.TIMED_OUT:
             return render_template('/survey/error_time_date.html',
                 title ='time out')
