@@ -140,8 +140,8 @@ def run_part2_raffle(id_survey):
             game.raffle(current_user)
 
 
-@login_required
 @blueprint.route('/survey/<int:id_survey>', methods=['GET', 'POST'])
+@login_required
 @valid_survey
 def logicSurvey(id_survey):
     '''
@@ -166,9 +166,9 @@ def logicSurvey(id_survey):
         return abort(500) 
     return redirect (url_for('surveys.showQuestions',id_survey=id_survey,id_section=section.id))
 
-@login_required
 @blueprint.route('/survey/<int:id_survey>/consent', methods=['GET', 'POST'])
 @blueprint.route('/survey/<int:id_survey>/consent/<int:n_consent>', methods=['GET', 'POST'])
+@login_required
 @valid_survey
 @there_is_stateSurvey
 def showConsent(id_survey,n_consent = 0):
@@ -236,8 +236,8 @@ def writeQuestion(question, form):
                     return False
 
 
-@login_required
 @blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods=['GET', 'POST'])
+@login_required
 @valid_survey
 @there_is_stateSurvey
 def showQuestions(id_survey, id_section):

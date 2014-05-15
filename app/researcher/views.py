@@ -27,9 +27,10 @@ def index():
         tittle = 'Survey',
         surveys = surveys)
 
+
+@blueprint.route('/survey/new', methods = ['GET', 'POST'])
 @login_required
 @researcher_required
-@blueprint.route('/survey/new', methods = ['GET', 'POST'])
 def new():
     form = SurveyForm()
     if form.validate_on_submit():
@@ -61,9 +62,9 @@ def new():
         form = form)
 
 
+@blueprint.route('/survey/<int:id_survey>', methods = ['GET', 'POST'])
 @login_required
 @researcher_required
-@blueprint.route('/survey/<int:id_survey>', methods = ['GET', 'POST'])
 @belong_researcher('survey')
 def editSurvey(id_survey):
     #get survey
@@ -93,9 +94,10 @@ def editSurvey(id_survey):
         survey = survey,
         sections = sections)
 
+
+@blueprint.route('/survey/deleteSurvey/<int:id_survey>')
 @login_required
 @researcher_required
-@blueprint.route('/survey/deleteSurvey/<int:id_survey>')
 @belong_researcher('survey')
 def deleteSurvey(id_survey):
     survey = Survey.query.get(id_survey)
@@ -104,9 +106,10 @@ def deleteSurvey(id_survey):
     flash('Survey removed')
     return redirect(url_for('researcher.index'))
 
+
+@blueprint.route('/survey/exportSurvey/<int:id_survey>')
 @login_required
 @researcher_required
-@blueprint.route('/survey/exportSurvey/<int:id_survey>')
 @belong_researcher('survey')
 def exportSurvey(id_survey):
     '''http://stackoverflow.com/questions/14614756/how-can-i-generate-file-on-the-fly-and-delete-it-after-download
@@ -132,9 +135,9 @@ def tips_path(section=None):
     return l
 
 
+@blueprint.route('/survey/<int:id_survey>/consent/add', methods = ['GET', 'POST'])
 @login_required
 @researcher_required
-@blueprint.route('/survey/<int:id_survey>/consent/add', methods = ['GET', 'POST'])
 @belong_researcher('survey')
 def addConsent(id_survey):
     form = EditConsentForm()
@@ -157,9 +160,9 @@ def addConsent(id_survey):
         addConsent = True)
 
 
+@blueprint.route('/survey/<int:id_survey>/consent/<int:id_consent>/delete')
 @login_required
 @researcher_required
-@blueprint.route('/survey/<int:id_survey>/consent/<int:id_consent>/delete')
 @belong_researcher('consent')
 def deleteConsent(id_survey,id_consent):
     consent = Consent.query.get(id_consent)
@@ -168,9 +171,10 @@ def deleteConsent(id_survey,id_consent):
     flash('consent removed')
     return redirect(url_for('researcher.addConsent',id_survey = id_survey))
 
+
+@blueprint.route('/survey/<int:id_survey>/consent/<int:id_consent>', methods = ['GET', 'POST'])
 @login_required
 @researcher_required
-@blueprint.route('/survey/<int:id_survey>/consent/<int:id_consent>', methods = ['GET', 'POST'])
 @belong_researcher('consent')
 def editConsents(id_survey, id_consent):
     consent = Consent.query.get(id_consent)
@@ -192,9 +196,9 @@ def editConsents(id_survey, id_consent):
         editConsent = True)
 
 
+@blueprint.route('/survey/<int:id_survey>/section/new', methods = ['GET', 'POST'])
 @login_required
 @researcher_required
-@blueprint.route('/survey/<int:id_survey>/section/new', methods = ['GET', 'POST'])
 @belong_researcher('survey')
 def addSection(id_survey):
     survey = Survey.query.get(id_survey)
@@ -228,9 +232,9 @@ def addSection(id_survey):
         addSection = True)
 
 
+@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods = ['GET', 'POST'])
 @login_required
 @researcher_required
-@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>', methods = ['GET', 'POST'])
 @belong_researcher('section')
 def editSection(id_survey, id_section):
     section = Section.query.get(id_section)
@@ -261,9 +265,9 @@ def editSection(id_survey, id_section):
         path = path)
 
 
+@blueprint.route('/survey/<int:id_survey>/deleteSection/<int:id_section>')
 @login_required
 @researcher_required
-@blueprint.route('/survey/<int:id_survey>/deleteSection/<int:id_section>')
 @belong_researcher('section')
 def deleteSection(id_survey,id_section):
     section = Section.query.get(id_section)
@@ -272,20 +276,21 @@ def deleteSection(id_survey,id_section):
     flash('Section removed')
     return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
 
+
+@blueprint.route('/survey/<int:id_survey>/duplicateSection/<int:id_section>')
 @login_required
 @researcher_required
-@blueprint.route('/survey/<int:id_survey>/duplicateSection/<int:id_section>')
 @belong_researcher('section')
 def duplicate_section(id_survey,id_section):
     section = Section.query.get(id_section)
     section.duplicate()
     flash('Section duplicated')
-    return redirect(url_for('researcher.editSurvey',id_survey = id_survey))   
+    return redirect(url_for('researcher.editSurvey',id_survey = id_survey))
 
 
+@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/new', methods = ['GET', 'POST'])
 @login_required
 @researcher_required
-@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/new', methods = ['GET', 'POST'])
 @belong_researcher('section')
 def addSubSection(id_survey, id_section):
     parentSection = Section.query.get(id_section)
@@ -389,10 +394,9 @@ def selectType(form,section):
     return question
 
 
-
+@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/addQuestion', methods = ['GET', 'POST'])
 @login_required
 @researcher_required
-@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/addQuestion', methods = ['GET', 'POST'])
 @belong_researcher('section')
 def addQuestion(id_survey, id_section):
     section = Section.query.get(id_section)
@@ -420,9 +424,9 @@ def addQuestion(id_survey, id_section):
         path = path)
 
 
+@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/question/<int:id_question>', methods = ['GET', 'POST'])
 @login_required
 @researcher_required
-@blueprint.route('/survey/<int:id_survey>/section/<int:id_section>/question/<int:id_question>', methods = ['GET', 'POST'])
 @belong_researcher('question')
 def editQuestion(id_survey, id_section,id_question):
     question = Question.query.get(id_question)
@@ -517,9 +521,10 @@ def editQuestion(id_survey, id_section,id_question):
         question = (None if question.parent is None else question.parent_id),
         path = path)
 
+
+@blueprint.route('/survey/<int:id_survey>/Section/<int:id_section>/deleteQuestion/<int:id_question>')
 @login_required
 @researcher_required
-@blueprint.route('/survey/<int:id_survey>/Section/<int:id_section>/deleteQuestion/<int:id_question>')
 @belong_researcher('question')
 def deleteQuestion(id_survey,id_section,id_question):
         #
@@ -531,9 +536,10 @@ def deleteQuestion(id_survey,id_section,id_question):
     flash('Question removed')
     return redirect(url_for('researcher.addQuestion',id_survey = id_survey, id_section=id_section))
 
+
+@blueprint.route('/survey/exportStats/<int:id_survey>')
 @login_required
 @researcher_required
-@blueprint.route('/survey/exportStats/<int:id_survey>')
 @belong_researcher('survey')
 def export_stats(id_survey):
     '''Export stats in csv

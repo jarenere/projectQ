@@ -62,11 +62,11 @@
                     </a>
                     <a class="brand" href="{{ url_for('main.index') }}">Swarms game theory</a>
                         <ul class="nav">
-                            {% if g.user.is_authenticated() and g.user.is_researcher() %}
+                            {% if current_user.is_authenticated() and current_user.is_researcher() %}
                                 <li><a href="/researcher">Researcher</a></li>
                             {% endif %}
                             <li><a href="/surveys">{{ _('Account') }}</a></li>
-                            {% if g.user.is_authenticated() %}
+                            {% if current_user.is_authenticated() %}
                                 <li><a href="{{ url_for('auth.logout') }}">{{ _('Logout') }}</a></li>
                             {% endif %}
                         </ul>
