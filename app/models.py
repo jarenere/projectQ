@@ -811,6 +811,10 @@ class User(db.Model):
         if len(User.query.all())==0:
             self.role=ROLE_RESEARCHER
     
+    def __repr__(self):
+        return "<user(id='%s')>" % (
+            self.id)
+
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
@@ -1039,8 +1043,8 @@ class StateSurvey(db.Model):
         sections = Section.query.filter(Section.survey== self.survey).order_by(Section.sequence)
         list = Section.sequenceSections(sections)
         # to load test
-        if current_app.config["JMETER"]:
-            list = current_app.config["SEQUENCE"]
+        if current_app.config.get('MODE_GAMES',False):
+            list = current_app.config.get('SEQUENCE',[])
         self.sequence=list
         self.sectionTime={}
 
