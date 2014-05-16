@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Blueprint, request, url_for, flash, redirect, abort, send_file
-from flask import render_template, g
+from flask import render_template, g, current_app
 from forms import SurveyForm, EditConsentForm, SectionForm, QuestionForm
 from app.models import Survey, Consent, Section, StateSurvey, Answer
 from app.models import Question, QuestionChoice, QuestionText
@@ -562,6 +562,11 @@ def export_stats(id_survey):
     # ofile.close()
     # flash ("Export stats")
     #return send_file(ofile, as_attachment=True, attachment_filename="stats_"+survey.title+'.csv')
-    from app.stats.write_stats_voluntarios import write_stats
-    write_stats(id_survey)
+    if current_app.config.get('MODE_GAMES',False):
+        from app.stats.write_stats_voluntarios import write_stats
+        write_stats(id_survey)
+    else:
+        from app.stats.write_stats import write_stats
+        write_stats(id_survey) 
+        
     return redirect(url_for('researcher.index'))
