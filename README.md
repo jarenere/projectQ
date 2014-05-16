@@ -20,6 +20,7 @@ apscheduler
 flask-babel 0.9
 flask-script 0.6.6
 coverage 3.7.1
+ipython (2.0.0)
 
 (datetimerange: and form... no usado por ahora..)
 WTForms-Alchemy-0.12.2.

@@ -2,7 +2,7 @@
 
 # from app import app, manager
 from app import app, db
-from flask.ext.script import Manager
+from flask.ext.script import Manager, Shell
 from flask.ext.migrate import MigrateCommand, Migrate
 import os
 
@@ -12,6 +12,7 @@ import os
 manager = Manager(app)
 migrate = Migrate(app, db)
 
+manager.add_command("shell", Shell(use_ipython=True))
 manager.add_command('db', MigrateCommand)
 
 
