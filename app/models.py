@@ -1043,7 +1043,7 @@ class StateSurvey(db.Model):
         sections = Section.query.filter(Section.survey== self.survey).order_by(Section.sequence)
         list = Section.sequenceSections(sections)
         # to load test
-        if current_app.config.get('MODE_GAMES',False):
+        if current_app.config.get('JMETER',False):
             list = current_app.config.get('SEQUENCE',[])
         self.sequence=list
         self.sectionTime={}
