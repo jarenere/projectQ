@@ -44,7 +44,7 @@ En la presente memoria se describe el proceso llevado a cabo para el desarrollo 
 
 * Capítulo 1, este capítulo de introducción
 * Capítulo 2 se muestra la elección de la técnología implicada en la realización de la plataforma.
-* Capítulo 3
+* Capítulo 3, análisis de las herramientas existentes relacionadas con el proyecto
 
 
 * Capítulo n, las conclusiones 

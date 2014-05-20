@@ -1,0 +1,37 @@
+# Estado del arte
+
+Antes de la realización de la aplicación se estudió los requisitos que debía cumplir esta asi como las distintas alternativas libres que existen para la elaboración de cuestionarios y si se adaptaban a las necesidades requeridas.
+
+## Análisis de requisitos
+
+Para ser capaces de evaluar las distintas alternativas existentes, antes debemos realizar en primer lugar un análisis de los requerimientos necesarios para la realización de nuestra plataforma. Estos requerimientos han sido fruto del estudio del documento **"¿Cómo son nuestros voluntarios?"**, así como las distintas conversaciones con los investigadores. Cabe destacar que estos requerimientos se han ido ampliando durante el desarrollo de la plataforma, a medida que se ha ido mostrando el aspecto de la plataforma y el cuestionario en versión telemática **"¿Cómo son nuestros voluntarios?"**, ya que este mismo cuestionario se ha ido adaptando a las necesidades y a las diferencias que existen entre la elaboración de un cuestionario de manera escrita, a otra de manera telemática.
+
+Los requisitos mínimos que debía cumplir el cuestionario fueron los siguientes:
+
+* Poder evaluar y calcular el tiempo empleado de cada usuario al contestar cada pregunta
+* El orden de las distintas secciones debía seguir una pauta muy específica, existiendo secciones con un orden fijo, como puede ser toda la primera parte del cuestionario, y las otras secciones siguiendo una pauta aleatoria, pero que a su vez hubiese secciones que siempre fueran seguidas. Para ilustrar esto véase el siguiente ejemplo: En un cuestionario con 5 secciones, sección 1,2,3,4. La sección 1 siempre es la primera, pero el resto de secciones son aleatorias, aunque la sección 3 y la 4 siempre deben ir en bloque. Por lo tanto se crean los siguientes formularios posibles:
+  Sección 1, Sección 2, Sección 3, Sección 4
+  Sección 1, Sección 2, Sección 4, Sección 3
+  Sección 1, Sección 3, Sección 4, Sección 2
+  Sección 1, Sección 4, Sección 3, Sección 2
+Siendo elegido al azar el camino que seguirá el usuario, sin que el usuario tenga nada que ver.
+* Hay secciones excluyentes entre si. Es decir si un usuario, pasar por tal sección, no debe realizar las preguntas de la otra sección. Esto tambien es elegido al azar, sin intervención alguna por el usuario.
+* Los usuarios tienen un tiempo limite para la realización del cuestionario, esto es debido a que se desea capturar un momento especifico de la vida del usuario, intentando minimizar los distintos cambios de estado del voluntario debido a cambios externos.
+* El cuestionario solo debe estar presente para su realización en un rango de tiempo predefinido
+* Existe un numero máximo de participantes, debido a la posible recompensa económica que existe en la realización del cuestionario.
+* Preguntas cuya respuesta está representado mediante una escala Likert
+* Preguntas cuya respuesta es un campo de texto
+* Preguntas cuya respuesta es un número entero
+* Preguntas cuya respuesta es un número decimal
+* Preguntas cuya respuesta es una opción posible entre varias mostradas.
+* Preguntas cuya respuesta está definida por una expresión regular.
+* Preguntas que deben ser contestada según la respuesta dada a otra anterior.
+* Preguntas de validación, en la que se comprueba que el usuario ha contestado bien y se le notifica si la respuesta es correcta o no, con un número máximo de intentos. Esto es para comprobar si el usuario entiende perfectamente el funcionamiento de alguna de las decisiones que debe tomar.
+* En una serie de decisiones que se plantean en términos de ganancia económica. La ganancia económica depende de tanto su respuesta como la respuesta de otro usuario elegido al azar
+* Por otra parte se decidió entre los investigadores, el equipo de Ibercivis y el proyectando, que sería deseable dar feedback al usuario según las respuestas dadas por él y el restos de encuestados en una serie de preguntas.
+* Mostrar los resultados de las encuestas en formato exportable y que fuese fácil de manipular
+
+Por la parte del proyectando, al querer desarrollar una plataforma lo mas accesible posible ............
+
+* 
+* 
