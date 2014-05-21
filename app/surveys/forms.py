@@ -176,7 +176,7 @@ def generate_form(questions):
             else:
                 if question.isExpectedAnswer():
                     setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
-                        choices = choices, validators = [CheckAnswerExpected()]))
+                        choices = choices, validators = [Required(),CheckAnswerExpected()]))
                 elif question.required:
                     setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
                         choices = choices,validators = [Required()]))
@@ -197,11 +197,12 @@ def generate_form(questions):
                         else:
                             setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
                                 validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
-                    elif question.isExpectedAnswer():
-                        setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required(),
-                            CheckAnswerExpected()]))
                     elif question.isNumber:
-                        setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
+                        if question.isExpectedAnswer():
+                            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer',validators = [Required(),
+                                CheckAnswerExpected()]))
+                        else:
+                            setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
                     else:
                         setattr(AnswerForm,"c"+str(question.id),TextField('Answer',validators = [Required()]))
                 else:
