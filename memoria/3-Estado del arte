@@ -1,6 +1,6 @@
 # Estado del arte
 
-Antes de la realización de la aplicación se estudió los requisitos que debía cumplir esta asi como las distintas alternativas libres que existen para la elaboración de cuestionarios y si se adaptaban a las necesidades requeridas.
+Antes de la realización de la aplicación se estudió los requisitos que debía cumplir esta así como las distintas alternativas libres que existen para la elaboración de cuestionarios y si se adaptaban a las necesidades requeridas.
 
 ## Análisis de requisitos
 
@@ -15,23 +15,53 @@ Los requisitos mínimos que debía cumplir el cuestionario fueron los siguientes
   Sección 1, Sección 3, Sección 4, Sección 2
   Sección 1, Sección 4, Sección 3, Sección 2
 Siendo elegido al azar el camino que seguirá el usuario, sin que el usuario tenga nada que ver.
-* Hay secciones excluyentes entre si. Es decir si un usuario, pasar por tal sección, no debe realizar las preguntas de la otra sección. Esto tambien es elegido al azar, sin intervención alguna por el usuario.
+* Hay secciones excluyentes entre si. Es decir si un usuario, pasar por tal sección, no debe realizar las preguntas de la otra sección. Esto también es elegido al azar, sin intervención alguna por el usuario.
 * Los usuarios tienen un tiempo limite para la realización del cuestionario, esto es debido a que se desea capturar un momento especifico de la vida del usuario, intentando minimizar los distintos cambios de estado del voluntario debido a cambios externos.
 * El cuestionario solo debe estar presente para su realización en un rango de tiempo predefinido
-* Existe un numero máximo de participantes, debido a la posible recompensa económica que existe en la realización del cuestionario.
-* Preguntas cuya respuesta está representado mediante una escala Likert
-* Preguntas cuya respuesta es un campo de texto
-* Preguntas cuya respuesta es un número entero
-* Preguntas cuya respuesta es un número decimal
-* Preguntas cuya respuesta es una opción posible entre varias mostradas.
-* Preguntas cuya respuesta está definida por una expresión regular.
+* Existe un numero máximo de participantes.
 * Preguntas que deben ser contestada según la respuesta dada a otra anterior.
-* Preguntas de validación, en la que se comprueba que el usuario ha contestado bien y se le notifica si la respuesta es correcta o no, con un número máximo de intentos. Esto es para comprobar si el usuario entiende perfectamente el funcionamiento de alguna de las decisiones que debe tomar.
-* En una serie de decisiones que se plantean en términos de ganancia económica. La ganancia económica depende de tanto su respuesta como la respuesta de otro usuario elegido al azar
-* Por otra parte se decidió entre los investigadores, el equipo de Ibercivis y el proyectando, que sería deseable dar feedback al usuario según las respuestas dadas por él y el restos de encuestados en una serie de preguntas.
-* Mostrar los resultados de las encuestas en formato exportable y que fuese fácil de manipular
+* Preguntas de validación, en la que se comprueba que el usuario ha contestado bien y se le notifica si la respuesta es correcta o no, con un número máximo de intentos.
 
-Por la parte del proyectando, al querer desarrollar una plataforma lo mas accesible posible ............
+En el anexoX se  encuentra la lista final de los requisitos de la aplicación
 
-* 
-* 
+## Herramientas actuales
+
+La importancia de la web ha ido creciendo de manera exponencial conforme han ido pasado los años. Por lo que se han ido creando multitud de herramientas para ir resolviendo los distintas necesidades que se han ido creando y repitiendo a lo largo de los años. En el caso de las encuestas no es distinto al de los otros, pero debido a nuestras necesidades concretas que hemos expuesto anteriormente nos hemos centrado sobretodo en las alternativas libres o que expusiesen un API para su integración con la plataforma
+
+
+### Surveyor
+
+Surveyor es una herramienta para crear encuestas, cuestionarios y premios e integrarlos en una aplicación escrita en Ruby en Rails. Usa  una licencia MIT, compatible con GPL. En un principio fue diseñado para ofrecer estudios de investigación clínicos en grandes poblaciones.
+
+Para la elaboración de encuestas hace uso de un Lenguaje especifico del dominio, permitiendo una escritura fácil y rápida de encuestas. Además permite la personalización del modelo, vista y controlador, así como los routes.
+
+Como parte negativas, no tiene un soporte consistente para HTML, así como un código poco documentado y ninguna guía de desarrollo.
+
+### LimeSurvey
+
+Es una herramienta escrita en PHP bajo la licencia GNU GPL. Entre sus usuarios se encuentra proyectos como OpenOffice, ubuntu o GNOME.
+
+En si es una plataforma muy completa, con un potente editor WYSIWYG What You See Is What You Get, "lo que ves es lo que obtienes", así como numerosas opciones en la elaboración de encuestas, como puede ser el restringir el numero máximo de participantes segun sus característica(rango de edad, poblacion, sexo..)
+
+Su gran inconveniente es que está pensado para usarla en si misma, ya que trae todo integrado, haciendo difícil la modificación fuera de las opciones predeterminadas. Es mas su modelo de negocio es el ofrecer hosting de LimeSurvey a cambio de una tarifa que depende del número de encuestados.
+
+### Survey Project
+
+Es una herramienta bajo GPL2 escrita en C# y soporte único para máquinas con un sistema operativo windows.
+
+
+....
+
+### Google Form API
+
+
+
+### Comparativa
+
+
+INTRODUCCION
+
+TABLA
+
+De entre todas las opciones, Surveyor sería la mas fácil de adaptar, por su diseño y tamaño, pero debido a una serie de carencias importantes, como .... se decidió que era mas fácil y conveniente crear un proyecto desde cero.
+
