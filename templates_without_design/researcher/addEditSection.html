@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% from "_formHelpers.html" import render_field %}
+{% from "_formHelpers.html" import render_field2 %}
+{% from "_formHelpers.html" import render_field3 %}
+{% from "researcher/_renderSections.html" import renderSections %}
+
+{% block content %}
+ <legend>
+    <h1><a href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{survey.title}}</a></h1>
+    {% for section in path %}
+        <a href="{{ url_for('researcher.editSection', id_section = section[1], id_survey =  survey.id) }}">{{section[0]}}</a>
+        /
+    {% endfor %}
+    <h3>Section!</h3>
+</legend>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <!--Sidebar content-->
+            <div class="well">
+                    <ul class="sections">
+                    {%- for section in sections recursive %}
+                        <li><a href="{{ url_for('researcher.editSection', id_section = section.id, id_survey =  survey.id) }}">{{section.title}}</a>
+
+                        {%- if section.children %}
+                            <ul class="submenu">{{ loop (section.children)}}</ul>
+                        {%- endif %}</li>
+                    {%- endfor %}
+                    </ul>
+            </div>
+        </div>
+        <div class="span10">
+            <!--Body content-->
+            <div class="well">
+                <form action="" method="post" name="secion" class="form-horizontal">
+                    {{form.hidden_tag()}}
+                    <fieldset>
+                    {{ render_field3(form.title, size = 64) }}
+                    {{ render_field3(form.description, rows = 4, style = 'width:100%') }}
+                    {{ render_field3(form.sequence) }}
+                    {{ render_field3(form.percent) }}
+                    <div class="btn-group">
+                        {% if addSection  %}
+                            <input class="btn" type="submit" value="Add Section">
+                        {% endif %}
+                        {% if editSection  %}
+                            <input class="btn" type="submit" value="Save changes">
+                            <a class="btn" href="{{ url_for('researcher.addSubSection', id_section = id_section, id_survey =  survey.id) }}">{{ ('Add subsection') }}</a>
+                        {% endif %}
+                        {% if addSubSection  %}
+                            <input class="btn" type="submit" value="Add SubSection">
+                        {% endif %}
+                        {% if editSection  %}
+                            <a class="btn" href="{{ url_for('researcher.addQuestion', id_survey = survey.id, id_section = id_section) }}">{{ ('Add/Edit question') }}</a>
+                        {% endif %}                    
+                        <a class="btn" href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{ ('Back') }}</a>
+                    </div>
+                <fieldset>
+                </form>
+            </div>
+                {{ renderSections(sections, survey) }}
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+{% from "_formHelpers.html" import render_field %}
+{% from "_formHelpers.html" import render_field2 %}
+{% from "_formHelpers.html" import render_field3 %}
+{% from "researcher/_renderQuestions.html" import renderQuestions %}
+
+{% block content %}
+<script type="text/javascript">
+    function submitq(){
+            select_question.disabled=false;
+    }
+</script>
+<legend>
+    <h1><a href="{{ url_for('researcher.editSurvey', id_survey = survey.id) }}">{{survey.title}}</a></h1>
+    {% for section in path %}
+        <a href="{{ url_for('researcher.editSection', id_section = section[1], id_survey =  survey.id) }}">{{section[0]}}</a>
+        /
+    {% endfor %}
+    <h3>Add Question!!</h3>
+</legend>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <!--Sidebar content-->
+            <div class="well">
+                    <ul class="sections">
+                    {%- for section in sections recursive %}
+                        <li><a href="{{ url_for('researcher.editSection', id_section = section.id, id_survey =  survey.id) }}">{{section.title}}</a>
+
+                        {%- if section.children %}
+                            <ul class="submenu">{{ loop (section.children)}}</ul>
+                        {%- endif %}</li>
+                    {%- endfor %}
+                    </ul>
+            </div>
+        </div>
+        <div class="span10">
+            <!--Body content-->
+            <div class="well">
+                <form onsubmit="submitq()" method="post" class="form-horizontal">
+                    {{form.hidden_tag()}}
+                    <fieldset>
+                    {{ render_field3(form.text,rows = 4, style = 'width:100%') }}
+                    {{ render_field3(form.required) }}
+                    {{ render_field3(form.questionType) }}
+                    <div id="divText">
+                        {{ render_field3(form.isNumber) }}
+                        {{ render_field3(form.isNumberFloat) }}
+                        {{ render_field3(form.regularExpression) }}
+                        {{ render_field3(form.errorMessage) }}
+                    </div>
+                        {{ render_field3(form.expectedAnswer, placeholder='none if There isnt correct answer') }}
+                        {{ render_field3(form.maxNumberAttempt) }}
+                    <div id="divLikert">
+                        {{ render_field3(form.minLikert) }}
+                        {{ render_field3(form.maxLikert) }}
+                        {{ render_field3(form.labelMinLikert,placeholder='label optional') }}
+                        {{ render_field3(form.labelMaxLikert, placeholder='label optional') }}
+                    </div>
+                    <div id="divRender">
+                        {{ render_field3(form.render) }}
+                    </div>
+                    <div id="divRange">
+                        {{ render_field3(form.range_step) }}
+                        {{ render_field3(form.range_min) }}
+                        {{ render_field3(form.range_max) }}
+                    </div>
+                     <div id="divContainer">
+                        {{ render_field3(form.container) }}
+                    </div>                   
+                    <div id="divAnswer1">
+                        {{ render_field3(form.answer1) }}
+                    </div>
+                    <div id="divAnswer2">
+                        {{ render_field3(form.answer2) }}
+                    </div>
+                    <div id="divAnswers">
+                        {{ render_field3(form.answer3) }}
+                        {{ render_field3(form.answer4) }}
+                        {{ render_field3(form.answer5) }}
+                        {{ render_field3(form.answer6) }}
+                        {{ render_field3(form.answer7) }}
+                        {{ render_field3(form.answer8) }}
+                        {{ render_field3(form.answer9) }}
+                        {{ render_field3(form.answer10) }}
+                        {{ render_field3(form.answer11) }}
+                        {{ render_field3(form.answer12) }}
+                    </div>
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseSubquestion">
+                                        SubQuestion                                  
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseSubquestion" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {{render_field3(form.operation)}}
+                                    {{render_field3(form.value)}}
+                                    {{render_field3(form.question)}}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseDecision">
+                                        Options game                                    
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseDecision" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {{render_field3(form.decisionType)}}
+                                    {{ render_field3(form.is_real_money)}}
+                                    {{ render_field3(form.feedback)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <td></td>
+                    <td>
+                        {% if addQuestion %}
+                            <input class="btn" type="submit" value="Add Question">
+                        {% endif %}
+                        {% if editQuestion %}
+                            <input class="btn" type="submit" value="Edit Question">
+                        {% endif %}
+                    </td>
+                <fieldset>
+                </form>
+            </div>
+            {{ renderQuestions(questions, section, survey)}}
+
+        </div>
+    </div>
+</div>
+<script language="javascript">
+    function onchange_question(selValue)
+    { 
+        $("#divText").hide();
+        $("#divLikert").hide();
+        $("#divAnswer1").hide();
+        $("#divAnswer2").hide();
+        $("#divAnswers").hide();
+        $("#divRange").hide();
+        $("#divRender").hide();
+        $("#divContainer").hide();
+        if (selValue=="text")
+        {
+            //document.getElementById("divAnswer").style.display="none";; 
+            $("#divText").show();
+        }
+        if (selValue=="choice")
+        {
+            $("#divAnswer1").show();
+            $("#divAnswer2").show();
+            $("#divAnswers").show();
+            $("#divRange").show();
+            $("#divRender").show();        
+        }
+        if (selValue=="likertScale")
+        {
+            $("#divLikert").show();
+        }
+    }
+    function onchange_decision(selValue)
+    {                
+        if (selValue=="none"){
+            select_question.disabled=false;
+        }else 
+        {        
+            select_question.disabled=true;
+            $("#divText").hide();
+            $("#divLikert").hide();
+            $("#divAnswer1").hide();
+            $("#divAnswer2").hide();
+            $("#divAnswers").hide();
+            $('#collapseDecision').collapse("show");
+            $("#divContainer").hide();
+
+            if (selValue=="part_two")
+            {
+                document.getElementById('questionType').value = "choice";
+                $("#divAnswer1").show();
+                $("#divAnswer2").show();
+            }
+            else if (selValue=="decision_five")
+            {   
+                document.getElementById('questionType').value = "choice";
+                $("#divAnswer1").show();
+                $("#divAnswer2").show();
+                $("#divContainer").show();
+                $("#is_real_money").show();
+            }
+            else 
+            {        
+                document.getElementById('questionType').value = "choice";
+                $("#divRange").show();
+
+            }
+        }
+    }
+
+
+    function load_condition(){  
+        document.getElementById('operation').value = "{{operation|safe}}";
+        document.getElementById('question').value = '{{question}}';
+        if ("{{operation}}"!="none")
+        {
+            $('#collapseSubquestion').collapse("show");
+        }
+    }
+
+    function onchange_numberFloat(){   
+        if (select_numberFloat.checked==true)
+        {
+            select_number.checked=true;
+        }
+        else
+        {
+            select_number.disabled=false;
+        }
+    }
+    function onchange_number(){   
+        if (select_number.checked==false)
+        {
+            select_numberFloat.checked=false;
+        }
+    }
+
+    window.onload = function() {
+        $("#divText").hide();
+        $("#divLikert").hide();
+        $("#divAnswer1").hide();
+        $("#divAnswer2").hide();
+        $("#divAnswers").hide();
+        load_condition();
+        document.getElementById('questionType').value = '{{question_type}}';
+        onchange_question('{{question_type}}');
+        document.getElementById('decisionType').value = '{{decision_type}}';
+        onchange_decision('{{decision_type}}');
+        document.getElementById('render').value = '{{render}}';
+
+}
+    var select_question = document.getElementById("questionType");
+    select_question.onchange = function() {
+    var selIndex = select_question.selectedIndex;
+    var selValue = select_question.options[selIndex].value;
+    onchange_question(selValue);
+}
+    var select_decision = document.getElementById("decisionType");
+    select_decision.onchange = function() {
+    var selIndex = select_decision.selectedIndex;
+    var selValue = select_decision.options[selIndex].value;
+    onchange_decision(selValue);
+}
+    var select_number = document.getElementById("isNumber");
+    select_number.onchange = function() {
+    onchange_number();
+}    
+    var select_numberFloat = document.getElementById("isNumberFloat");
+    select_numberFloat.onchange = function() {
+    onchange_numberFloat();
+}
+
+</script>
+{% endblock %}

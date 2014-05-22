@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script type="text/javascript" src="/static/js/jquery.tablesorter.js"></script>
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+{% from "_formHelpers.html" import render_field %}
+    <h1>MATCHING!</h1>
+    <h2>Decision four & five</h2>
+    <div class="container-fluid">
+    <table class="table data-table sort display" id="myTable1">
+        <thead>
+            <tr>
+                <th class="sorting">UserA <i class="fa fa-sort"></i></th>
+                <th class="sorting">UserB<i class="fa fa-sort"></i></th>
+                <th class="sorting">Send cash (userA->userB)<i class="fa fa-sort"></i></th>
+                <th class="sorting">UserB Accept?<i class="fa fa-sort"></i></th>
+                <th class="sorting">MoneyA<i class="fa fa-sort"></i></th>
+                <th class="sorting">MoneyB<i class="fa fa-sort"></i></th>
+                <th class="sorting">PrizeA<i class="fa fa-sort"></i></th>
+                <th class="sorting">PrizeB<i class="fa fa-sort"></i></th>
+                <th class="sorting">PatchA<i class="fa fa-sort"></i></th>
+                <th class="sorting">PatchB<i class="fa fa-sort"></i></th>
+                <th class="sorting">RepeatA<i class="fa fa-sort"></i></th>
+                <th class="sorting">RepeatB<i class="fa fa-sort"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{result.userA_id}}</td>
+                <td>{{result.userB_id}}</td>
+                <td>{{result.cashInitA | round(1)}}</td>
+                <td>{{result.accepted}}</td>
+                <td>{{result.moneyA | round(1)}}</td>
+                <td>{{result.moneyB | round(1)}}</td>
+                <td>{{result.prizeA}}</td>
+                <td>{{result.prizeB}}</td>
+                <td>{{ status_part3(result.statusA)}}</td>
+                <td>{{ status_part3(result.statusB)}}</td>
+                <td>{{result.repeatA}}</td>
+                <td>{{result.repeatB}}</td>
+
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+<script type="text/javascript" id="js">$(document).ready(function() {
+    // call the tablesorter plugin
+    $("table").tablesorter({
+    // sort on the first column and third column, order asc
+        sortList: [[0,0],[2,0]]
+  });
+}); </script>
+{% endblock %}
