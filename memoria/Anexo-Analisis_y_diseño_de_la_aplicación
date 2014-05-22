@@ -1,0 +1,30 @@
+#Análisis y diseño de la aplicación
+
+En este anexo se presenta una descripción del análisis y diseño que se llevo a cabo antes de realizar la implementación de la plataforma. A lo largo del anexo se mostrará el documento de especificaciones de requisitos, modelado de la base de datos, diagrama de clases, casos de usos y traza de eventos, así como la descripción de los distintos módulos creados. Este documento no ha sido creado con el fin de ser completamente riguroso a las convenciones, aunque más de una vez se sigan, sino que el fin último es que el lector comprenda este documento
+
+## Especificación de Requisitos Software
+
+En este apartado vamos a hablar de los requisitos software que debe cumplir nuestra plataforma. Estos requisitos se elaboraron después del estudio de las herramientas actuales y el documento "¿Cómo son nuestros voluntarios?", por otra parte se ha intentado seguir las recomendaciones dadas en la Especificación de Requisitos según el estándar IEEE 830
+
+### Introducción
+#### Propósito
+
+El propósito es definir cuáles son los requerimientos que debe tener la plataforma para elaboración de encuestas, así como la adaptación de está al experimento "¿Cómo son nuestros voluntarios?"
+
+La aplicación se desarrollara como proyecto final de carrera y permitirá el desarrollo del experimento anteriormente citado, así como ayudar a la comunidad científica en la elaboración de encuestas mas o menos complejas, en los que se quiera aleatorizar el orden de las secciones, así como la existencia de secciones excluyentes.
+
+#### Ambito
+
+La plataforma debe permitir la creación y la manipulación de encuestas complejas, así como la posibilidad de limitar el tiempo y el numero de usuarios a la hora de realizar las encuestas.
+
+Una vez definida y publicadas estas encuestas, se permitirá a los usuarios encuestados la realización de está, registrando en todo momento los tiempos tomados para la resolución de cada pregunta.
+
+En el caso de del experimento "¿Cómo son nuestros voluntarios?", se le permitirá al usuario recibir feedback respecto a la toma de sus decisiones, con respecto a las respuestas de los demás usuarios.
+
+Además en dicho experimento, en casos elegidos de forma aleatoria, el voluntario recibirá un pago asociado a una de sus decisiones.
+
+Los usuarios de la plataforma no deberán de poseer algún conocimiento específico para el uso de esta.
+
+Por otra parte la plataforma deberá de estar bien documentada para facilitar la ampliación de posibilidades de esta.
+
+

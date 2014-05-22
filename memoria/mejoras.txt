@@ -1,0 +1,7 @@
+encuestas multidioma, añadir tuto
+añadir multirespuesta, añadir tuto
+uso  de la nube, añadir tuto
+preguntas con saltos a secciones, añadir tuto
+añadir preguntas sin respuesta (para incluir texto)
+DSL, lenguaje específico del dominio
+

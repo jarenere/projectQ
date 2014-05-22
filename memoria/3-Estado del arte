@@ -41,7 +41,7 @@ Como parte negativas, no tiene un soporte consistente para HTML, así como un c�
 
 Es una herramienta escrita en PHP bajo la licencia GNU GPL. Entre sus usuarios se encuentra proyectos como OpenOffice, ubuntu o GNOME.
 
-En si es una plataforma muy completa, con un potente editor WYSIWYG What You See Is What You Get, "lo que ves es lo que obtienes", así como numerosas opciones en la elaboración de encuestas, como puede ser el restringir el numero máximo de participantes segun sus característica(rango de edad, poblacion, sexo..)
+En si es una plataforma muy completa, con un potente editor WYSIWYG What You See Is What You Get, "lo que ves es lo que obtienes", así como numerosas opciones en la elaboración de encuestas, como puede ser el restringir el numero máximo de participantes según sus característica(rango de edad, poblacion, sexo..)
 
 Su gran inconveniente es que está pensado para usarla en si misma, ya que trae todo integrado, haciendo difícil la modificación fuera de las opciones predeterminadas. Es mas su modelo de negocio es el ofrecer hosting de LimeSurvey a cambio de una tarifa que depende del número de encuestados.
 
@@ -52,16 +52,21 @@ Es una herramienta bajo GPL2 escrita en C# y soporte único para máquinas con u
 
 ....
 
-### Google Form API
+### Google Forms
 
+Google posee una herramienta para la elaboración de formularios, así como una API para poder acceder ella, tanto para la elaboración de formularios como para obtener los resultados de ella. Además de esta herramienta, también posee un servicio para la elaboración de encuestas, Google Surveys, con un precio entre 0,10$ y 3,5$ por usuario que complete el cuestionario, dependiendo de la longitud de este.
 
+En la elaboración de formularios, posiblemente la solución de Google sea la mas accesible de todas, sobre todo por su cuidado en el aspecto y las funcionalidades a la hora de crear formularios. A parte de tener todo integrado, exportándose automáticamente los resultados a google docs y pudiendo obtener un análisis de estadísticas sencillo. Por otra parte es la mas limitada a la hora de crear formularios complejos y sin la posibilidad de modificación.
 
 ### Comparativa
 
+Del estudio de las herramientas actuales se obtuvo bastante información interesante, sobre todo las características deseables para la elaboración de una plataforma para la elaboración de encuestas, esta información recogida así como los requisitos necesarios para nuestra plataforma fueron los usados para definir los requerimientos finales. En las siguientes tablas se puede comparar el grado de cumplimiento de nuestra plataforma respecto a las otras.
 
-INTRODUCCION
 
 TABLA
 
-De entre todas las opciones, Surveyor sería la mas fácil de adaptar, por su diseño y tamaño, pero debido a una serie de carencias importantes, como .... se decidió que era mas fácil y conveniente crear un proyecto desde cero.
 
+
+Mirando unicamente la tabla, Surveyor puede parecer que sea de las peores elecciones, sobre todo si solo se comparan funcionalidades, pero analizando un poco más la plataforma sería la mejor opción para adaptarla, debido a su tamaño y a que ofrece un núcleo básico para usarse de base. El gran problema de la plataforma es su falta de documentación, sobre todo a la hora de ampliar la plataforma, no existiendo ningún tipo de documentación relativo a esto. Esta es una de las razones por las que en el APENDICE X, se puede encontrar una guía rápida de desarrollo que incluyen ejemplos de como ampliar la plataforma con una serie de características que no posee.
+
+Por otra parte la tabla tampoco recoge todas las características de las plataformas, como puede ser el uso amigable de direcciones HTML que solo tienen Surveyor y la plataforma desarrollada o el uso de un sistema de migración de base de datos o shell integrado en la aplicación, propiedades que facilitan el desarrollo y ampliación de la plataforma
