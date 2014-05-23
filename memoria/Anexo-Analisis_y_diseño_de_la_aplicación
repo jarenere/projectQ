@@ -27,4 +27,140 @@ Los usuarios de la plataforma no deberán de poseer algún conocimiento específ
 
 Por otra parte la plataforma deberá de estar bien documentada para facilitar la ampliación de posibilidades de esta.
 
+### Definiciones, Acrónimos y Abreviaturas
+
+OpenID: estándar de identificación digital descentralizado, con el que un usuario puede identificarse en una página web a través de una URL (o un XRI en la versión actual) y puede ser verificado por cualquier servidor que soporte el protocolo.
+
+Lenguaje de marcas: forma de codificar un documento que, junto con el texto, incorpora etiquetas o marcas que contienen información adicional acerca de la estructura del texto o su presentación.
+
+XML: siglas en inglés de eXtensible Markup Language ('lenguaje de marcas extensible'), es un lenguaje de marcas 
+
+CSV: siglas del inglés comma-separated values, son un tipo de documento en formato abierto sencillo para representar datos en forma de tabla, en las que las columnas se separan por comas u otro identificador predefinido y las filas por saltos de línea. Los campos que contengan una coma, un salto de línea o una comilla doble deben ser encerrados entre comillas dobles.
+
+Lenguaje de marcas ligero: tipo de formateo de texto más o menos estandarizado, que ocupa poco espacio y es fácil de editar con un editor de texto.
+
+Markdown: lenguaje de marcado ligero que trata de conseguir la máxima legibilidad y "publicabilidad" tanto en sus forma de entrada como de salida.
+
+##Descripción general
+### Perspectiva del Producto
+La plataforma a desarrollar no estará relacionado con otros productos, aunque se adpatará esta al desarrollo del experimento "¿Cómo son nuestros voluntarios?"
+
+### Funciones del Producto
+
+Las funciones que debe realizar la plataforma a grandes rasgos son:
+
+* Creación y edición de encuestas complejas.
+* Registro de todas las respuestas así como sus tiempos.
+* Exportar los resultados obtenidos en las encuestas.
+* Ofrecer feedback a los usuarios
+
+### Características de los usuarios
+Existen tres tipos de usuarios:
+
+* Los investigadores para la elaboración de encuestas complejas, poniendo especial hincapié en la aleatorización y diversificación de las secciones de una encuesta. Solo deberán tener conocimiento alguno en el manejo de un navegador web, por otra parte se ofrecerá un manual con todas las opciones de la plataforma
+* Voluntarios que responden a los cuestionarios, que solo deberán tener conocmiento alguno del manejo de un navegador web.
+* Desarrolladores que desean adaptar y ampliar la plataforma a sus necesidades, para ello a parte de este documento, se incluye un manual de desarrollo. Deberán estar familiarizados con las tecnologías usadas.
+
+### Restricciones
+
+La aplicación debe poder accederse desde un portal web. Así mismo los investigadores nunca obtendrán información identificativa de los voluntarios que participen en su plataforma. Deberá funcionar la plataforma bajo una máquina gobernada por Linux
+
+AÑADIR RESTRICCIONES DE TIEMPO 
+
+### Requisitos futuros
+
+Debe pensarse que la plataforma se debe poder adaptar a otras cuestionarios con otros requisitos, por lo que debe estar bien documentada y tener en cuenta estas posibles necesidades. Como podría ser la creación de algún tipo de pregunta no contemplada en la plataforma actual.
+
+Tambien se podría considerar la elaboración de un lenguaje específico del dominio para la creación de encuestas.
+
+## Requerimientos específicos
+
+### Interfaces Externas
+
+Se deberá de acceder a la plataforma mediante un navegador web. Esta deberá de adaptarse al tamaño del dispositivo por el cual se accede a la plataforma, nunca siendo inferior a una resolución de 480px para su correcta visualización. Por otra parte al ser una plataforma web, se deberá tener acceso a través de la red al servidor donde esté alojado la plataforma.
+
+### Requerimientos funcionales
+
+Agruparemos los requisitos funcionales de la plataforma según el usuario que lo esté usando, por otra parte se incluirá los requisitos que debe cumplir la adopción de la plataforma al experimento "¿Cómo son nuestros voluntarios?".
+
+La plataforma permitirá a los investigadores:
+
+* Crear nuevas encuestas
+* Añadir una fecha en la que la encuesta será visible a los voluntarios
+* Añadir una fecha limite para la realización de la encuesta
+* Añadir un número máximo de encuestas completadas
+* Añadir un tiempo máximo para contestar la encuesta.
+* Añadir consentimientos a las encuestas
+* Añadir secciones a las encuestas
+* Añadir subsecciones a las secciones
+* Definir el orden de las secciones y subsecciones
+* Aleatoriazar el orden de las secciones y subsecciones
+* Generar secciones y subsecciones excluyentes con la  probabilidad indicada
+* Añadir preguntas a las secciones y subsecciones, estas preguntas serán del tipo:
+    * Preguntas cuya respuesta es un texto
+    * Preguntas cuya respuesta es un número entero
+    * Preguntas cuya respuesta es un número decimal
+    * Preguntas cuya respuesta es Si/No
+    * Preguntas cuya respuesta es un conjunto de opciones posibles definidas por el investigador
+    * Preguntas cuya respuesta es un conjunto de opciones posibles definidas por un rango y su salto
+    * Preguntas cuya respuesta es validada por una expresión regular, indicando un mensaje de error personalizado
+    * Preguntas cuya respuesta es una escala Likert, pudiendo definir el rango de la escala, así como sendas etiquetas en los extremos de la escala Likert
+    * Preguntas de control que tienen una respuesta única, se podrá fijar un número máximo de intentos, entre uno e infinito, así como un mensaje de error personalizable
+    * Todas las preguntas anteriores descritas podrán ser obligatorias u optativas
+    * Todas las preguntas anteriores descritas podrán ser dependientes de la respuesta de otra pregunta
+    * Todas las preguntas anteriores descritas, se podrá cambiar el tipo de respuesta.
+* Todas las opciones anteriormente descritas se podrán editar
+* Se usará la sintaxis Markdown para todos los campos de la encuesta
+* Exportar encuestas en formato XML
+* Importar encuestas en formato XML
+* Exportar los resultados de las encuestas a un formato CSV
+
+La plataforma permitirá a los voluntarios que participen en las encuestas:
+
+* Contestar a las encuestas
+* Permitir continuar la encuesta más tarde
+* En casa de responder erróneamente a la pregunta, se le indicara el fallo al usuario
+* Informar del estado de la encuesta, siendo este:
+    * Sin empezar
+    * Terminada
+    * Sin terminar
+    * Sin posibilidad de terminarla debido a que la fecha ha concluido
+    * Sin posibilidad de terminarla debido a que el tiempo máximo ha concluido
+
+La plataforma permitirá a los usuarios:
+
+* Identificarse mediante OpenID
+* Registrarse mediante correo y contraseña
+* Identificarse mediante correo y contraseña
+
+La plataforma registrará todos los tiempos, así como las respuestas, y numero de intentos en las preguntas de control en los cuestionarios
+
+En el experimento "¿Cómo son nuestros voluntarios?", la plataforma permitirá:
+
+* Dar feedback a los usuarios, comparando sus respuestas con las dadas por otros usuarios
+* El voluntario podrá recibir un pago asociado a una de sus elecciones. La probabilidad de este pago viene dada por:
+    * Los usuarios que realicen la parte 2 del experimento con dinero real, tendrán un 10% de recibir un pago asociado a una de sus elecciones elegidas al azar de este apartado.
+    * Los usuarios que realicen la parte 3 del experimento con dinero real, tendrán un 10% de recibir un pago asociado a una de sus elecciones elegidas al azar de este apartado.
+* Los usuarios que realicen la parte 2 y la parte 3 con dinero ficticio, participarán en un sorteo. Las probabilidades de ganar dinero en este sorteo viene dadas por:
+    * Los usuarios tendrán un 10% de probabilidades de ganar un premio del sorteo, pudiendo ser el premio cuatro cantidades predefinidas, cada una con igual probabilidad de ser elegida.
+* La plataforma avisará mediante correo a los usuarios que hayan ganado dinero.
+* La plataforma se encargará de transmitir la información de los usuarios que han recibido algun tipo de compensación económica al responsable del pago.
+* Los resultados de este experimento tendrán un formato CSV adaptado a las necesidades de los investigadores.
+
+
+### Requisitos de Rendimiento
+
+Al tratarse de una plataforma web que permite la ejecución de múltiples usuarios al mismo tiempo, puede que existan problemas derivado a la carga de usuario. Para la realización del experimento "¿Cómo son nuestros voluntarios?", se espera llegar a 1000 usuarios durante un mes, por lo que en un principio no debería de existir problemas de carga, aun así se medirá en la maquina de producción la carga máxima de usuarios que soporta el sistema y el tiempo de respuesta.
+
+
+### Restricciones de diseño
+
+
+### Atributos del Sistema
+
+Se espera una alta fiabilidad del sistema, aun así se registrará cualquier incidente en la plataforma pudiendo avisar al desarrollador y administrador de la plataforma.
+
+También se espera en un futuro la ampliación de la plataforma así como el uso de esta en otras investigaciones, por lo que debe estar bien documentada para facilitar su adopción.
+
+En cuanto a la seguridad, como ya hemos comentado anteriormente se registrará cualquier incidente y acceso a la plataforma. En el sistema existirán tres tipos de usuarios, el administrador, que deberá tener acceso al servidor donde esté alojado la plataforma. Y los investigadores y usuarios que respondan a las encuestas, que podrán entrar en el sistema mediante open-id, o mediante un login y contraseña.
 
