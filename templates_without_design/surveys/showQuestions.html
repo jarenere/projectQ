@@ -1,0 +1,161 @@
+<head>
+    <style type="text/css">
+    .progresslabel{
+        
+        min-width:40px;
+    }
+
+    .radiofield_vertical ul, li {
+        list-style-type: none;
+    }
+
+
+    .likert tr:first-child td {
+        border-top: none;
+    }
+    .likert {
+    border-collapse: collapse;
+        text-align: center;
+        float: right;
+        clear: left;
+        list-style-type: none;
+        margin:0;
+        padding:0;
+
+    }
+
+    .type-info{color:#999;vertical-align:middle}
+
+    .question tr:first-child td {
+    border-top: none;
+    }
+
+    </style>
+</head>
+
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block content %}
+{% from "_formHelpers.html" import render_field %}
+{% from "_formHelpers.html" import render_field2 %}
+{% from "_formHelpers.html" import render_likert %}
+{% from "_formHelpers.html" import render_field3 %}
+{% from "forms_questions.html" import form_field %}
+
+<script type="text/javascript">
+    function timestamp(){
+    // get the total time the user has been on page
+        var t_fin = Date.now();
+        document.getElementById("time").value = t_fin - t_ini + parseInt(document.getElementById("time").value);;
+        // console.log(document.getElementById("time").value);
+    }
+</script>
+
+<script type="text/javascript">
+    window.onload = function() {
+    // get the time when load page
+        t_ini = Date.now();
+        t_diff = t_ini;
+}
+</script>
+
+    <div class="container-fluid">
+        {% filter markdown %}{{section.description}}{% endfilter %}
+
+        <form onsubmit="timestamp()" class="form-horizontal" action="" method="post" name="question">
+            {{form.hidden_tag()}}
+            {% for question in questions %}
+                {% set i_t= "t"'%s' % question.id %}
+                <div id="{{i_t}}">
+                        {% filter markdown %}{{question.text}}{% endfilter %}
+                        {% set i= "c"'%s' % question.id %}
+                        {{render_field2(form[i])}}
+                        <hr>
+                </div>
+                <script type="text/javascript">
+                    var select{{i}} = document.getElementById("{{i}}");
+                    function time{{i}}(){
+                        // get the time global and differential(answer other question)
+                        var t_fin = Date.now();
+                        var differentialTime{{i}} = document.getElementById("differentialTime{{i}}").value;
+                        document.getElementById("globalTime{{i}}").value = t_fin - t_ini + parseInt(document.getElementById("time").value);
+                        document.getElementById("differentialTime{{i}}").value = t_fin - t_diff + parseInt(differentialTime{{i}});
+                        t_diff = t_fin;
+                    }
+                </script>
+                {% if question.isSubquestion %}
+                    <script type="text/javascript">
+                        $("#{{i_t}}").hide();
+                        {% set parent= "c"'%s' % question.parent_id %}
+                        
+                        function subquestion{{i}}() {
+                            {% if question.parent.type=="yn" %}
+                                {% if question.condition.value|lower=="yes" %}
+                                    {%set n=0 %}
+                                {% else %}
+                                    {%set n=1 %}
+                                {% endif %}
+                                if (document.getElementById("{{parent}}-{{n}}").checked) {
+                                    $("#{{i_t}}").show();
+                                }
+                                else{
+                                    $("#{{i_t}}").hide();
+                                }
+                            {% endif %}
+                            {% if question.parent.type=="choice" %}
+                                {% if question.parent.render=="select" %}
+                                    var value = $('#{{parent}}').val();
+                                {% else %}
+                                    var value = $('input[name="{{parent}}"]:checked').val()
+                                {% endif %}
+                                if  (value{{question.condition.operation|safe}}{{question.condition.value}}) {
+                                    $("#{{i_t}}").show();
+                                }
+                                else{
+                                    $("#{{i_t}}").hide();
+                                }
+                            {% endif %}
+                            {% if question.parent.type=="text" %}
+                                if (document.getElementById("{{parent}}").value) {
+                                    if (document.getElementById("{{parent}}").value{{question.condition.operation|safe}}{{question.condition.value}}) {
+                                        $("#{{i_t}}").show();
+                                    }
+                                    else{
+                                        $("#{{i_t}}").hide();
+                                    }
+                                }
+                            {% endif %}
+                        }
+                        subquestion{{i}}();
+                        var selectParent{{parent}} = document.getElementById("{{parent}}");
+                    </script>                    
+                {% endif %}
+                <script type="text/javascript">
+                    select{{i}}.onchange = function(){
+                        // when change a form (answer a question) call a time to get the time
+                        // and subquestion to calculate if there are show the questions
+                        time{{i}}();
+                        {% for subquestion in question.subquestions %}
+                            {% set j= "c"'%s' % subquestion.id %}
+                            subquestion{{j}}();                        
+                        {% endfor %}
+                    }
+                </script>                    
+            {% endfor %}
+            <div class="control-group">
+                <div class="controls">
+                    <input class="btn" type="submit" value="{{ _('Next') }}">
+                   {# <input class="btn btn-primary" type="submit" value="{{ _('Next') }}">#}
+                </div>
+            </div>
+        </form>
+    </div>
+    {{ _('Percent of survey:') }}
+    <div class="progress progress-info">
+        <div class="bar" style="width: {{percent}}%">
+        <span class="sr-only">{{percent}}% {{ _('Complete') }}</span>
+        </div>
+    </div>
+{% endblock %}

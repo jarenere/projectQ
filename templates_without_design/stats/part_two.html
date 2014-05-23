@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script type="text/javascript" src="/static/js/jquery.tablesorter.js"></script>
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+{% from "_formHelpers.html" import render_field %}
+    <h1>MATCHING!</h1>
+    <h2>Part two</h2>
+    <div class="container-fluid">
+    <table class="table data-table sort display" id="myTable1">
+        <thead>
+            <tr>
+                <th class="sorting"># <i class="fa fa-sort"></i></th>
+                <th class="sorting">User<i class="fa fa-sort"></i></th>
+                <th class="sorting">Money<i class="fa fa-sort"></i></th>
+                <th class="sorting">Prize<i class="fa fa-sort"></i></th>
+                <th class="sorting">Patch<i class="fa fa-sort"></i></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in part2 %}
+            <tr>
+                <td>{{i.GameImpatience.id}}</td>
+                <td>{{i.GameImpatience.user_id}}</td>
+                <td>{{i.Question.choices[i.Answer.answerNumeric]}}</td>
+                <td>{{i.GameImpatience.prize}}</td>
+                <td>{{ status_part2(i.StateSurvey.status)}}</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+<script type="text/javascript" id="js">$(document).ready(function() {
+    // call the tablesorter plugin
+    $("table").tablesorter({
+    // sort on the first column and third column, order asc
+        sortList: [[0,0],[2,0]]
+  });
+}); </script>
+{% endblock %}
