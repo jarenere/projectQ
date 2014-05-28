@@ -49,8 +49,10 @@
                         {{ render_field3(form.regularExpression) }}
                         {{ render_field3(form.errorMessage) }}
                     </div>
+                    <div id="divExpectedAnswer">
                         {{ render_field3(form.expectedAnswer, placeholder='none if There isnt correct answer') }}
                         {{ render_field3(form.maxNumberAttempt) }}
+                    </div>
                     <div id="divLikert">
                         {{ render_field3(form.minLikert) }}
                         {{ render_field3(form.maxLikert) }}
