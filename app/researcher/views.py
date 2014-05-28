@@ -325,7 +325,8 @@ def addSubSection(id_survey, id_section):
 
 
 def selectType(form,section):
-
+    '''Function that read the form and generates the object the type Question 
+    '''
     if form.questionType.data =='yn':
         question = QuestionYN()
     if form.questionType.data == 'text':
