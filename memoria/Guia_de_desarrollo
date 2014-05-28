@@ -1,0 +1,315 @@
+# Guía de desarrollo 
+
+La finalidad de esta sección es dar una serie de pautas de como mejorar y añadir nuevas características a la plataforma. Se espera del lector que tenga conocimientos de las tecnologías asociadas a la plataforma, como puede ser el uso del lenguaje Python, HTML, SQLAlchemy y de la plataforma Flask. Para adentrarse en todas estas tecnologías, puede seguir el tutorial de Miguel Grinberg http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
+
+
+## Preguntas de tipo fecha
+
+En está sección vamos a tratar de como incluir una pregunta que se espera una respuesta de tipo fecha.
+
+### Modificación de la base de datos
+
+En el fichero app/models.py podemos encontrar el mapeo objeto-relacional, ORM, de la aplicación. En el podemos encontrar la clase Question, con todos los métodos y atributos asociadas a las preguntas, además podemos encontrar una serie de clases, que heredan de Question e implementa los métodos y atributos asociados a un tipo de preguntas. A nivel de tablas, se ha elegido que tanto la clase Question como todas las clases que heredan de Question se hallen la misma tabla.
+
+Para crear un nuevo tipo de pregunta bastaría con la siguiente declaración:
+
+[code]
+class QuestionDate(Question):
+    '''Question of type date
+    '''
+
+    __mapper_args__ = {'polymorphic_identity': 'date'}
+[/code]
+
+Además deberíamos de crear los métodos para importar y exportar este tipo de preguntas a XML. En este caso, como no tiene ningún atributo especial no haría falta nada.
+
+Por otra parte, para guardar la respuesta a este tipo de preguntas, tenemos varias opciones, desde crear una subclase de tipo AnswerDate que herede de Answer o simplemente añadir un campo de tipo **Date** a la clase Answer. Este última opción ha sido la elegida:
+
+[code]
+class Answer(db.Model):
+    '''A table with answers
+    '''
+    __tablename__ = 'answer'
+    ...
+    answerDate = Column(Date)
+[/code]
+
+Para añadir los cambios en la base de datos, debemos de migrar la base de datos y actualizarla, con los siguientes comandos:
+
+[code]
+./manage.py db migrate
+./manage.py db upgrade
+[code]
+
+### Modificación del módulo Researcher
+
+Para que el investigador pueda añadir de manera visual este tipo de preguntas en su encuesta, tendremos que modificar los siguientes ficheros:
+
+* app/researcher/views.py: En este fichero se encuentra la declaración de todos las funciones que puede hacer uso el investigador, normalmente cada función se representa en una página web.
+* app/researcher/forms.py: En este fichero se encuentra la declaración de todos las clases de formularios que puede hacer uso el módulo resarcher
+* app/templates/researcher/add_edit_question.html : definición de la plantilla que se hace uso para mostrar las opciones de añadir/editar preguntas
+
+Empezaremos por añadir el tipo de pregunta a la lista de preguntas disponibles, en el fichero forms.py
+
+class QuestionForm(Form):
+    listQuestionType = [('yn', 'YES/NO'),
+            ('text','Text'),('choice','Choice'),('likertScale','Likert Scale'),('date','Date')]
+
+En el fichero views.py, procedemos a modificar la definición de select_type, que se encarga de leer el formulario de añadir/editar preguntas y generar un objeto del tipo Question deseado
+
+[code]
+def selectType(form,section):
+    if form.questionType.data =='date':
+        question = QuestionDate()
+[/code]
+
+En el fichero add_edit_question.html, esta la plantilla usada para mostras las opciones disponibles. Además del código HTML, hay un poco de código JavaScript, para ayudar al investigador a la hora de rellenar las opciones, ocultando todas aquellas opciones (formularios) que no son necesarios para el tipo de pregunta.
+
+En nuestro caso, interesa ocultar todas las opciones, cada vez que se selecciona una pregunta de tipo fecha, para ello añadiremos el siguiente código a la función onchange_question
+
+[code]
+    function onchange_question(selValue)
+    { 
+        $("#divText").hide();
+        $("#divLikert").hide();
+        $("#divAnswer1").hide();
+        $("#divAnswer2").hide();
+        $("#divAnswers").hide();
+        $("#divRange").hide();
+        $("#divRender").hide();
+        $("#divContainer").hide();
+        $("#divExpectedAnswer").hide();
+        $("#divExpectedAnswer").hide();
+        $("#collapseSubquestion").collapse("hide");
+        if (selValue=="date")
+        {
+            //nothing to do, all options hide by default
+        }
+[/code]
+
+Con esto hemos terminado las modificaciones del modulo researcher
+
+
+### Modificación del módulo Surveys
+
+Deberemos de modificar los ficheros app/surveys/forms.py y app/surveys.utiles.py
+
+Lo primero que debemos de decidir, es como representar la fecha al usuario, en este caso hemos elegido el formulario de fecha por defecto que trae wtforms, wtforms.fields.DateField, que comprobará automáticamente si la fecha es válida. 
+
+Si se desea implementar un campo y validador no disponible por wtforms, se pueden crear las clases necesarias, para ello consulte http://wtforms.readthedocs.org/en/latest/ o vea los formularios  y validadores creados para el proyecto en el fichero app/surveys/forms.py
+
+
+El fichero forms.py tiene un aspecto diferente al que hemos observador en el anterior módulo, esto es básicamente porque todos los formularios se han creando dinámicamente, ya que es imposible saber por defecto como va a ser el formularios.
+
+La función que nos importa es genearte_form, básicamente deberemos decidir que hacer cuando leamos una pregunta de tipo fecha, el identificador usado es "c"+id de la pregunta en cuestión
+[code]
+def generate_form(questions):
+    '''dynamically generates the forms for surveys
+    '''
+    for question in questions:
+        if isinstance (question,QuestionDate):
+            if question.required:
+                setattr(AnswerForm,"c"+str(question.id),DateField('Answer',validators = [Required()]))
+            else:
+                setattr(AnswerForm,"c"+str(question.id),DateField('Answer',validators = [Optional()]))
+[/code]
+
+En el fichero útiles deberemos de modificar la función new_answer() el cual genera un objeto de tipo Answer dependiendo del tipo de pregunta
+
+[code]
+def new_answer(question,form,user):
+    if isinstance (question,QuestionDate):
+        answer = Answer (answerDate = form["c"+str(question.id)].data, user= user, question = question)
+        answer.answerText = str(answer.answerDate)
+[/code]
+
+En el atributo answer.answerText siempre guardamos una representación del texto de la respuesta. Esto también se puede implementar con un atributo híbrido en el ORM.
+
+Con esto ya hemos terminado una implementación básica de una pregunta de tipo fecha.
+
+
+## Preguntas de tipo casillas de verificación
+
+En está sección vamos a tratar brevemente de como incluir una pregunta, en la que puede haber múltiples respuestas.
+
+### Modificación de la base de datos
+
+Lo primero que debemos de decidir es como almacenar todas las respuestas posibles a la pregunta, ya sea creando una clase nueva con todas las respuestas posibles a una pregunta, o almacenar en la pregunta todas las respuestas posibles, ya sea usando una lista (PickleType), JSON, o cualquier formato que se nos ocurra.
+
+En este caso hemos decidido implementarlo en una tabla nueva, para ello creamos primero la clase nueva, a la cual hemos añadido un nuevo atributo con el mínimo numero de opciones a marcar en la respuesta.
+
+[code]
+class QuestionMultipleChoices(Question):
+    '''Question with multiple choices
+    '''
+
+    __mapper_args__ = {'polymorphic_identity': 'multipleChoices'}
+    #: Minimum number of options
+    min_choices = Column(Integer, default = 0)
+    choices = relationship('Choice',
+        cascade="all, delete-orphan",
+        backref = 'question', lazy = 'dynamic')
+[/code]
+
+Después creamos una nueva clase con todas las opciones posibles para una pregunta
+
+[code]
+class Choice (db.Model):
+    '''A table with Choices to a Question with multiple Choices
+    '''
+    __tablename__ = 'choice'
+    #: unique id (automatically generated)
+    id = Column(Integer, primary_key = True)
+    #: Text for this choice
+    text = Column(String, nullable = False)
+    question_id = Column(Integer, ForeignKey('question.id'))
+[/code]
+
+
+Entre la clase Answer y la clase Choice tendremos una relación muchos a muchos, por lo que deberemos crear una tabla para ella, hacemos notar que creamos una tabla y no una clase nueva, ya que solo lo usaremos para crear una relación entre Answer y Choice, sin ningún atributo nuevo.
+
+[code]
+association_answer_choices = db.Table('association_answer_choices', Base.metadata,
+    Column('choice_id', Integer, ForeignKey('choice.id')),
+    Column('answer_id', Integer, ForeignKey('answer.id'))
+)
+[/code]
+
+Asimismo añadimos a la clase Answer una relación para para obtener las respuestas elegidas:
+
+[code]
+class Answer(db.Model):
+    '''A table with answers
+    '''
+    __tablename__ = 'answer'
+    ...
+    choices = relationship("Choice",
+        secondary=association_answer_choices,
+        backref=backref('answers', remote_side=id),
+        lazy = 'dynamic', uselist = True)
+[/code]
+
+Para añadir los cambios en la base de datos, debemos de migrar la base de datos y actualizarla, con los siguientes comandos:
+
+[code]
+./manage.py db migrate
+./manage.py db upgrade
+[code]
+
+### Modificación del módulo Researcher
+
+Para modificar el módulo **Researcher** habría que hacer una modificación análoga a la realizada en la modificación de añadir una pregunta de tipo fecha.
+
+Por otro parte se podría modificar el validador del formulario para comprobar que el número de respuestas mínimas necesario es correcto, ya que no podemos pedir mas opciones de las que hay.
+
+    def validate(self):
+        if self.questionType.data == 'multiplChoices':
+            l = get_choices() #return list with choices
+            if len(l)==0:
+                self.errors.append("There should be a choice")
+            if self.min_choices.data is not None:
+                if self.min_choices.data>= len(get_choices()):
+                    self.min_choices.errors.append("minimum of choices must be less than the maximum")
+
+Además deberemos de añadir estas opciones a la base de datos:
+
+[code]
+def selectType(form,section):
+    if form.questionType.data =='multiple_choices':
+        question = QuestionMultipleChoices(min_choices= form.min_choices.data)
+        for i in get_choices():  #return list with choices
+            choice = Choice(text= i, question=question)
+            db.session.add(choice)
+[/code]
+
+
+### Modificación del módulo Answer
+
+Esta parte es análoga a la implementación de una pregunta de tipo fecha, solo que además añadiremos un validador para comprobar que el número marcado de opciones se corresponde con el mínimo exigido:
+
+[code]
+class CheckMinChoices(object):
+    '''check if the answer is the expected
+    '''
+    def __init__(self, n, message=None):
+        if not message:
+            self.message = gettext("minimum of choices must be %i"  %n)
+        else:  # pragma: no cover
+            self.message = message
+        self.min_choices=n
+
+    def __call__(self, form, field):
+        if len(form.data)<self.min_choices:
+            raise ValidationError(self.message)
+[/code]
+
+Además cuando creemos el formulario añadiremos el validador: 
+
+[code]
+validators = [Required(),ChelMinChoices(question.min_choices)]
+[/code]
+
+Tambien crearemos una lista con las opciones disponibles, cuya indice será el identificador de cada opción, esta lista se la pasaremos al constructor de  **wtforms.fields.SelectMultipleField** 
+
+[code]
+choices = [(str(choice.id),choice.text) for choice in question.choices]
+[code]
+
+
+Por último en el fichero útiles deberemos de modificar la función new_answer() el cual genera un objeto de tipo Answer dependiendo del tipo de pregunta
+
+[code]
+def new_answer(question,form,user):
+    if isinstance (question,QuestionMultipleChoice):
+        answer = Answer (user= user, question = question)
+        //obtenemos la lista de elementos marcados:
+        list_aux=[]
+        for i in form["c"+str(question.id)].data:
+            //obtenmos la opción marcada
+            choice = Choice.query.get(i)
+            //añadimos la opcion a la respuesta
+            answer.choices.append(choice)
+            //guardamos en una lista auxiliar la respuesta para guardarla también como texto
+            //pero no sería necesario
+            list_aux.append(choice.text)
+        answer.text = ', '.join(list_aux)
+[/code]
+
+## Encuestas en varios lenguajes
+
+Puede ser muy útil tener una encuesta en múltiples idiomas, para ello la solución mas fácil y de las mas cómodas para el investigador es la de crear la encuesta en un idioma predeterminado y luego traducir esta a otros idiomas. La traducción se podría hacer con un simple editor de texto o integrando esta en la aplicación, para lo que bastaría crear una página con todos los textos de una encuesta e ir traduciendo.
+
+La forma mas sencilla sería almacenar en un formato como JSON o XML el texto y el idioma al que pertenece. Todo ello guardado en el mismo atributo. Esta podría ser una representación de un texto guardado:
+[code]
+
+{
+    {"language": "eng",
+    "text": "Hello wolrd"},
+    {"language": "es",
+    "text": "Hola Mundo"},
+}
+[/code]
+
+
+Para no cambiar todos los accesos a los textos, podemos hacer uso de  **@hybrid_property**, para devolver solo el texto en el idioma deseado o en su defecto en el predeterminado. La plataforma ya hace uso de Babel, que es una colección de herramientas que sirve para la internacionalización de las aplicaciones escritas en Python, entre las funciones que tiene, hay una que nos devuelve el idioma deseado por el usuario/navegador
+
+[code]
+request.accept_languages.best_match(LANGUAGES.keys())
+[/code]
+
+Por lo que una clase como Survey quedaría de la siguiente manera:
+
+[code]
+class Survey(db.Model):
+    .....
+    text_json = Column(String, nullable = False)
+
+    @hybrid_property
+    def survey(self, language = request.accept_languages.best_match(LANGUAGES.keys())):
+        return get_text(self.text_json,language)
+[/code]
+
+## Encuestas con preguntas que saltan a distintas secciones
+
+
+## Plataforma en la nube
