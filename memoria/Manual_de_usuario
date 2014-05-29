@@ -1,0 +1,50 @@
+# Manual de usuario
+
+En esta sección vamos a explicar como un administrador puede instalar la aplicación y ponerla en marcha y como un investigador puede crear una encuesta
+
+## Manual de administrador
+Aunque este manual intenta ser autoexplicativo en cuanto a la instalación de la plataforma, se recomienda tener alguna noción de Python y git. Por otra parte para el uso de un servidor web en la puesta en producción de la aplicación se remite al manual del Flask para la configuración del servidor web elegido.
+
+####Dependencias
+
+Las dependecias de la apliación son las siguientes:
+* virtualenv o pip
+* git
+* Servidor web a elección del administrador
+
+###Instalación
+
+Se recomienda instalar la aplicación en un entorno virtual, asi como todas sus dependencias. Por lo que deberá tener instalado o pip o virtualenv en su sistema.
+
+Empezaremos clonando el repositorio git donde se encuentra la aplicación
+[code]
+$ git clone git://github.com/nu_kru/swarm-survey.git
+$ cd swarm-survey
+[/code]
+
+Una vez clonado el repositorio procederemos a crear un entorno virtual para poder instalar todas las dependencias necesarias en la apliación
+
+[code]
+$ mkdir swarm-surveys
+$ virtualenv venv
+New python executable in venv/bin/python
+Installing distribute............done.
+[/code]
+
+Una vez instalado el entorno virtual, para activarlo:
+[code]
+$ . venv/bin/activate
+[/code]
+
+Una vez dentro del entorno virtual procederemos a instalar todas las dependencias de la aplición. Todas ellas, así como la versión usada se encuentran en el fichero **requeriments.txt**. Para instalarla haremos uso de pip
+
+[code]
+(venv)$ pip install -r requeriments.txt
+[/code]
+
+Con esto ya tendremos instalada la aplicación así como todos los modulos necesarios para hacerla funcionar.
+
+
+## Manual de investigador
+
+## Manual de usuario

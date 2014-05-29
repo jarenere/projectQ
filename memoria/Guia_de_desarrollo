@@ -311,5 +311,163 @@ class Survey(db.Model):
 
 ## Encuestas con preguntas que saltan a distintas secciones
 
+Otra mejora interesante para la plataforma, es saltar a alguna sección en concreto dependiendo de la respuesta dada a una pregunta.
+
+### Modificación de la base de datos:
+
+Para ello primero deberemos de crear un identificador único para cada sección especial. Podemos pensar en usar el identificador de cada sección, pero esto no es buena idea, ya que es la base de datos quien se encarga de administrarlo y puede ser poco amigable, por lo que decidimos que el nombre de la sección sea único.
+
+[code]
+class Section(db.Model):
+    ...
+    title = Column(String(128), nullable = False)
+
+    #:nos aseguramos que el titulo de la sección sea único en la encuesta
+    __table_args__ = (UniqueConstraint('title', 'survey_id'),)
+[/code]
+
+Ademas modificaremos las preguntas de tipo test (QuestionChoice) para que dependiendo de la respuesta dada saltemos a una sección u otra, para facilitar el diseño usaremos la implementación realizada para las preguntas con casillas de verificación, en vez de guardar los posibles resultados en una lista.
+
+class QuestionChoice(Question):
+    ...
+    choices = relationship('Choice',
+        cascade="all, delete-orphan",
+        backref = 'question', lazy = 'dynamic')
+
+class Choice (db.Model):
+    '''A table with Choices to a Question with multiple Choices
+    '''
+    __tablename__ = 'choice'
+    #: unique id (automatically generated)
+    id = Column(Integer, primary_key = True)
+    #: Text for this choice
+    text = Column(String, nullable = False)
+    question_id = Column(Integer, ForeignKey('question.id'))
+    #: id de la sección a la cual se realizará el salto.
+    section_id = Column(Integer, ForeignKey('section.id'))
+    ## Relationships
+    section = relationship("Section")
+    answer = relationship("Answer")
+[/code]
+
+Por último modificamos la clase Answer, para que pueda tener una relación con la clase Choice
+[code]
+class Answer (db.Model):
+    choice = Column(Integer, ForeignKey('choice.id'))
+[/code]
+
+##Modificación del módulo Researcher:
+
+Deberemos de modificar los formularios de añadir/editar sección, añadiendo la posibilidad de definir un identificador, por otra parte también se modificara la plantilla, **/templetes/resarcher/addEditSection.html** y la vista. 
+
+Por otra parte también habrá que modificar las opciones dadas en las preguntas de tipo test, permitiendo asociar a cada respuesta un salto a una sección dada. Para ello podemos usar el campo definido por la clase **wtforms.ext.sqlalchemy.fields.QuerySelectField **
+[code]
+section = QuerySelectField('Section',get_label='text',validators=[Optional()])
+[/code]
+y para rellenar el formulario, que estará formado por la tupla Section.id y título de la sección:
+[code]
+form.section.query=Question.query.filter(
+    Survey.id == id_survey, 
+    Section.root == Survey,
+    Section.title!=id_section //evitamos poder saltar a la misma sección
+    )
+[/code]
+
+
+
+##Modificación de la clase StateSurvey
+
+Por último habrá que cambiar algo de la lógica de control de la encuesta, para poder realizar saltos a la sección indicada dependiendo de la respuesta dada. Cada usuario cuando empieza una encuesta, se le asocia una clase a esa encuesta **StateSurvey**, que guarda la información relativa del usuario a esta encuesta, como puede ser si ha terminado la encuesta, cuanto tiempo lleva empleada en ella, por que sección va... 
+
+La clase tiene un método llamado finishedSection, el cual se llama cuando se termina una sección y decide cual es la siguiente sección a realizar. Por lo que este sería un buen lugar para comprobar las respuestas dadas en la sección para comprobar cual es la siguiente sección a realizar.
+
+Primero buscamos la respuesta dada a la pregunta de la cual dependerá la próxima sección, para simplificar el proceso hemos supuesto que solo existe una pregunta de este tipo por sección y que será obligatoria.
+
+[code]
+answer = Answer.query.filter(
+    //obtenmos las preguntas de tipo Choice de la sección en la que estamos
+    QuestionChoice.section_id==self.get_section,
+    //obtenemos las posibles respuestas a la pregunta de tipo choice
+    Choice.question==QuestionChoice,
+    //Las posibles elecciones deben tener asociada un salto
+    Choice.section!=None,
+    // buscamos todas las respuestas del usuario
+    Answer.user_id==Self.user_id,
+    //y cogemos solo la que coincide con la pregunta
+    Answer.question==QuestionChoice
+).first()
+[/code]
+
+Por lo que en answer tenemos la respuesta dada por el usuario de la que dependerá la siguiente sección. 
+[code]
+self.nexSection == answer.choice.section
+[/code]
 
 ## Plataforma en la nube
+
+Aquí vamos a tratar de como desplegar nuestra plataforma en la nube. Hemos elegido Heroku, no sólo porque es uno de los mas populares de la red, sino porque además ofrece también un nivel de servicio gratuito.
+
+Para implementar la plataforma web en Heroku, es tan fácil como subir la aplicación usando git. Para las aplicaciones desarrolladas en Python se espera un fichero **requirements.txt** en la que se encuentran todos los módulos que deben instalarse. 
+
+Primero nos crearemos una cuenta en heroku y nos bajaremos el "cliente Heroku", una vez instalado el cliente, accederemos a nuestra cuenta y clonaremos nuestra plataforma desde github y crearemos la plataforma en Heroku
+
+$ heroku login 
+$ git clone git://github.com/nu_kru/swarm-survey.git
+$ cd swarm-survey
+$ heroku create swarm-survey Creating swarm-survey... done, stack is cedar http://swarm-survey.herokuapp.com/ | git@heroku.com:swarm-survey.git 
+
+Con esto ya tendríamos nuestra plataforma en la nube. Pero aun no hemos terminado, ya que Heroku impone unas cuantas restricciones:
+
+* Las aplicaciones que se ejecutan en Heroku no escriben archivos permanentemente en el disco
+* La base de datos a usar debe ser PostgreSQL
+* No proporciona un servidor web
+
+### Migración del log
+
+Debido a que las aplicaciones que se ejecutan en Heroku no pueden escribir permanentemente en el disco, el log de la plataforma lo perderíamos cada cierto tiempo, para ello lo solucionaremos usando el log que nos proporciona Heroku, es mas si se observa el fichero config.py, ya tenemos escrita una configuración por si se lanza la plataforma en Heroku, que se encarga de modificar el log a los requisitos de la nube
+
+[code]
+//log to stderr
+import logging
+from logging import StreamHandler
+file_handler = StreamHandler()
+file_handler.setLevel(logging.WARNING)
+app.logger.addHandler(file_handler)
+[code]
+
+Para ver el log simplemente desde el cliente escribimos:
+[code]
+$ heroku logs
+[/code]
+Esto nos mostrara todos los logs, tanto de la nube como de nuestra aplicación, si solo queremos ver la de la aplicación:
+[code]
+$ heroku logs --source app
+[/code]
+
+### Migración a PostgreSQL
+
+La plataforma de Heroku nos proporciona una URI por la cual podemos acceder a nuestra base de datos, como durante el desarrollo hemos usado SQLAlchemy, y no hemos usado características únicas solo disponible en ciertas bases de datos, la migración a PostgreSQL es transparente, sin tener que realizar ninguna modificación en el código.
+
+Por otra parte si se observa el fichero de configuración, la base de datos la obtenemos de una variable de entorno si está definida o sino de la ruta indicada por nosotros.  Esta variable de entorno es la misma que usa Heroku para darnos la direccion de la bbdd por lo que no tendremos que realizar ningún cambio.
+[code]
+class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+[/code]
+
+### Servidor web
+
+Ya que Heroku no nos proporciona ningún servidor web, en su lugar espera que la aplicación ejecute su propio servidor en el puerto indicado por la variable de entorno $PORT
+
+El servidor web proporcionado por Flask para el desarrollo no es conveniente usarlo en producción, ya que no es multihilo, en la documentación proporcionada por Heroku en las aplicaciones Python sugieren la instalación de **gunicorn**, que es un servidor web escrito en Python, para hacer uso de él, lo podemos instalar vía **pip**, para ejecutar el servidor con la aplicación tan solo debemos escribir:
+[code]
+gunicorn manage.py runserver:app
+[/code]
+### Requisitos de la plataforma
+
+Durante el desarrollo de aplicaciones en Python se recomienda instalar todos los módulos a usar en entornos virtuales, además en nuestro caso como hemos hecho uso de pip para la instalación de cada módulo, podemos obtener una lista de todos los módulos instalados usando:
+[code]
+pip freeze > requirements.txt
+[/code]
+
+Con esto ya tendríamos todo lo necesario para ejecutar nuestra aplicación en Heroku. Si se observa detenidamente las modificaciones a hacer en la plataforma son nulas, sobre todo gracias a la buena definición del fichero config.py, en el que hemos tenido en cuenta las distintas configuraciones de la aplicación, pasando por el modo de desarrollo al modo producción, con tres variantes posibles dependiendo de si la máquina contiene un sistema tipo UNIX, está en la nube o ninguno de estos casos.
