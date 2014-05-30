@@ -92,6 +92,13 @@ class ProductionConfig(Config):
         app.logger.addHandler(mail_handler)
 
 
+class JmeterProduction(ProductionConfig):
+    JMETER = True
+    SEQUENCE = [5, 6, 7, 8, 9, 10, 17, 16, 12, 23, 22, 32, 33, 40, 41, 42, 49, 50, 51, 46, 47, 48, 14, 15]
+    WTF_CSRF_ENABLED = False
+    SQLALCHEMY_DATABASE_URI = os.environ.get('JMETER_DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'data-jmeter.sqlite')
+
 class HerokuConfig(ProductionConfig):
     SSL_DISABLE = bool(os.environ.get('SSL_DISABLE'))
 
@@ -140,6 +147,8 @@ config = {
     'production': ProductionConfig,
     'heroku': HerokuConfig,
     'unix': UnixConfig,
+    'jmeter': Jmeter,
+    'jmeterProduction' : JmeterProduction,
 
     'default': DevelopmentConfig
 }

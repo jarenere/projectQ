@@ -12,7 +12,7 @@ from flask.ext.babel import Babel
 
 
 from config import config
-config_name = 'default'
+config_name = os.getenv('FLASK_CONFIG') or 'default'
 
 app = Flask(__name__)
 app.config.from_object(config[config_name])
