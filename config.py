@@ -9,7 +9,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     BASEDIR = os.path.abspath(os.path.dirname(__file__))
-    SETTINGS = os.environ.get('SWARMS_SURVEY') or \
+    SETTINGS = os.environ.get('SWARMS_SURVEY_SETTINGS') or \
         os.path.join(basedir, 'settings.cfg')
     if not os.path.isfile(SETTINGS):
         shutil.copy(os.path.join(basedir, 'settings'),SETTINGS)

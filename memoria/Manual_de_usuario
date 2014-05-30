@@ -3,18 +3,49 @@
 En esta sección vamos a explicar como un administrador puede instalar la aplicación y ponerla en marcha y como un investigador puede crear una encuesta
 
 ## Manual de administrador
-Aunque este manual intenta ser autoexplicativo en cuanto a la instalación de la plataforma, se recomienda tener alguna noción de Python y git. Por otra parte para el uso de un servidor web en la puesta en producción de la aplicación se remite al manual del Flask para la configuración del servidor web elegido.
+Aunque este manual intenta ser autoexplicativo en cuanto a la instalación de la plataforma, no es un manual de las distintas herramientas usadas en la plataforma, por lo que para ello se remite a la documentación oficial de estas. Por otra parte se espera que el administrador de la aplicación tenga nociones en la administración de servidores web, así como unas nociones muy básicas de Python.
 
-####Dependencias
 
-Las dependecias de la apliación son las siguientes:
-* virtualenv o pip
-* git
-* Servidor web a elección del administrador
+### Requisitos
+
+#### Requisitos Hardware
+Los requisitos hardware dependerán del número de usuarios que van a acceder a la plataforma.
+
+Si se quiere medir como se comporta la plataforma ante un número elevado de usuarios, en la carpeta jmeter se incluye una configuración para Apache JMeter, así como un generador de usuarios y una encuesta compleja. Esta aplicación genera todas los peticiones que realizaría un usuario al contestar a una encuesta. Para ejecutar la plataforma en este modo, debe cambiar la variable de entorno FLASK_CONFIG  a **"jmeterProduction"** o en el fichero **swarm-surveys/config.py** cambiar la configuración default por **jmeterProduction**
+
+[code]
+config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+    'heroku': HerokuConfig,
+    'unix': UnixConfig,
+    'jmeter': Jmeter,
+    'jmeterProduction' : JmeterProduction,
+
+    'default': DevelopmentConfig
+}
+[/code]
+
+También existe la posibilidad de ejecutar la plataforma en la nube. Dependiendo de la elección llevará mas o menos cambio. En el anexo **Guía de desarrollo** se incluyen las modificaciones y los pasos necesarios para ejecutar la aplicación en Heroku.
+
+#### Requisitos software
+
+Los requistos software son los siguientes:
+
+* virtualenv: Para la creación de un entorno virtual de Python para la instalación de todas los módulos necesarios.
+* Git: Para poder descargarse la aplicación 
+* Servidor web compatible con WSGI, en la documentación de Flask puedes encontrar una guía rápida para la puesta en marcha del servidor, http://flask.pocoo.org/docs/deploying/
+* Base de datos a usar, está debe ser compatible con SQLAlchemy, las posibilidades son las siguientes:
+    * Postgresql
+    * MySQL y su fork MariaDB
+    * Oracle
+    * Microsoft SQL Server
+    * SQLite
+
+
 
 ###Instalación
-
-Se recomienda instalar la aplicación en un entorno virtual, asi como todas sus dependencias. Por lo que deberá tener instalado o pip o virtualenv en su sistema.
 
 Empezaremos clonando el repositorio git donde se encuentra la aplicación
 [code]
@@ -22,7 +53,7 @@ $ git clone git://github.com/nu_kru/swarm-survey.git
 $ cd swarm-survey
 [/code]
 
-Una vez clonado el repositorio procederemos a crear un entorno virtual para poder instalar todas las dependencias necesarias en la apliación
+Una vez clonado el repositorio procederemos a crear un entorno virtual para poder instalar todas las dependencias necesarias en la aplicación
 
 [code]
 $ mkdir swarm-surveys
@@ -32,6 +63,7 @@ Installing distribute............done.
 [/code]
 
 Una vez instalado el entorno virtual, para activarlo:
+
 [code]
 $ . venv/bin/activate
 [/code]
@@ -42,9 +74,133 @@ Una vez dentro del entorno virtual procederemos a instalar todas las dependencia
 (venv)$ pip install -r requeriments.txt
 [/code]
 
-Con esto ya tendremos instalada la aplicación así como todos los modulos necesarios para hacerla funcionar.
+Con esto ya tendremos instalada la aplicación así como todos los módulos necesarios para hacerla funcionar.
+
+### Configuración
+
+La configuración de la plataforma está localizada en los ficheros escritos en Python, config.py y settings.
+
+En el fichero config.py se puede observar los distintos modos en los que se puede arrancar la aplicación, estos son los siguientes:
+
+* development: para el desarrollo de la plataforma
+* testing: para ejecutar los test unitarios de la plataforma
+* production: configuración base para el modo producción
+* heroku: para ejecutar la aplicación en modo producción en la nube Heroku
+* unix: para ejecutar la aplicación en modo producción en una máquina de tipo Unix
+* jmeter: para ejecutar el test de sobrecargar
+* jmeterProduction: para ejecutar el test de sobrecarga en una máquina en modo producción
+
+Para cambiar de modo, puede hacerlo mediante la variable de entorno CONFIG_FLASK o sino está definida modificando la configuración por defecto en el fichero config.py
+
+[code]
+config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+    'heroku': HerokuConfig,
+    'unix': UnixConfig,
+    'jmeter': Jmeter,
+    'jmeterProduction' : JmeterProduction,
+
+    'default': DevelopmentConfig
+}
+[/code]
+
+En el fichero settings se encuentra una plantilla con las variables a cambiar. La plataforma espera encontrar la localización del fichero usando la variable de entorno **SWARMS_SURVEY_SETTINGS** o sino por defecto el fichero **swarm-surveys/settings.cfg** el cual se genera automáticamente si no se encuentra.
+
+El fichero settings es autoexplicativo, indicando que significa cada opción, que básicamente es indicar cual es el servidor de correo y los usuarios a los cuales se le va a enviar los correos con las distintas alertas que puede generar la plataforma, así como el usuario administrador y la contraseña de este
+
+#### Configuración de la base de datos:
+
+La plataforma hace uso de la variable de entorno **DEV_DATABASE_URL** en la cual espera que se encuentre  la URI de la conexión de la base de datos, así como el usuario y contraseña, sino esta definido usa por defecto SQLite.
+
+El formato es el siguiente:
+[code]
+driver://username:password@host:port/database
+[/code]
+
+Ejemplo para MySQL:
+mysql://scott:tiger@localhost/foo
+
+Mas información en:
+http://docs.sqlalchemy.org/en/rel_0_9/core/engines.html
+
+### Inicio
+
+#### Creación de la base de datos
+
+Una vez definida la base de datos a usar entre las soportadas por SQLALchemy, debemos de crear la base de datos, para ello ejecutaremos los siguientes comandos:
+
+[code]
+./manage.py db init
+./manage.py db migrate
+./manage.py db upgrade
+[/code]
+
+Con esto generamos la base de datos, además se hacemos uso de **flask-migrate** que es una extensión que hace uso de **Alembic** para poder migrar la base de datos a nuevas actualizaciones del sistema. Para obtener mas información de como migrar o volver a una revisión anterior de la base de datos, consulte la documentación oficial: http://flask-migrate.readthedocs.org/en/latest/
+
+#### Inicio del programa
+
+Una vez puesta en marcha la plataforma, se crea automáticamente en la base de datos el usuario administrador indicado en el fichero de configuración, además también se le otorgan Roles de investigador para poder crear encuestas.
+
+#### Asignación del rol investigador a un usuario:
+
+Para asignar el rol de investigador a un usuario, inicie la shell del programa:
+
+[code]
+./manage.py shell 
+[/code]
+
+Esto abrirá un interprete Python de la plataforma web. Entre las funciones disponibles están la de add_researcher y delete_researcher, que sirven para dar y quitar permisos de investigador a un usuario dado. Siendo el formato:
+
+[code]
+add_researcher(foo@foo.com)
+delete_researcher(foo@foo.com)
+[/code]
+
+Para listar los usuarios disponibles:
+[code]
+list_user()
+[/code]
+
+
+### Actualización
+
+Antes de actualizar la plataforma se recomienda hacer una copia de seguridad de la base de datos y del entorno virtualizado donde se ha instalado la plataforma.
+
+Los pasos son los siguientes:
+
+* Haga una copia de la configuración de la plataforma, config.py y settings.cfg
+* Descargue la última versión de la plataforma mediante git
+    [code]
+    $ git pull
+    [/code]
+* Instale los nuevos módulos requeridos:
+    (venv)$ pip install -r requeriments.txt
+* Por último compruebe si ha habido algún cambio en los ficheros de configuración
+
+
+### Log
+
+La plataforma por defecto guarda todos los mensajes con un nivel "warning" o superior en el fichero **temp/swarms.log** esta configuración se puede cambiar en el fichero config.py, también se puede elegir usar **SysLogHandler** para comunicarse remotamente con una maquina Unix, quién almacenará la información.
+
+Además tambien se enviará por correo al usuario indicado los mensajes con un nivel "error" o superior.
+
+El nivel de los mensajes se puede cambiar, los disponibles son los siguientes:
+* critical
+* error
+* warning
+* info
+* debug
+https://docs.python.org/2/library/logging.html
 
 
 ## Manual de investigador
+
+En este manual vamos a tratar las opciones que tiene un investigador para crear una encuesta.
+
+### Login
+
+
 
 ## Manual de usuario
