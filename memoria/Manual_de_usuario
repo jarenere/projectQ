@@ -201,6 +201,199 @@ En este manual vamos a tratar las opciones que tiene un investigador para crear 
 
 ### Login
 
+Existen dos posibilidades para iniciar la sesión, mediante el uso de una cuenta OpenID para lo cual puedes usar su cuenta de Google, Yahoo, Steam o cualquier otro servicio que haga uso de OpenID. O mediante el uso de un usuario y contraseña. Para ello previamente debe registrase en la plataforma, y se le enviará un correo con la contraseña.
+
+#### OpenID
+
+Haciendo uso de un navegador entre en el portal web donde se encuentra alojada la plataforma y entre en el enlace "Account"
+[manual_00.png]
+
+Escriba la dirección del servidor OpenID el cual va usar para autentificarse o haga click sobre uno de lo ser servidores predeterminados. Para entrar en la plataforma aprieta al botón Sign In
+[manual_01_login.png]
+
+#### Correo
+
+Para registrarse en la plataforma, vaya a la dirección http://servidor/auth/register, e introduzca el correo que quiere usar de registro. Una ver registrado, se le enviara un correo con la contraseña
+
+[manual_02_registro.png]
+
+Para iniciar sesión, vaya a la dirección http://servidor/auth/loginEmail e introduzca el correo con la que se registró y la contraseña que se le envió al correo:
+
+[manual_01_loginEmail.png]
+
+### Creación de encuestas
+Una vez iniciado sesión en la plataforma, en la barra de navegación de la plataforma verá dos enlaces nuevos:
+
+* Logout: para salir de la sesión
+* Researcher: para entrar en el módulo de creación de encuestas
+[barra.png]
+
+Una vez dentro del modulo de creación de encuestas observara una página similar a la siguiente:
+[manual_03_home_researcher.png]
+
+* 1, **New survey**: Opción para crear una nueva encuesta
+* 2: Opción para modificar una encuesta ya creada
+* 2, **exports stats**: Opción para exportar los resultados de una encuesta
+
+Si entra en la opción de crear encuestas, verá la siguiente pantalla:
+
+[manual_04_new_survey.png]
+
+* 1, **Title**: Título de la encuesta, este campo es obligatorio.
+* 2, **Description**: Descripción de la encuesta, esta descripción soporta sintaxis Markdown. Este campo es opcional
+* 3: Previsualización de la descripción
+* 4: Día y hora en la que comenzará la encuesta. Este campo es opcional, sino es rellenado no se mostrará la encuesta a los usuarios
+* 5: Día y hora en la que finalizará la encuesta. Este campo es opcional, sino es rellenado, la encuesta no tendrá fecha de finalización
+* 6, **Number of respondents**: Número máximo de usuarios que podrán responder a la encuesta. Este numero es orientativo, una vez llegado a ese número, no se permitirá a ningún usuario mas empezar la encuesta, pero si terminarla. Este campo es opcional, sino se rellena, no hay número maximo
+* 7, **Time in minutes that a user has to answer the survey**: Número máximo en minutos que tiene un usuario para terminar la encuesta. Este campo es opcional, sino se rellena no hay tiempo máximo
+* 8, **File survey xml**: Para importar una encuesta previamente exportada.
+* 9, **Create surver**: Para crear la encuesta. Si hay algun error se le mostrará indicado cual es.
+
+[manual_04_new_survey_error.png]
+
+Una vez creada la encuesta, podrá modificar cualquier campo de está. No así las preguntas una vez haya sido publicada la encuesta. Después de crear la encuesta, verá la siguiente pantalla:
+
+[manual_06_encuesta_creada.png]
+
+* 1, **Save changes**: Guardar los cambios realizados en esta pantalla
+* 2, **View/Add consents**: Ver y añadir consentimientos a la encuesta
+* 3, **Add section**: Añadir una sección nueva a la encuesta
+* 4, **Delete survey**: Eliminar la encuesta
+* 5, **Export survey**: Exportar la encuesta a un fichero XML con la posibilidad mas tarde de importar la encuesta
+* 6: Arbol de secciones de la encuesta.
+
+#### Añadir editar consentimientos
+
+Si realizada click en el botón de **View/Add consents**, irá a una pantalla con las opciones de añadir, editar y eliminar los consentimientos de una encuesta. El formato usado nuevamente para la escritura de texto es Markdown
+
+[manual_07_nuevo_consentimiento.png]
+[manual_08_creado_consentimiento.png]
+
+#### Añadir una nueva sección
+
+Si realiza click en el botón de **Add section**, irá a una pantalla con las para añadir una sección nueva. Las opciones son las siguientes:
+
+* 1, **Title**: Título de la sección, este campo es obligatorio.
+* 2, **Description**: Descripción de la sección, esta descripción soporta sintaxis Markdown. Este campo es opcional
+* 3, **Sequence**: Posición en la que aparecerá esta sección
+* 4, **Percent**: Porcentaje de usuarios que realizarán esta sección.
+
+Si dos o mas secciones del mismo nivel tienen la misma secuencia, se eligirá al azar el orden de las secciones con la misma secuencia. Este orden se calcurá cada vez para cada usuario que empiece una encuesta. Por lo que un usuario puede realizar la encuesta con un orden distinto a otro usuario.
+
+Las secciones del mismo nivel con misma secuencia y porcentaje distinto de 1 son excluyentes. Esto quieres decir que si tengo tres secciones: *Sección 1* con 0.3, *Sección 2* con 0.2 y *Sección 3* con 0.5. El 30% de usuarios realizarán la *Sección 1*, el 20% realizarán la *Sección 2* y el 50% realizarán la sección 3. 
+[manual_10_nueva_seccion.png]
+
+Una vez creada una sección, se le mostrarán las opciones para eliminar una sección, añadir una subsección a la sección dada, añadir/editar preguntas y duplicar la sección.
+
+[manual_11_creado_seccion.png]
+
+#### Añadir nuevas preguntas
+Si realiza click en el botón de añadir/editar preguntas dentro de una sección, ira a la página para añadir/editar preguntas.
+
+##### Preguntas Si o No
+
+Las opciones para las preguntas si o no son las siguientes:
+
+* 1, **Text**: Texto de la pregunta, esta descripción soporta sintaxis Markdown. 
+* 2, **Required**: Si es una pregunta obligatoria o no
+* 3, **Respuesta**: La respuesta correcta de la pregunta si es que la tiene. "Yes", si la respuesta correcta es *si*, "No" si la respuesta correcta es *no*. Este campo es opcional
+* 4, **Number of attempt**: Número de intentos para responder a la pregunta, en caso que la pregunta tenga una respuesta correcta. Nada, para infinitos intentos
+
+El apartado SubQuestion y Options game se explicará mas adelante
+
+[manual_12_pregunta_si_no.png]
 
 
-## Manual de usuario
+##### Preguntas cuya respuesta es un texto
+
+Las opciones para las preguntas cuya respuesta es un texto son las siguientes:
+
+* 1, **Number**: Si se desea validar que el texto introducido por el usuario en un número entero
+* 2, **Number Float**: Si se desea validar que el texto introducido por el usuario en un número flotante
+* 3, **Regular Expression**: Si se desea validar que el texto introducido por el usuario corresponde a una expresión regular, para ello se usa la sintaxis de Python de expresiones regulares
+* 4, **Error Message**: Mensaje de error personalizado ante el fallo a la hora de introducir la respuesta el usuario.
+* 5, **answer**: La respuesta correcta de la pregunta si es que la tiene. Se comprueba si es correcta después de validar que la respuesta tenga el formato apropiado.  A la hora de comprobar la respuesta se ignora la coincidencia de mayúsuclas/minúsculas.
+* 6, **Number of attempt**: Número de intentos para responder a la pregunta, en caso que la pregunta tenga una respuesta correcta. Nada, para infinitos intentos
+
+
+[manual_13_pregunta_texto.png]
+
+##### Preguntas cuya respuesta es una opción posible
+
+Las opciones para las preguntas cuya respuesta es una opción posible son las siguientes:
+
+* 1, **answer**: Respuesta correcta a la pregunta.
+* 2, **Number of attempt**: Número de intentos para responder a la pregunta.
+* 3, **Render**: Formato a la hora de mostrar las opciones posibles al usuario. Son tres:
+    * Vertical: Se muestran todas las opciones en vertical
+    * Horizontal: Se muestran todas las opciones en horizontal
+    * Select: Se muestran todas las opciones en un formulario de selección como el elegido para mostrar las opciones de **Render**
+* 4, **Range step**: Si la respuesta esta formado por un rango de números, indica el salto entre un número y el siguiente
+* 5, **Range min**: Rango de inicio, si la respuesta está formado por un rango de números.
+* 6, **Range max**: Rango máximo, si la respuesta está formado por un rango de números.
+* 7, **Answer 1**: Respuesta posible
+* 8, **Add other answer**: Añadir otra respuesta posible
+
+[manual_14_pregunta_choice.png]
+
+##### Preguntas cuya respuesta es una escala likert
+
+Las opciones para las preguntas cuya respuesta es una escala likert son las siguientes:
+
+* 1, **Scale**: Número inicial de la escala likert, puede ser 0 o 1.
+* 2, **to**: Número final de la escala likert.
+* 3, **min**: Etiqueta opcional para indicar el significado del valor mínimo de la escala.
+* 4, **max**: Etiqueta opcional para indicar el valor máximo de la escala.
+
+[manual_15_pregunta_likert.png]
+
+##### Preguntas dependientes de la respuesta a otra pregunta:
+
+Todas las preguntas anteriores se pueden mostrar o no dependiendo de la respuesta dada a una pregunta. En la siguiente imagen podemos ver las opciones:
+
+* 1, **SubQuestion**: Menú desplegable que muestra las opciones para las subpreguntas
+* 2, **Type of operation**: Operación con la que realizaremos la comparación, esta puede ser:
+    * Mayor, >
+    * Menor, <
+    * Igual, =
+    * Distint, !=
+* 3, **Value**: Valor a comparar según la operación anterior indicada
+* 4, **Question**: Pregunta de la que depende la respuesta
+
+En las preguntas de Si o No, las respuestas posibles son "Yes" y "No" y solo tiene sentido las operaciones igual y distinto.
+En las preguntas cuya respuesta es un texto, todas las operaciones son posibles
+En las preguntas de selección se muestra en "value" todas las opciones posibles
+En las preguntas de escala likert, se muestra en "value" todas las opciones posibles.
+[manual_25_preguntas_dependiente.png]
+
+Las preguntas que dependen de otra respuesta solo se mostrará al usuario dependiendo de la respuesta dada:
+
+[manual_22_preguntas.png]
+[manual_23_preguntas.png]
+
+
+##### Preguntas de Juegos
+
+Estas opciones solo tienen sentido para la elaboración de encuestas en las que haya una serie de juegos económicos en los que participan los usuarios. Cada juego va ligado automaticamente a un tipo de pregunta, siendo imposible cambiarlo. Los juegos/preguntas disponibles son los siguientes:
+
+* Part two: Es una serie de preguntas que mide la impaciencia del jugador
+* Decision one v1: Una pregunta que implementa una versión de un juego de lotería
+* Decision one v2: Una pregunta que implementa una segunda versión de un juego de lotería
+* Decision two: Una pregunta que implementa un juego de renta
+* Decision three: Una pregunta que implementa otro juego de renta
+* Decisión four: Una pregunta que implementa el juego del ultimatum, decidiendo el jugador la cantidad de dinero enviada al otro jugador
+* Decision five:  Una pregunta que implementa el juego del ultimatum, decidiendo el jugador si acepta la cantidad enviada por otro usuario.
+* Decision six: Una pregunta que implementa el juego del dictador
+
+Todos os juegos anteriores se pueden jugar con dinero real y dinero no real
+
+Además se le puede ofrecer al usuario la posibilidad de recibir feedback sobre las decisiones que ha tomado en los juegos.
+
+[manual_17_pregunta_juegos.png]
+
+
+##### Editar y eliminar preguntas
+
+Después de crear una pregunta existe la posibilidad de editar y eliminar preguntas. Tenga en cuenta que si eliminas una pregunta, todas las preguntas que dependen de está serán eliminadas. Aun así la plataforma le mostrará un aviso de las preguntas que se eliminarán. Lo mismo sucede si modificas el tipo de pregunta de la que dependen otras.
+
+[manual_18_preguntas_eliminar.png]
