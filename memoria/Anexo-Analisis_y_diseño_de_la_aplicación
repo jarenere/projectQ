@@ -164,3 +164,11 @@ También se espera en un futuro la ampliación de la plataforma así como el uso
 
 En cuanto a la seguridad, como ya hemos comentado anteriormente se registrará cualquier incidente y acceso a la plataforma. En el sistema existirán tres tipos de usuarios, el administrador, que deberá tener acceso al servidor donde esté alojado la plataforma. Y los investigadores y usuarios que respondan a las encuestas, que podrán entrar en el sistema mediante open-id, o mediante un login y contraseña.
 
+## Diagrama de Clases
+
+En un primer lugar se va a mostrar el diagrama de clases sin profundizar en detalle en él.
+
+[schema1_dot.svg]
+
+Observando con mas detenimiento la clase Question:
+

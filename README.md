@@ -27,8 +27,14 @@ WTForms-Alchemy-0.12.2.
 SQLAlchemy-Utils 0.24.1
 intervals 0.2.3
 
+----
+to generate SchemaDisplay
+sadisplay,
+pip install sadisplay==0.3.8dev
 
-
+pydot
+graphviz
+Graphviz-cairo
 
 
 Change Python default encoding:
