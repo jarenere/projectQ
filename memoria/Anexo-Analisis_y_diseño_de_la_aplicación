@@ -166,9 +166,232 @@ En cuanto a la seguridad, como ya hemos comentado anteriormente se registrará c
 
 ## Diagrama de Clases
 
-En un primer lugar se va a mostrar el diagrama de clases sin profundizar en detalle en él.
+En un primer lugar se va a mostrar sin profundizar el diagrama de clases de la plataforma.
+[schema1_alto_nivel.svg]
 
-[schema1_dot.svg]
+Observando con mas detenimiento la clase Question, cada tipo de pregunta desciende de la clase Question
+[preguntas.svg]
 
-Observando con mas detenimiento la clase Question:
+Por otra parte, para el experimento "¿Como son nuestos voluntarios?" Se creo una serie de clases para los distintos juegos y sorteos
 
+[games_sin_detalle.svg]
+
+Analizando con mas detenimiento la clase Game
+
+[games.svg]
+
+### Esquema Relacional
+
+A continuación mostramos el esquema relacional, generado por el ORM SQLAlchemy. 
+
+[schema_bbdd.svg]
+
+Durante el diseño se tuvo que tomar la decisión de como implementar las clases heredaras, si todas en la misma tabla, en distintas o algunas compartiendo tabla y otras no. Se decidio que todas compartirian la misma tabla, sobre todo a que no se espera una gran cantidad de entradas, mas comparandolo con otras tablas como puede ser Answer.
+
+Por otra parte se muestra el esquema relacional, donde se guardan los resultados de los distintos juegos y sorteos:
+
+[schema_bbdd_games.svg]
+
+## Casos de Uso
+En esta sección vamos a analizar los posibles usos que podrán darse a la plataforma. Para ilustarlo vamos a emplear algunos diagramas de casos de uso y trazas de eventos.
+
+
+[voluntario.svg]
+[investigador.svg]
+[Administrador.svg]
+
+## Módulos de la plataforma
+
+Para la elaboración de las plataformas se ha seguido las recomendaciones dadas por los desarrolladores de Flask
+
+http://flask.pocoo.org/docs/becomingbig/
+
+https://github.com/mitsuhiko/flask/wiki/Large-app-how-to
+
+http://mattupstate.com/python/2013/06/26/how-i-structure-my-flask-applications.html?utm_medium=referral&utm_source=pulsenews
+
+### Módulo ORM
+
+Se ha decidido declarar todas las Clases que hacen uso de la base de datos en un único fichero, para tener una visión global de todo el modelo de la base de datos.
+
+Casi todos los demás módulos interaccionan con este Módulo.
+
+### Módulo de configuración
+
+Se han tenido en cuenta las recomendaciones dadas en http://flask.pocoo.org/docs/config/#configuration-best-practices
+
+Y se ha decidido crear un sistema de clases y herencia para la configuración del sistema, pudiendo cambiar el modo de funcionamiento de la aplicación simplemente cambiando la variable de entorno **FLASK_CONFIG**, la estructura que sigue y los modos disponibles son los siguientes:
+
+[code]
+class Config(object):
+    # configuración básica de la plataforma
+
+class DevelopmentConfig(Config):
+    # Configuración de la plataforma en modo desarrollo
+    DEBUG = True
+
+class TestingConfig(Config):
+    # Configuración de la plataforma para test unitarios
+
+class Jmeter(Config):
+    # Configuración de la plataforma para la realización de pruebas de sobrecarga
+
+
+class ProductionConfig(Config):
+    # Configuración de la plataforma en modo producción
+
+class HerokuConfig(ProductionConfig):
+    # Configuración de la plataforma en modo producción en la nube Heroku
+
+class UnixConfig(ProductionConfig):
+    # Configuración de la plataforma en modo producción en una máquina de tipo Unix
+
+[/code]
+
+Por otra parte, para facilitar el tener varias configuraciones posibles, se carga primeramente la configuración básica definida anteriormente y luego se puede reemplaza por la leída en la variable de entorno **SWARMS_SURVEY_SETTINGS**, pudiendo cambiar fácilmente la configuración.
+
+
+### Módulo Planificador de tareas.
+Este módulo se encarga de ejecutar tareas periódicas. Concretamente tiene definidas dos:
+* Envía periódicamente al investigador los resultados de la encuesta.
+* EN la adaptación del experimento "¿Cómo son nuestros voluntarios?", se decidió realizar los pagos manualmente, por lo que se envía un correo al responsable de los pagos, con el dinero y usuario al que debe realizar el pago.
+
+
+### Módulos con los que los usuarios interactuan visualmente
+Estos módulos constan principalmente de tres partes:
+* Views: La vista de una función es donde una petición HTTP cumple con la lógica del programa. Es decir cada función tiene definida una ruta web por la que se puede acceder. En un modelo MVC, sería parte del controlador. Es esta función es donde los datos de la petición HTTP se traducen a una llamada a la lógica de la aplicación produciendo una respuesta.
+* Forms: Es el lugar donde están definidos todos los formularios de un módulo con los que puede interactuar un usuario, así como las distintas validaciones que sufren los formularios.
+* Templates: Cuando la vista genera una respuesta, es la plantilla quien se encarga de generar el código HTML y JavaScript, para representar los resultados al usuario.
+
+Para evitar que cualquier usuario pueda ejecutar una vista a la que no tiene acceso, se ha implementado la autorización de la vista mediante decoradores, ya que permiten alternar de manera dinámica la funcionalidad de una función, método o clase, sin tener que realizar ningún cambio de código en la clase decorada.
+
+Por ejemplo:
+[code]
+@blueprint.route('/survey/new', methods = ['GET', 'POST'])
+@login_required
+@researcher_required
+def new_survey():
+[/code]
+
+Para acceder a la vista new_survey, que sirve para la creación de una nueva encuesta, debemos acceder a la dirección **http://servidor/survey/new**, pero antes de poder acceder, se comprueba que el usuario se haya autentificado en el sistema, mediante el decorador **@login_required**, y que además el usuario tenga permisos de investigador, **@researcher_required**. De esta forma se puede proteger las páginas a los que los usuarios pueden acceder.
+
+### Módulo de Autentificación
+
+En el módulo de autetificación permite las siguientes opciones:
+
+* Registrarnos en la plataforma: Uno se puede registrar mediante el uso de un correo.
+    A esta función se accede mediante la vista: "auth/register"
+* Validarnos mediante el uso de un correo y contraseña
+    A esta función se accede mediante la vista: "auth/loginEmail"
+* Validarnos mediante el uso de un servidor OpenID.
+    A esta función se accede mediante la vista: "auth/" o "auth/login"
+* Cerrar la sesión actual.
+    A esta función se accede mediante la vista: "auth/logout"
+
+
+### Módulo Researcher
+
+Este modulo permite a los usuarios que sean investigadores, las siguientes acciones:
+
+* Listado de encuestas creadas por un investigador:
+    A esta función se accede mediante las vistas: "researcher/survey/" o "researcher/survey/index".
+
+* Creación de encuestas: Durante la creación de una encuesta se comprueba que todos los campos del formulario son validos, además permite definir las siguientes opciones:
+    * Título.
+    * Descripción: Se hace uso de la sintaxis Markdown para el enriquecimiento del texto.
+    * Número máximo de usuarios que pueden acceder a la encuesta, si es que lo hay.
+    * Fecha de inicio de la encuesta
+    * Fecha de finalización de la encuesta
+    * Tiempo máximo para la realización de la encuesta, si es que lo hay.
+    A esta función se accede mediante la vista: "researcher/survey/new"
+
+* Modificación de una encuesta: Se permite modificar cualquier campo de una encuesta creada
+    A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>", siendo id_survey el identificador de la encuesta a modificar.
+
+* Eliminación de una encuesta: Se permite eliminar una encuesta creada, siempre que no haya sido publicada.
+    A esta función se accede mediante la vista: "researcher/survey/deleteSurvey/<int:id_survey>", siendo id_survey el identificador de la encuesta a eliminar.
+
+* Creación de consentimientos: Mediante un formulario, el investigador informa de los consentimientos que debe aceptar el usuario para poder participar en la encuesta. Hace uso de la sintaxis Markdown para el enriquecimiento del texto.
+    A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/consent/add", siendo id_survey el identificador de la encuesta.
+
+* Modificación de un consentimiento: 
+    A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/consent/<int:id_consent>", siendo id_survey el identificador de la encuesta, e id_consent el identificador del consentimiento
+
+* Eliminación de un consentimiento: 
+    A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/consent/<int:id_consent>/delete", siendo id_survey el identificador de la encuesta, e id_consent el identificador del consentimiento
+
+* Creación de secciones y subsecciones: El investigador puede definir con total libertad el número de secciones y subsecciones que tiene una encuesta, además permite definir las siguientes opciones:
+    * Título de la sección.
+    * Descripción: Se hace uso de la sintaxis Markdown para el enriquecimiento del texto.
+    * Secuencia de la sección.
+    * Porcentaje de número de usuarios que realizan la sección.
+    El usuario que realice la encuesta recorrerá en profundidad el árbol generado por la encuesta. Si dos o mas ramas tienen la misma secuencia, se elige al azar que rama recorrer primero. Si dos o mas ramas con la misma secuencia, tienen un porcentaje menor que 1, este porcentaje indica la probabilidad que hay para recorrer esa rama y no cualquiera de las otras que tienen la misma secuencia.
+    A la función de añadir una sección a una encuesta dada,  se accede mediante la vista: "researcher/survey/<int:id_survey>/section/new", siendo id_survey el identificador de la encuesta.
+    A la función de añadir una sección a una sección dada, se accede mediante la vista: "researcher/survey/<int:id_survey>/section/<int:id_section>/new", siendo id_survey el identificador de la encuesta, e id_sectión el identificador de la sección de la que va a colgar la nueva sección.
+
+* Modificación de una sección o subsección.
+    A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/section/<int:id_section>", siendo id_survey el identificador de la encuesta, e id_sectión el identificador de la sección a modificar
+
+* Eliminación de una sección o subsección:
+    A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/deleteSection/<int:id_section>", siendo id_survey el identificador de la encuesta, e id_sectión el identificador de la sección a eliminar.
+
+* Creación de preguntas: Dada una sección, el investigador puede añadir las preguntas que desee a la sección. Las posibilidades que tiene son las siguientes:
+    * Preguntas cuya respuesta es Si o No, las opciones disponibles son las siguientes:
+        * Texto de la pregunta: Se hace uso de la sintaxis Markdown para el enriquecimiento del texto.
+        * Indicar si es una pregunta cuya respuesta es obligatoria o no.
+        * Respuesta correcta a la pregunta si es que la tiene, sirve para crear preguntas de control
+        * Número máximo de intentos que tiene el usuario para responder bien a la pregunta.
+    * Preguntas cuya respuesta es un texto, las opciones disponibles son las siguientes:
+        * Texto de la pregunta: Se hace uso de la sintaxis Markdown para el enriquecimiento del texto.
+        * Indicar si es una pregunta cuya respuesta es obligatoria o no.
+        * Respuesta correcta a la pregunta si es que la tiene, sirve para crear preguntas de control
+        * Número máximo de intentos que tiene el usuario para responder bien a la pregunta.
+        * Validar que el texto introducido por el usuario en la respuesta es:
+            * Número entero
+            * Número decimal
+            * Comprobarlo mediante una expresión regular definido en sintaxis Python.
+        * Mostrar un mensaje de error personalizado si ha introducido en un formato incorrecto la respuesta.
+    * Preguntas cuya respuesta es una opción dada, las opciones disponibles son las siguientes.
+        * Texto de la pregunta: Se hace uso de la sintaxis Markdown para el enriquecimiento del texto.
+        * Indicar si es una pregunta cuya respuesta es obligatoria o no.
+        * Respuesta correcta a la pregunta si es que la tiene, sirve para crear preguntas de control
+        * Número máximo de intentos que tiene el usuario para responder bien a la pregunta.
+        * Formato en el que se mostrará la pregunta, hay tres posibilidades:
+            * Horizontal: Se mostrará las opciones mediante un radio botón, en una disposición horizontal.
+            * Vertical: Se mostrará las opciones mediante un radio botón, en una disposición vertical.
+            * Select: Se mostrará las opciones mediante un formulario de selección.
+        * Definición de las respuestas disponibles mediante la definición de un rango de números, así como el salto entre ellos.
+        * Definición de las respuestas disponibles añadiéndolas de una en una
+    * Preguntas cuya respuesta es una escala likert, las opciones disponibles son las siguientes.
+        * Texto de la pregunta: Se hace uso de la sintaxis Markdown para el enriquecimiento del texto.
+        * Indicar si es una pregunta cuya respuesta es obligatoria o no.
+        * Indicar el rango de la escala likert, que estará definida entre 0-1 y un número mayor que 1
+        * Etiqueta opcional para indicar el significado mínimo de la escala
+        * Etiqueta opcional para indicar el significado máximo de la escala
+    Todas las preguntas descritas anteriormente se pueden mostrar o no dependiendo de la respuesta dada a una pregunta de la misma sección.
+    A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/section/<int:id_section>/addQuestion", siendo id_survey el identificador de la encuesta e id_sectión el identificador de la sección donde se encuentra la pregunta.
+
+* Modificación de una pregunta:
+    A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/section/<int:id_section>/question/<int:id_question>", siendo id_survey el identificador de la encuesta e id_sectión el identificador de la sección donde se encuentra la pregunta, e id_question el identificador de la pregunta a modificar
+
+* Eliminación de una pregunta:
+    A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/Section/<int:id_section>/deleteQuestion/<int:id_question>", siendo id_survey el identificador de la encuesta e id_sectión el identificador de la sección donde se encuentra la pregunta, e id_question el identificador de la pregunta a eliminar
+
+* Duplicar sección: Permite duplicar una sección así como todas las secciones y preguntas que cuelgan de su rama.
+    A esta función se accede mediante la vista:
+    * "researcher/survey/<int:id_survey>/duplicateSection/<int:id_section>/section/<int:id_section2>', siendo id_survey el identificador de la encuesta, id_sectión el identificador de la sección a copiar, id_section2 el identificador de la sección donde se copiará.
+    * "researcher/survey/<int:id_survey>/duplicateSection/<int:id_section>/survey/', siendo id_survey el identificador de la encuesta, id_sectión el identificador de la sección a copiar, se copiará directamente sobre la raiz, la cual es la encuesta.
+
+
+* Exportar una encuesta: Permite exportar a un fichero XML, la encuesta seleccionada.
+     A esta función se accede mediante la vista: "researcher/survey/exportSurvey/<int:id_survey>", siendo id_survey la encuesta a exportar
+
+* Importar una encuesta: Permite importar una encuesta mediante un fichero XML.
+    A esta función se accede mediante la vista: "researcher/survey/new"
+
+* Exportar estadísticas de una encuesta: Permite exportar en un fichero CSV, los resultados de la encuesta seleccionada
+     A esta función se accede mediante la vista: "researcher/survey/exportStats/<int:id_survey>", siendo id_survey la encuesta a exportar
+
+Las vistas anteriores solo están disponibles para investigadores, además no se pueden editar encuestas de otros investigadores, ya que todas las vistas están protegidas mediante el decorador "@belong_researcher"
+
+### Módulo Survey
