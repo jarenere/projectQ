@@ -1,0 +1,21 @@
+#Conclusiones
+
+Este capítulo contiene las conclusiones extraidas tras la realización de este Proyecto Final de Carrera y se apuntan algunas posibilidades de mejora y trabajo futuro. Se termina con una pequeña conclusión a nivel personal
+
+## Conclusiones generales
+
+## Trabajo futuro
+
+Durante la elaboración del proyecto siempre se ha tenido presente en crear un nucleo de la plataforma versatil y potente, el cual se pueda adaptar a las necesidades de otros proyectos. A continuación se proponen unas posibles mejoras, algunas de ellas completamente desarrolladas en el anexo **Guía de desarrollo**:
+
+* Añadir nuevos tipos de preguntas predeterminadas, que puedan servir para la elaboración de nuevas encuestas. Debido a la imposibilidad de llegar a todas las opciones posibles, durante el proyecto se decidió implementar solo el tipo de preguntas que aparecen en la encuesta "¿Cómo son nuestros voluntarios?", pero no por ello se quería dejar cerrada la plataforma a ese tipo de preguntas. Está fue una de las razones para escribir dos manuales en el anexo **Guía de desarrollo**, de como incluir preguntas de tipo fecha y multitest.
+
+* Aunque la interfaz de la plataforma esta traducida al Español e Ingles, y se puede ampliar fácilmente los idiomas soportados, no tiene soporte multiidioma, por lo que puede ser un inconveniente si se quiere acceder a poblaciones con distinto idioma. En el anexo **Guía de desarrollo**, se dan las pautas necesarias para la implementar esta función.
+
+* Crear un lenguaje específico del dominio. Durante el desarrollo del experimento "¿Cómo son nuestros voluntarios?", se observó que la creación de encuestas largas y complejas es una tarea tediosa y que consume bastante tiempo. Observando las soluciones de otras plataformas de encuestas se puede observar que ninguna es capaz de resolver este problema mediante el uso de una interfaz visual, ya sean mas o menos elaboradas y complejas. Por lo que se propone crear un lenguaje específico del dominio, como hace la plataforma **Surveyor**. Una solución intermedia, pasa por la creación y modificación de la encuesta mediante ficheros XML, que ya soporta la plataforma o ficheros JSON, que también sería muy fácil de implementar. Esta última solución se ha probado con éxito en el experimento "¿Cómo son nuestros voluntarios?", sobre todo a la hora de modificar la encuesta.
+
+* Creación de una API para extender la funcionalidad de la plataforma a otros dispositivos distintos del navegador web. Para la elaboración de esta tarea puede uno observar que funciones son las que tienen una vista para el navegador, y enviar y recibir los datos serializando estos mediante JSONS
+
+
+## Conclusion personal
+

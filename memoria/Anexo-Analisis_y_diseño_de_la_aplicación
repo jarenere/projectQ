@@ -166,11 +166,14 @@ En cuanto a la seguridad, como ya hemos comentado anteriormente se registrará c
 
 ## Diagrama de Clases
 
-En un primer lugar se va a mostrar sin profundizar el diagrama de clases de la plataforma.
+En un primer lugar se va a mostrar sin profundizar el diagrama de clases que hace uso de la base de datos.
 [schema1_alto_nivel.svg]
 
 Observando con mas detenimiento la clase Question, cada tipo de pregunta desciende de la clase Question
 [preguntas.svg]
+
+
+
 
 Por otra parte, para el experimento "¿Como son nuestos voluntarios?" Se creo una serie de clases para los distintos juegos y sorteos
 
@@ -210,6 +213,26 @@ https://github.com/mitsuhiko/flask/wiki/Large-app-how-to
 
 http://mattupstate.com/python/2013/06/26/how-i-structure-my-flask-applications.html?utm_medium=referral&utm_source=pulsenews
 
+Se ha dividido la plataforma en distintos módulos, agrupando estas a nivel de funcionalidades.
+
+Los módulos con lo que se puede interactuar visualmente a través de un navegador tienen la siguiente estructura:
+
+* Views: La vista de una función es donde una petición HTTP cumple con la lógica del programa. Es decir cada función tiene definida una ruta web por la que se puede acceder. En un modelo MVC, sería parte del controlador. Es esta función es donde los datos de la petición HTTP se traducen a una llamada a la lógica de la aplicación produciendo una respuesta.
+* Forms: Es el lugar donde están definidos todos los formularios de un módulo con los que puede interactuar un usuario, así como las distintas validaciones que sufren los formularios.
+* Templates: Cuando la vista genera una respuesta, es la plantilla quien se encarga de generar el código HTML y JavaScript, para representar los resultados al usuario.
+
+Para evitar que cualquier usuario pueda ejecutar una vista a la que no tiene acceso, se ha implementado la autorización de la vista mediante decoradores, ya que permiten alternar de manera dinámica la funcionalidad de una función, método o clase, sin tener que realizar ningún cambio de código en la clase decorada.
+
+Por ejemplo:
+[code]
+@blueprint.route('/survey/new', methods = ['GET', 'POST'])
+@login_required
+@researcher_required
+def new_survey():
+[/code]
+
+Para acceder a la vista new_survey, que sirve para la creación de una nueva encuesta, debemos acceder a la dirección **http://servidor/survey/new**, pero antes de poder acceder, se comprueba que el usuario se haya autentificado en el sistema, mediante el decorador **@login_required**, y que además el usuario tenga permisos de investigador, **@researcher_required**. De esta forma se puede proteger las páginas a los que los usuarios pueden acceder.
+
 ### Módulo ORM
 
 Se ha decidido declarar todas las Clases que hacen uso de la base de datos en un único fichero, para tener una visión global de todo el modelo de la base de datos.
@@ -236,44 +259,29 @@ class TestingConfig(Config):
 class Jmeter(Config):
     # Configuración de la plataforma para la realización de pruebas de sobrecarga
 
-
 class ProductionConfig(Config):
     # Configuración de la plataforma en modo producción
+    # Se define quien es el usuario administrador y cual es el servidor de correo para enviar los distintos logs
 
 class HerokuConfig(ProductionConfig):
     # Configuración de la plataforma en modo producción en la nube Heroku
+    # Usa el sistema de logs de Heroku para almacenarlos.
+
 
 class UnixConfig(ProductionConfig):
     # Configuración de la plataforma en modo producción en una máquina de tipo Unix
-
+    # Hace uso del sistema de logs de la máquina Unix.
 [/code]
 
 Por otra parte, para facilitar el tener varias configuraciones posibles, se carga primeramente la configuración básica definida anteriormente y luego se puede reemplaza por la leída en la variable de entorno **SWARMS_SURVEY_SETTINGS**, pudiendo cambiar fácilmente la configuración.
 
 
 ### Módulo Planificador de tareas.
+
 Este módulo se encarga de ejecutar tareas periódicas. Concretamente tiene definidas dos:
 * Envía periódicamente al investigador los resultados de la encuesta.
-* EN la adaptación del experimento "¿Cómo son nuestros voluntarios?", se decidió realizar los pagos manualmente, por lo que se envía un correo al responsable de los pagos, con el dinero y usuario al que debe realizar el pago.
+* En la adaptación del experimento "¿Cómo son nuestros voluntarios?", se decidió realizar los pagos manualmente, por lo que se envía un correo al responsable de los pagos, con el dinero y usuario al que debe realizar el pago.
 
-
-### Módulos con los que los usuarios interactuan visualmente
-Estos módulos constan principalmente de tres partes:
-* Views: La vista de una función es donde una petición HTTP cumple con la lógica del programa. Es decir cada función tiene definida una ruta web por la que se puede acceder. En un modelo MVC, sería parte del controlador. Es esta función es donde los datos de la petición HTTP se traducen a una llamada a la lógica de la aplicación produciendo una respuesta.
-* Forms: Es el lugar donde están definidos todos los formularios de un módulo con los que puede interactuar un usuario, así como las distintas validaciones que sufren los formularios.
-* Templates: Cuando la vista genera una respuesta, es la plantilla quien se encarga de generar el código HTML y JavaScript, para representar los resultados al usuario.
-
-Para evitar que cualquier usuario pueda ejecutar una vista a la que no tiene acceso, se ha implementado la autorización de la vista mediante decoradores, ya que permiten alternar de manera dinámica la funcionalidad de una función, método o clase, sin tener que realizar ningún cambio de código en la clase decorada.
-
-Por ejemplo:
-[code]
-@blueprint.route('/survey/new', methods = ['GET', 'POST'])
-@login_required
-@researcher_required
-def new_survey():
-[/code]
-
-Para acceder a la vista new_survey, que sirve para la creación de una nueva encuesta, debemos acceder a la dirección **http://servidor/survey/new**, pero antes de poder acceder, se comprueba que el usuario se haya autentificado en el sistema, mediante el decorador **@login_required**, y que además el usuario tenga permisos de investigador, **@researcher_required**. De esta forma se puede proteger las páginas a los que los usuarios pueden acceder.
 
 ### Módulo de Autentificación
 
@@ -287,7 +295,6 @@ En el módulo de autetificación permite las siguientes opciones:
     A esta función se accede mediante la vista: "auth/" o "auth/login"
 * Cerrar la sesión actual.
     A esta función se accede mediante la vista: "auth/logout"
-
 
 ### Módulo Researcher
 
@@ -395,3 +402,81 @@ Este modulo permite a los usuarios que sean investigadores, las siguientes accio
 Las vistas anteriores solo están disponibles para investigadores, además no se pueden editar encuestas de otros investigadores, ya que todas las vistas están protegidas mediante el decorador "@belong_researcher"
 
 ### Módulo Survey
+
+Este módulo permite a los usuarios que sean voluntarios realizar rellenar encuestas. Las acciones disponibles son las siguientes:
+
+* Listar todas las encuestas disponibles, así como el estado de esta, ya sea sin empezar, empezada o finalizada.
+    A esta función se accede mediante la vista: "survey/index" o "survey/"
+
+* Empezar o continuar una encuesta: Es la función encargada de decidir cual es el siguiente paso cuando se realiza una encuesta, ya sea mostrar los consentimientos, mostrar una sección de la encuesta, indicar que se ha finalizado la encuesta o mostrar el feedback de la encuesta si es que la tiene.
+    A esta función se accede mediante la vista: "survey/<int:id_survey>", siendo id_survey la encuesta a realizar.
+
+* Mostrar los consentimientos: Esta función es la encargada de mostrar el consentimiento que el usuario debe aceptar para realizar la encuesta.
+    A esta función se accede mediante la vista "survey/<int:id_survey>/consent", siendo id_survey la encuesta a realizar 
+
+* Mostrar una sección: Esta función es la encargada de mostrar una sección, con todas las preguntas que hay en ella, además de guardar los resultados de las preguntas, así como los tiempos empleados en ellas.
+    A esta función se accede mediante la vista "survey/<int:id_survey>/section/<int:id_section>", siendo id_survey la encuesta a realizar e id_section, la sección.
+
+Todas las vistas están protegidas, de manera que es obligatorio haber ingresado en la plataforma, además en la vista **Mostrar una sección** solo se permite acceder a la sección que le toca realizar al usuario.
+
+### Módulo de Feedback
+
+Este módulo permite dar feedback sobre las decisiones tomadas en el proyecto "¿Cómo son nuestros voluntarios?". Cada vista corresponde con una decisión concreta del experimento. 
+
+* Lógica: Durante el desarrollo del proyecto "¿Cómo son nuestros voluntarios?", se decidió que el orden del feedback sobre las decisiones tomadas, iba a ser el mismo que el realizado durante el experimento, y debido a que cada voluntario se le asigna un orden al azar, está función es la encargada de decidir que feedback se le va a mostrar al voluntario, siempre siguiendo el mismo orden de la encuesta.
+    A esta función se accede mediante la vista "feedback/id_survey", siendo id_survey la encuesta de la que recibir feedback.
+
+* Juegos de la lotería, la renta y dictador: Corresponde a las decisiones de las versiones de los dos juegos de la lotería y los dos juegos de la renta. Muestra la respuesta del usuario y la media dada por los demás voluntarios, además muestra el porcentaje de los voluntarios que han tomado la misma decisión que el usuario.
+
+* Juego del ultimatum: A parte de mostrar la información que se da en los demás juegos, tambien se muestra el porcentaje de voluntarios que hubiesen aceptado la cantidad dada por el usuario.
+
+### Módulo Stats:
+
+Este módulo es el encargado de generar el fichero de resultados para los investigadores. Concretamente existen dos funciones, una para encuestas genéricas y otra para el experimento "¿Cómo son nuestros voluntarios?" Ya que se adapto los resultados a la necesidad de los investigadores en cuanto al formato requerido por ellos para trabajar más cómodamente.
+
+### Módulo Games:
+
+Este módulo es el encargado de decidir en los juegos del experimento "¿Cómo son nuestros voluntarios?", que usuarios se enfrentan con quién. Además de buscar las respuestas dadas por los voluntarios.
+
+A la hora de decidir que usuarios van a enfrentarse, se busca a todos los usuarios que no han realizado ningún enfrentamiento. Si este llega a un número mínimo necesario para que no existan enfrentamientos repetidos, se continua. Sino se selecciona las decisiones tomadas de otros voluntarios que ya se han enfrentado, pero sin posibilidad de que estos últimos vuelvan a salir premiados.
+
+### Módulo Stats_views:
+
+Este módulo permite la visualización de los resultados de las encuestas, además también permite la visualización de los resultados de los juegos del experimento "¿Cómo son nuestros voluntarios?"
+
+* Listar todas las encuestas creadas por un investigador:
+    A esta función se accede mediante la vista "stats/" o "stats/index"
+* Listar el resultado de una encuesta: Representa mediante una tabla el fichero csv de las encuestas, se puede elegir el criterio de ordenación.
+    A esta función se accede mediante la vista "stats/<int:id_survey>", siendo id_survey la encuesta de la que se desea visualizar los resultados.
+* Listar los juegos disponibles en una encuesta:
+    A esta función se accede mediante la vista "stats/<int:id_survey>/games", siendo id_survey el identificador de la encuesta
+* Listar el resultado de un juego de una encuesta: Representa mediante una tabla, los resultados de de los distintos juegos de una encuesta, se puede elegir el criterio de ordenación.
+    A esta función se accede mediante la vista "stats/<int:id_survey>/games/gameX", siendo id_survey el identificador de la encuesta.
+
+Las vistas anteriores solo están disponibles para investigadores, además solo se puede acceder a las encuestas creadas por el propio investigador.
+
+
+### Módulo shell:
+
+Este módulo se accede mediante la consola de la plataforma, dando acceso a un interprete Python.
+[code]
+$ ./manage.py shell
+// shell interactively of swarm-surveys, "import utiles" to access the administration tools
+In [1]: from current_app import utiles
+[/code]
+
+Entre las opciones disponible en **utiles**, está la de listar usuarios, dar o quitar permisos de investigador a un usuario dado o Reiniciar los juegos del experimento "¿Cómo son nuestros voluntarios?"
+
+Además mediante esta shell se puede acceder a cualquier función de la plataforma. Por ejemplo, se puede ejecutar la función de generar los resultados de una encuesta:
+
+[code]
+In [1]: from current_app import models
+In [2]: from current_app import stats
+In [2]: survey = models.Survey.query.get(1)
+In [3]: stats.write_stats(survey)
+written file in /home/jarenere/swarm_surveys/stats_csv/¿Cómo_son_nuestros_voluntarios?_1.csv
+[/code]
+
+### Comunicación entre módulos.
+
+### Prototipado de las ventanas

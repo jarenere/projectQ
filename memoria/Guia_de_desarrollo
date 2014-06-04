@@ -246,7 +246,7 @@ class CheckMinChoices(object):
 Además cuando creemos el formulario añadiremos el validador: 
 
 [code]
-validators = [Required(),ChelMinChoices(question.min_choices)]
+validators = [Required(),CheckMinChoices(question.min_choices)]
 [/code]
 
 Tambien crearemos una lista con las opciones disponibles, cuya indice será el identificador de cada opción, esta lista se la pasaremos al constructor de  **wtforms.fields.SelectMultipleField** 
