@@ -1,40 +1,12 @@
-frame_game_theory
+Swarm_Surveys
 =================
 
 
-Rrequirement
+Requirement
 =================
-flask 0.10.1
-sqlalchemy 0.9.3
-flask-sqlalchemy 1.0
-flask-migrate  1.2.0
-flask-wtf
-bootstrap 2.3.2
-Flask-Login-0.2.9.tar.gz
-Flask-OpenID-1.2.1
-flask-pagedown-0.1.3
-Flask-Markdown-0.3
-forgery forgerypy (to testing)
-Flask-Bootstrap-3.1.1.1
-apscheduler
-flask-babel 0.9
-flask-script 0.6.6
-coverage 3.7.1
-ipython (2.0.0)
+file requeriments.txt
+pip install -r requeriments.txt
 
-(datetimerange: and form... no usado por ahora..)
-WTForms-Alchemy-0.12.2.
-SQLAlchemy-Utils 0.24.1
-intervals 0.2.3
-
-----
-to generate SchemaDisplay
-sadisplay,
-pip install sadisplay==0.3.8dev
-
-pydot
-graphviz
-Graphviz-cairo
 
 
 Change Python default encoding:
