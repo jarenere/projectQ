@@ -1,7 +1,21 @@
-# Gestión de tiempo
+# Gestión del proyecto
 
 En este capítulo se va a detallar la metodología usada para la gestión del proyecto.
 
 ## Ciclo de vida del desarrollo.
 
-El proyecto de la plataforma de encuestas y 
+A pesar de tener claro desde el principio cual era la meta del proyecto y del experimento "¿Cómo son nuestros voluntarios?", estos dos han ido evolucionado a la par durante  el desarrollo del proyecto. Esto se ha debido sobretodo a las diferencias que hay a la hora de realizar una encuesta con apoyo presencial y a otra telemática.
+
+Por eso el ciclo de vida que ha seguido el proyecto ha sido el prototipado evolutivo, teniendo desde el primer mes una versión básica con los requisitos sacados del documento "¿Cómo son nuestros voluntarios?" y a partir de esta primera versión, con la información recibida por los investigadores, se han ido añadiendo características y refinando el funcionamiento de esta, así sucesivamente durante el desarrollo de la plataforma y la adaptación del experimento a esta.
+
+Para facilitar esta retroalimentación de información, se ha intentado tener siempre una versión actualizada de la plataforma disponible para los investigadores y recibiendo los comentarios de estos a través del correo electrónico.
+
+[Imagen del prototipado evolutivo]
+
+
+## Gestión del tiempo
+
+Debido al ciclo de vida desarrollado 
+
+
+A pesar de dedicar un periodo solo al aprendizaje de las tecnologías a usar, a lo largo del desarrollo se han ido adquiriendo nuevos conocimientos sobre estas.
