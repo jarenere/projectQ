@@ -79,6 +79,8 @@ Tambien se podría considerar la elaboración de un lenguaje específico del dom
 
 Se deberá de acceder a la plataforma mediante un navegador web. Esta deberá de adaptarse al tamaño del dispositivo por el cual se accede a la plataforma, nunca siendo inferior a una resolución de 480px para su correcta visualización. Por otra parte al ser una plataforma web, se deberá tener acceso a través de la red al servidor donde esté alojado la plataforma.
 
+La plataforma usará un sistema de direcciones web amigables, para facilitar el manejo de esta a través del navegador web.
+
 ### Requerimientos funcionales
 
 Agruparemos los requisitos funcionales de la plataforma según el usuario que lo esté usando, por otra parte se incluirá los requisitos que debe cumplir la adopción de la plataforma al experimento "¿Cómo son nuestros voluntarios?".
@@ -153,8 +155,6 @@ En el experimento "¿Cómo son nuestros voluntarios?", la plataforma permitirá:
 Al tratarse de una plataforma web que permite la ejecución de múltiples usuarios al mismo tiempo, puede que existan problemas derivado a la carga de usuario. Para la realización del experimento "¿Cómo son nuestros voluntarios?", se espera llegar a 1000 usuarios durante un mes, por lo que en un principio no debería de existir problemas de carga, aun así se medirá en la maquina de producción la carga máxima de usuarios que soporta el sistema y el tiempo de respuesta.
 
 
-### Restricciones de diseño
-
 
 ### Atributos del Sistema
 
@@ -164,16 +164,19 @@ También se espera en un futuro la ampliación de la plataforma así como el uso
 
 En cuanto a la seguridad, como ya hemos comentado anteriormente se registrará cualquier incidente y acceso a la plataforma. En el sistema existirán tres tipos de usuarios, el administrador, que deberá tener acceso al servidor donde esté alojado la plataforma. Y los investigadores y usuarios que respondan a las encuestas, que podrán entrar en el sistema mediante open-id, o mediante un login y contraseña.
 
+
+
+
+
+
+
 ## Diagrama de Clases
 
-En un primer lugar se va a mostrar sin profundizar el diagrama de clases que hace uso de la base de datos.
+En un primer lugar se va a mostrar sin profundizar el diagrama de clases que hace uso de la base de datos, representando unicamente el modelo estático del sistema.
 [schema1_alto_nivel.svg]
 
 Observando con mas detenimiento la clase Question, cada tipo de pregunta desciende de la clase Question
 [preguntas.svg]
-
-
-
 
 Por otra parte, para el experimento "¿Como son nuestos voluntarios?" Se creo una serie de clases para los distintos juegos y sorteos
 
@@ -183,17 +186,131 @@ Analizando con mas detenimiento la clase Game
 
 [games.svg]
 
-### Esquema Relacional
+Como hemos dicho anteriormente estos diagramas solo hacen referencia al modelo estático del sistema, no así a las demás clases que interactuan con estas, como puede ser los distintos formularios y validadores web usados para la representación del modelo.
+
+### Entidades del sistema
+
+A continuación vamos a describir las entidades del sistema:
+
+
+#### User, usuario
+
+Un usuario es una persona que se registra en la plataforma para poder hacer uso de ella, ya sea creando encuestas o contestándolas. Además guarda los permisos que posee dicho usuario dentro de la plataforma, pudiendo tener un rol de investigador o de voluntario.
+
+
+#### Survey, encuesta
+
+Survey sería la cabecera de la encuesta, en la que están definidas los atributos y las limitaciones de está, como puede ser la fecha durante la que estará activa la encuesta, la duración de esta, o simplemente el título y la descripción d eesta.
+
+#### Consent, consentimiento
+
+Consent almacena los consentimientos que debe aceptar un usuario para realizar una encuesta. Cada consentimiento pertenece a una encuesta.
+
+#### Section, sección
+
+Section sirven para definir los distintas secciones organizatitivas que posee una encuesta, a su vez una sección puede contener mas secciones. Además en cada sección se puede definir si son secciones exclusivas respecto a las secciones del mismo nivel, así como definir el nombre y la probabilidad de realizar dicha sección de la encuesta. Al final las secciones generan un árbol que cuelga de una encuesta.
+
+#### Question, pregunta
+
+Question almacena una pregunta de la encuesta. +Las preguntas pueden ser de distinto tipo, cada una tiene su propia clase que hereda de Question. Cada pregunta está definida dentro de una sección.
+
+##### QuestionText, preguntas de texto
+
+Almacena preguntas cuya respuesta es texto, almacena también las limitaciones que pueda tener la respuesta, como puede ser si es un número entero, decimal o viene limitado por una expresión regular.
+
+##### QuestionYN, preguntas de si o no
+
+Hace referencia a las preguntas cuya respuesta es si o no.
+
+##### QuestionChoice, preguntas de elección
+
+Contiene las distintas opciones posibles en las preguntas cuyo rango de respuestas está predeterminado. También guarda información de como representar estás opciones al usuario.
+
+##### QuestionLikerScala, preguntas de escala likert
+
+Almacena la información necesaria para las preguntas likert.
+
+#### Condition, condición
+
+Condition hace referencia a las preguntas dependientes de la respuesta de otra pregunta. Guardando que pregunta depende de quién así como las condiciones necesarias para mostrar dicha pregunta.
+
+#### Answer, respuesta.
+
+Guarda la respuesta que ha dado un usuario a una pregunta, así como el tiempo empleada en ella.
+
+#### StateSurvey, estado de la encuesta
+
+Almacena la información relativa del estado en el que se encuentra una encuesta por parte de un usuario, guardando entre otras cosas la sección por la que va, el tiempo empleado o el estado de la encuesta.
+
+### Entidades del sistema del proyecto "¿Cómo son nuestros voluntarios?"
+
+
+#### Rafle, rifa
+
+En el sorteo que hay dentro del proyecto, rafle se encarga de decidir si el usuario es premiado o no y guarda la cantidad ganada.
+
+#### GameImpatience, juego de la impaciencia
+
+Hace referencia a los resultados de las decisiones tomadas en el juego de la impaciencia, que depende unicamente solo de un usuario.
+
+#### Game
+
+Dentro del proyecto existen varios juegos que involucran a dos usuarios, cada juego depende de las decisiones tomadas en las respuestas de la encuesta. Cada juego hereda de esta entidad
+
+##### GameLottery1, juego de la lotería 1
+
+Guarda la información de la decisión tomada en la primera versión del juego de la lotería, descrita en el ANEXO X
+
+##### GameLottery2, juego de la lotería 2
+
+Guarda la información de la decisión tomada en la segunda versión del juego de la lotería, descrita en el ANEXO X
+
+##### GameRent1, juego de la renta 1
+
+Guarda la información de la decisión tomada en la primera versión del juego de la renta, descrita en el ANEXO X
+
+##### GameRent2, juego de la renta 2
+
+Guarda la información de la decisión tomada en la segunda versión del juego de la renta, descrita en el ANEXO X
+
+##### GameUltimatum, juego del ultimatum
+
+Guarda la información de la decisión tomada en el juego del ultimatum, descrita en el ANEXO X
+
+##### GameDictador, juego del dictador
+
+Guarda la información de la decisión tomada en el juego del dictador, descrita en el ANEXO X
+
+
+
+## Esquema Relacional
 
 A continuación mostramos el esquema relacional, generado por el ORM SQLAlchemy. 
 
 [schema_bbdd.svg]
 
-Durante el diseño se tuvo que tomar la decisión de como implementar las clases heredaras, si todas en la misma tabla, en distintas o algunas compartiendo tabla y otras no. Se decidio que todas compartirian la misma tabla, sobre todo a que no se espera una gran cantidad de entradas, mas comparandolo con otras tablas como puede ser Answer.
+Durante el diseño se tuvo que tomar la decisión de como implementar las clases heredaras, si todas en la misma tabla, en distintas o algunas compartiendo tabla y otras no. Se decidió que todas compartirían la misma tabla, sobre todo a que no se espera una gran cantidad de entradas, mas comparándolo con otras tablas como puede ser Answer.
 
-Por otra parte se muestra el esquema relacional, donde se guardan los resultados de los distintos juegos y sorteos:
+Aunque no se aprecia en el esquema, existen las siguientes restricciones en la declaración del modelo que se trasladan a la base de datos:
+
+* Tabla stateSurvey, la tupla user_id y survey_id es única.
+* Tabla condition, la tupla subquestion_id y parent_id es única.
+* Tabla answer, la tupla user_id y question_id es única
+* Tabla user, el valor de email es único.
+
+Por otra parte se muestra el esquema relacional, donde se guardan los resultados de los distintos juegos y sorteos
 
 [schema_bbdd_games.svg]
+
+Las restricciones de estas tablas son las siguientes:
+
+* Tabla gameImpatience, la tupla user_id y survey_id es única.
+* Tabla raffle, la tupla user_id y survey_id es única
+* Tabla game, la tupla userA_id, userB_id y survey_id es única
+
+
+
+
 
 ## Casos de Uso
 En esta sección vamos a analizar los posibles usos que podrán darse a la plataforma. Para ilustarlo vamos a emplear algunos diagramas de casos de uso y trazas de eventos.
@@ -202,6 +319,9 @@ En esta sección vamos a analizar los posibles usos que podrán darse a la plata
 [voluntario.svg]
 [investigador.svg]
 [Administrador.svg]
+
+
+
 
 ## Módulos de la plataforma
 
@@ -215,13 +335,29 @@ http://mattupstate.com/python/2013/06/26/how-i-structure-my-flask-applications.h
 
 Se ha dividido la plataforma en distintos módulos, agrupando estas a nivel de funcionalidades.
 
+[modulos.png]
+
 Los módulos con lo que se puede interactuar visualmente a través de un navegador tienen la siguiente estructura:
 
-* Views: La vista de una función es donde una petición HTTP cumple con la lógica del programa. Es decir cada función tiene definida una ruta web por la que se puede acceder. En un modelo MVC, sería parte del controlador. Es esta función es donde los datos de la petición HTTP se traducen a una llamada a la lógica de la aplicación produciendo una respuesta.
-* Forms: Es el lugar donde están definidos todos los formularios de un módulo con los que puede interactuar un usuario, así como las distintas validaciones que sufren los formularios.
-* Templates: Cuando la vista genera una respuesta, es la plantilla quien se encarga de generar el código HTML y JavaScript, para representar los resultados al usuario.
+* Vistas: La vista de una función es donde una petición HTTP cumple con la lógica del programa. Es decir cada función tiene definida una ruta web por la que se puede acceder. En un modelo MVC, sería parte del controlador. Es esta función es donde los datos de la petición HTTP se traducen a una llamada a la lógica de la aplicación produciendo una respuesta.
+* Formularios: Es el lugar donde están definidas las clases que contienen los formularios de un módulo con los que puede interactuar un usuario, así como las distintas validaciones que sufren los formularios.
+* Plantillas: Cuando la vista genera una respuesta, es la plantilla quien se encarga de generar el código HTML y JavaScript, para representar los resultados al usuario.
 
-Para evitar que cualquier usuario pueda ejecutar una vista a la que no tiene acceso, se ha implementado la autorización de la vista mediante decoradores, ya que permiten alternar de manera dinámica la funcionalidad de una función, método o clase, sin tener que realizar ningún cambio de código en la clase decorada.
+En la figura [traza de eventos], podemos ver una traza de eventos genérica que corresponde a la situación en la que un usuario rellena un formulario y lo envía a la plataforma. Luego se comprueba los permisos del usuario y se valida el formulario. Una vez que es valido se modifica el modelo y se devuelve una nueva vista al usuario. 
+
+### Módulo de decoradores
+
+Este módulo contiene los decoradores usados para proteger las vistas de los distintos módulos que se pueden acceder vía petición HTML, así se evita que cualquier usuario pueda ejecutar una vista a la que no tiene acceso.
+Esto se ha realizado mediante decoradores, ya que permiten alternar de manera dinámica la funcionalidad de una función, método o clase, sin tener que realizar ningún cambio de código en la clase decorada.
+
+Los decoradores disponibles son los siguientes:
+
+login_required: Comprueba que el usuario ha ingresado en la plataforma.
+researcher_requerid: Comprueba que el usuario es un investigador.
+finished_survey: Comprueba que el usuario ha finalizado la encuesta.
+belong_researcher: Valida que la encuesta, sección o pregunta que que quiere modificar pertenece al investigador en cuestión y no a otro.
+valid_survey: Comprueba que la encuesta ya se ha publicado.
+there_is_stateSurvey: Valida que existe y es valido el estado de la encuesta por parte de un usuario que quiere rellenar una encuesta.
 
 Por ejemplo:
 [code]
@@ -233,47 +369,6 @@ def new_survey():
 
 Para acceder a la vista new_survey, que sirve para la creación de una nueva encuesta, debemos acceder a la dirección **http://servidor/survey/new**, pero antes de poder acceder, se comprueba que el usuario se haya autentificado en el sistema, mediante el decorador **@login_required**, y que además el usuario tenga permisos de investigador, **@researcher_required**. De esta forma se puede proteger las páginas a los que los usuarios pueden acceder.
 
-### Módulo ORM
-
-Se ha decidido declarar todas las Clases que hacen uso de la base de datos en un único fichero, para tener una visión global de todo el modelo de la base de datos.
-
-Casi todos los demás módulos interaccionan con este Módulo.
-
-### Módulo de configuración
-
-Se han tenido en cuenta las recomendaciones dadas en http://flask.pocoo.org/docs/config/#configuration-best-practices
-
-Y se ha decidido crear un sistema de clases y herencia para la configuración del sistema, pudiendo cambiar el modo de funcionamiento de la aplicación simplemente cambiando la variable de entorno **FLASK_CONFIG**, la estructura que sigue y los modos disponibles son los siguientes:
-
-[code]
-class Config(object):
-    # configuración básica de la plataforma
-
-class DevelopmentConfig(Config):
-    # Configuración de la plataforma en modo desarrollo
-    DEBUG = True
-
-class TestingConfig(Config):
-    # Configuración de la plataforma para test unitarios
-
-class Jmeter(Config):
-    # Configuración de la plataforma para la realización de pruebas de sobrecarga
-
-class ProductionConfig(Config):
-    # Configuración de la plataforma en modo producción
-    # Se define quien es el usuario administrador y cual es el servidor de correo para enviar los distintos logs
-
-class HerokuConfig(ProductionConfig):
-    # Configuración de la plataforma en modo producción en la nube Heroku
-    # Usa el sistema de logs de Heroku para almacenarlos.
-
-
-class UnixConfig(ProductionConfig):
-    # Configuración de la plataforma en modo producción en una máquina de tipo Unix
-    # Hace uso del sistema de logs de la máquina Unix.
-[/code]
-
-Por otra parte, para facilitar el tener varias configuraciones posibles, se carga primeramente la configuración básica definida anteriormente y luego se puede reemplaza por la leída en la variable de entorno **SWARMS_SURVEY_SETTINGS**, pudiendo cambiar fácilmente la configuración.
 
 
 ### Módulo Planificador de tareas.
@@ -296,7 +391,7 @@ En el módulo de autetificación permite las siguientes opciones:
 * Cerrar la sesión actual.
     A esta función se accede mediante la vista: "auth/logout"
 
-### Módulo Researcher
+### Módulo del investigador
 
 Este modulo permite a los usuarios que sean investigadores, las siguientes acciones:
 
@@ -401,7 +496,7 @@ Este modulo permite a los usuarios que sean investigadores, las siguientes accio
 
 Las vistas anteriores solo están disponibles para investigadores, además no se pueden editar encuestas de otros investigadores, ya que todas las vistas están protegidas mediante el decorador "@belong_researcher"
 
-### Módulo Survey
+### Módulo del encuestado
 
 Este módulo permite a los usuarios que sean voluntarios realizar rellenar encuestas. Las acciones disponibles son las siguientes:
 
@@ -415,7 +510,7 @@ Este módulo permite a los usuarios que sean voluntarios realizar rellenar encue
     A esta función se accede mediante la vista "survey/<int:id_survey>/consent", siendo id_survey la encuesta a realizar 
 
 * Mostrar una sección: Esta función es la encargada de mostrar una sección, con todas las preguntas que hay en ella, además de guardar los resultados de las preguntas, así como los tiempos empleados en ellas.
-    A esta función se accede mediante la vista "survey/<int:id_survey>/section/<int:id_section>", siendo id_survey la encuesta a realizar e id_section, la sección.
+    A esta función se accede mediante las vistas "survey/<int:id_survey>/section/<int:id_section>" o "survey/<int:id_survey>/section/", siendo id_survey la encuesta a realizar e id_section, la sección, 
 
 Todas las vistas están protegidas, de manera que es obligatorio haber ingresado en la plataforma, además en la vista **Mostrar una sección** solo se permite acceder a la sección que le toca realizar al usuario.
 
@@ -428,19 +523,19 @@ Este módulo permite dar feedback sobre las decisiones tomadas en el proyecto "�
 
 * Juegos de la lotería, la renta y dictador: Corresponde a las decisiones de las versiones de los dos juegos de la lotería y los dos juegos de la renta. Muestra la respuesta del usuario y la media dada por los demás voluntarios, además muestra el porcentaje de los voluntarios que han tomado la misma decisión que el usuario.
 
-* Juego del ultimatum: A parte de mostrar la información que se da en los demás juegos, tambien se muestra el porcentaje de voluntarios que hubiesen aceptado la cantidad dada por el usuario.
+* Juego del ultimatum: A parte de mostrar la información que se da en los demás juegos, también se muestra el porcentaje de voluntarios que hubiesen aceptado la cantidad dada por el usuario.
 
-### Módulo Stats:
+### Módulo de estadísticas:
 
 Este módulo es el encargado de generar el fichero de resultados para los investigadores. Concretamente existen dos funciones, una para encuestas genéricas y otra para el experimento "¿Cómo son nuestros voluntarios?" Ya que se adapto los resultados a la necesidad de los investigadores en cuanto al formato requerido por ellos para trabajar más cómodamente.
 
-### Módulo Games:
+### Módulo Juegos:
 
 Este módulo es el encargado de decidir en los juegos del experimento "¿Cómo son nuestros voluntarios?", que usuarios se enfrentan con quién. Además de buscar las respuestas dadas por los voluntarios.
 
 A la hora de decidir que usuarios van a enfrentarse, se busca a todos los usuarios que no han realizado ningún enfrentamiento. Si este llega a un número mínimo necesario para que no existan enfrentamientos repetidos, se continua. Sino se selecciona las decisiones tomadas de otros voluntarios que ya se han enfrentado, pero sin posibilidad de que estos últimos vuelvan a salir premiados.
 
-### Módulo Stats_views:
+### Módulo de visualización de estadísticas y juegos.
 
 Este módulo permite la visualización de los resultados de las encuestas, además también permite la visualización de los resultados de los juegos del experimento "¿Cómo son nuestros voluntarios?"
 
@@ -456,6 +551,50 @@ Este módulo permite la visualización de los resultados de las encuestas, adem�
 Las vistas anteriores solo están disponibles para investigadores, además solo se puede acceder a las encuestas creadas por el propio investigador.
 
 
+### Módulo de modelo
+
+Este es el módulo descrito anteriormente en la sección diagrama de clases
+
+Casi todos los demás módulos interaccionan con este Módulo.
+
+### Módulo de configuración
+
+Este módulo se encarga de leer la configuración de la plataforma una vez que se inicia está. Aunque no se ha señalado explícitamente, los demás módulos interaccionan con él si tienen que leer alguna configuración de la plataforma.
+
+Se han tenido en cuenta las recomendaciones dadas en http://flask.pocoo.org/docs/config/#configuration-best-practices
+
+Y se ha decidido crear un sistema de clases y herencia para la configuración del sistema, pudiendo cambiar el modo de funcionamiento de la aplicación simplemente cambiando la variable de entorno **FLASK_CONFIG**, la estructura que sigue y los modos disponibles son los siguientes:
+
+[code]
+class Config(object):
+    # configuración básica de la plataforma
+
+class DevelopmentConfig(Config):
+    # Configuración de la plataforma en modo desarrollo
+    DEBUG = True
+
+class TestingConfig(Config):
+    # Configuración de la plataforma para test unitarios
+
+class Jmeter(Config):
+    # Configuración de la plataforma para la realización de pruebas de sobrecarga
+
+class ProductionConfig(Config):
+    # Configuración de la plataforma en modo producción
+    # Se define quien es el usuario administrador y cual es el servidor de correo para enviar los distintos logs
+
+class HerokuConfig(ProductionConfig):
+    # Configuración de la plataforma en modo producción en la nube Heroku
+    # Usa el sistema de logs de Heroku para almacenarlos.
+
+
+class UnixConfig(ProductionConfig):
+    # Configuración de la plataforma en modo producción en una máquina de tipo Unix
+    # Hace uso del sistema de logs de la máquina Unix.
+[/code]
+
+Por otra parte, para facilitar el tener varias configuraciones posibles, se carga primeramente la configuración básica definida anteriormente y luego se puede reemplaza por la leída en la variable de entorno **SWARMS_SURVEY_SETTINGS**, pudiendo cambiar fácilmente la configuración.
+
 ### Módulo shell:
 
 Este módulo se accede mediante la consola de la plataforma, dando acceso a un interprete Python.
@@ -467,7 +606,9 @@ In [1]: from current_app import utiles
 
 Entre las opciones disponible en **utiles**, está la de listar usuarios, dar o quitar permisos de investigador a un usuario dado o Reiniciar los juegos del experimento "¿Cómo son nuestros voluntarios?"
 
-Además mediante esta shell se puede acceder a cualquier función de la plataforma. Por ejemplo, se puede ejecutar la función de generar los resultados de una encuesta:
+Además mediante el uso de esta interfaz de linea de comandos, se puede acceder a cualquier módulo definido en la plataforma.
+
+Por ejemplo,  ejecutar la función de generar los resultados de una encuesta:
 
 [code]
 In [1]: from current_app import models
@@ -477,6 +618,26 @@ In [3]: stats.write_stats(survey)
 written file in /home/jarenere/swarm_surveys/stats_csv/¿Cómo_son_nuestros_voluntarios?_1.csv
 [/code]
 
-### Comunicación entre módulos.
 
-### Prototipado de las ventanas
+### Prototipado de las ventanas y cuestiones de usabilidad
+
+Después del análisis y el diseño de las distintas partes de la aplicación, se continuo con un diseño preliminar de la interfaz para el usuario. Se tomaron distintas ideas de las plataformas estudiadas para la elaboración de encuestas, así como las guías de usabilidad del proyecto KDE, http://techbase.kde.org/Projects/Usability/HIG
+
+Para facilitar al investigador la navegación entre las distintas secciones, se decidió mostrar el árbol de secciones por completo en un lateral de la ventana. Además de mostrar en la parte superior un menú de tipo "migas de pan", que presenta en forma textual todos los enlaces que describen la ruta de una sección a partir de la raíz, siendo esta la propia encuesta.
+
+Por otra parte para mejorar la usabilidad de la aplicación, se ha añadido código JavaScript en distintas páginas para ofrecer ciertas funcionalidades al usuario, sin tener que realizar peticiones a la plataforma web, añadiendo velocidad y fluidez a la plataforma.
+
+Se decidió también añadir un editor y visualizador de código Markdown para poder comprobar en tiempo real el formato de texto que verían los usuarios a la hora de realizar encuestas.
+
+Por otra parte para mejorar la usabilidad de la plataforma, se uso un sistema de URL amigables, para recordar mas fácilmente la funcionalidad de cada página web.
+
+Además durante el prototipado de las ventanas, se tuvo en cuenta las funcionalidades que provee el framework Bootstrap, para facilitar que las distintas páginas se adaptasen al tamaño del navegador.
+
+#### Esquema de navegación
+
+
+#### Diseño del experimento "¿Cómo son nuestros voluntarios?"
+
+Debido a la naturaleza del proyecto, siempre se intenta evitar el influir a los participantes, para que las respuestas que den sean las que realmente quieren dar. Esto incluye cualquier tipo de feedback visual, incluso el nombre del proyecto "¿Cómo son nuestros voluntarios?", induce a pensar como voluntario.
+
+El diseño final para el experimento, se puede ver en las capturas XX

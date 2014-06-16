@@ -1194,7 +1194,7 @@ class StateSurvey(db.Model):
 class GameImpatience(db.Model):
     '''store the result of part_two
     '''
-    __tablename__ = 'game_impatience'
+    __tablename__ = 'gameImpatience'
     #: unique id (automatically generated)
     id = Column(Integer, primary_key = True)
     #: survey
@@ -1228,7 +1228,7 @@ class GameImpatience(db.Model):
 class Game(db.Model):
     '''store the result of part three game1,2,3
     '''
-    __tablename__='gameRentSeeking'
+    __tablename__='game'
     #: unique id (automatically generated)
     id = Column(Integer, primary_key = True)
     #: survey

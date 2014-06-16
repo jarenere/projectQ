@@ -1,0 +1,104 @@
+# Esqueleto de la aplicación construida
+
+En este apartado vamos a indicar el esqueleto sobre el que hemos construido la aplicación, haciendo uso de las distintas tecnologías mencionadas en el contexto tecnológico.
+
+## Flask
+
+Siguiendo los distintos consejos dados en la documentación de Flask, así como las recomendaciones de patrones para Flask, la estructura de nuestra plataforma de encuestas es la siguiente:
+
+
+
+**SwarmSurvey**         -Directorio raíz de la aplicación
+  manage.py             -Se encarga de la gestión de la aplicación, ya sea ejecutar el servidor, migrar la base de datos, o entrar en la interfaz de linea de comandos de la aplicación
+  config.py             -Fichero de configuración base, usando un modelo de herencia de clases para la configuración, así como el uso de variables de entorno para cambiar de configuración
+  app                   
+    auth                -Módulo para el registro y autentificación de los usuarios
+      __init__.py       -Fichero de inicialización del módulo
+      forms.py          -Formularios que se mostrarán en las plantillas para el registro y autentificación de usuarios
+      validators.py     -Fichero con los distintos validadores creados para comprobar los formularios
+      views.py          -Fichero con la resolución de rutas y las funciones expuestas a través de estas rutas (eg: /login, /register...)
+    feedback            -Módulo que da soporte de feedback al experimento "¿Cómo son nuestros voluntarios?"
+      ...
+    funtion_jinja       -Módulo que contiene distintas funciones creadas para el generador de plantillas jinja2
+      __init__.py
+      functions.py
+    game                -Módulo que contiene la lógica a la hora de seleccionar los usuarios para los juegos del experimento "¿Cómo son nuestros voluntarios?"
+      __init__.py
+      game.py               -Juegos del apartado 3 del experimento "¿Cómo son nuestros voluntarios?"
+      game_impatience.py    -Juegos del apartado 2 del experimento "¿Cómo son nuestros voluntarios?"
+      raffle.py             -Rifa del experimento "¿Cómo son nuestros voluntarios?"
+    main                -Módulo que contiene la información básica de la plataforma
+      __init__.py       
+      errors.py         -Personalización de los distintos errores que puede lanzar la plataforma, ya sean por parte del cliente(4xx) o del servidor(5xx)
+      views.py          -Vistas del la ruta raiz (/), así como el selector de idioma.
+    researcher          -Módulo para la creación de encuestas por parte de los investigadores
+      ...
+    scheduler           -Módulo para la planificación de tareas en el tiempo
+     ...
+    surveys            -Módulo para visualizar y contestar encuestas por parte de los usuarios.
+      ...
+
+    static             -Directorio que contiene los elementos estáticos de la plataforma web, como puede ser el uso de imágenes, css...
+      css
+      img
+      js
+      text
+    stats              -Módulo que contiene la generación y visualización de estadísticas y resultados de las encuestas así como del experimento "¿Cómo son nuestros voluntarios?"
+     ...
+
+    templates          -Directorio con las distintas plantillas usadas para la generación de las distintas páginas web
+      auth             -Directorio con las plantillas del módulo auth
+        login.html     -Plantilla de inicio de sesión a través de OpenID
+        register.html  -Plantilla de registro
+        loginEmail     -Plantilla de inicio a través de correo/contraseña
+      feedback
+        ...
+      ...
+    translations        -Directorio con los distintos idiomas que soporta la plataforma
+      es                -Traducción al español
+      en                -Traducción al ingles
+    __init__.py         -Fichero de inicialización de la plataforma web
+    decorators.py       -Fichero con las funciones para la protección de las distintas vistas de la plataforma
+    models.py           -Declaración del modelo de clases que hace uso de la base de datos.
+    ...
+  migrations            -Directorio que contiene la información necesaria para la migración de la base de datos, este directorio se genera automáticamente.
+    ...
+  tests                 -Directorio que contiene los distintos tests unitarios del sistema
+    test_models.py      -Fichero con los test del modelo
+    ...
+  logs                  -Directorio con los logs de la aplicación
+
+## Modelo Vista Controlador implantado
+
+A continuación se va a explicar brevemente como se trabaja con el MVC implantado en la plataforma.
+
+El motor de Flask recoge todas las peticiones http que llegan al servidor y busca si existe alguna función para la ruta recibida (ficheros views.py). Si el patrón encaja con una ruta reconocida, ejecuta la función del "Controlador" correspondiente a esa ruta. El controlador es una función en Python que al final termina devolviento una respuesta HTTP a la petición recibida. La respuesta suele ser una página web, la cual se genera a través de una plantilla (ficheros del directorio templates), normalmente para la generación de esta "Vista", se necesita información de la base de datos(fichero models.py), esto sería el "Modelo"
+
+
+## Plataforma Modular
+
+Como se ha vista en el esqueleto de la aplicación, existen varios módulos en la aplicación, cada uno con sus ficheros "views.py", que contienen las rutas y los controladores. Para facilitar esta modulación se utiliza el concepto de **blueprints** en Flask, simplificando en gran medida la creación de grandes aplicaciones, al poder extender la aplicación a través de módulos. 
+
+Aparte de lo anteriormente citado, el uso de **blueprints** nos permite:
+* Registrar un módulo en un subdominio o prefijo URL, incluyendo de manera transparente las rutas del fichero views, al subdominio o prefijo URL.
+* Tambien permite registrar varias veces el mismo módulo en diferentes subdominios o prefijos URL.
+* Los **blueprints** se registran al inicio de la aplicación, por lo que se puede implementar distintas funcionalidades como extensiones de la plataforma principal
+
+Por ejemplo, para registrar el módulo auth bajo la ruta /auth y /autentificación, simplemente hace falta añadir al fichero de inicialización de la plataforma las siguientes lineas:
+
+[code]
+from .auth import auth as auth_blueprint
+app.register_blueprint(auth_blueprint, url_prefix='/auth')
+app.register_blueprint(auth_blueprint, url_prefix='/autentificacion')
+[/code]
+
+ 
+
+http://flask.pocoo.org/docs/blueprints/#blueprints
+
+
+http://flask.pocoo.org/docs/
+http://flask.pocoo.org/docs/patterns/
+
+http://flask.pocoo.org/docs/config/#development-production
+http://flask.pocoo.org/docs/config/#configuring-from-files

@@ -1,18 +1,27 @@
 #Pruebas
 
-Para comprobar el correcto funcionamiento de la aplicación se han realizado una serie de test unitarios, pruebas de carga, pruebas de integración, además de haber realizado varios tests con personas físicas.
+La fase de pruebas permite comprobar la corrección de los algoritmos de la aplicación y que cada módulo cumple con los requisitos iniciales planteados.
+
+Cada apartado de este punto se refiere a un tipo de prueba realizado, como son los tests unitarios, los de carga y los de sistema, además de haber realizado varios tests con personas físicas.
+
+Debido al ciclo de vida del proyecto, explicado en el apartado Gestión de tiempo, el desarrollo ha sido un ciclo de vida evolutivo, por lo que la automatización de pruebas se realizó al final del proyecto, y no en cada refinamiento del proyecto.
 
 ## Tests unitarios
 
 En estos tests se ha querido comprobar el perfecto funcionamiento de todas las clases que se mapean en la base de datos, **models**, así como el correcto funcionamiento de los validadores creados para la correcta comprobación de los formularios,**forms** y la clase encargada en los emparejamientos de las decisiones, **game**.
 
-Además estos tests se han integrado en la plataforma, pudiéndose ejecutar desde ella:
+Dentro de las pruebas unitarias se realizó pruebas de caja negra, que sirven para verificar que el item que se está probando, cuando se dan las entradas apropiadas produce los resultados esperados. Siendo este tipo de pruebas interesantes para comprobar el funcionamiento de las interfaces.
+
+Además dentro de las pruebas unitarias, se realizo la cobertura de código, para comprobar el grado en que el código fuente del programa ha sido testeado en estas pruebas unitarias, así como la identificación de código nunca ejecutado.
+
+Todos estos tests se integraron en la platanforma, pudiendose ejecutar desde ella:
 
 [code]
 $ ./manage.py test
-[/code]
-
-Por otra parte junto con los test unitarios, se ha realizado una cobertura de código obteniendo los siguientes resultados:
+test_answer (test_models.ModelsTestCase) ... ok
+test_game_dictador (test_models.ModelsTestCase) ... ok
+...
+test_requerid_selectField (test_validators.ValidatorTest) ... ok
 
 Module              statements  missing     excluded    branches    partial     coverage
 app/game/game       289         73          0           96          16          74%
@@ -21,16 +30,25 @@ app/models          756         60          0           157         5           
 app/surveys/forms   166         94          4           85          10          48%
 app/surveys/utiles  42          23          0           22          7           44%
 Total               1267        263         4           360         38          83%
+[/code]
 
-Se puede pensar en un principio que no se ha testeado en profundidad el ficheros forms, pero si se analiza mas detalladamente, lo que se pretendía analizar eran los validadores, y estos si que han sido testeados a conciencia.
+Pese a no llegar a una cobertura cercana al 100%, si se analiza mas detalladamente los ficheros, se puede comprobar que si que se ha testeado las partes que se pretendiía analizar.
+
 
 ## Pruebas de carga.
 
-Para comprobar el funcionamiento de la plataforma ante una carga de usuarios, se hace uso de la herramienta JMeter, para ello se ha preparado un fichero de configuración para esta herramienta, que simula el uso de 1000 personas a la vez realizando una encuesta predeterminada. JMeter entre sus resultados, nos devuelve el tiempo medio de respuesta de las distintas peticiones.
+Este tipo de pruebas sirve para comprobar el rendimiento de la aplicación ante una carga de trabajo dado, con perspectiva para determinar el comportamiento de la plataforma web ante un acceso concurrente de cierto número de usuarios.
+
+Para realizar el acceso concurrente, se utilizo la herramienta JMeter, que puede realizar todas las conexiones TCP que realizaría un usuario para contestar a la encuesta, además posee de un monitor para medir entre otros datos, los tiempos de respuesta.
 
 ## Pruebas de Sistema
 
-Para automatizar la comprobación del correcto funcionamiento de la plataforma web, también se hace uso de la herramienta  JMETER. Con ella simulamos las acciones que realiza un investigador al generar una encuesta, comprobando que los resultados recibidos son los correctos. Lo mismo se ha hecho para los usuarios que rellenan encuestas.
+Para poder comprobar el correcto funcionamiento de la plataforma web, se carga una encuesta compleja, concretamente la del experimento "¿Cómo son nuestros voluntarios?"
+
+Una vez cargado dicha encuesta, se utiliza la herramienta JMeter, para simular las acciones que realiza un voluntario al contestar una encuesta, cometiendo todo tipo de errores posibles y asegurandonos que los datos recibidos son los esperados.
+
+Además de la automatización de esta prueba con JMeter, distintas personas usaron a su antojo la plataforma web y completaron el experimento para comprobar su correcto funcionamiento.
+
 
 
 

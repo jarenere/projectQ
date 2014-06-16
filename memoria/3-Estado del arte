@@ -1,6 +1,6 @@
 # Estado del arte
 
-Antes de la realización de la aplicación se estudió los requisitos que debía cumplir esta así como las distintas alternativas libres que existen para la elaboración de cuestionarios y si se adaptaban a las necesidades requeridas.
+Antes de la realización de la aplicación se estudió los requisitos que debía cumplir esta así como las distintas alternativas libres que existen para la elaboración de cuestionarios y si se adaptaban a las necesidades requeridas. 
 
 ## Análisis de requisitos
 
@@ -49,6 +49,8 @@ Su gran inconveniente es que está pensado para usarla en si misma, ya que trae 
 
 Es una herramienta bajo GPL2 escrita en C# y soporte único para máquinas con un sistema operativo windows.
 
+Tanto a nivel de caracteristicas como de modelo de negocio, es muy parecido a LimeSurvey.
+
 
 ....
 
@@ -67,6 +69,5 @@ TABLA
 
 
 
-Mirando unicamente la tabla, Surveyor puede parecer que sea de las peores elecciones, sobre todo si solo se comparan funcionalidades, pero analizando un poco más la plataforma sería la mejor opción para adaptarla, debido a su tamaño y a que ofrece un núcleo básico para usarse de base. El gran problema de la plataforma es su falta de documentación, sobre todo a la hora de ampliar la plataforma, no existiendo ningún tipo de documentación relativo a esto. Esta es una de las razones por las que en el APENDICE X, se puede encontrar una guía rápida de desarrollo que incluyen ejemplos de como ampliar la plataforma con una serie de características que no posee.
 
-Por otra parte la tabla tampoco recoge todas las características de las plataformas, como puede ser el uso amigable de direcciones HTML que solo tienen Surveyor y la plataforma desarrollada o el uso de un sistema de migración de base de datos o shell integrado en la aplicación, propiedades que facilitan el desarrollo y ampliación de la plataforma
+Mirando unicamente la tabla, Surveyor puede parecer que sea de las peores elecciones, sobre todo si solo se comparan funcionalidades, pero analizando un poco más la plataforma sería la mejor opción para adaptarla, debido a su tamaño y a que ofrece un núcleo básico para usarse de base, pero debido a su nula documentación, se estimo que el tiempo necesario para comprender en profundidad el funcionamiento de esta, así como para adaptar todas las características necesarias para nuestra plataforma  y elaboración del experimento iba a ser mayor que el necesario para crear una desde cero.  Para no caer en el error de Surveyor se ha intentado documentar lo mejor posible la plataforma, además de la elaboración de una guía rápida de desarrollo en el que se incluyen ejemplos de como ampliar la plataforma con una serie de características que no posee.

@@ -1,0 +1,34 @@
+#Enrutamiento
+
+El diseño de rutas de la plataforma, nos permite tener una visión clara de la funcionalidad de la aplicación.
+
+Como ya hemos explicado anteriormente en el esqueleto de la aplicación, la plataforma está subdividida en varios módulos, a cada módulo se accede mediante una ruta distinta. A la hora de elegir las rutas siempre se ha tenido en cuenta el requisito de que sean amigables y facilmente recordables.
+
+A continuación veremos como Flask resuelve las rutas, así  como un resumen del mapa de rutas de la aplicación.
+
+## Resolución de rutas en Flask
+
+Las rutas son las URL o localizador de recursos uniforme que nos permite acceder a las distintas funcionalidades de la plataforma.
+
+Flask posee tres formas de definir las reglas de las rutas en el sistema:
+
+* Usando el decorador flask.Flask.route()
+* Usando la función flask.Flask.add_url_rule()
+* Accediendo directamente al sistema de rutas de Werkzeug, el cual está expuesto mediante flask.Flask.url_map.
+
+Para el desarrollo de la plataforma se ha elegido la opción del decorador, debido a la sencillez de uso y a la abstracción de la función y la ruta usada para esta.
+
+La ruta se define mediante una cadena que simboliza la regla de una URL, la cual puede contener variables, de tal manera que la variable de la URL se le pasará a la función de Python que está decorando. Además en estas rutas se puede limitar el método de petición HTTP (GET, POST, PUT...). 
+
+En el siguiente ejemplo vemos que para acceder a la vista que nos permite modificar una encuesta, debemos usar la ruta /survey/N, siendo N el número de la encuesta, además podemos acceder mediante los métodos GET y POST. También se puede acceder mediante la cadena "titulo_de_la_encuesta_id_survey", para facilitar el acceso.
+
+@blueprint.route('/survey/<int:id_survey>', methods = ['GET', 'POST'])
+@blueprint.route('/survey/<string:title_survey>', methods = ['GET', 'POST'])
+...
+def editSurvey(id_survey):
+
+
+
+
+
+http://flask.pocoo.org/docs/api/#url-route-registrations

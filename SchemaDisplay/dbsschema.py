@@ -26,5 +26,5 @@ os.system("dot -Tsvg games.dot > games.svg")
 os.system("sadisplay -u sqlite:////home/jarenere/frame_game_theory_esquemas/data-dev.sqlite -i answer,condition,consent,question,section,stateSurvey,survey,user -r dot > schema_bbdd.dot")
 os.system("dot -Tsvg schema_bbdd.dot > schema_bbdd.svg")
 
-os.system("sadisplay -u sqlite:////home/jarenere/frame_game_theory_esquemas/data-dev.sqlite -i answer,user,raffle,gameRentSeeking,survey -r dot > schema_bbdd_game.dot")
+os.system("sadisplay -u sqlite:////home/jarenere/frame_game_theory_esquemas/data-dev.sqlite -i answer,user,raffle,game,gameImpatience,survey -r dot > schema_bbdd_game.dot")
 os.system("dot -Tsvg schema_bbdd_game.dot > schema_bbdd_game.svg")
