@@ -1,0 +1,386 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Manual de usuario del servidor
+\end_layout
+
+\begin_layout Section
+Instalación
+\end_layout
+
+\begin_layout Standard
+Bla,bla,bla.
+\end_layout
+
+\begin_layout Section
+Documentación
+\end_layout
+
+\begin_layout Standard
+Bla,bla,bla.
+\end_layout
+
+\begin_layout Subsection
+Formato del archivo de configuración
+\end_layout
+
+\begin_layout Standard
+El contenido del archivo se compone por pares 
+\begin_inset Quotes eld
+\end_inset
+
+llave=valor
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Si una línea comienza por una almohadilla (#), será considerada un comentario.
+\begin_inset Newline newline
+\end_inset
+
+El archivo de configuración tiene la siguiente estructura:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{listing}[style=consola, numbers=none]
+\end_layout
+
+\begin_layout Plain Layout
+
+#Puerto a la escucha del Servidor VVD
+\end_layout
+
+\begin_layout Plain Layout
+
+puerto=8004
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{listing}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Formato de los archivos de información de las cámaras
+\begin_inset CommandInset label
+LatexCommand label
+name "Formato archivo informacion camaras"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La información de las cámaras se ha de almacenar siguiendo un determinado
+ Bla,bla,bla.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{listing}[style=consola, numbers=none]
+\end_layout
+
+\begin_layout Plain Layout
+
+hostname=camaraVVD
+\end_layout
+
+\begin_layout Plain Layout
+
+description=WVC210 WirelessPTZ Video Camera
+\end_layout
+
+\begin_layout Plain Layout
+
+defname=camaraVVD
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{listing}
+\end_layout
+
+\end_inset
+
+El significado de cada parámetro es el siguiente:
+\begin_inset CommandInset label
+LatexCommand label
+name "Significado de los parametros en Apendice"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+hostname Nombre del 
+\emph on
+host
+\emph default
+.
+\end_layout
+
+\begin_layout Description
+description Descripción.
+\end_layout
+
+\begin_layout Description
+defname Nombre de la cámara definido por el usuario.
+\end_layout
+
+\begin_layout Description
+etc Bla,bla,bla.
+\end_layout
+
+\begin_layout Section
+Uso
+\end_layout
+
+\begin_layout Standard
+El servidor ha de ejecutarse en Bla,bla,bla.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/Memoria PFC/figures/Interfaz de control servidor VVD verdes.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Interfaz de control del servidor VVD.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Fig Interfaz Servidor"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph*
+Botones para la lista de los servidores:
+\end_layout
+
+\begin_layout Standard
+Dentro del grupo de botones de control de la lista de servidores, se encuentra
+ 
+\emph on
+añadir servidor
+\emph default
+, que abre una ventana para introducir el nombre, IP y puerto del nuevo
+ servidor de la lista, tal y como puede verse en la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Fig Añadir Servidor"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/Memoria PFC/figures/Ventana para añadir un nuevo servidor.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Ventana para añadir un nuevo servidor.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Fig Añadir Servidor"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Archivos generados tras la ejecución
+\end_layout
+
+\begin_layout Standard
+Bla,bla,bla.
+\end_layout
+
+\end_body
+\end_document

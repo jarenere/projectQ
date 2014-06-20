@@ -1,0 +1,685 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine natbib_authoryear
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Manual de referencia del cliente para Android
+\end_layout
+
+\begin_layout Section
+Instalación
+\end_layout
+
+\begin_layout Standard
+El cliente de VVD: Vídeo Vigilancia Distribuida es una aplicación diseñada
+ para Android.
+ Tiene las siguientes dependencias (las versiones indicadas son aquellas
+ con las que se ha desarrollado el proyecto: con versiones anteriores es
+ probable que no funcione de forma correcta; con versiones posteriores,
+ es probable que sí, aunque no se garantiza):
+\end_layout
+
+\begin_layout Itemize
+Versión de Android 2.3.3 "Gingerbread".
+\end_layout
+
+\begin_layout Standard
+Para la instalación hay que descargar la versión apropiada del SDK y AVD
+ (Android Virtual Device) empleando el SDK Manager de 
+\emph on
+Android
+\emph default
+.
+\begin_inset Newline newline
+\end_inset
+
+La aplicación cliente de VVD: Vídeo Vigilancia Distribuida se distribuye
+ mediante un archivo con formato 
+\emph on
+.apk
+\emph default
+ llamado 
+\series bold
+VVDAndroid.apk
+\series default
+.
+\begin_inset Newline newline
+\end_inset
+
+Para su instalación sólo hay que descargar el archivo en el dispositivo
+ con 
+\emph on
+Android
+\emph default
+, abrirlo y aceptar los permisos necesarios para la ejecución de la aplicación.
+ Aparecerá en el menú de aplicaciones.
+\end_layout
+
+\begin_layout Section
+Uso
+\end_layout
+
+\begin_layout Standard
+Para ejecutar el cliente hay que pulsar sobre el icono Android VVD creado
+ en el menú de aplicaciones.
+ Se abrirá un menú formado por seis botones: 
+\emph on
+Conectar/Desconectar, Setup, Información Cams, Ver una cámara, Monitor y
+ Salir
+\emph default
+.
+ La interfaz puede verse en la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Fig menu VVDAndroid"
+
+\end_inset
+
+.
+ Los botones no tienen título; sólo aparecerá en un mensaje emergente de
+ corta duración cuando se pulse sobre alguno de ellos para indicarle al
+ usuario que ha sido pulsado el botón.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement p
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename D:/Mis Datos/Universidad/PFC Videovigilancia por Móvil/LyX/Memoria PFC/figures/Menu VVDAndroid Conectado.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Menú Android VVD conectado.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Fig menu VVDAndroid"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Al arrancar la aplicación, sólo aparecen tres botones activos: 
+\emph on
+Conectar/Desconectar
+\emph default
+,
+\emph on
+ Setup
+\emph default
+ y 
+\emph on
+Salir
+\emph default
+ (véase Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Fig menu VVDAndroid Desconectado"
+
+\end_inset
+
+).
+ El resto de botones se activarán cuando se realice una conexión exitosa
+ con un servidor y se reciban las listas de cámaras y de servidores.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement p
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename D:/Mis Datos/Universidad/PFC Videovigilancia por Móvil/LyX/Memoria PFC/figures/Menu VVDAndroid Desconectado.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Menú Android VVD desconectado.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Fig menu VVDAndroid Desconectado"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Botón Conectar/Desconectar
+\end_layout
+
+\begin_layout Standard
+Tiene dos estados: 
+\emph on
+conectado
+\emph default
+ y 
+\emph on
+desconectado
+\emph default
+.
+ Cuando está en 
+\emph on
+conectado
+\emph default
+ la luz del botón aparece encendida de color verde, en caso contrario aparece
+ apagada.
+ Al pulsar sobre el botón se tomará el servidor elegido en el menú de configurac
+ión 
+\emph on
+Setup
+\emph default
+ o se realizará una conexión al servidor por defecto \SpecialChar \nobreakdash-
+
+\emph on
+Default,192.168.1.34:8004
+\emph default
+\SpecialChar \nobreakdash-
+ si no se ha seleccionado ninguno.
+ Mientras se realiza la conexión a uno de los servidores, se pedirá el algoritmo
+ de desencriptación y la clave para poder transformar la información recibida
+ en datos inteligibles (véase Figura ).
+ Si alguno de estos dos parámetros se introduce de forma erronea, aparecerá
+ un mensaje de error.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement p
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename D:/Mis Datos/Universidad/PFC Videovigilancia por Móvil/LyX/Memoria PFC/figures/Ventana algoritmo y clave.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Ventana solicitando algoritmo y clave de desencriptación.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Fig Ventana algoritmo y clave"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Si la conexión con el servidor se realiza con éxito, se recibirán las listas
+ de servidores y de cámaras encriptadas, se procederá a desencriptarlas
+ con el algoritmo y la clave proporcionados.
+ Estos datos se almacenarán en archivos temporales llamados 
+\series bold
+listaServidores.txt
+\series default
+ y 
+\series bold
+listaCamaras.txt
+\series default
+ respectivamente.
+ Así conseguimos que al pasar de una ventana o 
+\emph on
+Activity
+\emph default
+ a otra esta información no se pierda y pueda ser accesible mientras esté
+ activa la aplicación.
+\end_layout
+
+\begin_layout Standard
+Además se activarán el resto de botones para poder acceder al resto de funciones.
+\end_layout
+
+\begin_layout Subsection*
+Botón Setup
+\end_layout
+
+\begin_layout Standard
+Abrirá una nueva ventana en la que se podrá configurar el servidor al que
+ conectarse eligiéndolo de una lista desplegable o añadiendo uno nuevo de
+ forma manual (véase Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Fig setup Android VVD"
+
+\end_inset
+
+).
+ 
+\begin_inset Newline newline
+\end_inset
+
+Adicionalmente, en esta interfaz es posible conectarse a una cámara de forma
+ manual introduciendo su IP y recibir el flujo de vídeo de la misma.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement p
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename D:/Mis Datos/Universidad/PFC Videovigilancia por Móvil/LyX/Memoria PFC/figures/Ventana configuracion Android VVD.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Ventana de configuración de Android VVD.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Fig setup Android VVD"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Botón Información Cams
+\end_layout
+
+\begin_layout Standard
+Abre una lista con las cámaras recibidas (véase Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Fig Lista de las camaras"
+
+\end_inset
+
+).
+ Al seleccionar una de ellas, se abrirá una ventana nueva mostrando la informaci
+ón de la misma de forma ordenada, tal y como se muestra en la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Fig Informacion Camaras Android"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement p
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename D:/Mis Datos/Universidad/PFC Videovigilancia por Móvil/LyX/Memoria PFC/figures/Lista de camaras.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Lista de las cámaras.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Fig Lista de las camaras"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement p
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename D:/Mis Datos/Universidad/PFC Videovigilancia por Móvil/LyX/Memoria PFC/figures/Informacion de las camaras en android.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Información de las cámaras en Android.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Fig Informacion Camaras Android"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Botón Ver una Cámara
+\end_layout
+
+\begin_layout Standard
+Muestra un listado con las cámaras disponibles y al pulsar sobre una de
+ ellas se reproducirá el 
+\emph on
+streaming
+\emph default
+ de vídeo de la misma.
+ Durante la reproducción se puede acceder a un menú para mover la cámara,
+ activar el modo 
+\emph on
+patrol 
+\emph default
+y salir de la aplicación.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement p
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename D:/Mis Datos/Universidad/PFC Videovigilancia por Móvil/LyX/Memoria PFC/figures/Reproducción del streaming de video.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Reproductor del 
+\emph on
+streaming
+\emph default
+ de vídeo.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Fig Reproductor Android"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Botón Monitor
+\end_layout
+
+\begin_layout Standard
+Interfaz para visualizar la imagen instantánea de cuatro cámaras a la vez
+ (véase Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Fig Monitor Android"
+
+\end_inset
+
+).
+ Permite elegir una de ellas para su reproducción pulsando sobre la imagen.
+ Para pasar al siguiente grupo de cámaras hay que pulsar sobre el botón
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+siguientes
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+ y para volver al grupo anteriormente visto hay que pulsar sobre 
+\emph on
+
+\begin_inset Quotes eld
+\end_inset
+
+anteriores
+\begin_inset Quotes erd
+\end_inset
+
+
+\emph default
+.
+ En caso de no estar disponible alguna de las cámaras se visualizará la
+ imagen de un monitor sin señal.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement p
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename D:/Mis Datos/Universidad/PFC Videovigilancia por Móvil/LyX/Memoria PFC/figures/Monitor de cuatro camaras.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Monitor de cuatro cámaras.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Fig Monitor Android"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Botón Salir
+\end_layout
+
+\begin_layout Standard
+Cierra la aplicación y deja libre la información utilizada por el programa.
+\end_layout
+
+\end_body
+\end_document

@@ -14,5 +14,5 @@ app/app.db_cp
 app.db-journal
 *.sqlite
 settings.cfg
-#*#
-*~
+#*.lyx#
+*.lyx~

@@ -1,0 +1,515 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 2
+\paperpagestyle headings
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Contexto Tecnológico
+\end_layout
+
+\begin_layout Standard
+En este capítulo se estudia las diferentes tecnologías que fueron utilizadas
+ en el desarrollo del presente PFC.
+ En primer lugar se explican algunos conceptos referente al modelo-vista-control
+ador (MVC).
+ Después se introduce brevemente el lenguaje utilizado así como las tecnologías
+ asociadas.
+ Por último el software utilizado durante las fases de desarrollo del proyecto.
+\end_layout
+
+\begin_layout Section
+Modelo-vista-controlador
+\end_layout
+
+\begin_layout Standard
+MVC es un patrón de diseño de las aplicaciones software, según la definición
+ de Christopher Alexander **"cada patrón describe un problema que ocurre
+ una y otra vez en nuestro entorno, así como la solución a ese problema,
+ de tal modo que se pueda aplicar esta solución un millón de veces, sin
+ hacer lo mismo dos veces."** *1*1 “Design Patterns” [GoF95] en la sección
+ “¿Qué es un patrón de diseño? 
+\end_layout
+
+\begin_layout Standard
+El patrón MVC consiste en tres tipos de objetos: 
+\end_layout
+
+\begin_layout Itemize
+El 
+\series bold
+Modelo
+\series default
+ es la representación de la información con la cual es sistema opera.
+ 
+\end_layout
+
+\begin_layout Itemize
+La 
+\series bold
+Vista
+\series default
+ que es su representación del modelo (información y lógica del negocio),
+ en un formato adecuado para interaccionar con él.
+ 
+\end_layout
+
+\begin_layout Itemize
+El 
+\series bold
+Controlador
+\series default
+ que define el modo en que la interfaz reacciona a la entrada del usuario
+ e invoca peticiones al modelo.
+\end_layout
+
+\begin_layout Standard
+La figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "figura_mvc"
+
+\end_inset
+
+ muestra la relación entre el modelo, la vista y el controlador.
+ Las lineas solidas indicas una asociación directa, las punteadas indirectas.
+\end_layout
+
+\begin_layout Standard
+En otras palabras, el flujo de control sería:
+\end_layout
+
+\begin_layout Itemize
+*El usuario realiza una acción en la interfaz.
+\end_layout
+
+\begin_layout Itemize
+El controlador trata el evento de entrada.
+\end_layout
+
+\begin_layout Itemize
+El controlador notifica al modelo la acción del usuario, lo que puede implicar
+ un cambio en el estado del modelo.
+\end_layout
+
+\begin_layout Itemize
+Se genera una nueva vista.
+ La vista toma los datos del modelo.
+ En ningún momento, el modelo tiene conocimiento directo de la vista.
+\end_layout
+
+\begin_layout Itemize
+La interfaz de usuario espera otra interacción del usuario, que comenzará
+ otro nuevo ciclo.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/ModelViewControllerDiagram_es.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Diagrama sencillo que muestra la relación entre el modelo, la vista y el
+ controlador.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "figura_mvc"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Flask
+\end_layout
+
+\begin_layout Standard
+Dentro de los objetivos del proyecto, se decidió que tanto los usuarios
+ como los investigadores interaccionar con la plataforma mediante un portal
+ web.
+ Para la creación de esta plataforma, se eligió Flask, que es una micro
+ plataforma para el desarrollo web escrito en Python.
+ El significado de 
+\emph on
+micro
+\emph default
+ es que tiene como objetivo mantener un núcleo simple pero extensible, sin
+ tomar decisiones por el desarrollador.
+\end_layout
+
+\begin_layout Standard
+Flask no incluye capa de abstracción para la base de datos, validación de
+ formularios o cualquier otra cosa que se pueda encontrar mediante el uso
+ de diferentes bibliotecas que ya existen.
+ En su lugar Flask soporta extensiones para añadir estas funcionalidades
+ a la aplicación.
+\end_layout
+
+\begin_layout Standard
+El núcleo de Flask trae por defecto:
+\end_layout
+
+\begin_layout Itemize
+Un servidor de desarrollo y un debugger incluido en el servidor.
+\end_layout
+
+\begin_layout Itemize
+Soporte de test unitarios integrados.
+\end_layout
+
+\begin_layout Itemize
+Uso de URLs amigables.
+\end_layout
+
+\begin_layout Itemize
+Generador de plantillas Jinja2.
+\end_layout
+
+\begin_layout Itemize
+Soporte para cookies seguras.
+\end_layout
+
+\begin_layout Standard
+La decisión de usar Flask como marco de trabajo para el proyecto viene debido
+ a las características anteriormente citadas, además de su suave curva de
+ aprendizaje, permitiendo de manera rápida empezar a construir el sistema
+ con tener unos conocimientos básicos de Python y HTML.
+\end_layout
+
+\begin_layout Standard
+Por otra parte Flask posee una licencia de software libre permisiva, concretamen
+te BSD, dándonos gran libertad a la hora de desarrollar.
+ También posee una excelente documentación con diversos consejos como puede
+ ser la estructuración de un programa grande, o el manejo de ficheros de
+ configuración.
+\end_layout
+
+\begin_layout Standard
+Todo esto facilita la creación de aplicaciones de manera fácil y rápida.
+\end_layout
+
+\begin_layout Section
+Python
+\end_layout
+
+\begin_layout Standard
+Debido a la elección de Flask, para el desarrollo de la plataforma se ha
+ usado el lenguaje de programación Python, desarrollado a finales de los
+ ochenta por Guido van Rossum en el Centro para las Matemáticas y la Informática
+ en los Paises Bajos.
+ Python es un lenguaje de programación multiparadigna y que soporta la orientaci
+ón a objetos, programación imperativa y la programación funcional.
+ La sintaxis de Python esta basada en la legibilidad y transparencia, obligando
+ al usuario a escribir código bien identado.
+\end_layout
+
+\begin_layout Section
+Jinja2
+\end_layout
+
+\begin_layout Standard
+Jinja2 es un lenguaje moderno y amistoso para la creación de plantillas.
+ El uso de plantillas, junto con los datos obtenidos del modelo, permite
+ la generación de paginas web dinámicas de manera fácil, permitiendo con
+ una única plantilla, la generación de páginas diferentes.
+\end_layout
+
+\begin_layout Standard
+El motor de Jinja2 entre sus características están el uso de filtros, bucles
+ variables, herencia, así como el uso de funciones externas escritas en
+ Python.
+ Además provee de un sistema automático de escapado HTML, para prevenir
+ técnicas de XSS**, que es una brecha de seguridad típico de las aplicaciones
+ web.
+\end_layout
+
+\begin_layout Standard
+Jinja2 junto con el código obtenido del modelo, es capaz de generar la vista
+ del modelo MVC, esta vistas son páginas web HTML que recibe el usuario.
+\end_layout
+
+\begin_layout Section
+Otros lenguajes
+\end_layout
+
+\begin_layout Standard
+Aparte de los lenguajes indicados anteriormente, se ha usado HTML, que es
+ el lenguaje estándar que sirve para la la elaboración de páginas web.
+\end_layout
+
+\begin_layout Standard
+También se ha hecho uso de CSS, Hojas de Estilo en Cascada (Cascading Style
+ Sheets), que es un lenguaje usado para describir el aspecto y el formato
+ de un documento escrito en un lenguaje de marcas, en nuestro caso HTML.
+\end_layout
+
+\begin_layout Standard
+Además se ha hecho uso de JavaScript, un lenguaje de programación que normalment
+e se usa en el lado del cliente, en nuestro caso navegador web, que permite
+ mejoras y la adición de funcionalidades en la interfaz del usuario, vista.
+\end_layout
+
+\begin_layout Section
+Bootstrap
+\end_layout
+
+\begin_layout Standard
+En los objetivos de la plataforma se incluía que el diseño web fuese adaptable,
+ esto significa que el diseño de la página se ajuste dinámicamente a las
+ características del dispositivo usado, ya sea este un ordenador de escritorio,
+ una tablet, teléfono móvil...
+\end_layout
+
+\begin_layout Standard
+Para ello se hizo uso de Bootstrap, que es una colección de herramientas
+ que contiene código HTML, plantillas CSS, formularios y otros componentes
+ de la interfaz de una página web para la creación de páginas web con diseño
+ adaptable.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/responsive_design.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+web adaptativa
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+SQLAlchemy
+\end_layout
+
+\begin_layout Standard
+Para dar persistencia a los datos manejados por el modelo, se hizo uso de
+ SQLAlchemy, que es un ORM, Mapeo objeto-relacional (Object Relacional Mapper).
+ El ORM es una técnica de programación para convertir datos entre el sistema
+ de tipos utilizado en un lenguaje de programación orientado a objetos,
+ en nuestro caso Python, y la utilización de una base de datos relacional,
+ creando en la practica una base de datos orientada a objetos.
+\end_layout
+
+\begin_layout Standard
+El uso de SQLAlchemy permite trabajar con bases de datos relacionales de
+ diferentes fabricantes, abstrayéndote de la elección usada, como puede
+ ser SQLite, MySQL u Oracle, pudiendo escribir la misma consulta independienteme
+nte de la base de datos usada por debajo.
+ Lo cual permite cambiar fácilmente de base de datos a usar.
+\end_layout
+
+\begin_layout Standard
+Además también se ha hecho uso de Alembic, que es una herramienta de migración
+ de base de datos para SQLAlchemy, esta herramienta permite ir actualizando
+ de manera transparente la base de datos mientras el programa va creciendo,
+ sin necesidad de crear una nueva base de datos y realizar costosas migraciones
+ de una a otra.
+ Además de mantener un historial de los cambios en la base de datos, lo
+ cual permite revertir la base de datos a una anterior versión.
+ Todo esto facilita el desarrollo de la aplicación, así como la actualización
+ de esta en entornos de producción.
+\end_layout
+
+\begin_layout Section
+WTForms
+\end_layout
+
+\begin_layout Standard
+Para la realización de los cuestionarios se ha utilizado WTForms, el cual
+ es una biblioteca para la validación y representación de formularios, abstrayén
+dote del código HTML necesario para la representación de estos elementos
+ en la pagina web.
+\end_layout
+
+\begin_layout Standard
+Además permite de manera fácil la creación de nuevos validadores y la creación
+ de nuevos campos hechos a medida para la aplicación.
+\end_layout
+
+\begin_layout Section
+GitHub
+\end_layout
+
+\begin_layout Standard
+Ya que una de las motivaciones del proyecto es la realización de una plataforma
+ que puede ayudar a la comunidad científica a la elaboración de experimentos
+ participativos, se determinó que el desarrollo del proyecto fuese completamente
+ transparente, libre y abierto.
+\end_layout
+
+\begin_layout Standard
+Para ello se usó desde el principio GitHub, el cual es una plataforma de
+ desarrollo colaborativo para alojar proyectos utilizando el sistema de
+ versiones Git.
+ Todo el código, así como la evolución de este se puede encontrar en "https://gi
+thub.com/nukru/frame_game_theory" 
+\end_layout
+
+\begin_layout Section
+Software de apoyo
+\end_layout
+
+\begin_layout Standard
+Durante el desarrollo del proyecto se utilizaron ademas las siguientes aplicacio
+nes:
+\end_layout
+
+\begin_layout Itemize
+Sublime Text 2 como editor de texto y editor de código fuente, junto los
+ siguientes extensiones:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Git: extensión para integrar Git dentro de Sublime Text.
+\end_layout
+
+\begin_layout Itemize
+Indent XML: indentación de código XML.
+\end_layout
+
+\begin_layout Itemize
+Sublime Code Intel, una extensión para el autocompletado de código.
+\end_layout
+
+\begin_layout Itemize
+Sublime Linter, para la comprobación de errores potenciales en la escritura
+ de código.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+JMETER para la realización de pruebas de sobrecarga.
+\end_layout
+
+\begin_layout Itemize
+LaTeX para la elaboración de la documentación.
+ Los componentes utilizados fueron:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+TeX Live como distribución de TeX
+\end_layout
+
+\begin_layout Itemize
+Lyx
+\end_layout
+
+\end_deeper
+\end_body
+\end_document

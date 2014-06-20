@@ -1,0 +1,325 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Estado del Arte
+\end_layout
+
+\begin_layout Standard
+En el Capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Introducción"
+
+\end_inset
+
+, se ha destacado la importancia que tiene la seguridad en nuestra sociedad,
+ y Bla, Bla, Bla
+\end_layout
+
+\begin_layout Section
+TeleEye iView
+\end_layout
+
+\begin_layout Standard
+The TeleEye Group ha desarrollado un sistema de vídeo vigilancia para móviles
+ iOS
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "iOS"
+description "Sistema operativo móvil de Apple. Integrado en los dispositivos iPhone, iPod, iPad y Apple TV."
+
+\end_inset
+
+ y Android
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "Android"
+description "Sistema operativo de Google para dispositivos móviles basado en Linux y en aplicaciones middleware."
+
+\end_inset
+
+ que permite el control y visualización remota de videocámaras instaladas
+ en hogares o en oficinas desde cualquier parte del mundo
+\begin_inset CommandInset citation
+LatexCommand citep
+key "TeleyeiView"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/Memoria PFC/figures/teleEye.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+TeleEye iView para Android.
+\begin_inset CommandInset citation
+LatexCommand citep
+key "ImagenTeleEye"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Fig TeleEye"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Características
+\end_layout
+
+\begin_layout Standard
+TeleEye iView está desarrollado siguiendo Bla, Bla, Bla...
+ y puede realizar PTZ
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "PTZ"
+description "Acrónimo de \\textit{pan-tilt-zoom}, es decir, moviento horizontal y vertical de la cámara y la posibilidad de acercar la imagen."
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Ventajas
+\end_layout
+
+\begin_layout Itemize
+El cliente está disponible para un amplio número de dispositivos diseñados
+ tanto para Android como para iOS.
+\end_layout
+
+\begin_layout Itemize
+Transmisión de vídeo sobre Wi-Fi, HSDPA
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "HSDPA"
+description "\\textit{High Speed Downlink Packet Access}, también denominada 3.5G, 3G+ o turbo 3G, es la optimización de la tecnología espectral UMTS/WCDMA."
+
+\end_inset
+
+, 3G
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "3G"
+description "Abreviación de \\textit{tercera generación} de transmisión de voz y datos a través de telefonía móvil mediante UMTS."
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "UMTS"
+description "\\textit{Universal Mobile Telecommunications Systems} es una tecnología sucesora de la tecnologia GSM, usada por los dispositivos móviles de tercera generación."
+
+\end_inset
+
+, EDGE
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "EDGE"
+description "\\textit{Enhaced Data Rates for GSM Evolution} o Tasas de Datos Mejoradas para la evolución de GSM, es una tecnología de la telefonía móvil que actúa como puente entre las redes 2G y 3G."
+
+\end_inset
+
+ o GPRS
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "GPRS"
+description "\\textit{General Packet Radio Service} o Servicio General de Paquetes Vía Radio es una extensión de GSM para la transmisión de datos por paquetes."
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Bla, Bla, Bla
+\end_layout
+
+\begin_layout Subsection
+Desventajas
+\end_layout
+
+\begin_layout Itemize
+Es necesario un 
+\emph on
+hardware
+\emph default
+ específico que actúe como servidor, que será el encargado del control de
+ las cámaras y del envío en 
+\emph on
+streaming
+\emph default
+ del vídeo llamado 
+\series bold
+TeleEye Mobile Monitoring Solution (M-303)
+\series default
+, por lo tanto, no es gratuito.
+\end_layout
+
+\begin_layout Itemize
+En el cliente sólo es posible visualizar una de las cámaras Bla, Bla, Bla
+\end_layout
+
+\begin_layout Section
+Otro Ejemplo
+\end_layout
+
+\begin_layout Standard
+Bla, Bla, Bla
+\end_layout
+
+\begin_layout Subsection
+Características
+\end_layout
+
+\begin_layout Standard
+Bla, Bla, Bla
+\end_layout
+
+\begin_layout Subsection
+Ventajas
+\end_layout
+
+\begin_layout Standard
+Bla, Bla, Bla
+\end_layout
+
+\begin_layout Subsection
+Desventajas
+\end_layout
+
+\begin_layout Standard
+Bla, Bla, Bla
+\end_layout
+
+\begin_layout Section
+Así todos los que necesites
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\end_body
+\end_document

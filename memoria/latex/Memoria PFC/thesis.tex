@@ -1,0 +1,189 @@
+%% LyX 2.1.0 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[12pt,a4paper,twoside,spanish]{ociamthesis-lyx}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\synctex=-1
+\usepackage{float}
+\usepackage{endnotes}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[numbers]{natbib}
+\usepackage{nomencl}
+% the following is useful when we have the old nomencl.sty package
+\providecommand{\printnomenclature}{\printglossary}
+\providecommand{\makenomenclature}{\makeglossary}
+\makenomenclature
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\pdfpageheight\paperheight
+\pdfpagewidth\paperwidth
+
+\providecommand{\LyX}{L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
+\newcommand{\noun}[1]{\textsc{#1}}
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+\floatstyle{ruled}
+\newfloat{algorithm}{tbp}{loa}[chapter]
+\providecommand{\algorithmname}{Algoritmo}
+\floatname{algorithm}{\protect\algorithmname}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+ \let\footnote=\endnote
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+% ociamthesis-lyx v2.1
+% By Keith A. Gillow <gillow@maths.ox.ac.uk>
+% modified for LyX by Danny Price <danny.price@astro.ox.ac.uk>
+% modified for UGR by Rafael Martos Llavero <rafamll@correo.ugr.es>
+
+%Packages
+\usepackage{graphicx}
+\usepackage [ c o l o r l i n k s=true , c i t e c o l o r =blue , l i n k c o l o r=black , ur l c o l o r=
+green ] { hyper ref }
+\usepackage{listings}
+\usepackage{color}
+
+%Ajustar página pdf a la ventana
+\hypersetup{
+pdfstartview={FitH}
+}
+
+%Encabezado y pie de pagina
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter. #1 }}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\fancyhf{}
+\fancyhead[RO]{\bfseries\rightmark}
+\fancyhead[LE]{\bfseries\leftmark}
+\fancyfoot[LE,RO]{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+\addtolength{\headheight}{0.5pt}
+\fancypagestyle{plain}{
+  \fancyhead{}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+%Imagen de la portada
+\def\crest{{\includegraphics{titlepage/logougr.pdf}}}
+
+
+%Listados de código
+%CODIGO EN COLOR
+%\definecolor{javared}{rgb}{0.6,0,0} % for strings
+%\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
+%\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
+
+%CODIGO BLANCO Y NEGRO
+\definecolor{javared}{gray}{0.20} % for strings
+\definecolor{javagreen}{gray}{0.40} % comments
+\definecolor{javapurple}{rgb}{0.01,0.01,0.01} % keywords
+\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
+%\definecolor{lightgrey}{rgb}{0.95,0.95,0.95}
+\definecolor{lightgrey}{gray}{0.98}
+\definecolor{negro}{rgb}{0.001,0.001,0.001}
+
+\renewcommand*\lstlistingname{Código}
+\lstset{
+language=Java,
+basicstyle=\scriptsize\ttfamily,
+keywordstyle=\color{javapurple}\bfseries,
+stringstyle=\color{javared},
+commentstyle=\color{javagreen},
+morecomment=[s][\color{javadocblue}]{/**}{*/},
+numbers=left,
+numberstyle=\tiny\color{black},
+stepnumber=1,
+numbersep=10pt,
+tabsize=4,
+showspaces=false,
+showstringspaces=false,
+frame=single,
+backgroundcolor=\color{lightgrey},
+breaklines=true,
+breakatwhitespace=false,
+morecomment=[l]{//},
+captionpos=t,
+}
+%Codigo para salidas por consola
+\lstdefinestyle{consola}
+{basicstyle=\bf\ttfamily,
+backgroundcolor=\color{lightgrey},
+keywordstyle=\color{negro}\bfseries,
+stringstyle=\color{negro},
+commentstyle=\color{negro},
+}
+
+%Minimizar fragmentado de listados
+\lstnewenvironment{listing}[1][]
+   {\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+
+\makeatother
+
+\usepackage{babel}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
+
+\begin{document}
+% PLANTILLA LYX PARA PROYECTO FINAL DE CARRERA
+% Autor: Rafael Martos Llavero
+
+%Vease el preambulo de LaTeX para configurar el diseño del documento.
+
+%Modifica interlineado
+\baselineskip=18pt plus1pt
+% Muestra la pagina de título (generada en preámbulo LaTeX)
+%\maketitle
+
+\begin{romanpages}
+
+\include{Resumen/Abstract}
+
+\include{Agradecimientos/Acknowledgments}
+
+\include{Capitulos/glosario}\tableofcontents{}\listoffigures
+
+
+\listoftables
+
+
+\listof{algorithm}{Algoritmos}
+
+
+\end{romanpages}
+
+\include{\string"Capitulos/Capitulo 1 Introducción\string"}
+
+\include{\string"Capitulos/Estado del Arte\string"}
+
+\include{\string"Capitulos/contexto tecnológico\string"}
+
+\include{Capitulos/pruebas}
+
+\include{Capitulos/gestion_de_tiempo}
+
+\include{Capitulos/conclusiones}
+
+\appendix
+\include{Apendices/manual_administrador}\include{Apendices/manual_investigador}
+
+\include{Apendices/manual_de_desarrollo}\include{Apendices/analisis_de_requisitos}
+
+\include{Apendices/diseño}
+
+\global\long\def\bibname{References}
+
+
+\renewcommand{\bibname}{Referencias}
+
+\bibliographystyle{\string"styles/bibtex styles/gillow\string"}
+\addcontentsline{toc}{chapter}{\bibname}\bibliography{references/bao}
+
+\end{document}

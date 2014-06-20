@@ -1,0 +1,652 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Análisis de requisitos de la aplicación
+\end_layout
+
+\begin_layout Standard
+En este anexo se presenta una descripción del análisis de requisitos que
+ se llevo a cabo antes de realizar la implementación de la plataforma y
+ durante las revisiones de esta.
+ A lo largo del anexo se mostrará el documento de especificaciones de requisitos.
+ Este documento no ha sido creado con el fin de ser completamente riguroso
+ a las convenciones, aunque más de una vez se sigan, sino que el fin último
+ es que el lector comprenda este documento.
+\end_layout
+
+\begin_layout Section
+Especificación de Requisitos Software
+\end_layout
+
+\begin_layout Standard
+En este apartado vamos a hablar de los requisitos software que debe cumplir
+ nuestra plataforma.
+ Estos requisitos se elaboraron después del estudio de las herramientas
+ actuales y el documento 
+\emph on
+"¿Cómo son nuestros voluntarios?"
+\emph default
+, por otra parte se ha intentado seguir las recomendaciones dadas en la
+ Especificación de Requisitos según el estándar IEEE 830
+\end_layout
+
+\begin_layout Subsection
+Introducción
+\end_layout
+
+\begin_layout Subsubsection
+Propósito
+\end_layout
+
+\begin_layout Standard
+El propósito es definir cuáles son los requerimientos que debe tener la
+ plataforma para elaboración de encuestas, así como la adaptación de está
+ al experimento 
+\emph on
+"¿Cómo son nuestros voluntarios?"
+\end_layout
+
+\begin_layout Standard
+La aplicación se desarrollara como proyecto final de carrera y permitirá
+ el desarrollo del experimento anteriormente citado, así como ayudar a la
+ comunidad científica en la elaboración de encuestas mas o menos complejas,
+ en los que se quiera aleatorizar el orden de las secciones, así como la
+ existencia de secciones excluyentes.
+\end_layout
+
+\begin_layout Subsubsection
+Ambito
+\end_layout
+
+\begin_layout Standard
+La plataforma debe permitir la creación y la manipulación de encuestas complejas
+, así como la posibilidad de limitar el tiempo y el numero de usuarios a
+ la hora de realizar las encuestas.
+\end_layout
+
+\begin_layout Standard
+Una vez definida y publicadas estas encuestas, se permitirá a los usuarios
+ encuestados la realización de está, registrando en todo momento los tiempos
+ tomados para la resolución de cada pregunta.
+\end_layout
+
+\begin_layout Standard
+En el caso de del experimento 
+\emph on
+"¿Cómo son nuestros voluntarios?"
+\emph default
+, se le permitirá al usuario recibir feedback respecto a la toma de sus
+ decisiones, con respecto a las respuestas de los demás usuarios.
+\end_layout
+
+\begin_layout Standard
+Además en dicho experimento, en casos elegidos de forma aleatoria, el voluntario
+ recibirá un pago asociado a una de sus decisiones.
+\end_layout
+
+\begin_layout Standard
+Los usuarios de la plataforma no deberán de poseer algún conocimiento específico
+ para el uso de esta.
+\end_layout
+
+\begin_layout Standard
+Por otra parte la plataforma deberá de estar bien documentada para facilitar
+ la ampliación de posibilidades de esta.
+\end_layout
+
+\begin_layout Subsubsection
+Definiciones, Acrónimos y Abreviaturas
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+OpenID
+\series default
+: estándar de identificación digital descentralizado, con el que un usuario
+ puede identificarse en una página web a través de una URL (o un XRI en
+ la versión actual) y puede ser verificado por cualquier servidor que soporte
+ el protocolo.
+\end_layout
+
+\begin_layout Standard
+Lenguaje de marcas: forma de codificar un documento que, junto con el texto,
+ incorpora etiquetas o marcas que contienen información adicional acerca
+ de la estructura del texto o su presentación.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+XML
+\series default
+: siglas en inglés de eXtensible Markup Language ('lenguaje de marcas extensible
+'), es un lenguaje de marcas 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+CSV
+\series default
+: siglas del inglés comma-separated values, son un tipo de documento en
+ formato abierto sencillo para representar datos en forma de tabla, en las
+ que las columnas se separan por comas u otro identificador predefinido
+ y las filas por saltos de línea.
+ Los campos que contengan una coma, un salto de línea o una comilla doble
+ deben ser encerrados entre comillas dobles.
+\end_layout
+
+\begin_layout Standard
+Lenguaje de marcas ligero: tipo de formateo de texto más o menos estandarizado,
+ que ocupa poco espacio y es fácil de editar con un editor de texto.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Markdown
+\series default
+: lenguaje de marcado ligero que trata de conseguir la máxima legibilidad
+ tanto en sus forma de entrada como de salida.
+\end_layout
+
+\begin_layout Subsection
+Descripción general
+\end_layout
+
+\begin_layout Subsubsection
+Perspectiva del Producto
+\end_layout
+
+\begin_layout Standard
+La plataforma a desarrollar no estará relacionado con otros productos, aunque
+ se adpatará esta al desarrollo del experimento "¿Cómo son nuestros voluntarios?
+"
+\end_layout
+
+\begin_layout Subsubsection
+Funciones del Producto
+\end_layout
+
+\begin_layout Standard
+Las funciones que debe realizar la plataforma a grandes rasgos son:
+\end_layout
+
+\begin_layout Itemize
+Creación y edición de encuestas complejas.
+\end_layout
+
+\begin_layout Itemize
+Registro de todas las respuestas así como sus tiempos.
+\end_layout
+
+\begin_layout Itemize
+Exportar los resultados obtenidos en las encuestas.
+\end_layout
+
+\begin_layout Itemize
+Ofrecer feedback a los usuarios
+\end_layout
+
+\begin_layout Subsubsection
+Características de los usuarios
+\end_layout
+
+\begin_layout Standard
+Existen tres tipos de usuarios:
+\end_layout
+
+\begin_layout Itemize
+Los investigadores para la elaboración de encuestas complejas, poniendo
+ especial hincapié en la aleatorización y diversificación de las secciones
+ de una encuesta.
+ Solo deberán tener conocimiento alguno en el manejo de un navegador web,
+ por otra parte se ofrecerá un manual con todas las opciones de la plataforma.
+\end_layout
+
+\begin_layout Itemize
+Voluntarios que responden a los cuestionarios, que solo deberán tener conocmient
+o alguno del manejo de un navegador web.
+\end_layout
+
+\begin_layout Itemize
+Desarrolladores que desean adaptar y ampliar la plataforma a sus necesidades,
+ para ello a parte de este documento, se incluye un manual de desarrollo.
+ Deberán estar familiarizados con las tecnologías usadas.
+\end_layout
+
+\begin_layout Subsubsection
+Restricciones
+\end_layout
+
+\begin_layout Standard
+La aplicación se debe poder acceder desde un portal web.
+ Así mismo los investigadores nunca obtendrán información identificativa
+ de los voluntarios que participen en su plataforma.
+ Deberá funcionar la plataforma bajo una máquina gobernada por Linux
+\end_layout
+
+\begin_layout Subsubsection
+Requisitos futuros
+\end_layout
+
+\begin_layout Standard
+Debe pensarse que la plataforma se debe poder adaptar a otras cuestionarios
+ con otros requisitos, por lo que debe estar bien documentada y tener en
+ cuenta estas posibles necesidades.
+ Como podría ser la creación de algún tipo de pregunta no contemplada en
+ la plataforma actual.
+\end_layout
+
+\begin_layout Standard
+También se podría considerar la elaboración de un lenguaje específico del
+ dominio para la creación de encuestas.
+\end_layout
+
+\begin_layout Subsection
+Requerimientos específicos
+\end_layout
+
+\begin_layout Subsubsection
+Interfaces Externas
+\end_layout
+
+\begin_layout Standard
+Se deberá de acceder a la plataforma mediante un navegador web.
+ Esta deberá de adaptarse al tamaño del dispositivo por el cual se accede
+ a la plataforma, nunca siendo inferior a una resolución de 480px para su
+ correcta visualización.
+ Por otra parte al ser una plataforma web, se deberá tener acceso a través
+ de la red al servidor donde esté alojado la plataforma.
+\end_layout
+
+\begin_layout Standard
+La plataforma usará un sistema de direcciones web amigables, para facilitar
+ el manejo de esta a través del navegador web.
+\end_layout
+
+\begin_layout Subsubsection
+Requerimientos funcionales
+\end_layout
+
+\begin_layout Standard
+Agruparemos los requisitos funcionales de la plataforma según el usuario
+ que lo esté usando, por otra parte se incluirá los requisitos que debe
+ cumplir la adopción de la plataforma al experimento 
+\emph on
+"¿Cómo son nuestros voluntarios?"
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+La plataforma permitirá a los investigadores:
+\end_layout
+
+\begin_layout Itemize
+Crear nuevas encuestas.
+\end_layout
+
+\begin_layout Itemize
+Añadir una fecha en la que la encuesta será visible a los voluntarios.
+\end_layout
+
+\begin_layout Itemize
+Añadir una fecha limite para la realización de la encuesta.
+\end_layout
+
+\begin_layout Itemize
+Añadir un número máximo de encuestas completadas.
+\end_layout
+
+\begin_layout Itemize
+Añadir un tiempo máximo para contestar la encuesta.
+\end_layout
+
+\begin_layout Itemize
+Añadir consentimientos a las encuestas.
+\end_layout
+
+\begin_layout Itemize
+Añadir secciones a las encuestas.
+\end_layout
+
+\begin_layout Itemize
+Añadir subsecciones a las secciones.
+\end_layout
+
+\begin_layout Itemize
+Definir el orden de las secciones y subsecciones.
+\end_layout
+
+\begin_layout Itemize
+Aleatoriazar el orden de las secciones y subsecciones.
+\end_layout
+
+\begin_layout Itemize
+Generar secciones y subsecciones excluyentes con la probabilidad indicada.
+\end_layout
+
+\begin_layout Itemize
+Añadir preguntas a las secciones y subsecciones, estas preguntas serán del
+ tipo:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Preguntas cuya respuesta es un texto.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es un número entero.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es un número decimal.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es Si/No.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es un conjunto de opciones posibles definidas por
+ el investigador.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es un conjunto de opciones posibles definidas por
+ un rango y su salto.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es validada por una expresión regular, indicando
+ un mensaje de error personalizado.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es una escala Likert, pudiendo definir el rango
+ de la escala, así como sendas etiquetas en los extremos de la escala Likert.
+\end_layout
+
+\begin_layout Itemize
+Preguntas de control que tienen una respuesta única, se podrá fijar un número
+ máximo de intentos, entre uno e infinito, así como un mensaje de error
+ personalizable.
+\end_layout
+
+\begin_layout Itemize
+Todas las preguntas anteriores descritas podrán ser obligatorias u optativas.
+\end_layout
+
+\begin_layout Itemize
+Todas las preguntas anteriores descritas podrán ser dependientes de la respuesta
+ de otra pregunta.
+\end_layout
+
+\begin_layout Itemize
+Todas las preguntas anteriores descritas, se podrá cambiar el tipo de respuesta.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Todas las opciones anteriormente descritas se podrán editar.
+\end_layout
+
+\begin_layout Itemize
+Se usará la sintaxis Markdown para todos los campos de la encuesta.
+\end_layout
+
+\begin_layout Itemize
+Exportar encuestas en formato XML.
+\end_layout
+
+\begin_layout Itemize
+Importar encuestas en formato XML.
+\end_layout
+
+\begin_layout Itemize
+Exportar los resultados de las encuestas a un formato CSV.
+\end_layout
+
+\begin_layout Standard
+La plataforma permitirá a los voluntarios que participen en las encuestas:
+\end_layout
+
+\begin_layout Itemize
+Contestar a las encuestas.
+\end_layout
+
+\begin_layout Itemize
+Permitir continuar la encuesta más tarde.
+\end_layout
+
+\begin_layout Itemize
+En caso de responder erróneamente a la pregunta, se le indicara el fallo
+ al usuario.
+\end_layout
+
+\begin_layout Itemize
+Informar del estado de la encuesta, siendo este:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sin empezar.
+\end_layout
+
+\begin_layout Itemize
+Terminada.
+\end_layout
+
+\begin_layout Itemize
+Sin terminar.
+\end_layout
+
+\begin_layout Itemize
+Sin posibilidad de terminarla debido a que la fecha ha concluido.
+\end_layout
+
+\begin_layout Itemize
+Sin posibilidad de terminarla debido a que el tiempo máximo ha concluido
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+La plataforma permitirá a los usuarios:
+\end_layout
+
+\begin_layout Itemize
+Identificarse mediante OpenID.
+\end_layout
+
+\begin_layout Itemize
+Registrarse mediante correo y contraseña.
+\end_layout
+
+\begin_layout Itemize
+Identificarse mediante correo y contraseña.
+\end_layout
+
+\begin_layout Standard
+La plataforma registrará todos los tiempos, así como las respuestas, y numero
+ de intentos en las preguntas de control en los cuestionarios.
+\end_layout
+
+\begin_layout Standard
+En el experimento 
+\emph on
+"¿Cómo son nuestros voluntarios?"
+\emph default
+, la plataforma permitirá:
+\end_layout
+
+\begin_layout Itemize
+Dar feedback a los usuarios, comparando sus respuestas con las dadas por
+ otros usuarios.
+\end_layout
+
+\begin_layout Itemize
+El voluntario podrá recibir un pago asociado a una de sus elecciones.
+ La probabilidad de este pago viene dada por:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Los usuarios que realicen la parte 2 del experimento con dinero real, tendrán
+ un 10% de recibir un pago asociado a una de sus elecciones elegidas al
+ azar de este apartado.
+\end_layout
+
+\begin_layout Itemize
+Los usuarios que realicen la parte 3 del experimento con dinero real, tendrán
+ un 10% de recibir un pago asociado a una de sus elecciones elegidas al
+ azar de este apartado.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Los usuarios que realicen la parte 2 y la parte 3 con dinero ficticio, participa
+rán en un sorteo.
+ Las probabilidades de ganar dinero en este sorteo viene dadas por:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Los usuarios tendrán un 10% de probabilidades de ganar un premio del sorteo,
+ pudiendo ser el premio cuatro cantidades predefinidas, cada una con igual
+ probabilidad de ser elegida.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+La plataforma avisará mediante correo a los usuarios que hayan ganado dinero.
+\end_layout
+
+\begin_layout Itemize
+La plataforma se encargará de transmitir la información de los usuarios
+ que han recibido algun tipo de compensación económica al responsable del
+ pago.
+\end_layout
+
+\begin_layout Itemize
+Los resultados de este experimento tendrán un formato CSV adaptado a las
+ necesidades de los investigadores.
+\end_layout
+
+\begin_layout Subsubsection
+Requisitos de Rendimiento
+\end_layout
+
+\begin_layout Standard
+Al tratarse de una plataforma web que permite la ejecución de múltiples
+ usuarios al mismo tiempo, puede que existan problemas derivado a la carga
+ de usuario.
+ Para la realización del experimento 
+\emph on
+"¿Cómo son nuestros voluntarios?"
+\emph default
+, se espera llegar a 1000 usuarios durante un mes, por lo que en un principio
+ no debería de existir problemas de carga, aun así se medirá en la maquina
+ de producción la carga máxima de usuarios que soporta el sistema y el tiempo
+ de respuesta.
+\end_layout
+
+\begin_layout Subsubsection
+Atributos del Sistema
+\end_layout
+
+\begin_layout Standard
+Se espera una alta fiabilidad del sistema, aun así se registrará cualquier
+ incidente en la plataforma pudiendo avisar al desarrollador y administrador
+ de la plataforma.
+\end_layout
+
+\begin_layout Standard
+También se espera en un futuro la ampliación de la plataforma así como el
+ uso de esta en otras investigaciones, por lo que debe estar bien documentada
+ para facilitar su adopción.
+\end_layout
+
+\begin_layout Standard
+En cuanto a la seguridad, como ya hemos comentado anteriormente se registrará
+ cualquier incidente y acceso a la plataforma.
+ En el sistema existirán tres tipos de usuarios, el administrador, que deberá
+ tener acceso al servidor donde esté alojado la plataforma.
+ Y los investigadores y usuarios que respondan a las encuestas, que podrán
+ entrar en el sistema mediante OpenID, o mediante un login y contraseña.
+\end_layout
+
+\end_body
+\end_document

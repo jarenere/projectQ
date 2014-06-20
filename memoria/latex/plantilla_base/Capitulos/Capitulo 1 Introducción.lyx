@@ -1,0 +1,243 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options true
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Introducción
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:Introducción"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Contexto
+\end_layout
+
+\begin_layout Standard
+El proyecto se ha llevado a cabo en el Instituto de Biocomputación y Físcia
+ de Sistemas Complejos (BIFI), dentro del equipo de la Fundación Ibercivis
+ y en colaboración con los Investigadores Antonio Espín, Universidad de
+ Granada, Pablo Brañas-Garza (Middlesex University) y Anxo Sánchez (Universidad
+ Carlos III)
+\end_layout
+
+\begin_layout Standard
+Ibercivis es una iniciativa internacional de ciencia ciudadana, compuesta
+ por una plataforma de computación voluntaria y por una serie de experimentos
+ que permiten a la sociedad participar en la investigación científica de
+ forma directa y en tiempo real.
+\end_layout
+
+\begin_layout Standard
+Dentro de la computación voluntaria, Ibercivis es una plataforma de computación
+ distribuida, basada en BOINC, que permite a usuarios de internet a participar
+ en proyectos científicos donando ciclos de computación que se emplean para
+ realizar simulaciones y otras tareas.
+\end_layout
+
+\begin_layout Standard
+Ibercivis acerca a la ciudadanía investigaciones punteras y la hace partícipe
+ de la generación de conocimiento científico, al tiempo que dota a la comunidad
+ científica de una potente herramienta de cálculo.
+ El ordenador se convierte en una ventana abierta a la ciencia, creando
+ un canal para el diálogo directo entre investigadores y sociedad.
+\end_layout
+
+\begin_layout Section
+Motivación
+\end_layout
+
+\begin_layout Standard
+blablabla..
+\end_layout
+
+\begin_layout Section
+Objetivos
+\end_layout
+
+\begin_layout Standard
+El objetivo del presente proyecto ha sido el desarrollo de una plataforma
+ para la realización de experimentos sociológico, así como las herramientas
+ necesarias para que los investigadores lleven a cabo el análisis de los
+ datos obtenidos.
+\end_layout
+
+\begin_layout Standard
+Además se ha adaptado esta plataforma para la realización de un experimento
+ cuyo objeto de estudio son los voluntarios de Ibercivis que toman parte
+ en los proyectos de ciencia ciudadana.
+\end_layout
+
+\begin_layout Standard
+La plataforma creada permite a los investigadores la creación de encuestas,
+ pudiendo estas tener distintos niveles de secciones, además de permitir
+ la aleatorización del orden de estás, así como de las preguntas.
+ Asimismo se puede ponderar el porcentaje de encuestados que realizan una
+ sección concreta.
+\end_layout
+
+\begin_layout Standard
+Por otra parte también se puede definir las fechas en las que una encuesta
+ se encontrará disponible, así como el número máximo de participantes, si
+ es que lo hay.
+ También se puede añadir un tiempo máximo para la realización de la encuesta.
+\end_layout
+
+\begin_layout Standard
+Todas las respuestas son almacenadas en una base de datos junto su tiempo
+ de respuesta, con el objetivo de analizar los tiempos empleados en cada
+ decisión.
+ Toda esta información se puede consultar exportando los resultados a un
+ fichero CSV, del ingles comma-separated values.
+\end_layout
+
+\begin_layout Standard
+La plataforma ha sido creada con el objetivo de ser reutilizable y fácilmente
+ modificable y ampliable para la elaboración de otros experimentos de la
+ misma índole.
+ Tanto los investigadores como los encuestados acceden a la plataforma vía
+ un portal web, teniendo este un diseño web adaptable.
+ Dado el carácter participativo de los experimentos, se ha diseñado para
+ que pueda soportar una carga considerable de usuarios.
+\end_layout
+
+\begin_layout Standard
+Durante el desarrollo de la plataforma se ha tenido en cuenta las necesidades
+ de los investigadores Antonio Espín, Pablo Brañas-Garza y Anxo Sánchez,
+ adaptando tanto la plataforma como el cuestionario *como son nuestros participa
+ntes* *2, sobre todo debido a las significativas diferencias de la realización
+ de una encuesta manual a otra de manera telemática.
+\end_layout
+
+\begin_layout Standard
+La encuesta consta de tres partes diferenciadas.
+ Una primera parte que consiste en una serie de preguntas sobre distintos
+ aspectos de la personalidad.
+ Las otras dos partes representan diversos escenarios en los que se tienen
+ que tomar una serie de decisiones: en unos casos las decisiones solo dependen
+ del propio usuario, mientras que en otros también dependerá de la elección
+ de otro participante anónimo escogido al azar entre el resto de participantes.
+ Estos escenarios están basados en distintos juegos experimentales de economía,
+ como puede ser el juego del dictador o el juego del ultimatum.
+ Tanto la segunda como la tercera parte, las cuestiones se plantean en términos
+ de una ganancia económica.
+ En casos elegidos de forma aleatoria, el voluntario recibe un pago asociado
+ a una de sus decisiones.
+\end_layout
+
+\begin_layout Standard
+El objetivo final del experimento es permitir a los investigadores comparar
+ a los voluntarios de Ibercivis con la muestra de población general del
+ trabajo "Experimental subjects are not different" [F.
+ Exadaktylos, A.
+ M.
+ Espín & P.
+ Brañas-Garza, Sci.
+ Rep.
+ 3, 1213 (2013)] y caracterizar a una población amplia de voluntarios para
+ después solicitar su colaboración en futuros proyectos seleccionándolos
+ conforme a su perfil.
+\end_layout
+
+\begin_layout Section
+Estructura de la memoria
+\end_layout
+
+\begin_layout Standard
+En la presente memoria se describe el proceso llevado a cabo para el desarrollo
+ de la plataforma.
+ Su contenido se ha distribuido en *XX* capítulos, siendo estos:
+\end_layout
+
+\begin_layout Itemize
+Capítulo 1, este capítulo de introducción.
+\end_layout
+
+\begin_layout Itemize
+Capítulo 2 se muestra la elección de la tecnología implicada en la realización
+ de la plataforma.
+\end_layout
+
+\begin_layout Itemize
+Capítulo 3, análisis de las herramientas existentes relacionadas con el
+ proyecto
+\end_layout
+
+\begin_layout Itemize
+Capítulo n, las conclusiones 
+\end_layout
+
+\end_body
+\end_document

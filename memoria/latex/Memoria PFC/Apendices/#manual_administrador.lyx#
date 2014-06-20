@@ -1,0 +1,961 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Manual de administrador
+\end_layout
+
+\begin_layout Standard
+En esta sección vamos a explicar como un administrador puede instalar la
+ aplicación y ponerla en marcha 
+\end_layout
+
+\begin_layout Section
+Consideraciones
+\end_layout
+
+\begin_layout Standard
+Aunque este manual intenta ser autoexplicativo en cuanto a la instalación
+ de la plataforma, no es un manual de las distintas herramientas usadas
+ en la plataforma, por lo que para ello se remite a la documentación oficial
+ de estas.
+ Por otra parte se espera que el administrador de la aplicación tenga nociones
+ en la administración de servidores web, así como unas nociones muy básicas
+ de Python.
+\end_layout
+
+\begin_layout Section
+Requisitos hardware
+\end_layout
+
+\begin_layout Standard
+Los requisitos hardware dependerán del número de usuarios que van a acceder
+ a la plataforma.
+\end_layout
+
+\begin_layout Standard
+Si se quiere medir como se comporta la plataforma ante un número elevado
+ de usuarios, en la carpeta jmeter se incluye una configuración para Apache
+ JMeter, así como un generador de usuarios y una encuesta compleja.
+ Esta aplicación genera todas los peticiones que realizaría un usuario al
+ contestar a una encuesta.
+ Para ejecutar la plataforma en este modo, debe cambiar la variable de entorno
+ 
+\emph on
+FLASK_CONFIG
+\emph default
+ a 
+\emph on
+jmeterProduction
+\emph default
+ o en el fichero 
+\emph on
+config.py
+\emph default
+ cambiar la configuración default por 
+\emph on
+jmeterProduction.
+\emph default
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{figure}[!tbh]
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	
+\backslash
+begin{center}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{listing}[style=consola, numbers=none]
+\end_layout
+
+\begin_layout Plain Layout
+
+config = {     
+\end_layout
+
+\begin_layout Plain Layout
+
+	'development': DevelopmentConfig,
+\end_layout
+
+\begin_layout Plain Layout
+
+    'testing': TestingConfig,
+\end_layout
+
+\begin_layout Plain Layout
+
+	'production': ProductionConfig,
+\end_layout
+
+\begin_layout Plain Layout
+
+	'heroku': HerokuConfig,
+\end_layout
+
+\begin_layout Plain Layout
+
+    'unix': UnixConfig,
+\end_layout
+
+\begin_layout Plain Layout
+
+    'jmeter': Jmeter,
+\end_layout
+
+\begin_layout Plain Layout
+
+    'jmeterProduction' : JmeterProduction,
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    'default': DevelopmentConfig }
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{listing}
+\end_layout
+
+\begin_layout Plain Layout
+
+		 
+\backslash
+caption{Parte del fichero config.py}
+\end_layout
+
+\begin_layout Plain Layout
+
+ 		
+\backslash
+label{fig:config.py}
+\end_layout
+
+\begin_layout Plain Layout
+
+	 
+\backslash
+end{center}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{figure}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+También existe la posibilidad de ejecutar la plataforma en la nube.
+ Dependiendo de la elección llevará mas o menos cambio.
+ En el anexo **Guía de desarrollo** se incluyen las modificaciones y los
+ pasos necesarios para ejecutar la aplicación en Heroku.
+\end_layout
+
+\begin_layout Section
+Requisitos software
+\end_layout
+
+\begin_layout Standard
+Los requistos software son los siguientes:
+\end_layout
+
+\begin_layout Itemize
+Virtualenv: Para la creación de un entorno virtual de Python para la instalación
+ de todas los módulos necesarios.
+\end_layout
+
+\begin_layout Itemize
+Git: Para poder descargarse la aplicación.
+\end_layout
+
+\begin_layout Itemize
+Servidor web compatible con WSGI, en la documentación de Flask puedes encontrar
+ una guía rápida para la puesta en marcha del servidor, http://flask.pocoo.org/doc
+s/deploying/ 
+\end_layout
+
+\begin_layout Itemize
+Base de datos a usar, está debe ser compatible con SQLAlchemy, las posibilidades
+ son las siguientes: * 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Postgresql
+\end_layout
+
+\begin_layout Itemize
+MySQL y su fork MariaDB 
+\end_layout
+
+\begin_layout Itemize
+Oracle * Microsoft SQL Server
+\end_layout
+
+\begin_layout Itemize
+SQLite 
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Instalación
+\end_layout
+
+\begin_layout Standard
+Empezaremos clonando el repositorio git donde se encuentra la aplicación:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{listing}[style=consola, numbers=none]
+\end_layout
+
+\begin_layout Plain Layout
+
+$ git clone git://github.com/nu_kru/swarm-survey.git
+\end_layout
+
+\begin_layout Plain Layout
+
+$ cd swarm-survey
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{listing}
+\end_layout
+
+\end_inset
+
+Una vez clonado el repositorio procederemos a crear un entorno virtual para
+ poder instalar todas las dependencias necesarias en la aplicación:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{listing}[style=consola, numbers=none]
+\end_layout
+
+\begin_layout Plain Layout
+
+$ mkdir swarm-surveys
+\end_layout
+
+\begin_layout Plain Layout
+
+$ virtualenv venv
+\end_layout
+
+\begin_layout Plain Layout
+
+New python executable in venv/bin/python
+\end_layout
+
+\begin_layout Plain Layout
+
+Installing distribute............done.
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{listing}
+\end_layout
+
+\end_inset
+
+Una vez instalado el entorno virtual, para activarlo: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{listing}[style=consola, numbers=none]
+\end_layout
+
+\begin_layout Plain Layout
+
+$ .
+ venv/bin/activate 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{listing}
+\end_layout
+
+\end_inset
+
+Una vez dentro del entorno virtual procederemos a instalar todas las dependencia
+s de la aplición.
+ Todas ellas, así como la versión usada se encuentran en el fichero 
+\emph on
+requeriments.txt
+\emph default
+.
+ Para instalarla haremos uso de pip, el cual se ha instalado dentro de 
+\emph on
+virtualenv
+\emph default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{listing}[style=consola, numbers=none]
+\end_layout
+
+\begin_layout Plain Layout
+
+(venv)$ pip install -r requeriments.txt 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{listing}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Con esto ya tendremos instalada la aplicación así como todos los módulos
+ necesarios para hacerla funcionar.
+\end_layout
+
+\begin_layout Section
+Configuración
+\end_layout
+
+\begin_layout Standard
+La configuración de la plataforma está localizada en los ficheros escritos
+ en Python, 
+\emph on
+config.py 
+\emph default
+y 
+\emph on
+settings
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+En el fichero config.py se puede observar los distintos modos en los que
+ se puede arrancar la aplicación, estos son los siguientes:
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Development
+\series default
+: para el desarrollo de la plataforma.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Testing
+\series default
+: para ejecutar los test unitarios de la plataforma.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Production
+\series default
+: configuración base para el modo producción
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Heroku
+\series default
+: para ejecutar la aplicación en modo producción en la nube Heroku.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Unix
+\series default
+: para ejecutar la aplicación en modo producción en una máquina de tipo
+ Unix
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Jmeter
+\series default
+: para ejecutar el test de sobrecargar y aceptación
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+JmeterProduction
+\series default
+: para ejecutar el test de sobrecarga y aceptación en una máquina en modo
+ producción.
+\end_layout
+
+\begin_layout Standard
+Para cambiar de modo, puede hacerlo mediante la variable de entorno 
+\emph on
+CONFIG_FLASK
+\emph default
+ o sino está definida modificando la configuración por defecto en el fichero
+ 
+\emph on
+config.py
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+En el fichero 
+\emph on
+settings
+\emph default
+ se encuentra una plantilla con las variables a cambiar.
+ La plataforma espera encontrar la localización del fichero usando la variable
+ de entorno 
+\emph on
+SWARMS_SURVEY_SETTINGS
+\emph default
+ o sino por defecto el fichero 
+\emph on
+settings.cfg
+\emph default
+ el cual se genera automáticamente si no se encuentra.
+\end_layout
+
+\begin_layout Standard
+Tanto el fichero 
+\emph on
+settings 
+\emph default
+como 
+\emph on
+config.py
+\emph default
+ son autoexplicativos, estando documentado el significado de cada opción.
+ En el fichero 
+\emph on
+settings 
+\emph default
+básicamente hay que indicar cual es el servidor de correo y los usuarios
+ a los cuales se le va a enviar los correos con las distintas alertas que
+ puede generar la plataforma, así como el usuario administrador y la contraseña
+ de este.
+\end_layout
+
+\begin_layout Section
+Base de datos
+\end_layout
+
+\begin_layout Subsection
+Configuración de la base de datos a usar
+\end_layout
+
+\begin_layout Standard
+La plataforma hace uso de la variable de entorno **DEV_DATABASE_URL** en
+ la cual espera que se encuentre la URI de la conexión de la base de datos,
+ así como el usuario y contraseña.
+ Si la variable no está definida usa por defecto SQLite.
+\end_layout
+
+\begin_layout Standard
+El formato es el siguiente: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{listing}[style=consola, numbers=none]
+\end_layout
+
+\begin_layout Plain Layout
+
+driver://username:password@host:port/database 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{listing}
+\end_layout
+
+\end_inset
+
+Por ejemplo para MySQL:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{listing}[style=consola, numbers=none]
+\end_layout
+
+\begin_layout Plain Layout
+
+driver://username:password@host:port/database 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{listing}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Mas información para la configuración de la base de datos consulte la documentac
+ión oficial de SQLAlchemy:
+\end_layout
+
+\begin_layout Standard
+http://docs.sqlalchemy.org/en/rel_0_9/core/engines.html 
+\end_layout
+
+\begin_layout Subsection
+Creación de la base de datos
+\end_layout
+
+\begin_layout Standard
+Una vez definida la base de datos a usar entre las soportadas por SQLALchemy,
+ debemos de crear la base de datos, para ello ejecutaremos los siguientes
+ comandos:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{listing}[style=consola, numbers=none]
+\end_layout
+
+\begin_layout Plain Layout
+
+(venv)$./manage.py db init 
+\end_layout
+
+\begin_layout Plain Layout
+
+(venv)$./manage.py db migrate 
+\end_layout
+
+\begin_layout Plain Layout
+
+(venv)$./manage.py db upgrade
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{listing}
+\end_layout
+
+\end_inset
+
+Con esto generamos la base de datos, además se hace uso de 
+\emph on
+flask-migrate
+\emph default
+, una extensión que hace uso de 
+\emph on
+Alembic
+\emph default
+ para poder migrar la base de datos a nuevas actualizaciones del sistema.
+ Para obtener mas información de como migrar o volver a una revisión anterior
+ de la base de datos, consulte la documentación oficial: http://flask-migrate.rea
+dthedocs.org/en/latest/
+\end_layout
+
+\begin_layout Section
+Inicio del programa
+\end_layout
+
+\begin_layout Standard
+Dependiendo del servidor web usado, deberá arrancar la aplicación de una
+ manera u otra, para ello diríjase a la documentación oficial de su servidor
+ web o consulte como guía rápida, http://flask.pocoo.org/docs/deploying/
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{figure}[!tbh]
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	
+\backslash
+begin{center}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{listing}[style=consola, numbers=none]
+\end_layout
+
+\begin_layout Plain Layout
+
+#Usando el servidor Gunicorn:
+\end_layout
+
+\begin_layout Plain Layout
+
+(venv)$ gunicorn manage.py runserver:app
+\end_layout
+
+\begin_layout Plain Layout
+
+#Usando el servidor de desarrollo de Flask:
+\end_layout
+
+\begin_layout Plain Layout
+
+(venv)$ manage.py runserver
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{listing}
+\end_layout
+
+\begin_layout Plain Layout
+
+		 
+\backslash
+caption{Modos de inicializar el programa}
+\end_layout
+
+\begin_layout Plain Layout
+
+ 		
+\backslash
+label{fig:inicio_programa}
+\end_layout
+
+\begin_layout Plain Layout
+
+	 
+\backslash
+end{center}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{figure}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Una vez puesta en marcha la plataforma, se crea automáticamente en la base
+ de datos el usuario administrador indicado en el fichero de configuración,
+ además también se le otorgan roles de investigador para poder crear encuestas.
+\end_layout
+
+\begin_layout Section
+Asignación del rol investigador a un usuario
+\end_layout
+
+\begin_layout Standard
+Para asignar el rol de investigador a un usuario, inicie la shell del programa.
+ Esto abrirá un interprete Python de la plataforma web.
+ Entre las funciones disponibles están la de 
+\emph on
+add_researcher
+\emph default
+ y 
+\emph on
+delete_researcher
+\emph default
+, que sirven para dar y quitar permisos de investigador a un usuario dado.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{figure}[!tbh]
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	
+\backslash
+begin{center}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{listing}[style=consola, numbers=none]
+\end_layout
+
+\begin_layout Plain Layout
+
+#Inicio de la shell:
+\end_layout
+
+\begin_layout Plain Layout
+
+(venv)$ manage.py shell
+\end_layout
+
+\begin_layout Plain Layout
+
+#Dar permisos de investigador a un usuario:
+\end_layout
+
+\begin_layout Plain Layout
+
+add_researcher(foo@foo.com) 
+\end_layout
+
+\begin_layout Plain Layout
+
+(venv)$ manage.py runserver
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{listing}
+\end_layout
+
+\begin_layout Plain Layout
+
+		 
+\backslash
+caption{Modos de inicializar el programa}
+\end_layout
+
+\begin_layout Plain Layout
+
+ 		
+\backslash
+label{fig:inicio_programa}
+\end_layout
+
+\begin_layout Plain Layout
+
+	 
+\backslash
+end{center}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{figure}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{listing}[style=consola, numbers=none]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{listing}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

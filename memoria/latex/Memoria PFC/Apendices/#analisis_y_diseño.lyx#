@@ -1,0 +1,2085 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Análisis y diseño de la aplicación
+\end_layout
+
+\begin_layout Standard
+En este anexo se presenta una descripción del análisis y diseño que se llevo
+ a cabo antes de realizar la implementación de la plataforma.
+ A lo largo del anexo se mostrará el documento de especificaciones de requisitos
+, modelado de la base de datos, diagrama de clases, casos de usos y traza
+ de eventos, así como la descripción de los distintos módulos creados.
+ Este documento no ha sido creado con el fin de ser completamente riguroso
+ a las convenciones, aunque más de una vez se sigan, sino que el fin último
+ es que el lector comprenda este documento
+\end_layout
+
+\begin_layout Section
+Especificación de Requisitos Software
+\end_layout
+
+\begin_layout Standard
+En este apartado vamos a hablar de los requisitos software que debe cumplir
+ nuestra plataforma.
+ Estos requisitos se elaboraron después del estudio de las herramientas
+ actuales y el documento 
+\emph on
+"¿Cómo son nuestros voluntarios?"
+\emph default
+, por otra parte se ha intentado seguir las recomendaciones dadas en la
+ Especificación de Requisitos según el estándar IEEE 830
+\end_layout
+
+\begin_layout Subsection
+Introducción
+\end_layout
+
+\begin_layout Subsubsection
+Propósito
+\end_layout
+
+\begin_layout Standard
+El propósito es definir cuáles son los requerimientos que debe tener la
+ plataforma para elaboración de encuestas, así como la adaptación de está
+ al experimento 
+\emph on
+"¿Cómo son nuestros voluntarios?"
+\end_layout
+
+\begin_layout Standard
+La aplicación se desarrollara como proyecto final de carrera y permitirá
+ el desarrollo del experimento anteriormente citado, así como ayudar a la
+ comunidad científica en la elaboración de encuestas mas o menos complejas,
+ en los que se quiera aleatorizar el orden de las secciones, así como la
+ existencia de secciones excluyentes.
+\end_layout
+
+\begin_layout Subsubsection
+Ambito
+\end_layout
+
+\begin_layout Standard
+La plataforma debe permitir la creación y la manipulación de encuestas complejas
+, así como la posibilidad de limitar el tiempo y el numero de usuarios a
+ la hora de realizar las encuestas.
+\end_layout
+
+\begin_layout Standard
+Una vez definida y publicadas estas encuestas, se permitirá a los usuarios
+ encuestados la realización de está, registrando en todo momento los tiempos
+ tomados para la resolución de cada pregunta.
+\end_layout
+
+\begin_layout Standard
+En el caso de del experimento 
+\emph on
+"¿Cómo son nuestros voluntarios?"
+\emph default
+, se le permitirá al usuario recibir feedback respecto a la toma de sus
+ decisiones, con respecto a las respuestas de los demás usuarios.
+\end_layout
+
+\begin_layout Standard
+Además en dicho experimento, en casos elegidos de forma aleatoria, el voluntario
+ recibirá un pago asociado a una de sus decisiones.
+\end_layout
+
+\begin_layout Standard
+Los usuarios de la plataforma no deberán de poseer algún conocimiento específico
+ para el uso de esta.
+\end_layout
+
+\begin_layout Standard
+Por otra parte la plataforma deberá de estar bien documentada para facilitar
+ la ampliación de posibilidades de esta.
+\end_layout
+
+\begin_layout Subsubsection
+Definiciones, Acrónimos y Abreviaturas
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+OpenID
+\series default
+: estándar de identificación digital descentralizado, con el que un usuario
+ puede identificarse en una página web a través de una URL (o un XRI en
+ la versión actual) y puede ser verificado por cualquier servidor que soporte
+ el protocolo.
+\end_layout
+
+\begin_layout Standard
+Lenguaje de marcas: forma de codificar un documento que, junto con el texto,
+ incorpora etiquetas o marcas que contienen información adicional acerca
+ de la estructura del texto o su presentación.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+XML
+\series default
+: siglas en inglés de eXtensible Markup Language ('lenguaje de marcas extensible
+'), es un lenguaje de marcas 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+CSV
+\series default
+: siglas del inglés comma-separated values, son un tipo de documento en
+ formato abierto sencillo para representar datos en forma de tabla, en las
+ que las columnas se separan por comas u otro identificador predefinido
+ y las filas por saltos de línea.
+ Los campos que contengan una coma, un salto de línea o una comilla doble
+ deben ser encerrados entre comillas dobles.
+\end_layout
+
+\begin_layout Standard
+Lenguaje de marcas ligero: tipo de formateo de texto más o menos estandarizado,
+ que ocupa poco espacio y es fácil de editar con un editor de texto.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Markdown
+\series default
+: lenguaje de marcado ligero que trata de conseguir la máxima legibilidad
+ tanto en sus forma de entrada como de salida.
+\end_layout
+
+\begin_layout Subsection
+Descripción general
+\end_layout
+
+\begin_layout Subsubsection
+Perspectiva del Producto
+\end_layout
+
+\begin_layout Standard
+La plataforma a desarrollar no estará relacionado con otros productos, aunque
+ se adpatará esta al desarrollo del experimento "¿Cómo son nuestros voluntarios?
+"
+\end_layout
+
+\begin_layout Subsubsection
+Funciones del Producto
+\end_layout
+
+\begin_layout Standard
+Las funciones que debe realizar la plataforma a grandes rasgos son:
+\end_layout
+
+\begin_layout Itemize
+Creación y edición de encuestas complejas.
+\end_layout
+
+\begin_layout Itemize
+Registro de todas las respuestas así como sus tiempos.
+\end_layout
+
+\begin_layout Itemize
+Exportar los resultados obtenidos en las encuestas.
+\end_layout
+
+\begin_layout Itemize
+Ofrecer feedback a los usuarios
+\end_layout
+
+\begin_layout Subsubsection
+Características de los usuarios
+\end_layout
+
+\begin_layout Standard
+Existen tres tipos de usuarios:
+\end_layout
+
+\begin_layout Itemize
+Los investigadores para la elaboración de encuestas complejas, poniendo
+ especial hincapié en la aleatorización y diversificación de las secciones
+ de una encuesta.
+ Solo deberán tener conocimiento alguno en el manejo de un navegador web,
+ por otra parte se ofrecerá un manual con todas las opciones de la plataforma.
+\end_layout
+
+\begin_layout Itemize
+Voluntarios que responden a los cuestionarios, que solo deberán tener conocmient
+o alguno del manejo de un navegador web.
+\end_layout
+
+\begin_layout Itemize
+Desarrolladores que desean adaptar y ampliar la plataforma a sus necesidades,
+ para ello a parte de este documento, se incluye un manual de desarrollo.
+ Deberán estar familiarizados con las tecnologías usadas.
+\end_layout
+
+\begin_layout Subsubsection
+Restricciones
+\end_layout
+
+\begin_layout Standard
+La aplicación se debe poder acceder desde un portal web.
+ Así mismo los investigadores nunca obtendrán información identificativa
+ de los voluntarios que participen en su plataforma.
+ Deberá funcionar la plataforma bajo una máquina gobernada por Linux
+\end_layout
+
+\begin_layout Subsubsection
+Requisitos futuros
+\end_layout
+
+\begin_layout Standard
+Debe pensarse que la plataforma se debe poder adaptar a otras cuestionarios
+ con otros requisitos, por lo que debe estar bien documentada y tener en
+ cuenta estas posibles necesidades.
+ Como podría ser la creación de algún tipo de pregunta no contemplada en
+ la plataforma actual.
+\end_layout
+
+\begin_layout Standard
+También se podría considerar la elaboración de un lenguaje específico del
+ dominio para la creación de encuestas.
+\end_layout
+
+\begin_layout Subsection
+Requerimientos específicos
+\end_layout
+
+\begin_layout Subsubsection
+Interfaces Externas
+\end_layout
+
+\begin_layout Standard
+Se deberá de acceder a la plataforma mediante un navegador web.
+ Esta deberá de adaptarse al tamaño del dispositivo por el cual se accede
+ a la plataforma, nunca siendo inferior a una resolución de 480px para su
+ correcta visualización.
+ Por otra parte al ser una plataforma web, se deberá tener acceso a través
+ de la red al servidor donde esté alojado la plataforma.
+\end_layout
+
+\begin_layout Standard
+La plataforma usará un sistema de direcciones web amigables, para facilitar
+ el manejo de esta a través del navegador web.
+\end_layout
+
+\begin_layout Subsubsection
+Requerimientos funcionales
+\end_layout
+
+\begin_layout Standard
+Agruparemos los requisitos funcionales de la plataforma según el usuario
+ que lo esté usando, por otra parte se incluirá los requisitos que debe
+ cumplir la adopción de la plataforma al experimento 
+\emph on
+"¿Cómo son nuestros voluntarios?"
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+La plataforma permitirá a los investigadores:
+\end_layout
+
+\begin_layout Itemize
+Crear nuevas encuestas.
+\end_layout
+
+\begin_layout Itemize
+Añadir una fecha en la que la encuesta será visible a los voluntarios.
+\end_layout
+
+\begin_layout Itemize
+Añadir una fecha limite para la realización de la encuesta.
+\end_layout
+
+\begin_layout Itemize
+Añadir un número máximo de encuestas completadas.
+\end_layout
+
+\begin_layout Itemize
+Añadir un tiempo máximo para contestar la encuesta.
+\end_layout
+
+\begin_layout Itemize
+Añadir consentimientos a las encuestas.
+\end_layout
+
+\begin_layout Itemize
+Añadir secciones a las encuestas.
+\end_layout
+
+\begin_layout Itemize
+Añadir subsecciones a las secciones.
+\end_layout
+
+\begin_layout Itemize
+Definir el orden de las secciones y subsecciones.
+\end_layout
+
+\begin_layout Itemize
+Aleatoriazar el orden de las secciones y subsecciones.
+\end_layout
+
+\begin_layout Itemize
+Generar secciones y subsecciones excluyentes con la probabilidad indicada.
+\end_layout
+
+\begin_layout Itemize
+Añadir preguntas a las secciones y subsecciones, estas preguntas serán del
+ tipo:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Preguntas cuya respuesta es un texto.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es un número entero.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es un número decimal.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es Si/No.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es un conjunto de opciones posibles definidas por
+ el investigador.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es un conjunto de opciones posibles definidas por
+ un rango y su salto.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es validada por una expresión regular, indicando
+ un mensaje de error personalizado.
+\end_layout
+
+\begin_layout Itemize
+Preguntas cuya respuesta es una escala Likert, pudiendo definir el rango
+ de la escala, así como sendas etiquetas en los extremos de la escala Likert.
+\end_layout
+
+\begin_layout Itemize
+Preguntas de control que tienen una respuesta única, se podrá fijar un número
+ máximo de intentos, entre uno e infinito, así como un mensaje de error
+ personalizable.
+\end_layout
+
+\begin_layout Itemize
+Todas las preguntas anteriores descritas podrán ser obligatorias u optativas.
+\end_layout
+
+\begin_layout Itemize
+Todas las preguntas anteriores descritas podrán ser dependientes de la respuesta
+ de otra pregunta.
+\end_layout
+
+\begin_layout Itemize
+Todas las preguntas anteriores descritas, se podrá cambiar el tipo de respuesta.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Todas las opciones anteriormente descritas se podrán editar.
+\end_layout
+
+\begin_layout Itemize
+Se usará la sintaxis Markdown para todos los campos de la encuesta.
+\end_layout
+
+\begin_layout Itemize
+Exportar encuestas en formato XML.
+\end_layout
+
+\begin_layout Itemize
+Importar encuestas en formato XML.
+\end_layout
+
+\begin_layout Itemize
+Exportar los resultados de las encuestas a un formato CSV.
+\end_layout
+
+\begin_layout Standard
+La plataforma permitirá a los voluntarios que participen en las encuestas:
+\end_layout
+
+\begin_layout Itemize
+Contestar a las encuestas.
+\end_layout
+
+\begin_layout Itemize
+Permitir continuar la encuesta más tarde.
+\end_layout
+
+\begin_layout Itemize
+En caso de responder erróneamente a la pregunta, se le indicara el fallo
+ al usuario.
+\end_layout
+
+\begin_layout Itemize
+Informar del estado de la encuesta, siendo este:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sin empezar.
+\end_layout
+
+\begin_layout Itemize
+Terminada.
+\end_layout
+
+\begin_layout Itemize
+Sin terminar.
+\end_layout
+
+\begin_layout Itemize
+Sin posibilidad de terminarla debido a que la fecha ha concluido.
+\end_layout
+
+\begin_layout Itemize
+Sin posibilidad de terminarla debido a que el tiempo máximo ha concluido
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+La plataforma permitirá a los usuarios:
+\end_layout
+
+\begin_layout Itemize
+Identificarse mediante OpenID.
+\end_layout
+
+\begin_layout Itemize
+Registrarse mediante correo y contraseña.
+\end_layout
+
+\begin_layout Itemize
+Identificarse mediante correo y contraseña.
+\end_layout
+
+\begin_layout Standard
+La plataforma registrará todos los tiempos, así como las respuestas, y numero
+ de intentos en las preguntas de control en los cuestionarios.
+\end_layout
+
+\begin_layout Standard
+En el experimento 
+\emph on
+"¿Cómo son nuestros voluntarios?"
+\emph default
+, la plataforma permitirá:
+\end_layout
+
+\begin_layout Itemize
+Dar feedback a los usuarios, comparando sus respuestas con las dadas por
+ otros usuarios.
+\end_layout
+
+\begin_layout Itemize
+El voluntario podrá recibir un pago asociado a una de sus elecciones.
+ La probabilidad de este pago viene dada por:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Los usuarios que realicen la parte 2 del experimento con dinero real, tendrán
+ un 10% de recibir un pago asociado a una de sus elecciones elegidas al
+ azar de este apartado.
+\end_layout
+
+\begin_layout Itemize
+Los usuarios que realicen la parte 3 del experimento con dinero real, tendrán
+ un 10% de recibir un pago asociado a una de sus elecciones elegidas al
+ azar de este apartado.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Los usuarios que realicen la parte 2 y la parte 3 con dinero ficticio, participa
+rán en un sorteo.
+ Las probabilidades de ganar dinero en este sorteo viene dadas por:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Los usuarios tendrán un 10% de probabilidades de ganar un premio del sorteo,
+ pudiendo ser el premio cuatro cantidades predefinidas, cada una con igual
+ probabilidad de ser elegida.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+La plataforma avisará mediante correo a los usuarios que hayan ganado dinero.
+\end_layout
+
+\begin_layout Itemize
+La plataforma se encargará de transmitir la información de los usuarios
+ que han recibido algun tipo de compensación económica al responsable del
+ pago.
+\end_layout
+
+\begin_layout Itemize
+Los resultados de este experimento tendrán un formato CSV adaptado a las
+ necesidades de los investigadores.
+\end_layout
+
+\begin_layout Standard
+### Requisitos de Rendimiento
+\end_layout
+
+\begin_layout Standard
+Al tratarse de una plataforma web que permite la ejecución de múltiples
+ usuarios al mismo tiempo, puede que existan problemas derivado a la carga
+ de usuario.
+ Para la realización del experimento "¿Cómo son nuestros voluntarios?",
+ se espera llegar a 1000 usuarios durante un mes, por lo que en un principio
+ no debería de existir problemas de carga, aun así se medirá en la maquina
+ de producción la carga máxima de usuarios que soporta el sistema y el tiempo
+ de respuesta.
+\end_layout
+
+\begin_layout Standard
+### Atributos del Sistema
+\end_layout
+
+\begin_layout Standard
+Se espera una alta fiabilidad del sistema, aun así se registrará cualquier
+ incidente en la plataforma pudiendo avisar al desarrollador y administrador
+ de la plataforma.
+\end_layout
+
+\begin_layout Standard
+También se espera en un futuro la ampliación de la plataforma así como el
+ uso de esta en otras investigaciones, por lo que debe estar bien documentada
+ para facilitar su adopción.
+\end_layout
+
+\begin_layout Standard
+En cuanto a la seguridad, como ya hemos comentado anteriormente se registrará
+ cualquier incidente y acceso a la plataforma.
+ En el sistema existirán tres tipos de usuarios, el administrador, que deberá
+ tener acceso al servidor donde esté alojado la plataforma.
+ Y los investigadores y usuarios que respondan a las encuestas, que podrán
+ entrar en el sistema mediante open-id, o mediante un login y contraseña.
+\end_layout
+
+\begin_layout Standard
+## Diagrama de Clases
+\end_layout
+
+\begin_layout Standard
+En un primer lugar se va a mostrar sin profundizar el diagrama de clases
+ que hace uso de la base de datos, representando unicamente el modelo estático
+ del sistema.
+\end_layout
+
+\begin_layout Standard
+[schema1_alto_nivel.svg]
+\end_layout
+
+\begin_layout Standard
+Observando con mas detenimiento la clase Question, cada tipo de pregunta
+ desciende de la clase Question
+\end_layout
+
+\begin_layout Standard
+[preguntas.svg]
+\end_layout
+
+\begin_layout Standard
+Por otra parte, para el experimento "¿Como son nuestos voluntarios?" Se
+ creo una serie de clases para los distintos juegos y sorteos
+\end_layout
+
+\begin_layout Standard
+[games_sin_detalle.svg]
+\end_layout
+
+\begin_layout Standard
+Analizando con mas detenimiento la clase Game
+\end_layout
+
+\begin_layout Standard
+[games.svg]
+\end_layout
+
+\begin_layout Standard
+Como hemos dicho anteriormente estos diagramas solo hacen referencia al
+ modelo estático del sistema, no así a las demás clases que interactuan
+ con estas, como puede ser los distintos formularios y validadores web usados
+ para la representación del modelo.
+\end_layout
+
+\begin_layout Standard
+### Entidades del sistema
+\end_layout
+
+\begin_layout Standard
+A continuación vamos a describir las entidades del sistema:
+\end_layout
+
+\begin_layout Standard
+#### User, usuario
+\end_layout
+
+\begin_layout Standard
+Un usuario es una persona que se registra en la plataforma para poder hacer
+ uso de ella, ya sea creando encuestas o contestándolas.
+ Además guarda los permisos que posee dicho usuario dentro de la plataforma,
+ pudiendo tener un rol de investigador o de voluntario.
+\end_layout
+
+\begin_layout Standard
+#### Survey, encuesta
+\end_layout
+
+\begin_layout Standard
+Survey sería la cabecera de la encuesta, en la que están definidas los atributos
+ y las limitaciones de está, como puede ser la fecha durante la que estará
+ activa la encuesta, la duración de esta, o simplemente el título y la descripci
+ón d eesta.
+\end_layout
+
+\begin_layout Standard
+#### Consent, consentimiento
+\end_layout
+
+\begin_layout Standard
+Consent almacena los consentimientos que debe aceptar un usuario para realizar
+ una encuesta.
+ Cada consentimiento pertenece a una encuesta.
+\end_layout
+
+\begin_layout Standard
+#### Section, sección
+\end_layout
+
+\begin_layout Standard
+Section sirven para definir los distintas secciones organizatitivas que
+ posee una encuesta, a su vez una sección puede contener mas secciones.
+ Además en cada sección se puede definir si son secciones exclusivas respecto
+ a las secciones del mismo nivel, así como definir el nombre y la probabilidad
+ de realizar dicha sección de la encuesta.
+ Al final las secciones generan un árbol que cuelga de una encuesta.
+\end_layout
+
+\begin_layout Standard
+#### Question, pregunta
+\end_layout
+
+\begin_layout Standard
+Question almacena una pregunta de la encuesta.
+ +Las preguntas pueden ser de distinto tipo, cada una tiene su propia clase
+ que hereda de Question.
+ Cada pregunta está definida dentro de una sección.
+\end_layout
+
+\begin_layout Standard
+##### QuestionText, preguntas de texto
+\end_layout
+
+\begin_layout Standard
+Almacena preguntas cuya respuesta es texto, almacena también las limitaciones
+ que pueda tener la respuesta, como puede ser si es un número entero, decimal
+ o viene limitado por una expresión regular.
+\end_layout
+
+\begin_layout Standard
+##### QuestionYN, preguntas de si o no
+\end_layout
+
+\begin_layout Standard
+Hace referencia a las preguntas cuya respuesta es si o no.
+\end_layout
+
+\begin_layout Standard
+##### QuestionChoice, preguntas de elección
+\end_layout
+
+\begin_layout Standard
+Contiene las distintas opciones posibles en las preguntas cuyo rango de
+ respuestas está predeterminado.
+ También guarda información de como representar estás opciones al usuario.
+\end_layout
+
+\begin_layout Standard
+##### QuestionLikerScala, preguntas de escala likert
+\end_layout
+
+\begin_layout Standard
+Almacena la información necesaria para las preguntas likert.
+\end_layout
+
+\begin_layout Standard
+#### Condition, condición
+\end_layout
+
+\begin_layout Standard
+Condition hace referencia a las preguntas dependientes de la respuesta de
+ otra pregunta.
+ Guardando que pregunta depende de quién así como las condiciones necesarias
+ para mostrar dicha pregunta.
+\end_layout
+
+\begin_layout Standard
+#### Answer, respuesta.
+\end_layout
+
+\begin_layout Standard
+Guarda la respuesta que ha dado un usuario a una pregunta, así como el tiempo
+ empleada en ella.
+\end_layout
+
+\begin_layout Standard
+#### StateSurvey, estado de la encuesta
+\end_layout
+
+\begin_layout Standard
+Almacena la información relativa del estado en el que se encuentra una encuesta
+ por parte de un usuario, guardando entre otras cosas la sección por la
+ que va, el tiempo empleado o el estado de la encuesta.
+\end_layout
+
+\begin_layout Standard
+### Entidades del sistema del proyecto "¿Cómo son nuestros voluntarios?"
+\end_layout
+
+\begin_layout Standard
+#### Rafle, rifa
+\end_layout
+
+\begin_layout Standard
+En el sorteo que hay dentro del proyecto, rafle se encarga de decidir si
+ el usuario es premiado o no y guarda la cantidad ganada.
+\end_layout
+
+\begin_layout Standard
+#### GameImpatience, juego de la impaciencia
+\end_layout
+
+\begin_layout Standard
+Hace referencia a los resultados de las decisiones tomadas en el juego de
+ la impaciencia, que depende unicamente solo de un usuario.
+\end_layout
+
+\begin_layout Standard
+#### Game
+\end_layout
+
+\begin_layout Standard
+Dentro del proyecto existen varios juegos que involucran a dos usuarios,
+ cada juego depende de las decisiones tomadas en las respuestas de la encuesta.
+ Cada juego hereda de esta entidad
+\end_layout
+
+\begin_layout Standard
+##### GameLottery1, juego de la lotería 1
+\end_layout
+
+\begin_layout Standard
+Guarda la información de la decisión tomada en la primera versión del juego
+ de la lotería, descrita en el ANEXO X
+\end_layout
+
+\begin_layout Standard
+##### GameLottery2, juego de la lotería 2
+\end_layout
+
+\begin_layout Standard
+Guarda la información de la decisión tomada en la segunda versión del juego
+ de la lotería, descrita en el ANEXO X
+\end_layout
+
+\begin_layout Standard
+##### GameRent1, juego de la renta 1
+\end_layout
+
+\begin_layout Standard
+Guarda la información de la decisión tomada en la primera versión del juego
+ de la renta, descrita en el ANEXO X
+\end_layout
+
+\begin_layout Standard
+##### GameRent2, juego de la renta 2
+\end_layout
+
+\begin_layout Standard
+Guarda la información de la decisión tomada en la segunda versión del juego
+ de la renta, descrita en el ANEXO X
+\end_layout
+
+\begin_layout Standard
+##### GameUltimatum, juego del ultimatum
+\end_layout
+
+\begin_layout Standard
+Guarda la información de la decisión tomada en el juego del ultimatum, descrita
+ en el ANEXO X
+\end_layout
+
+\begin_layout Standard
+##### GameDictador, juego del dictador
+\end_layout
+
+\begin_layout Standard
+Guarda la información de la decisión tomada en el juego del dictador, descrita
+ en el ANEXO X
+\end_layout
+
+\begin_layout Standard
+## Esquema Relacional
+\end_layout
+
+\begin_layout Standard
+A continuación mostramos el esquema relacional, generado por el ORM SQLAlchemy.
+ 
+\end_layout
+
+\begin_layout Standard
+[schema_bbdd.svg]
+\end_layout
+
+\begin_layout Standard
+Durante el diseño se tuvo que tomar la decisión de como implementar las
+ clases heredaras, si todas en la misma tabla, en distintas o algunas compartien
+do tabla y otras no.
+ Se decidió que todas compartirían la misma tabla, sobre todo a que no se
+ espera una gran cantidad de entradas, mas comparándolo con otras tablas
+ como puede ser Answer.
+\end_layout
+
+\begin_layout Standard
+Aunque no se aprecia en el esquema, existen las siguientes restricciones
+ en la declaración del modelo que se trasladan a la base de datos:
+\end_layout
+
+\begin_layout Standard
+* Tabla stateSurvey, la tupla user_id y survey_id es única.
+\end_layout
+
+\begin_layout Standard
+* Tabla condition, la tupla subquestion_id y parent_id es única.
+\end_layout
+
+\begin_layout Standard
+* Tabla answer, la tupla user_id y question_id es única
+\end_layout
+
+\begin_layout Standard
+* Tabla user, el valor de email es único.
+\end_layout
+
+\begin_layout Standard
+Por otra parte se muestra el esquema relacional, donde se guardan los resultados
+ de los distintos juegos y sorteos
+\end_layout
+
+\begin_layout Standard
+[schema_bbdd_games.svg]
+\end_layout
+
+\begin_layout Standard
+Las restricciones de estas tablas son las siguientes:
+\end_layout
+
+\begin_layout Standard
+* Tabla gameImpatience, la tupla user_id y survey_id es única.
+\end_layout
+
+\begin_layout Standard
+* Tabla raffle, la tupla user_id y survey_id es única
+\end_layout
+
+\begin_layout Standard
+* Tabla game, la tupla userA_id, userB_id y survey_id es única
+\end_layout
+
+\begin_layout Standard
+## Casos de Uso
+\end_layout
+
+\begin_layout Standard
+En esta sección vamos a analizar los posibles usos que podrán darse a la
+ plataforma.
+ Para ilustarlo vamos a emplear algunos diagramas de casos de uso y trazas
+ de eventos.
+\end_layout
+
+\begin_layout Standard
+[voluntario.svg]
+\end_layout
+
+\begin_layout Standard
+[investigador.svg]
+\end_layout
+
+\begin_layout Standard
+[Administrador.svg]
+\end_layout
+
+\begin_layout Standard
+## Módulos de la plataforma
+\end_layout
+
+\begin_layout Standard
+Para la elaboración de las plataformas se ha seguido las recomendaciones
+ dadas por los desarrolladores de Flask
+\end_layout
+
+\begin_layout Standard
+http://flask.pocoo.org/docs/becomingbig/
+\end_layout
+
+\begin_layout Standard
+https://github.com/mitsuhiko/flask/wiki/Large-app-how-to
+\end_layout
+
+\begin_layout Standard
+http://mattupstate.com/python/2013/06/26/how-i-structure-my-flask-applications.htm
+l?utm_medium=referral&utm_source=pulsenews
+\end_layout
+
+\begin_layout Standard
+Se ha dividido la plataforma en distintos módulos, agrupando estas a nivel
+ de funcionalidades.
+\end_layout
+
+\begin_layout Standard
+[modulos.png]
+\end_layout
+
+\begin_layout Standard
+Los módulos con lo que se puede interactuar visualmente a través de un navegador
+ tienen la siguiente estructura:
+\end_layout
+
+\begin_layout Standard
+* Vistas: La vista de una función es donde una petición HTTP cumple con
+ la lógica del programa.
+ Es decir cada función tiene definida una ruta web por la que se puede acceder.
+ En un modelo MVC, sería parte del controlador.
+ Es esta función es donde los datos de la petición HTTP se traducen a una
+ llamada a la lógica de la aplicación produciendo una respuesta.
+\end_layout
+
+\begin_layout Standard
+* Formularios: Es el lugar donde están definidas las clases que contienen
+ los formularios de un módulo con los que puede interactuar un usuario,
+ así como las distintas validaciones que sufren los formularios.
+\end_layout
+
+\begin_layout Standard
+* Plantillas: Cuando la vista genera una respuesta, es la plantilla quien
+ se encarga de generar el código HTML y JavaScript, para representar los
+ resultados al usuario.
+\end_layout
+
+\begin_layout Standard
+En la figura [traza de eventos], podemos ver una traza de eventos genérica
+ que corresponde a la situación en la que un usuario rellena un formulario
+ y lo envía a la plataforma.
+ Luego se comprueba los permisos del usuario y se valida el formulario.
+ Una vez que es valido se modifica el modelo y se devuelve una nueva vista
+ al usuario.
+ 
+\end_layout
+
+\begin_layout Standard
+### Módulo de decoradores
+\end_layout
+
+\begin_layout Standard
+Este módulo contiene los decoradores usados para proteger las vistas de
+ los distintos módulos que se pueden acceder vía petición HTML, así se evita
+ que cualquier usuario pueda ejecutar una vista a la que no tiene acceso.
+\end_layout
+
+\begin_layout Standard
+Esto se ha realizado mediante decoradores, ya que permiten alternar de manera
+ dinámica la funcionalidad de una función, método o clase, sin tener que
+ realizar ningún cambio de código en la clase decorada.
+\end_layout
+
+\begin_layout Standard
+Los decoradores disponibles son los siguientes:
+\end_layout
+
+\begin_layout Standard
+login_required: Comprueba que el usuario ha ingresado en la plataforma.
+\end_layout
+
+\begin_layout Standard
+researcher_requerid: Comprueba que el usuario es un investigador.
+\end_layout
+
+\begin_layout Standard
+finished_survey: Comprueba que el usuario ha finalizado la encuesta.
+\end_layout
+
+\begin_layout Standard
+belong_researcher: Valida que la encuesta, sección o pregunta que que quiere
+ modificar pertenece al investigador en cuestión y no a otro.
+\end_layout
+
+\begin_layout Standard
+valid_survey: Comprueba que la encuesta ya se ha publicado.
+\end_layout
+
+\begin_layout Standard
+there_is_stateSurvey: Valida que existe y es valido el estado de la encuesta
+ por parte de un usuario que quiere rellenar una encuesta.
+\end_layout
+
+\begin_layout Standard
+Por ejemplo:
+\end_layout
+
+\begin_layout Standard
+[code]
+\end_layout
+
+\begin_layout Standard
+@blueprint.route('/survey/new', methods = ['GET', 'POST'])
+\end_layout
+
+\begin_layout Standard
+@login_required
+\end_layout
+
+\begin_layout Standard
+@researcher_required
+\end_layout
+
+\begin_layout Standard
+def new_survey():
+\end_layout
+
+\begin_layout Standard
+[/code]
+\end_layout
+
+\begin_layout Standard
+Para acceder a la vista new_survey, que sirve para la creación de una nueva
+ encuesta, debemos acceder a la dirección **http://servidor/survey/new**,
+ pero antes de poder acceder, se comprueba que el usuario se haya autentificado
+ en el sistema, mediante el decorador **@login_required**, y que además
+ el usuario tenga permisos de investigador, **@researcher_required**.
+ De esta forma se puede proteger las páginas a los que los usuarios pueden
+ acceder.
+\end_layout
+
+\begin_layout Standard
+### Módulo Planificador de tareas.
+\end_layout
+
+\begin_layout Standard
+Este módulo se encarga de ejecutar tareas periódicas.
+ Concretamente tiene definidas dos:
+\end_layout
+
+\begin_layout Standard
+* Envía periódicamente al investigador los resultados de la encuesta.
+\end_layout
+
+\begin_layout Standard
+* En la adaptación del experimento "¿Cómo son nuestros voluntarios?", se
+ decidió realizar los pagos manualmente, por lo que se envía un correo al
+ responsable de los pagos, con el dinero y usuario al que debe realizar
+ el pago.
+\end_layout
+
+\begin_layout Standard
+### Módulo de Autentificación
+\end_layout
+
+\begin_layout Standard
+En el módulo de autetificación permite las siguientes opciones:
+\end_layout
+
+\begin_layout Standard
+* Registrarnos en la plataforma: Uno se puede registrar mediante el uso
+ de un correo.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "auth/register"
+\end_layout
+
+\begin_layout Standard
+* Validarnos mediante el uso de un correo y contraseña
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "auth/loginEmail"
+\end_layout
+
+\begin_layout Standard
+* Validarnos mediante el uso de un servidor OpenID.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "auth/" o "auth/login"
+\end_layout
+
+\begin_layout Standard
+* Cerrar la sesión actual.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "auth/logout"
+\end_layout
+
+\begin_layout Standard
+### Módulo del investigador
+\end_layout
+
+\begin_layout Standard
+Este modulo permite a los usuarios que sean investigadores, las siguientes
+ acciones:
+\end_layout
+
+\begin_layout Standard
+* Listado de encuestas creadas por un investigador:
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante las vistas: "researcher/survey/" o "researcher
+/survey/index".
+\end_layout
+
+\begin_layout Standard
+* Creación de encuestas: Durante la creación de una encuesta se comprueba
+ que todos los campos del formulario son validos, además permite definir
+ las siguientes opciones:
+\end_layout
+
+\begin_layout Standard
+* Título.
+\end_layout
+
+\begin_layout Standard
+* Descripción: Se hace uso de la sintaxis Markdown para el enriquecimiento
+ del texto.
+\end_layout
+
+\begin_layout Standard
+* Número máximo de usuarios que pueden acceder a la encuesta, si es que
+ lo hay.
+\end_layout
+
+\begin_layout Standard
+* Fecha de inicio de la encuesta
+\end_layout
+
+\begin_layout Standard
+* Fecha de finalización de la encuesta
+\end_layout
+
+\begin_layout Standard
+* Tiempo máximo para la realización de la encuesta, si es que lo hay.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/new"
+\end_layout
+
+\begin_layout Standard
+* Modificación de una encuesta: Se permite modificar cualquier campo de
+ una encuesta creada
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>",
+ siendo id_survey el identificador de la encuesta a modificar.
+\end_layout
+
+\begin_layout Standard
+* Eliminación de una encuesta: Se permite eliminar una encuesta creada,
+ siempre que no haya sido publicada.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/deleteSurvey/<int
+:id_survey>", siendo id_survey el identificador de la encuesta a eliminar.
+\end_layout
+
+\begin_layout Standard
+* Creación de consentimientos: Mediante un formulario, el investigador informa
+ de los consentimientos que debe aceptar el usuario para poder participar
+ en la encuesta.
+ Hace uso de la sintaxis Markdown para el enriquecimiento del texto.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/c
+onsent/add", siendo id_survey el identificador de la encuesta.
+\end_layout
+
+\begin_layout Standard
+* Modificación de un consentimiento: 
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/c
+onsent/<int:id_consent>", siendo id_survey el identificador de la encuesta,
+ e id_consent el identificador del consentimiento
+\end_layout
+
+\begin_layout Standard
+* Eliminación de un consentimiento: 
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/c
+onsent/<int:id_consent>/delete", siendo id_survey el identificador de la
+ encuesta, e id_consent el identificador del consentimiento
+\end_layout
+
+\begin_layout Standard
+* Creación de secciones y subsecciones: El investigador puede definir con
+ total libertad el número de secciones y subsecciones que tiene una encuesta,
+ además permite definir las siguientes opciones:
+\end_layout
+
+\begin_layout Standard
+* Título de la sección.
+\end_layout
+
+\begin_layout Standard
+* Descripción: Se hace uso de la sintaxis Markdown para el enriquecimiento
+ del texto.
+\end_layout
+
+\begin_layout Standard
+* Secuencia de la sección.
+\end_layout
+
+\begin_layout Standard
+* Porcentaje de número de usuarios que realizan la sección.
+\end_layout
+
+\begin_layout Standard
+El usuario que realice la encuesta recorrerá en profundidad el árbol generado
+ por la encuesta.
+ Si dos o mas ramas tienen la misma secuencia, se elige al azar que rama
+ recorrer primero.
+ Si dos o mas ramas con la misma secuencia, tienen un porcentaje menor que
+ 1, este porcentaje indica la probabilidad que hay para recorrer esa rama
+ y no cualquiera de las otras que tienen la misma secuencia.
+\end_layout
+
+\begin_layout Standard
+A la función de añadir una sección a una encuesta dada, se accede mediante
+ la vista: "researcher/survey/<int:id_survey>/section/new", siendo id_survey
+ el identificador de la encuesta.
+\end_layout
+
+\begin_layout Standard
+A la función de añadir una sección a una sección dada, se accede mediante
+ la vista: "researcher/survey/<int:id_survey>/section/<int:id_section>/new",
+ siendo id_survey el identificador de la encuesta, e id_sectión el identificador
+ de la sección de la que va a colgar la nueva sección.
+\end_layout
+
+\begin_layout Standard
+* Modificación de una sección o subsección.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/s
+ection/<int:id_section>", siendo id_survey el identificador de la encuesta,
+ e id_sectión el identificador de la sección a modificar
+\end_layout
+
+\begin_layout Standard
+* Eliminación de una sección o subsección:
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/d
+eleteSection/<int:id_section>", siendo id_survey el identificador de la
+ encuesta, e id_sectión el identificador de la sección a eliminar.
+\end_layout
+
+\begin_layout Standard
+* Creación de preguntas: Dada una sección, el investigador puede añadir
+ las preguntas que desee a la sección.
+ Las posibilidades que tiene son las siguientes:
+\end_layout
+
+\begin_layout Standard
+* Preguntas cuya respuesta es Si o No, las opciones disponibles son las
+ siguientes:
+\end_layout
+
+\begin_layout Standard
+* Texto de la pregunta: Se hace uso de la sintaxis Markdown para el enriquecimie
+nto del texto.
+\end_layout
+
+\begin_layout Standard
+* Indicar si es una pregunta cuya respuesta es obligatoria o no.
+\end_layout
+
+\begin_layout Standard
+* Respuesta correcta a la pregunta si es que la tiene, sirve para crear
+ preguntas de control
+\end_layout
+
+\begin_layout Standard
+* Número máximo de intentos que tiene el usuario para responder bien a la
+ pregunta.
+\end_layout
+
+\begin_layout Standard
+* Preguntas cuya respuesta es un texto, las opciones disponibles son las
+ siguientes:
+\end_layout
+
+\begin_layout Standard
+* Texto de la pregunta: Se hace uso de la sintaxis Markdown para el enriquecimie
+nto del texto.
+\end_layout
+
+\begin_layout Standard
+* Indicar si es una pregunta cuya respuesta es obligatoria o no.
+\end_layout
+
+\begin_layout Standard
+* Respuesta correcta a la pregunta si es que la tiene, sirve para crear
+ preguntas de control
+\end_layout
+
+\begin_layout Standard
+* Número máximo de intentos que tiene el usuario para responder bien a la
+ pregunta.
+\end_layout
+
+\begin_layout Standard
+* Validar que el texto introducido por el usuario en la respuesta es:
+\end_layout
+
+\begin_layout Standard
+* Número entero
+\end_layout
+
+\begin_layout Standard
+* Número decimal
+\end_layout
+
+\begin_layout Standard
+* Comprobarlo mediante una expresión regular definido en sintaxis Python.
+\end_layout
+
+\begin_layout Standard
+* Mostrar un mensaje de error personalizado si ha introducido en un formato
+ incorrecto la respuesta.
+\end_layout
+
+\begin_layout Standard
+* Preguntas cuya respuesta es una opción dada, las opciones disponibles
+ son las siguientes.
+\end_layout
+
+\begin_layout Standard
+* Texto de la pregunta: Se hace uso de la sintaxis Markdown para el enriquecimie
+nto del texto.
+\end_layout
+
+\begin_layout Standard
+* Indicar si es una pregunta cuya respuesta es obligatoria o no.
+\end_layout
+
+\begin_layout Standard
+* Respuesta correcta a la pregunta si es que la tiene, sirve para crear
+ preguntas de control
+\end_layout
+
+\begin_layout Standard
+* Número máximo de intentos que tiene el usuario para responder bien a la
+ pregunta.
+\end_layout
+
+\begin_layout Standard
+* Formato en el que se mostrará la pregunta, hay tres posibilidades:
+\end_layout
+
+\begin_layout Standard
+* Horizontal: Se mostrará las opciones mediante un radio botón, en una disposici
+ón horizontal.
+\end_layout
+
+\begin_layout Standard
+* Vertical: Se mostrará las opciones mediante un radio botón, en una disposición
+ vertical.
+\end_layout
+
+\begin_layout Standard
+* Select: Se mostrará las opciones mediante un formulario de selección.
+\end_layout
+
+\begin_layout Standard
+* Definición de las respuestas disponibles mediante la definición de un
+ rango de números, así como el salto entre ellos.
+\end_layout
+
+\begin_layout Standard
+* Definición de las respuestas disponibles añadiéndolas de una en una
+\end_layout
+
+\begin_layout Standard
+* Preguntas cuya respuesta es una escala likert, las opciones disponibles
+ son las siguientes.
+\end_layout
+
+\begin_layout Standard
+* Texto de la pregunta: Se hace uso de la sintaxis Markdown para el enriquecimie
+nto del texto.
+\end_layout
+
+\begin_layout Standard
+* Indicar si es una pregunta cuya respuesta es obligatoria o no.
+\end_layout
+
+\begin_layout Standard
+* Indicar el rango de la escala likert, que estará definida entre 0-1 y
+ un número mayor que 1
+\end_layout
+
+\begin_layout Standard
+* Etiqueta opcional para indicar el significado mínimo de la escala
+\end_layout
+
+\begin_layout Standard
+* Etiqueta opcional para indicar el significado máximo de la escala
+\end_layout
+
+\begin_layout Standard
+Todas las preguntas descritas anteriormente se pueden mostrar o no dependiendo
+ de la respuesta dada a una pregunta de la misma sección.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/s
+ection/<int:id_section>/addQuestion", siendo id_survey el identificador
+ de la encuesta e id_sectión el identificador de la sección donde se encuentra
+ la pregunta.
+\end_layout
+
+\begin_layout Standard
+* Modificación de una pregunta:
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/s
+ection/<int:id_section>/question/<int:id_question>", siendo id_survey el
+ identificador de la encuesta e id_sectión el identificador de la sección
+ donde se encuentra la pregunta, e id_question el identificador de la pregunta
+ a modificar
+\end_layout
+
+\begin_layout Standard
+* Eliminación de una pregunta:
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/<int:id_survey>/S
+ection/<int:id_section>/deleteQuestion/<int:id_question>", siendo id_survey
+ el identificador de la encuesta e id_sectión el identificador de la sección
+ donde se encuentra la pregunta, e id_question el identificador de la pregunta
+ a eliminar
+\end_layout
+
+\begin_layout Standard
+* Duplicar sección: Permite duplicar una sección así como todas las secciones
+ y preguntas que cuelgan de su rama.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista:
+\end_layout
+
+\begin_layout Standard
+* "researcher/survey/<int:id_survey>/duplicateSection/<int:id_section>/section/<
+int:id_section2>', siendo id_survey el identificador de la encuesta, id_sectión
+ el identificador de la sección a copiar, id_section2 el identificador de
+ la sección donde se copiará.
+\end_layout
+
+\begin_layout Standard
+* "researcher/survey/<int:id_survey>/duplicateSection/<int:id_section>/survey/',
+ siendo id_survey el identificador de la encuesta, id_sectión el identificador
+ de la sección a copiar, se copiará directamente sobre la raiz, la cual
+ es la encuesta.
+\end_layout
+
+\begin_layout Standard
+* Exportar una encuesta: Permite exportar a un fichero XML, la encuesta
+ seleccionada.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/exportSurvey/<int
+:id_survey>", siendo id_survey la encuesta a exportar
+\end_layout
+
+\begin_layout Standard
+* Importar una encuesta: Permite importar una encuesta mediante un fichero
+ XML.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/new"
+\end_layout
+
+\begin_layout Standard
+* Exportar estadísticas de una encuesta: Permite exportar en un fichero
+ CSV, los resultados de la encuesta seleccionada
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "researcher/survey/exportStats/<int:
+id_survey>", siendo id_survey la encuesta a exportar
+\end_layout
+
+\begin_layout Standard
+Las vistas anteriores solo están disponibles para investigadores, además
+ no se pueden editar encuestas de otros investigadores, ya que todas las
+ vistas están protegidas mediante el decorador "@belong_researcher"
+\end_layout
+
+\begin_layout Standard
+### Módulo del encuestado
+\end_layout
+
+\begin_layout Standard
+Este módulo permite a los usuarios que sean voluntarios realizar rellenar
+ encuestas.
+ Las acciones disponibles son las siguientes:
+\end_layout
+
+\begin_layout Standard
+* Listar todas las encuestas disponibles, así como el estado de esta, ya
+ sea sin empezar, empezada o finalizada.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "survey/index" o "survey/"
+\end_layout
+
+\begin_layout Standard
+* Empezar o continuar una encuesta: Es la función encargada de decidir cual
+ es el siguiente paso cuando se realiza una encuesta, ya sea mostrar los
+ consentimientos, mostrar una sección de la encuesta, indicar que se ha
+ finalizado la encuesta o mostrar el feedback de la encuesta si es que la
+ tiene.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista: "survey/<int:id_survey>", siendo
+ id_survey la encuesta a realizar.
+\end_layout
+
+\begin_layout Standard
+* Mostrar los consentimientos: Esta función es la encargada de mostrar el
+ consentimiento que el usuario debe aceptar para realizar la encuesta.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista "survey/<int:id_survey>/consent",
+ siendo id_survey la encuesta a realizar 
+\end_layout
+
+\begin_layout Standard
+* Mostrar una sección: Esta función es la encargada de mostrar una sección,
+ con todas las preguntas que hay en ella, además de guardar los resultados
+ de las preguntas, así como los tiempos empleados en ellas.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante las vistas "survey/<int:id_survey>/section/<in
+t:id_section>" o "survey/<int:id_survey>/section/", siendo id_survey la
+ encuesta a realizar e id_section, la sección, 
+\end_layout
+
+\begin_layout Standard
+Todas las vistas están protegidas, de manera que es obligatorio haber ingresado
+ en la plataforma, además en la vista **Mostrar una sección** solo se permite
+ acceder a la sección que le toca realizar al usuario.
+\end_layout
+
+\begin_layout Standard
+### Módulo de Feedback
+\end_layout
+
+\begin_layout Standard
+Este módulo permite dar feedback sobre las decisiones tomadas en el proyecto
+ "¿Cómo son nuestros voluntarios?".
+ Cada vista corresponde con una decisión concreta del experimento.
+ 
+\end_layout
+
+\begin_layout Standard
+* Lógica: Durante el desarrollo del proyecto "¿Cómo son nuestros voluntarios?",
+ se decidió que el orden del feedback sobre las decisiones tomadas, iba
+ a ser el mismo que el realizado durante el experimento, y debido a que
+ cada voluntario se le asigna un orden al azar, está función es la encargada
+ de decidir que feedback se le va a mostrar al voluntario, siempre siguiendo
+ el mismo orden de la encuesta.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista "feedback/id_survey", siendo
+ id_survey la encuesta de la que recibir feedback.
+\end_layout
+
+\begin_layout Standard
+* Juegos de la lotería, la renta y dictador: Corresponde a las decisiones
+ de las versiones de los dos juegos de la lotería y los dos juegos de la
+ renta.
+ Muestra la respuesta del usuario y la media dada por los demás voluntarios,
+ además muestra el porcentaje de los voluntarios que han tomado la misma
+ decisión que el usuario.
+\end_layout
+
+\begin_layout Standard
+* Juego del ultimatum: A parte de mostrar la información que se da en los
+ demás juegos, también se muestra el porcentaje de voluntarios que hubiesen
+ aceptado la cantidad dada por el usuario.
+\end_layout
+
+\begin_layout Standard
+### Módulo de estadísticas:
+\end_layout
+
+\begin_layout Standard
+Este módulo es el encargado de generar el fichero de resultados para los
+ investigadores.
+ Concretamente existen dos funciones, una para encuestas genéricas y otra
+ para el experimento "¿Cómo son nuestros voluntarios?" Ya que se adapto
+ los resultados a la necesidad de los investigadores en cuanto al formato
+ requerido por ellos para trabajar más cómodamente.
+\end_layout
+
+\begin_layout Standard
+### Módulo Juegos:
+\end_layout
+
+\begin_layout Standard
+Este módulo es el encargado de decidir en los juegos del experimento "¿Cómo
+ son nuestros voluntarios?", que usuarios se enfrentan con quién.
+ Además de buscar las respuestas dadas por los voluntarios.
+\end_layout
+
+\begin_layout Standard
+A la hora de decidir que usuarios van a enfrentarse, se busca a todos los
+ usuarios que no han realizado ningún enfrentamiento.
+ Si este llega a un número mínimo necesario para que no existan enfrentamientos
+ repetidos, se continua.
+ Sino se selecciona las decisiones tomadas de otros voluntarios que ya se
+ han enfrentado, pero sin posibilidad de que estos últimos vuelvan a salir
+ premiados.
+\end_layout
+
+\begin_layout Standard
+### Módulo de visualización de estadísticas y juegos.
+\end_layout
+
+\begin_layout Standard
+Este módulo permite la visualización de los resultados de las encuestas,
+ además también permite la visualización de los resultados de los juegos
+ del experimento "¿Cómo son nuestros voluntarios?"
+\end_layout
+
+\begin_layout Standard
+* Listar todas las encuestas creadas por un investigador:
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista "stats/" o "stats/index"
+\end_layout
+
+\begin_layout Standard
+* Listar el resultado de una encuesta: Representa mediante una tabla el
+ fichero csv de las encuestas, se puede elegir el criterio de ordenación.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista "stats/<int:id_survey>", siendo
+ id_survey la encuesta de la que se desea visualizar los resultados.
+\end_layout
+
+\begin_layout Standard
+* Listar los juegos disponibles en una encuesta:
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista "stats/<int:id_survey>/games",
+ siendo id_survey el identificador de la encuesta
+\end_layout
+
+\begin_layout Standard
+* Listar el resultado de un juego de una encuesta: Representa mediante una
+ tabla, los resultados de de los distintos juegos de una encuesta, se puede
+ elegir el criterio de ordenación.
+\end_layout
+
+\begin_layout Standard
+A esta función se accede mediante la vista "stats/<int:id_survey>/games/gameX",
+ siendo id_survey el identificador de la encuesta.
+\end_layout
+
+\begin_layout Standard
+Las vistas anteriores solo están disponibles para investigadores, además
+ solo se puede acceder a las encuestas creadas por el propio investigador.
+\end_layout
+
+\begin_layout Standard
+### Módulo de modelo
+\end_layout
+
+\begin_layout Standard
+Este es el módulo descrito anteriormente en la sección diagrama de clases
+\end_layout
+
+\begin_layout Standard
+Casi todos los demás módulos interaccionan con este Módulo.
+\end_layout
+
+\begin_layout Standard
+### Módulo de configuración
+\end_layout
+
+\begin_layout Standard
+Este módulo se encarga de leer la configuración de la plataforma una vez
+ que se inicia está.
+ Aunque no se ha señalado explícitamente, los demás módulos interaccionan
+ con él si tienen que leer alguna configuración de la plataforma.
+\end_layout
+
+\begin_layout Standard
+Se han tenido en cuenta las recomendaciones dadas en http://flask.pocoo.org/docs/c
+onfig/#configuration-best-practices
+\end_layout
+
+\begin_layout Standard
+Y se ha decidido crear un sistema de clases y herencia para la configuración
+ del sistema, pudiendo cambiar el modo de funcionamiento de la aplicación
+ simplemente cambiando la variable de entorno **FLASK_CONFIG**, la estructura
+ que sigue y los modos disponibles son los siguientes:
+\end_layout
+
+\begin_layout Standard
+[code]
+\end_layout
+
+\begin_layout Standard
+class Config(object):
+\end_layout
+
+\begin_layout Standard
+# configuración básica de la plataforma
+\end_layout
+
+\begin_layout Standard
+class DevelopmentConfig(Config):
+\end_layout
+
+\begin_layout Standard
+# Configuración de la plataforma en modo desarrollo
+\end_layout
+
+\begin_layout Standard
+DEBUG = True
+\end_layout
+
+\begin_layout Standard
+class TestingConfig(Config):
+\end_layout
+
+\begin_layout Standard
+# Configuración de la plataforma para test unitarios
+\end_layout
+
+\begin_layout Standard
+class Jmeter(Config):
+\end_layout
+
+\begin_layout Standard
+# Configuración de la plataforma para la realización de pruebas de sobrecarga
+\end_layout
+
+\begin_layout Standard
+class ProductionConfig(Config):
+\end_layout
+
+\begin_layout Standard
+# Configuración de la plataforma en modo producción
+\end_layout
+
+\begin_layout Standard
+# Se define quien es el usuario administrador y cual es el servidor de correo
+ para enviar los distintos logs
+\end_layout
+
+\begin_layout Standard
+class HerokuConfig(ProductionConfig):
+\end_layout
+
+\begin_layout Standard
+# Configuración de la plataforma en modo producción en la nube Heroku
+\end_layout
+
+\begin_layout Standard
+# Usa el sistema de logs de Heroku para almacenarlos.
+\end_layout
+
+\begin_layout Standard
+class UnixConfig(ProductionConfig):
+\end_layout
+
+\begin_layout Standard
+# Configuración de la plataforma en modo producción en una máquina de tipo
+ Unix
+\end_layout
+
+\begin_layout Standard
+# Hace uso del sistema de logs de la máquina Unix.
+\end_layout
+
+\begin_layout Standard
+[/code]
+\end_layout
+
+\begin_layout Standard
+Por otra parte, para facilitar el tener varias configuraciones posibles,
+ se carga primeramente la configuración básica definida anteriormente y
+ luego se puede reemplaza por la leída en la variable de entorno **SWARMS_SURVEY
+_SETTINGS**, pudiendo cambiar fácilmente la configuración.
+\end_layout
+
+\begin_layout Standard
+### Módulo shell:
+\end_layout
+
+\begin_layout Standard
+Este módulo se accede mediante la consola de la plataforma, dando acceso
+ a un interprete Python.
+\end_layout
+
+\begin_layout Standard
+[code]
+\end_layout
+
+\begin_layout Standard
+$ ./manage.py shell
+\end_layout
+
+\begin_layout Standard
+// shell interactively of swarm-surveys, "import utiles" to access the administr
+ation tools
+\end_layout
+
+\begin_layout Standard
+In [1]: from current_app import utiles
+\end_layout
+
+\begin_layout Standard
+[/code]
+\end_layout
+
+\begin_layout Standard
+Entre las opciones disponible en **utiles**, está la de listar usuarios,
+ dar o quitar permisos de investigador a un usuario dado o Reiniciar los
+ juegos del experimento "¿Cómo son nuestros voluntarios?"
+\end_layout
+
+\begin_layout Standard
+Además mediante el uso de esta interfaz de linea de comandos, se puede acceder
+ a cualquier módulo definido en la plataforma.
+\end_layout
+
+\begin_layout Standard
+Por ejemplo, ejecutar la función de generar los resultados de una encuesta:
+\end_layout
+
+\begin_layout Standard
+[code]
+\end_layout
+
+\begin_layout Standard
+In [1]: from current_app import models
+\end_layout
+
+\begin_layout Standard
+In [2]: from current_app import stats
+\end_layout
+
+\begin_layout Standard
+In [2]: survey = models.Survey.query.get(1)
+\end_layout
+
+\begin_layout Standard
+In [3]: stats.write_stats(survey)
+\end_layout
+
+\begin_layout Standard
+written file in /home/jarenere/swarm_surveys/stats_csv/¿Cómo_son_nuestros_volunt
+arios?_1.csv
+\end_layout
+
+\begin_layout Standard
+[/code]
+\end_layout
+
+\begin_layout Standard
+### Prototipado de las ventanas y cuestiones de usabilidad
+\end_layout
+
+\begin_layout Standard
+Después del análisis y el diseño de las distintas partes de la aplicación,
+ se continuo con un diseño preliminar de la interfaz para el usuario.
+ Se tomaron distintas ideas de las plataformas estudiadas para la elaboración
+ de encuestas, así como las guías de usabilidad del proyecto KDE, http://techbas
+e.kde.org/Projects/Usability/HIG
+\end_layout
+
+\begin_layout Standard
+Para facilitar al investigador la navegación entre las distintas secciones,
+ se decidió mostrar el árbol de secciones por completo en un lateral de
+ la ventana.
+ Además de mostrar en la parte superior un menú de tipo "migas de pan",
+ que presenta en forma textual todos los enlaces que describen la ruta de
+ una sección a partir de la raíz, siendo esta la propia encuesta.
+\end_layout
+
+\begin_layout Standard
+Por otra parte para mejorar la usabilidad de la aplicación, se ha añadido
+ código JavaScript en distintas páginas para ofrecer ciertas funcionalidades
+ al usuario, sin tener que realizar peticiones a la plataforma web, añadiendo
+ velocidad y fluidez a la plataforma.
+\end_layout
+
+\begin_layout Standard
+Se decidió también añadir un editor y visualizador de código Markdown para
+ poder comprobar en tiempo real el formato de texto que verían los usuarios
+ a la hora de realizar encuestas.
+\end_layout
+
+\begin_layout Standard
+Por otra parte para mejorar la usabilidad de la plataforma, se uso un sistema
+ de URL amigables, para recordar mas fácilmente la funcionalidad de cada
+ página web.
+\end_layout
+
+\begin_layout Standard
+Además durante el prototipado de las ventanas, se tuvo en cuenta las funcionalid
+ades que provee el framework Bootstrap, para facilitar que las distintas
+ páginas se adaptasen al tamaño del navegador.
+\end_layout
+
+\begin_layout Standard
+#### Esquema de navegación
+\end_layout
+
+\begin_layout Standard
+#### Diseño del experimento "¿Cómo son nuestros voluntarios?"
+\end_layout
+
+\begin_layout Standard
+Debido a la naturaleza del proyecto, siempre se intenta evitar el influir
+ a los participantes, para que las respuestas que den sean las que realmente
+ quieren dar.
+ Esto incluye cualquier tipo de feedback visual, incluso el nombre del proyecto
+ "¿Cómo son nuestros voluntarios?", induce a pensar como voluntario.
+\end_layout
+
+\begin_layout Standard
+El diseño final para el experimento, se puede ver en las capturas XX
+\end_layout
+
+\end_body
+\end_document

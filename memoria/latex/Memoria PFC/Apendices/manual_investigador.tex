@@ -1,0 +1,506 @@
+
+\chapter{Manual de investigador}
+
+En este manual vamos a tratar las opciones que tiene un investigador
+para crear una encuesta.
+
+
+\section{Inicio de sesión}
+
+Existen dos posibilidades para iniciar la sesión, mediante el uso
+de una cuenta OpenID para lo cual puedes usar su cuenta de Google,
+Yahoo, Steam o cualquier otro servicio que haga uso de OpenID. O mediante
+el uso de un usuario y contraseña. Para ello previamente debe registrase
+en la plataforma, y se le enviará un correo con la contraseña.
+
+
+\subsection{OpenID}
+
+Haciendo uso de un navegador entre en el portal web donde se encuentra
+alojada la plataforma y entre en el enlace \textquotedbl{}Account\textquotedbl{},
+ver figura \ref{manual_00}
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_00\string".png}
+
+\protect\caption{Página principal de la aplicación}
+
+
+\label{manual_00}
+\end{figure}
+
+
+Escriba la dirección del servidor OpenID el cual va usar para autentificarse
+o haga click sobre uno de lo ser servidores predeterminados. Para
+entrar en la plataforma aprieta al botón Sign In, ver figura \ref{manual_01}
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_01_login\string".png}
+
+\protect\caption{Página de inicio de sesión mediante OpenID}
+\label{manual_01}
+\end{figure}
+
+
+
+\subsection{Correo}
+
+Para registrarse en la plataforma, vaya a la dirección http://servidor/auth/register,
+ver figura \ref{manual_02_registro}, e introduzca el correo que quiere
+usar de registro. Una ver registrado, se le enviara un correo con
+la contraseña.
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_02_registro\string".png}
+
+\protect\caption{Página de registro mediante correo}
+\label{manual_02_registro}
+\end{figure}
+Para iniciar sesión, vaya a la dirección http://servidor/auth/loginEmail
+e introduzca el correo con la que se registró y la contraseña que
+se le envió al correo, ver figura \ref{manual_01_loginemail}:
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_01_loginEmail\string".png}
+
+\protect\caption{Página de inicio mediante correo/contraseña}
+
+
+\label{manual_01_loginemail}
+\end{figure}
+
+
+
+\section{Creación de encuestas}
+
+
+\subsection{Crear o editar una encuesta}
+
+Una vez iniciado sesión en la plataforma, en la barra de navegación
+de la plataforma verá dos enlaces, figura \ref{manual_barra}:
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/barra\string".png}
+
+\protect\caption{Barra de navegación}
+
+
+\label{manual_barra}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Logout}: para salir de la sesión.
+\item \textbf{Researcher}: para entrar en el módulo de creación de encuestas.
+\end{itemize}
+Una vez dentro del modulo de creación de encuestas observara una página
+similar a la figura \ref{manual_03_home_researcher}, las opciones
+disponibles son las siguientes:
+\begin{enumerate}
+\item Botón \textbf{New survey}: Opción para crear una nueva encuesta 
+\item Opción para modificar una encuesta ya creada, en este caso la encuesta
+\emph{¿Cómo son nuestros voluntarios?}
+\item Botón \textbf{export stats}: Opción para exportar los resultados de
+una encuesta
+\end{enumerate}
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_03_home_researcher\string".png}\protect\caption{Página de inicio del módulo de creación de encuestas}
+\label{manual_03_home_researcher}
+\end{figure}
+
+
+Si se entra en la opción de crear encuestas, verá en la figura \ref{manual_04_new_survey}
+los distintos campos a rellenar para crear una encuesta:
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_04_new_survey\string".png}\protect\caption{Página con los distintos campos de una encuesta}
+\label{manual_04_new_survey}
+
+\end{figure}
+
+\begin{enumerate}
+\item \textbf{Title}: Título de la encuesta, este campo es obligatorio.
+\item \textbf{Description}: Descripción de la encuesta, esta descripción
+soporta sintaxis Markdown. Este campo es opcional
+\item Previsualización de la descripción 
+\item \textbf{Day and start time}: Día y hora en la que comenzará la encuesta.
+Este campo es opcional, sino es rellenado no se mostrará la encuesta
+a los usuarios 
+\item \textbf{Day and finish time:} Día y hora en la que finalizará la encuesta.
+Este campo es opcional, sino es rellenado, la encuesta no tendrá fecha
+de finalización 
+\item \textbf{Number of respondents}: Número máximo de usuarios que podrán
+responder a la encuesta. Este numero es orientativo, una vez llegado
+a ese número, no se permitirá a ningún usuario mas empezar la encuesta,
+pero si terminarla. Este campo es opcional, sino se rellena, no hay
+número máximo
+\item \textbf{Time in minutes that a user has to answer the survey}: Número
+máximo en minutos que tiene un usuario para terminar la encuesta.
+Este campo es opcional, sino se rellena no hay tiempo máximo 
+\item \textbf{File survey xml}: Para importar una encuesta previamente exportada.
+\item \textbf{Create surve}y: Para crear la encuesta. Si hay algún error
+se le mostrará indicado cual es, como sucede en la figura \ref{manual_error_crear_encuesta}.
+\end{enumerate}
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_04_new_survey_error\string".png}
+
+\protect\caption{Error mostrado al crear una encuesta}
+\label{manual_error_crear_encuesta}
+\end{figure}
+
+
+Una vez creada la encuesta, podrá modificar cualquier campo de está.
+No así las preguntas una vez haya sido publicada la encuesta. Después
+de crear la encuesta, verá la figura \ref{manual_06_encuesta_creada}
+con las siguientes opciones:
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_06_encuesta_creada\string".png}
+
+\protect\caption{Página de inicio de una encuesta ya creada}
+
+
+\label{manual_06_encuesta_creada}
+\end{figure}
+
+\begin{enumerate}
+\item \textbf{Save changes}: Guardar los cambios realizados en esta pantalla.
+\item \textbf{View/Add consents}: Ver y añadir consentimientos a la encuesta. 
+\item \textbf{Add section}: Añadir una sección nueva a la encuesta. 
+\item \textbf{Delete survey}: Eliminar la encuesta. 
+\item \textbf{Export survey}: Exportar la encuesta a un fichero XML con
+la posibilidad mas tarde de importar la encuesta.
+\item Arbol de secciones de la encuesta.
+\end{enumerate}
+
+\subsection{Añadir y editar consentimientos}
+
+Si realizada click en el botón de \textbf{View/Add consents}, figura
+\ref{manual_06_encuesta_creada}, irá a una pantalla con las opciones
+de añadir, editar y eliminar los consentimientos de una encuesta,
+figuras \ref{manual_07_nuevo_consentimiento} y\ref{manual_08_consentimiento}.
+El formato usado nuevamente para la escritura de texto es Markdown
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_07_nuevo_consentimiento\string".png}
+
+\protect\caption{Página para crear un nuevo consentimiento}
+
+
+\label{manual_07_nuevo_consentimiento}
+\end{figure}
+
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_08_creado_consentimiento\string".png}
+
+\protect\caption{Página con un consentimiento ya creado}
+
+
+\label{manual_08_consentimiento}
+\end{figure}
+
+
+
+\subsection{Insertar una nueva sección}
+
+Si realiza click en el botón de \textbf{Add section}, figura \ref{manual_06_encuesta_creada},
+irá a una pantalla, ver figura \ref{manual_10_nueva_seccion}, con
+las opciones para añadir una sección nueva, estas son las siguientes:
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_10_nueva_seccion\string".png}
+
+\protect\caption{Página de nueva sección}
+
+
+\label{manual_10_nueva_seccion}
+\end{figure}
+
+\begin{enumerate}
+\item \textbf{Title}: Título de la sección, este campo es obligatorio.
+\item \textbf{Description}: Descripción de la sección, esta descripción
+soporta sintaxis Markdown. Este campo es opcional.
+\item \textbf{Sequence}: Posición en la que aparecerá esta sección 
+\item \textbf{Percent}: Porcentaje de usuarios que realizarán esta sección.
+\end{enumerate}
+Si dos o mas secciones del mismo nivel tienen la misma secuencia,
+se elegirá al azar el orden de las secciones con la misma secuencia.
+Este orden se calculará cada vez para cada usuario que empiece una
+encuesta. Por lo que un usuario puede realizar la encuesta con un
+orden distinto a otro usuario.
+
+Las secciones del mismo nivel con misma secuencia y porcentaje distinto
+de 1 son excluyentes. Esto quieres decir que si tienes tres secciones:
+\emph{Sección 1} con 0.3, \emph{Sección 2} con 0.2 y \emph{Sección
+3} con 0.5. El 30\% de usuarios realizarán la \emph{Sección 1}, el
+20\% realizarán la \emph{Sección 2} y el 50\% realizarán la \emph{Sección
+3}. 
+
+Una vez creada una sección, ver figura \ref{manual_11_creada_seccion},
+se le mostrarán las opciones para eliminar una sección, añadir una
+subsección a la sección dada, añadir/editar preguntas y duplicar la
+sección. 
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_11_creado_seccion\string".png}
+
+\protect\caption{Sección ya creada}
+
+
+\label{manual_11_creada_seccion}
+\end{figure}
+
+
+
+\subsection{Añadir nuevas preguntas}
+
+Si realiza click en el botón de \textbf{Add/Edit question} dentro
+de una sección, \ref{manual_11_creada_seccion}, ira a la página para
+añadir/editar preguntas.
+
+
+\subsubsection{Preguntas cuya respuesta es Si o No}
+
+Las opciones para las preguntas \textbf{Si o No}, ver figura \ref{manual_12_preguntas_sino},
+son las siguientes: 
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_12_pregunta_si_no\string".png}
+
+\protect\caption{Creación de preguntas de tipo Si y No}
+
+
+\label{manual_12_preguntas_sino}
+\end{figure}
+
+\begin{enumerate}
+\item \textbf{Text}: Texto de la pregunta, esta descripción soporta sintaxis
+Markdown. 
+\item \textbf{Required}: Si es una pregunta obligatoria o no.
+\item \textbf{Answer}: La respuesta correcta de la pregunta si es que la
+tiene. \emph{``Yes}'', si la respuesta correcta es \emph{si}, \textquotedbl{}\emph{No}\textquotedbl{}
+si la respuesta correcta es no. Este campo es opcional.
+\item \textbf{Number of attempt}: Número de intentos para responder a la
+pregunta, en caso que la pregunta tenga una respuesta correcta. Nada,
+para infinitos intentos.
+\end{enumerate}
+El apartado \textbf{SubQuestion} y \textbf{Options game} se explicará
+mas adelante.
+
+
+\subsubsection{Preguntas cuya respuesta es un texto}
+
+Las opciones para las preguntas cuya respuesta es un texto, ver figura
+\ref{manual_13_pregutnas_texto}, son las siguientes: 
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_13_pregunta_texto\string".png}
+
+\protect\caption{Creación de preguntas de tipo texto}
+
+
+\label{manual_13_pregutnas_texto}
+\end{figure}
+
+\begin{enumerate}
+\item \textbf{Number}: Si se desea validar que el texto introducido por
+el usuario en un número entero.
+\item \textbf{Number Float}: Si se desea validar que el texto introducido
+por el usuario en un número flotante.
+\item \textbf{Regular Expression}: Si se desea validar que el texto introducido
+por el usuario corresponde a una expresión regular, para ello se usa
+la sintaxis de Python de expresiones regulares.
+\item \textbf{Error Message}: Mensaje de error personalizado ante el fallo
+a la hora de introducir la respuesta el usuario.
+\item \textbf{Answer}: La respuesta correcta de la pregunta si es que la
+tiene. Se comprueba si es correcta después de validar que la respuesta
+tenga el formato apropiado. A la hora de comprobar la respuesta se
+ignora la coincidencia de mayúsculas/minúsculas.
+\item \textbf{Number of attempt}: Número de intentos para responder a la
+pregunta, en caso que la pregunta tenga una respuesta correcta. Nada,
+para infinitos intentos.
+\end{enumerate}
+
+\subsubsection{Preguntas cuya respuesta es una opción posible}
+
+Las opciones para las preguntas cuya respuesta es una opción posible,
+ver figura \ref{manual_14_pregunta_choince}, son las siguientes:
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_14_pregunta_choice\string".png}
+
+\protect\caption{Creación de preguntas de tipo selección}
+
+
+\label{manual_14_pregunta_choince}
+\end{figure}
+
+\begin{enumerate}
+\item \textbf{Answer}: Respuesta correcta a la pregunta. 
+\item \textbf{Number of attempt}: Número de intentos para responder a la
+pregunta. 
+\item \textbf{Render}: Formato a la hora de mostrar las opciones posibles
+al usuario. Son tres: 
+
+\begin{itemize}
+\item \textbf{Vertical}: Se muestran todas las opciones en vertical 
+\item \textbf{Horizontal}: Se muestran todas las opciones en horizontal.
+\item \textbf{Select}: Se muestran todas las opciones en un formulario de
+selección como el elegido para mostrar las opciones de \textbf{Render} 
+\end{itemize}
+\item \textbf{Range step}: Si la respuesta esta formado por un rango de
+números, indica el salto entre un número y el siguiente.
+\item Range min: Rango de inicio, si la respuesta está formado por un rango
+de números. 
+\item Range max: Rango máximo, si la respuesta está formado por un rango
+de números. 
+\item \textbf{Answer 1}: Respuesta posible.
+\item \textbf{Add other answer}: Añadir otra respuesta posible.
+\end{enumerate}
+
+\subsubsection{Preguntas cuya respuesta es una escala likert}
+
+Las opciones para las preguntas cuya respuesta es una escala likert,
+ver figura \ref{manual_15_pregunta_likert}, son las siguientes: 
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_15_pregunta_likert\string".png}
+
+\protect\caption{Creación de preguntas de tipo escala likert}
+
+
+\label{manual_15_pregunta_likert}
+\end{figure}
+
+\begin{enumerate}
+\item \textbf{Scale}: Número inicial de la escala likert, puede ser 0 o
+1.
+\item \textbf{to}: Número final de la escala likert.
+\item \textbf{min}: Etiqueta opcional para indicar el significado del valor
+mínimo de la escala.
+\item \textbf{max}: Etiqueta opcional para indicar el valor máximo de la
+escala.
+\end{enumerate}
+
+\subsubsection{Preguntas dependientes de la respuesta a otra pregunta}
+
+Todas las preguntas anteriores se pueden mostrar o no dependiendo
+de la respuesta dada a una pregunta. En la figura \ref{manual_25_preguntas_dependientes}
+podemos ver las siguientes opciones: 
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_25_preguntas_dependiente\string".png}
+
+\protect\caption{Creación de preguntas dependientes de otras preguntas}
+
+
+\label{manual_25_preguntas_dependientes}
+\end{figure}
+
+\begin{enumerate}
+\item \textbf{SubQuestion}: Menú desplegable que muestra las opciones para
+las subpreguntas 
+\item \textbf{Type of operation}: Operación con la que realizaremos la comparación,
+esta puede ser: 
+
+\begin{itemize}
+\item \textbf{Mayor}, > 
+\item \textbf{Menor}, < 
+\item \textbf{Igual}, = 
+\item \textbf{Distinto}, != 
+\end{itemize}
+\item \textbf{Value}: Valor a comparar según la operación anterior indicada 
+\item \textbf{Question}: Pregunta de la que depende la respuesta
+\end{enumerate}
+En las preguntas de Si o No, las respuestas posibles son \emph{\textquotedbl{}Yes\textquotedbl{}}
+y \emph{\textquotedbl{}No\textquotedbl{}} y solo tiene sentido las
+operaciones igual y distinto. 
+
+En las preguntas cuya respuesta es un texto, todas las operaciones
+son posibles.
+
+En las preguntas de selección se muestra en \textbf{Value} todas las
+opciones posibles.
+
+En las preguntas de escala likert, se muestra en \textbf{Value} todas
+las opciones posibles.
+
+Las preguntas que dependen de otra respuesta solo se mostrará al usuario
+dependiendo de la respuesta dada, como se puede ver en las figuras
+\ref{manual_22} y \ref{manual_23}.
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_22_preguntas\string".png}
+
+\protect\caption{Ejemplo de pregunta dependiente}
+
+
+\label{manual_22}
+\end{figure}
+
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_23_preguntas\string".png}
+
+\protect\caption{Ejemplo de pregunta dependiente}
+
+
+\label{manual_23}
+\end{figure}
+
+
+
+\subsubsection{Preguntas de Juegos}
+
+Estas opciones solo tienen sentido para la elaboración de encuestas
+en las que haya una serie de juegos económicos en los que participan
+los usuarios. Cada juego va ligado automáticamente a un tipo de pregunta,
+siendo imposible cambiarlo. En la figura \ref{manual_17} podemos
+ver los juegos/preguntas disponibles, con las siguientes opciones:
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_17_pregunta_juegos\string".png}
+
+\protect\caption{Preguntas para los distintos juegos}
+
+
+\label{manual_17}
+\end{figure}
+
+\begin{itemize}
+\item Part two: Es una serie de preguntas que mide la impaciencia del jugador.
+\item Decision one v1: Una pregunta que implementa una versión de un juego
+de lotería.
+\item Decision one v2: Una pregunta que implementa una segunda versión de
+un juego de lotería.
+\item Decision two: Una pregunta que implementa un juego de renta.
+\item Decision three: Una pregunta que implementa otro juego de renta.
+\item Decisión four: Una pregunta que implementa el juego del ultimatum,
+decidiendo el jugador la cantidad de dinero enviada al otro jugador.
+\item Decision five: Una pregunta que implementa el juego del ultimatum,
+decidiendo el jugador si acepta la cantidad enviada por otro usuario.
+\item Decision six: Una pregunta que implementa el juego del dictador.
+\end{itemize}
+Todos os juegos anteriores se pueden jugar con dinero real y dinero
+no real.
+
+Además se le puede ofrecer al usuario la posibilidad de recibir feedback
+sobre las decisiones que ha tomado en los juegos.
+
+
+\subsection{Editar y eliminar preguntas}
+
+Después de crear una pregunta existe la posibilidad de editar y eliminar
+preguntas. Tenga en cuenta que si eliminas una pregunta, todas las
+preguntas que dependen de está serán eliminadas. Aun así la plataforma
+le mostrará un aviso de las preguntas que se eliminarán. Lo mismo
+sucede si modificas el tipo de pregunta de la que dependen otras. 
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_18_preguntas_eliminar\string".png}
+
+\protect\caption{Eliminar preguntas}
+
+
+\label{manual_18}
+\end{figure}
+

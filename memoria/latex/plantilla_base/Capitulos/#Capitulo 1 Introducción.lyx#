@@ -1,0 +1,258 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options true
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Introducción
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:Introducción"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Contexto
+\begin_inset CommandInset label
+LatexCommand label
+name "Contexto de la Video Vigilancia"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El proyecto se ha llevado a cabo en el Instituto de Biocomputación y Físcia
+ de Sistemas Complejos (BIFI), dentro del equipo de la Fundación Ibercivis
+ y en colaboración con los Investigadores Antonio Espín, Universidad de
+ Granada, Pablo Brañas-Garza (Middlesex University) y Anxo Sánchez (Universidad
+ Carlos III)
+\end_layout
+
+\begin_layout Standard
+Ibercivis es una iniciativa internacional de ciencia ciudadana, compuesta
+ por una plataforma de computación voluntaria y por una serie de experimentos
+ que permiten a la sociedad participar en la investigación científica de
+ forma directa y en tiempo real.
+\end_layout
+
+\begin_layout Standard
+Dentro de la computación voluntaria, Ibercivis es una plataforma de computación
+ distribuida, basada en BOINC, que permite a usuarios de internet a participar
+ en proyectos científicos donando ciclos de computación que se emplean para
+ realizar simulaciones y otras tareas.
+\end_layout
+
+\begin_layout Standard
+Ibercivis acerca a la ciudadanía investigaciones punteras y la hace partícipe
+ de la generación de conocimiento científico, al tiempo que dota a la comunidad
+ científica de una potente herramienta de cálculo.
+ El ordenador se convierte en una ventana abierta a la ciencia, creando
+ un canal para el diálogo directo entre investigadores y sociedad.
+\end_layout
+
+\begin_layout Section
+Motivación
+\end_layout
+
+\begin_layout Standard
+blablabla..
+\end_layout
+
+\begin_layout Subsection
+La importancia de la vídeo vigilancia
+\end_layout
+
+\begin_layout Standard
+La captación y/o el tratamiento de imágenes con fines de vigilancia es una
+ práctica muy extendida en nuestra sociedad.
+ La vídeo vigilancia generalmente persigue garantizar la seguridad de los
+ bienes y las personas Bla, Bla, Bla.
+ 
+\end_layout
+
+\begin_layout Subsection
+Seguridad emocional
+\end_layout
+
+\begin_layout Standard
+La existencia de alarmas Bla, Bla, Bla.
+\end_layout
+
+\begin_layout Standard
+Así existe lo que se se llama 
+\begin_inset Quotes eld
+\end_inset
+
+seguridad emocional
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand citep
+key "seguridadEmocional"
+
+\end_inset
+
+, (Aqui acabo de poner una Referencia) es decir, aquellas alarmas o alertas
+ que no están relacionadas con la seguridad simplemente sino que contienen
+ elementos de información y sucesos ocurridos.
+\end_layout
+
+\begin_layout Standard
+Podemos dividir en dos categorías el tipo de alarmas de las que estamos
+ hablando:
+\end_layout
+
+\begin_layout Enumerate
+Alarmas de actividad: Aquellas que nos informan de la presencia de personal
+ doméstico, del regreso de un hijo o hija al hogar con la persona que los
+ trae del colegio, la llegada de los demás miembros de la familia, etc.
+\end_layout
+
+\begin_layout Enumerate
+Alarmas de ausencia de actividad: Si uno deja a un niño, niñas o personas
+ mayores en el hogar y durante un período de tiempo prolongado no se produce
+ ningún tipo de aviso, esto puede deberse a que ha ocurrido algo y, por
+ tanto, requiere de nuestra atención.
+\end_layout
+
+\begin_layout Standard
+Bla, Bla, Bla...
+\end_layout
+
+\begin_layout Subsection
+Vídeo Vigilancia Inalámbrica 
+\end_layout
+
+\begin_layout Standard
+El sistema de vídeo vigilancia inalámbrica representa una solución alternativa
+ a la mayoría de los Bla, Bla, Bla.
+ Proporciona características como:
+\end_layout
+
+\begin_layout Itemize
+Alto grado de funcionalidad.
+\end_layout
+
+\begin_layout Itemize
+Totalmente Escalable.
+\end_layout
+
+\begin_layout Itemize
+Despliegue rápido y sencillo.
+\end_layout
+
+\begin_layout Itemize
+Flexibilidad.
+\end_layout
+
+\begin_layout Itemize
+Rentabilidad de la inversión.
+\end_layout
+
+\begin_layout Standard
+Bla, Bla, Bla...
+\end_layout
+
+\begin_layout Section
+Motivación
+\end_layout
+
+\begin_layout Standard
+Como ya se ha apuntado en la Sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Contexto de la Video Vigilancia"
+
+\end_inset
+
+, los sistemas de vídeo vigilancia sirven para una gran cantidad de propósitos.
+ En el ámbito de las empresas, bancos, instituciones públicas, aeropuertos,
+ grandes eventos con aglomeraciones de personas, etc.
+ Bla, Bla, Bla.
+\end_layout
+
+\begin_layout Section
+Objetivos y alcance del proyecto
+\end_layout
+
+\begin_layout Standard
+El principal objetivo del presente proyecto es el diseño e implementación
+ de un sistema Bla, Bla, Bla
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,1908 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Manual de investigador
+\end_layout
+
+\begin_layout Standard
+En este manual vamos a tratar las opciones que tiene un investigador para
+ crear una encuesta.
+\end_layout
+
+\begin_layout Section
+Inicio de sesión
+\end_layout
+
+\begin_layout Standard
+Existen dos posibilidades para iniciar la sesión, mediante el uso de una
+ cuenta OpenID para lo cual puedes usar su cuenta de Google, Yahoo, Steam
+ o cualquier otro servicio que haga uso de OpenID.
+ O mediante el uso de un usuario y contraseña.
+ Para ello previamente debe registrase en la plataforma, y se le enviará
+ un correo con la contraseña.
+\end_layout
+
+\begin_layout Subsection
+OpenID
+\end_layout
+
+\begin_layout Standard
+Haciendo uso de un navegador entre en el portal web donde se encuentra alojada
+ la plataforma y entre en el enlace "Account", ver figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_00"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_00.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Página principal de la aplicación
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_00"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Escriba la dirección del servidor OpenID el cual va usar para autentificarse
+ o haga click sobre uno de lo ser servidores predeterminados.
+ Para entrar en la plataforma aprieta al botón Sign In, ver figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_01"
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_01_login.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Página de inicio de sesión mediante OpenID
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_01"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Correo
+\end_layout
+
+\begin_layout Standard
+Para registrarse en la plataforma, vaya a la dirección http://servidor/auth/regi
+ster, ver figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_02_registro"
+
+\end_inset
+
+, e introduzca el correo que quiere usar de registro.
+ Una ver registrado, se le enviara un correo con la contraseña.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_02_registro.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Página de registro mediante correo
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_02_registro"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Para iniciar sesión, vaya a la dirección http://servidor/auth/loginEmail
+ e introduzca el correo con la que se registró y la contraseña que se le
+ envió al correo, ver figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_01_loginemail"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_01_loginEmail.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Página de inicio mediante correo/contraseña
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_01_loginemail"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Creación de encuestas
+\end_layout
+
+\begin_layout Subsection
+Crear o editar una encuesta
+\end_layout
+
+\begin_layout Standard
+Una vez iniciado sesión en la plataforma, en la barra de navegación de la
+ plataforma verá dos enlaces, figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_barra"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/barra.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Barra de navegación
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_barra"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Logout
+\series default
+: para salir de la sesión.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Researcher
+\series default
+: para entrar en el módulo de creación de encuestas.
+\end_layout
+
+\begin_layout Standard
+Una vez dentro del modulo de creación de encuestas observara una página
+ similar a la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_03_home_researcher"
+
+\end_inset
+
+, las opciones disponibles son las siguientes:
+\end_layout
+
+\begin_layout Enumerate
+Botón 
+\series bold
+New survey
+\series default
+: Opción para crear una nueva encuesta 
+\end_layout
+
+\begin_layout Enumerate
+Opción para modificar una encuesta ya creada, en este caso la encuesta 
+\emph on
+¿Cómo son nuestros voluntarios?
+\end_layout
+
+\begin_layout Enumerate
+Botón 
+\series bold
+export stats
+\series default
+: Opción para exportar los resultados de una encuesta
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_03_home_researcher.png
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Página de inicio del módulo de creación de encuestas
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_03_home_researcher"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Si se entra en la opción de crear encuestas, verá en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_04_new_survey"
+
+\end_inset
+
+ los distintos campos a rellenar para crear una encuesta:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_04_new_survey.png
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Página con los distintos campos de una encuesta
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_04_new_survey"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Title
+\series default
+: Título de la encuesta, este campo es obligatorio.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Description
+\series default
+: Descripción de la encuesta, esta descripción soporta sintaxis Markdown.
+ Este campo es opcional
+\end_layout
+
+\begin_layout Enumerate
+Previsualización de la descripción 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Day and start time
+\series default
+: Día y hora en la que comenzará la encuesta.
+ Este campo es opcional, sino es rellenado no se mostrará la encuesta a
+ los usuarios 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Day and finish time:
+\series default
+ Día y hora en la que finalizará la encuesta.
+ Este campo es opcional, sino es rellenado, la encuesta no tendrá fecha
+ de finalización 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Number of respondents
+\series default
+: Número máximo de usuarios que podrán responder a la encuesta.
+ Este numero es orientativo, una vez llegado a ese número, no se permitirá
+ a ningún usuario mas empezar la encuesta, pero si terminarla.
+ Este campo es opcional, sino se rellena, no hay número máximo
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Time in minutes that a user has to answer the survey
+\series default
+: Número máximo en minutos que tiene un usuario para terminar la encuesta.
+ Este campo es opcional, sino se rellena no hay tiempo máximo 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+File survey xml
+\series default
+: Para importar una encuesta previamente exportada.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Create surve
+\series default
+y: Para crear la encuesta.
+ Si hay algún error se le mostrará indicado cual es, como sucede en la figura
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_error_crear_encuesta"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_04_new_survey_error.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Error mostrado al crear una encuesta
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_error_crear_encuesta"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Una vez creada la encuesta, podrá modificar cualquier campo de está.
+ No así las preguntas una vez haya sido publicada la encuesta.
+ Después de crear la encuesta, verá la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_06_encuesta_creada"
+
+\end_inset
+
+ con las siguientes opciones:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_06_encuesta_creada.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Página de inicio de una encuesta ya creada
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_06_encuesta_creada"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Save changes
+\series default
+: Guardar los cambios realizados en esta pantalla.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+View/Add consents
+\series default
+: Ver y añadir consentimientos a la encuesta.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Add section
+\series default
+: Añadir una sección nueva a la encuesta.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Delete survey
+\series default
+: Eliminar la encuesta.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Export survey
+\series default
+: Exportar la encuesta a un fichero XML con la posibilidad mas tarde de
+ importar la encuesta.
+\end_layout
+
+\begin_layout Enumerate
+Arbol de secciones de la encuesta.
+\end_layout
+
+\begin_layout Subsection
+Añadir y editar consentimientos
+\end_layout
+
+\begin_layout Standard
+Si realizada click en el botón de 
+\series bold
+View/Add consents
+\series default
+, figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_06_encuesta_creada"
+
+\end_inset
+
+, irá a una pantalla con las opciones de añadir, editar y eliminar los consentim
+ientos de una encuesta, figuras 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_07_nuevo_consentimiento"
+
+\end_inset
+
+ y
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_08_consentimiento"
+
+\end_inset
+
+.
+ El formato usado nuevamente para la escritura de texto es Markdown
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_07_nuevo_consentimiento.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Página para crear un nuevo consentimiento
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_07_nuevo_consentimiento"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_08_creado_consentimiento.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Página con un consentimiento ya creado
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_08_consentimiento"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Insertar una nueva sección
+\end_layout
+
+\begin_layout Standard
+Si realiza click en el botón de 
+\series bold
+Add section
+\series default
+, figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_06_encuesta_creada"
+
+\end_inset
+
+, irá a una pantalla, ver figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_10_nueva_seccion"
+
+\end_inset
+
+, con las opciones para añadir una sección nueva, estas son las siguientes:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_10_nueva_seccion.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Página de nueva sección
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_10_nueva_seccion"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Title
+\series default
+: Título de la sección, este campo es obligatorio.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Description
+\series default
+: Descripción de la sección, esta descripción soporta sintaxis Markdown.
+ Este campo es opcional.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Sequence
+\series default
+: Posición en la que aparecerá esta sección 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Percent
+\series default
+: Porcentaje de usuarios que realizarán esta sección.
+\end_layout
+
+\begin_layout Standard
+Si dos o mas secciones del mismo nivel tienen la misma secuencia, se elegirá
+ al azar el orden de las secciones con la misma secuencia.
+ Este orden se calculará cada vez para cada usuario que empiece una encuesta.
+ Por lo que un usuario puede realizar la encuesta con un orden distinto
+ a otro usuario.
+\end_layout
+
+\begin_layout Standard
+Las secciones del mismo nivel con misma secuencia y porcentaje distinto
+ de 1 son excluyentes.
+ Esto quieres decir que si tienes tres secciones: 
+\emph on
+Sección 1
+\emph default
+ con 0.3, 
+\emph on
+Sección 2
+\emph default
+ con 0.2 y 
+\emph on
+Sección 3
+\emph default
+ con 0.5.
+ El 30% de usuarios realizarán la 
+\emph on
+Sección 1
+\emph default
+, el 20% realizarán la 
+\emph on
+Sección 2
+\emph default
+ y el 50% realizarán la 
+\emph on
+Sección 3
+\emph default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Una vez creada una sección, ver figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_11_creada_seccion"
+
+\end_inset
+
+, se le mostrarán las opciones para eliminar una sección, añadir una subsección
+ a la sección dada, añadir/editar preguntas y duplicar la sección.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_11_creado_seccion.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Sección ya creada
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_11_creada_seccion"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Añadir nuevas preguntas
+\end_layout
+
+\begin_layout Standard
+Si realiza click en el botón de 
+\series bold
+Add/Edit question
+\series default
+ dentro de una sección, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_11_creada_seccion"
+
+\end_inset
+
+, ira a la página para añadir/editar preguntas.
+\end_layout
+
+\begin_layout Subsubsection
+Preguntas cuya respuesta es Si o No
+\end_layout
+
+\begin_layout Standard
+Las opciones para las preguntas 
+\series bold
+Si o No
+\series default
+, ver figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_12_preguntas_sino"
+
+\end_inset
+
+, son las siguientes: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_12_pregunta_si_no.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Creación de preguntas de tipo Si y No
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_12_preguntas_sino"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Text
+\series default
+: Texto de la pregunta, esta descripción soporta sintaxis Markdown.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Required
+\series default
+: Si es una pregunta obligatoria o no.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Answer
+\series default
+: La respuesta correcta de la pregunta si es que la tiene.
+ 
+\emph on
+
+\begin_inset Quotes eld
+\end_inset
+
+Yes
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+, si la respuesta correcta es 
+\emph on
+si
+\emph default
+, "
+\emph on
+No
+\emph default
+" si la respuesta correcta es no.
+ Este campo es opcional.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Number of attempt
+\series default
+: Número de intentos para responder a la pregunta, en caso que la pregunta
+ tenga una respuesta correcta.
+ Nada, para infinitos intentos.
+\end_layout
+
+\begin_layout Standard
+El apartado 
+\series bold
+SubQuestion
+\series default
+ y 
+\series bold
+Options game
+\series default
+ se explicará mas adelante.
+\end_layout
+
+\begin_layout Subsubsection
+Preguntas cuya respuesta es un texto
+\end_layout
+
+\begin_layout Standard
+Las opciones para las preguntas cuya respuesta es un texto, ver figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_13_pregutnas_texto"
+
+\end_inset
+
+, son las siguientes: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_13_pregunta_texto.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Creación de preguntas de tipo texto
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_13_pregutnas_texto"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Number
+\series default
+: Si se desea validar que el texto introducido por el usuario en un número
+ entero.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Number Float
+\series default
+: Si se desea validar que el texto introducido por el usuario en un número
+ flotante.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Regular Expression
+\series default
+: Si se desea validar que el texto introducido por el usuario corresponde
+ a una expresión regular, para ello se usa la sintaxis de Python de expresiones
+ regulares.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Error Message
+\series default
+: Mensaje de error personalizado ante el fallo a la hora de introducir la
+ respuesta el usuario.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Answer
+\series default
+: La respuesta correcta de la pregunta si es que la tiene.
+ Se comprueba si es correcta después de validar que la respuesta tenga el
+ formato apropiado.
+ A la hora de comprobar la respuesta se ignora la coincidencia de mayúsculas/min
+úsculas.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Number of attempt
+\series default
+: Número de intentos para responder a la pregunta, en caso que la pregunta
+ tenga una respuesta correcta.
+ Nada, para infinitos intentos.
+\end_layout
+
+\begin_layout Subsubsection
+Preguntas cuya respuesta es una opción posible
+\end_layout
+
+\begin_layout Standard
+Las opciones para las preguntas cuya respuesta es una opción posible, ver
+ figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_14_pregunta_choince"
+
+\end_inset
+
+, son las siguientes:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_14_pregunta_choice.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Creación de preguntas de tipo selección
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_14_pregunta_choince"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Answer
+\series default
+: Respuesta correcta a la pregunta.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Number of attempt
+\series default
+: Número de intentos para responder a la pregunta.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Render
+\series default
+: Formato a la hora de mostrar las opciones posibles al usuario.
+ Son tres: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+Vertical
+\series default
+: Se muestran todas las opciones en vertical 
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Horizontal
+\series default
+: Se muestran todas las opciones en horizontal.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Select
+\series default
+: Se muestran todas las opciones en un formulario de selección como el elegido
+ para mostrar las opciones de 
+\series bold
+Render
+\series default
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+\series bold
+Range step
+\series default
+: Si la respuesta esta formado por un rango de números, indica el salto
+ entre un número y el siguiente.
+\end_layout
+
+\begin_layout Enumerate
+Range min: Rango de inicio, si la respuesta está formado por un rango de
+ números.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Range max: Rango máximo, si la respuesta está formado por un rango de números.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Answer 1
+\series default
+: Respuesta posible.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Add other answer
+\series default
+: Añadir otra respuesta posible.
+\end_layout
+
+\begin_layout Subsubsection
+Preguntas cuya respuesta es una escala likert
+\end_layout
+
+\begin_layout Standard
+Las opciones para las preguntas cuya respuesta es una escala likert, ver
+ figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_15_pregunta_likert"
+
+\end_inset
+
+, son las siguientes: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_15_pregunta_likert.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Creación de preguntas de tipo escala likert
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_15_pregunta_likert"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Scale
+\series default
+: Número inicial de la escala likert, puede ser 0 o 1.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+to
+\series default
+: Número final de la escala likert.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+min
+\series default
+: Etiqueta opcional para indicar el significado del valor mínimo de la escala.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+max
+\series default
+: Etiqueta opcional para indicar el valor máximo de la escala.
+\end_layout
+
+\begin_layout Subsubsection
+Preguntas dependientes de la respuesta a otra pregunta
+\end_layout
+
+\begin_layout Standard
+Todas las preguntas anteriores se pueden mostrar o no dependiendo de la
+ respuesta dada a una pregunta.
+ En la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_25_preguntas_dependientes"
+
+\end_inset
+
+ podemos ver las siguientes opciones: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_25_preguntas_dependiente.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Creación de preguntas dependientes de otras preguntas
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_25_preguntas_dependientes"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+SubQuestion
+\series default
+: Menú desplegable que muestra las opciones para las subpreguntas 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Type of operation
+\series default
+: Operación con la que realizaremos la comparación, esta puede ser: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+Mayor
+\series default
+, > 
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Menor
+\series default
+, < 
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Igual
+\series default
+, = 
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Distinto
+\series default
+, != 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+\series bold
+Value
+\series default
+: Valor a comparar según la operación anterior indicada 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Question
+\series default
+: Pregunta de la que depende la respuesta
+\end_layout
+
+\begin_layout Standard
+En las preguntas de Si o No, las respuestas posibles son 
+\emph on
+"Yes"
+\emph default
+ y 
+\emph on
+"No"
+\emph default
+ y solo tiene sentido las operaciones igual y distinto.
+ 
+\end_layout
+
+\begin_layout Standard
+En las preguntas cuya respuesta es un texto, todas las operaciones son posibles.
+\end_layout
+
+\begin_layout Standard
+En las preguntas de selección se muestra en 
+\series bold
+Value
+\series default
+ todas las opciones posibles.
+\end_layout
+
+\begin_layout Standard
+En las preguntas de escala likert, se muestra en 
+\series bold
+Value
+\series default
+ todas las opciones posibles.
+\end_layout
+
+\begin_layout Standard
+Las preguntas que dependen de otra respuesta solo se mostrará al usuario
+ dependiendo de la respuesta dada, como se puede ver en las figuras 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_22"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_23"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_22_preguntas.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Ejemplo de pregunta dependiente
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_22"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_23_preguntas.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Ejemplo de pregunta dependiente
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_23"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Preguntas de Juegos
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_17_pregunta_juegos.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Preguntas para los distintos juegos
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_17"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_18_preguntas_eliminar.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Eliminar preguntas
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "manual_18"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

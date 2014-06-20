@@ -1,0 +1,535 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Evaluación
+\end_layout
+
+\begin_layout Standard
+En este capítulo se procede a la evaluación del proyecto llevado a cabo.
+ Se realizará el estudio sobre tres escenarios en los que se simulan los
+ casos más comunes.
+ En primer lugar se definen los escenarios empleados para la realización
+ de las pruebas, los pasos que realizan los servidor durante su funcionamiento
+ y cómo quedan sus datos tras la ejecución.
+ Se analizará en cada apartado los Bla,bla,bla.
+\end_layout
+
+\begin_layout Section
+Topología 1: Descubrimiento de una cámara no operativa
+\end_layout
+
+\begin_layout Subsection
+Escenario
+\end_layout
+
+\begin_layout Standard
+Se establece una red en el rango 192.168.1.0/24.
+ Existen dos servidores: Servidor A con la IP 192.168.1.35:8004 y Servidor
+ B con la IP 192.168.1.100:8006; los puertos de escuchan han sido configurados
+ en los respectivos archivos de configuración de cada servidor.
+ Hay un dispositivo Android que actuará como cliente con la IP 192.168.1.10,
+ y dos cámaras Cisco WVC210 con las IP: 192.168.1.34 y 192.198.1.33 (véase Figura
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Fig Topologia1"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement !h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/Memoria PFC/figures/topología1.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Topología 1.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "Fig Topologia1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Funcionamiento
+\end_layout
+
+\begin_layout Standard
+El tiempo entre actualizaciones se ha establecido en 30 segundos en ambos
+ servidores.
+\end_layout
+
+\begin_layout Standard
+Las listas de los servidores al iniciarse se encuentran con los datos reflejados
+ en la tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Tab Top1 Listas al inicio"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Servidor A
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Servidor B
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Cámaras
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Servidores
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Cámaras
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Servidores
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Servidor B
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Cámara 1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Cámara 2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Topología 1.
+ Listas de los servidores al inicio.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Tab Top1 Listas al inicio"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+El Servidor B y las cámaras se encuentra en funcionamiento.
+ Al iniciar el Servidor A se generan los siguientes mensajes de 
+\emph on
+log
+\emph default
+:
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+[11/09/2012 11:22:01.493] SERVER:# INFO: Servidor VVD iniciado.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+[11/09/2012 11:22:01.524] SERVER:# INFO: Temporizador Actualizaciones Automáticas
+ = 0.5 minutos.
+\end_layout
+
+\begin_layout Standard
+Anuncia que se ha iniciado el servidor e informa del tiempo entre actualizacione
+s.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+[11/09/2012 11:22:02.553] SERVER:# INICIO: Actualización lista de servidores.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+[11/09/2012 11:22:03.240] SERVER:# FIN: Actualizacion lista de servidores.
+\end_layout
+
+\begin_layout Standard
+Bla,bla,bla.
+\end_layout
+
+\begin_layout Subsection
+Estimación del rendimiento
+\end_layout
+
+\begin_layout Standard
+Bla,bla,bla.
+\end_layout
+
+\begin_layout Subsection
+Tráfico generado
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Trafico generado"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Bla,bla,bla.
+\end_layout
+
+\begin_layout Section
+Topología 2: Otro ejemplo
+\end_layout
+
+\begin_layout Subsection
+Escenario
+\end_layout
+
+\begin_layout Standard
+Bla,bla,bla.
+ 
+\end_layout
+
+\begin_layout Subsection
+Funcionamiento
+\end_layout
+
+\begin_layout Standard
+Bla,bla,bla.
+\end_layout
+
+\begin_layout Subsection
+Estimación del rendimiento
+\end_layout
+
+\begin_layout Standard
+Bla,bla,bla.
+\end_layout
+
+\begin_layout Subsection
+Tráfico generado
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Trafico generado top2"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Bla,bla,bla.
+\end_layout
+
+\end_body
+\end_document

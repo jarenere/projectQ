@@ -1,0 +1,993 @@
+
+\chapter{Diseño de la aplicación}
+
+En este anexo se presenta una descripción del diseño que se llevo
+a cabo antes de realizar la implementación de la plataforma y durante
+las revisiones de esta. A lo largo del anexo se mostrará el modelado
+de la base de datos, diagrama de clases, casos de usos y traza de
+eventos, así como la descripción de los distintos módulos creados.
+Este documento no ha sido creado con el fin de ser completamente riguroso
+a las convenciones, aunque más de una vez se sigan, sino que el fin
+último es que el lector comprenda este documento.
+
+
+\section{Diagrama de Clases\label{sec:Diagrama-de-Clases}}
+
+En un primer lugar se va a mostrar sin profundizar el diagrama de
+clases que hace uso de la base de datos, representando únicamente
+el modelo estático del sistema, el cual se puede ver en la figura
+\ref{diagrama_alto_nivel1}
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/schema1_alto_nivel\string".pdf}
+
+\protect\caption{Diagrama de clases en alto nivel de la aplicación}
+
+
+\label{diagrama_alto_nivel1}
+\end{figure}
+
+
+Observando con mas detenimiento la clase \emph{Question}, cada tipo
+de pregunta desciende de la clase \emph{Question}, en la figura \ref{diagrama_question}
+se puede ver con mas detalle.
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/preguntas\string".pdf}
+
+\protect\caption{Diagrama de clases de Question}
+
+
+\label{diagrama_question}
+\end{figure}
+
+
+Por otra parte, para el experimento \emph{\textquotedbl{}¿Como son
+nuestos voluntarios?\textquotedbl{}} Se creo una serie de clases para
+los distintos juegos y sorteos, como se puede ver en la figura \ref{diagrama_games_sin_detalle}.
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/games_sin_detalle\string".pdf}
+
+\protect\caption{Diagrama de clases de Games}
+
+
+\label{diagrama_games_sin_detalle}
+\end{figure}
+
+
+En la figura \ref{diagrama_game} se puede ver con mas detenimiento
+la clase \emph{Game.}
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/games\string".pdf}
+
+\protect\caption{Diagrama detallado de la clase de Game}
+
+
+\label{diagrama_game}
+\end{figure}
+
+
+Como hemos dicho anteriormente estos diagramas solo hacen referencia
+al modelo estático del sistema, no así a las demás clases que interactúan
+con estas, como puede ser los distintos formularios y validadores
+web usados para la representación del modelo.
+
+
+\subsection{Entidades del sistema}
+
+A continuación vamos a describir las entidades del sistema:
+
+
+\subsubsection{User, usuario}
+
+Un usuario es una persona que se registra en la plataforma para poder
+hacer uso de ella, ya sea creando encuestas o contestándolas. Además
+guarda los permisos que posee dicho usuario dentro de la plataforma,
+pudiendo tener un rol de investigador o de voluntario.
+
+
+\subsubsection{Survey, encuesta}
+
+\emph{Survey} sería la cabecera de la encuesta, en la que están definidas
+los atributos y las limitaciones de está, como puede ser la fecha
+durante la que estará activa la encuesta, la duración de esta, o simplemente
+el título y la descripción d eesta.
+
+
+\subsubsection{Consent, consentimiento}
+
+\emph{Consent} almacena los consentimientos que debe aceptar un usuario
+para realizar una encuesta. Cada consentimiento pertenece a una encuesta.
+
+
+\subsubsection{Section, sección}
+
+\emph{Section} sirven para definir los distintas secciones organizativas
+que posee una encuesta, a su vez una sección puede contener mas secciones.
+Además en cada sección se puede definir si son secciones exclusivas
+respecto a las secciones del mismo nivel, así como definir el nombre
+y la probabilidad de realizar dicha sección de la encuesta. Al final
+las secciones generan un árbol que cuelga de una encuesta.
+
+
+\subsubsection{Question, pregunta}
+
+\emph{Question} almacena una pregunta de la encuesta. Las preguntas
+pueden ser de distinto tipo, cada una tiene su propia clase que hereda
+de \emph{Question}. Cada pregunta está definida dentro de una sección.
+
+
+\paragraph{QuestionText, preguntas de texto}
+
+Almacena preguntas cuya respuesta es texto, almacena también las limitaciones
+que pueda tener la respuesta, como puede ser si es un número entero,
+decimal o viene limitado por una expresión regular.
+
+
+\paragraph{QuestionYN, preguntas de si o no}
+
+Hace referencia a las preguntas cuya respuesta es si o no.
+
+
+\paragraph{QuestionChoice, preguntas de elección}
+
+Contiene las distintas opciones posibles en las preguntas cuyo rango
+de respuestas está predeterminado. También guarda información de como
+representar estás opciones al usuario.
+
+
+\paragraph{QuestionLikerScala, preguntas de escala likert}
+
+Almacena la información necesaria para las preguntas likert.
+
+
+\subsubsection{Condition, condición}
+
+\emph{Condition} hace referencia a las preguntas dependientes de la
+respuesta de otra pregunta. Guardando que pregunta depende de quién
+así como las condiciones necesarias para mostrar dicha pregunta.
+
+
+\subsubsection{Answer, respuesta.}
+
+Guarda la respuesta que ha dado un usuario a una pregunta, así como
+el tiempo empleada en ella.
+
+
+\subsubsection{StateSurvey, estado de la encuesta}
+
+Almacena la información relativa del estado en el que se encuentra
+una encuesta por parte de un usuario, guardando entre otras cosas
+la sección por la que va, el tiempo empleado o el estado de la encuesta.
+
+
+\subsection{Entidades del sistema del proyecto \textquotedbl{}¿Cómo son nuestros
+voluntarios?\textquotedbl{}}
+
+A continuación vamos a describir las entidades creadas para el proyecto
+\emph{\textquotedbl{}¿Cómo son nuestros voluntarios?\textquotedbl{}}
+
+
+\subsubsection{Rafle, rifa}
+
+En el sorteo que hay dentro del proyecto, \emph{rafle} se encarga
+de decidir si el usuario es premiado o no y guarda la cantidad ganada.
+
+
+\subsubsection{GameImpatience, juego de la impaciencia}
+
+Hace referencia a los resultados de las decisiones tomadas en el juego
+de la impaciencia, que depende únicamente solo de un usuario.
+
+
+\subsubsection{Game}
+
+Dentro del proyecto existen varios juegos que involucran a dos usuarios,
+cada juego depende de las decisiones tomadas en las respuestas de
+la encuesta. Cada juego hereda de esta entidad
+
+
+\paragraph{GameLottery1, juego de la lotería 1}
+
+Guarda la información de la decisión tomada en la primera versión
+del juego de la lotería, descrita en el ANEXO X
+
+
+\paragraph{GameLottery2, juego de la lotería 2}
+
+Guarda la información de la decisión tomada en la segunda versión
+del juego de la lotería, descrita en el ANEXO X
+
+
+\paragraph{GameRent1, juego de la renta 1}
+
+Guarda la información de la decisión tomada en la primera versión
+del juego de la renta, descrita en el ANEXO X
+
+
+\paragraph{GameRent2, juego de la renta 2}
+
+Guarda la información de la decisión tomada en la segunda versión
+del juego de la renta, descrita en el ANEXO X
+
+
+\paragraph{GameUltimatum, juego del ultimatum}
+
+Guarda la información de la decisión tomada en el juego del ultimatum,
+descrita en el ANEXO X
+
+
+\paragraph{GameDictador, juego del dictador}
+
+Guarda la información de la decisión tomada en el juego del dictador,
+descrita en el ANEXO X
+
+
+\section{Esquema Relacional}
+
+En la figura \ref{esquema_relacional} mostramos el esquema relacional,
+generado por el ORM SQLAlchemy. 
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/schema_bbdd\string".pdf}
+
+\protect\caption{Esquema relacional}
+
+
+\label{esquema_relacional}
+\end{figure}
+
+
+Durante el diseño se tuvo que tomar la decisión de como implementar
+las clases heredaras, si todas en la misma tabla, en distintas o algunas
+compartiendo tabla y otras no. Se decidió que todas compartirían la
+misma tabla, sobre todo a que no se espera una gran cantidad de entradas,
+mas comparándolo con otras tablas como puede ser \emph{Answer}.
+
+Aunque no se aprecia en el esquema, existen las siguientes restricciones
+en la declaración del modelo que se trasladan a la base de datos:
+\begin{itemize}
+\item Tabla \textbf{stateSurvey}, la tupla \emph{user\_id} y \emph{survey\_id}
+es única.
+\item Tabla \textbf{condition}, la tupla \emph{subquestion\_id} y \emph{parent\_id}
+es única. 
+\item Tabla \textbf{answer}, la tupla \emph{user\_id} y \emph{question\_id}
+es única.
+\item Tabla \textbf{user}, el valor de \emph{email} es único.
+\end{itemize}
+En la figura \ref{esquema_relacional_juegos} se muestra el esquema
+relacional, donde se guardan los resultados de los distintos juegos
+y sorteos
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/schema_bbdd_game\string".pdf}
+
+\protect\caption{Esquema relacional de los juegos}
+
+
+\label{esquema_relacional_juegos}
+\end{figure}
+
+
+Las restricciones de estas tablas son las siguientes:
+\begin{itemize}
+\item Tabla \textbf{gameImpatience}, la tupla \emph{user\_id} y \emph{survey\_id}
+es única.
+\item Tabla \textbf{raffle}, la tupla \emph{user\_id} y \emph{survey\_id}
+es única.
+\item Tabla \textbf{game}, la tupla \emph{userA\_id}, \emph{userB\_id} y
+s\emph{urvey\_id} es única.
+\end{itemize}
+
+\section{Casos de Uso }
+
+En esta sección vamos a analizar los posibles usos que podrán darse
+a la plataforma. Para ilustarlo vamos a emplear algunos diagramas
+de casos de uso y trazas de eventos.
+
+En la figura \ref{casos_uso_voluntario} podemos ver los posibles
+usos generales que le puede dar un usuario que sea un voluntario.
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/voluntario\string".pdf}
+
+\protect\caption{Diagrama de casos de uso de un voluntario}
+
+
+\label{casos_uso_voluntario}
+\end{figure}
+
+
+En la figura \ref{casos_uso_investigador} podemos ver los posibles
+usos generales que le puede dar un usuario que sea un investigador.
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/investigador\string".pdf}
+
+\protect\caption{Diagrama de casos de uso de un investigador}
+
+
+\label{casos_uso_investigador}
+\end{figure}
+
+
+En la figura \ref{casos_uso_administrador} podemos ver los posibles
+usos generales que le puede dar un usuario que sea un administrador.
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/Administrador\string".pdf}
+
+\protect\caption{Diagrama de casos del administrador}
+
+
+\label{casos_uso_administrador}
+\end{figure}
+
+
+En la figura \ref{traza de eventos} podemos ver una traza de eventos
+genérica que corresponde a la situación en la que un usuario rellena
+un formulario y lo envía a la plataforma, esta información es enviada
+al controlador de la aplicación, que procede a comprobar los permisos
+del usuario y validar el formulario. Una vez que es valido se modifica
+el modelo con los nuevos datos y se devuelve una nueva vista al usuario. 
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/traza de eventos\string".png}
+
+\protect\caption{Ejemplo de traza de eventos genérico}
+
+
+\label{traza de eventos}
+\end{figure}
+
+
+
+\section{Módulos de la plataforma}
+
+Para la elaboración de las plataformas se ha seguido las recomendaciones
+dadas por los desarrolladores de Flask:
+
+http://flask.pocoo.org/docs/becomingbig/
+
+https://github.com/mitsuhiko/flask/wiki/Large-app-how-to
+
+http://mattupstate.com/python/2013/06/26/how-i-structure-my-flask-applications.html?utm\_medium=referral\&utm\_source=pulsenews
+
+Como se puede ver en la figura \ref{modulos_sistema}, se ha dividido
+la plataforma en distintos módulos, agrupando estas a nivel de funcionalidades.
+
+\begin{figure}
+\includegraphics{\string"/home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/módulos\string".png}
+
+\protect\caption{Módulos del sistema}
+
+
+\label{modulos_sistema}
+\end{figure}
+
+
+Los módulos con lo que se puede interactuar visualmente a través de
+un navegador tienen la siguiente estructura:
+\begin{itemize}
+\item \textbf{Vistas}: La vista de una función es donde una petición HTTP
+cumple con la lógica del programa. Es decir cada función tiene definida
+una ruta web por la que se puede acceder. En un modelo MVC, sería
+parte del controlador. Es esta función es donde los datos de la petición
+HTTP se traducen a una llamada a la lógica de la aplicación produciendo
+una respuesta. 
+\item \textbf{Formularios}: Es el lugar donde están definidas las clases
+que contienen los formularios de un módulo con los que puede interactuar
+un usuario, así como las distintas validaciones que sufren los formularios. 
+\item \textbf{Plantillas}: Cuando la vista genera una respuesta, es la plantilla
+quien se encarga de generar el código HTML y JavaScript, para representar
+los resultados al usuario.
+\end{itemize}
+
+\subsection{Módulo de decoradores}
+
+Este módulo contiene los decoradores usados para proteger las vistas
+de los distintos módulos que se pueden acceder vía petición HTML,
+así se evita que cualquier usuario pueda ejecutar una vista a la que
+no tiene acceso. Esto se ha realizado mediante decoradores, ya que
+permiten alternar de manera dinámica la funcionalidad de una función,
+método o clase, sin tener que realizar ningún cambio de código en
+la clase decorada.
+
+Los decoradores disponibles son los siguientes:
+\begin{itemize}
+\item \textbf{login\_required}: Comprueba que el usuario ha ingresado en
+la plataforma. 
+\item \textbf{researcher\_requerid}: Comprueba que el usuario es un investigador. 
+\item \textbf{finished\_survey}: Comprueba que el usuario ha finalizado
+la encuesta. 
+\item \textbf{belong\_researcher}: Valida que la encuesta, sección o pregunta
+que que quiere modificar pertenece al investigador en cuestión y no
+a otro. 
+\item \textbf{valid\_survey}: Comprueba que la encuesta ya se ha publicado. 
+\item \textbf{there\_is\_stateSurvey}: Valida que existe y es valido el
+estado de la encuesta por parte de un usuario que quiere rellenar
+una encuesta.
+\end{itemize}
+Por ejemplo en la figura \ref{fig:proteccion_vista} , se puede comprobar
+que para acceder a la vista \emph{new\_survey}, que sirve para la
+creación de una nueva encuesta, debemos acceder a la dirección \emph{http://servidor/survey/new},
+pero antes de poder acceder, se comprueba que el usuario se haya autentificado
+en el sistema, mediante el decorador \emph{@login\_required}, y que
+además el usuario tenga permisos de investigador, \emph{@researcher\_required}.
+De esta forma se puede proteger las páginas a los que los usuarios
+pueden acceder.
+
+\begin{figure}[!tbh]
+ 	\begin{center}
+\begin{listing}[style=consola, numbers=none]
+@blueprint.route('/survey/new', methods = ['GET', 'POST'])
+@login_required
+@researcher_required
+def new_survey():
+\end{listing}
+		 \caption{Protección de una vista}
+ 		\label{fig:proteccion_vista}
+	 \end{center}
+\end{figure}
+
+
+\subsection{Módulo Planificador de tareas.}
+
+Este módulo se encarga de ejecutar tareas periódicas. Concretamente
+tiene definidas dos: 
+\begin{itemize}
+\item Envía periódicamente al investigador los resultados de la encuesta. 
+\item En la adaptación del experimento \emph{\textquotedbl{}¿Cómo son nuestros
+voluntarios?\textquotedbl{}}, se decidió realizar los pagos manualmente,
+por lo que se envía un correo al responsable de los pagos, con el
+dinero y usuario al que debe realizar el pago.
+\end{itemize}
+
+\subsection{Módulo de Autentificación}
+
+En el módulo de autetificación permite las siguientes opciones:
+\begin{itemize}
+\item Registrarnos en la plataforma: Uno se puede registrar mediante el
+uso de un correo.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}auth/register\textquotedbl{}.}
+
+\item Validarnos mediante el uso de un correo y contraseña.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}auth/loginEmail\textquotedbl{}.}
+
+\item Validarnos mediante el uso de un servidor OpenID.
+
+
+A esta función se accede mediante la vista:\emph{ \textquotedbl{}auth/\textquotedbl{}
+}o \emph{\textquotedbl{}auth/login\textquotedbl{}.}
+
+\item Cerrar la sesión actual.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}auth/logout\textquotedbl{}.}
+
+\end{itemize}
+
+\subsection{Módulo del investigador}
+
+Este módulo permite a los usuarios que sean investigadores, las siguientes
+acciones:
+\begin{itemize}
+\item Listado de encuestas creadas por un investigador.
+
+\begin{itemize}
+\item A esta función se accede mediante las vistas: \emph{\textquotedbl{}researcher/survey/\textquotedbl{}}
+o \emph{\textquotedbl{}researcher/survey/index\textquotedbl{}}.
+\end{itemize}
+\item Creación de encuestas: Durante la creación de una encuesta se comprueba
+que todos los campos del formulario son validos, además permite definir
+las siguientes opciones:
+
+\begin{itemize}
+\item Título.
+\item Descripción: Se hace uso de la sintaxis Markdown para el enriquecimiento
+del texto.
+\item Número máximo de usuarios que pueden acceder a la encuesta, si es
+que lo hay.
+\item Fecha de inicio de la encuesta.
+\item Fecha de finalización de la encuesta.
+\item Tiempo máximo para la realización de la encuesta, si es que lo hay.
+\end{itemize}
+
+A esta función se accede mediante la vista: \textquotedbl{}researcher/survey/new\textquotedbl{}
+
+\item Modificación de una encuesta: Se permite modificar cualquier campo
+de una encuesta creada.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}researcher/survey/<int:id\_survey>\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta a modificar.
+
+\item Eliminación de una encuesta: Se permite eliminar una encuesta creada,
+siempre que no haya sido publicada.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}researcher/survey/deleteSurvey/<int:id\_survey>\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta a eliminar.
+
+\item Creación de consentimientos: Mediante un formulario, el investigador
+informa de los consentimientos que debe aceptar el usuario para poder
+participar en la encuesta. Hace uso de la sintaxis Markdown para el
+enriquecimiento del texto.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}researcher/survey/<int:id\_survey>/consent/add\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta.
+
+\item Modificación de un consentimiento.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}researcher/survey/<int:id\_survey>/consent/<int:id\_consent>\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta, e id\_consent
+el identificador del consentimiento
+
+\item Eliminación de un consentimiento.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}researcher/survey/<int:id\_survey>/consent/<int:id\_consent>/delete\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta, e \emph{id\_consent}
+el identificador del consentimiento
+
+\item Creación de secciones y subsecciones: El investigador puede definir
+con total libertad el número de secciones y subsecciones que tiene
+una encuesta, además permite definir las siguientes opciones:
+
+\begin{itemize}
+\item Título de la sección.
+\item Descripción: Se hace uso de la sintaxis Markdown para el enriquecimiento
+del texto.
+\item Secuencia de la sección.
+\item Porcentaje de número de usuarios que realizan la sección.
+\end{itemize}
+
+El usuario que realice la encuesta recorrerá en profundidad el árbol
+generado por la encuesta. Si dos o mas ramas tienen la misma secuencia,
+se elige al azar que rama recorrer primero. Si dos o mas ramas con
+la misma secuencia, tienen un porcentaje menor que 1, este porcentaje
+indica la probabilidad que hay para recorrer esa rama y no cualquiera
+de las otras que tienen la misma secuencia.
+
+
+A la función de añadir una sección a una encuesta dada, se accede
+mediante la vista: \emph{\textquotedbl{}researcher/survey/<int:id\_survey>/section/new\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta.
+
+
+A la función de añadir una sección a una sección dada, se accede mediante
+la vista: \emph{\textquotedbl{}researcher/survey/<int:id\_survey>/section/<int:id\_section>/new\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta, e \emph{id\_sectión}
+el identificador de la sección de la que va a colgar la nueva sección.
+
+\item Modificación de una sección o subsección.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}researcher/survey/<int:id\_survey>/section/<int:id\_section>\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta, e \emph{id\_sectión}
+el identificador de la sección a modificar
+
+\item Eliminación de una sección o subsección:
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}researcher/survey/<int:id\_survey>/deleteSection/<int:id\_section>\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta, e \emph{id\_sectión}
+el identificador de la sección a eliminar.
+
+\item Creación de preguntas: Dada una sección, el investigador puede añadir
+las preguntas que desee a la sección. Las posibilidades que tiene
+son las siguientes:
+
+\begin{itemize}
+\item Preguntas cuya respuesta es Si o No, las opciones disponibles son
+las siguientes:
+
+\begin{itemize}
+\item Texto de la pregunta: Se hace uso de la sintaxis Markdown para el
+enriquecimiento del texto.
+\item Indicar si es una pregunta cuya respuesta es obligatoria o no.
+\item Respuesta correcta a la pregunta si es que la tiene, sirve para crear
+preguntas de control.
+\item Número máximo de intentos que tiene el usuario para responder bien
+a la pregunta.
+\end{itemize}
+\item Preguntas cuya respuesta es un texto, las opciones disponibles son
+las siguientes:
+
+\begin{itemize}
+\item Texto de la pregunta: Se hace uso de la sintaxis Markdown para el
+enriquecimiento del texto.
+\item Indicar si es una pregunta cuya respuesta es obligatoria o no.
+\item Respuesta correcta a la pregunta si es que la tiene, sirve para crear
+preguntas de control
+\item Número máximo de intentos que tiene el usuario para responder bien
+a la pregunta.
+\item Validar que el texto introducido por el usuario en la respuesta es:
+
+\begin{itemize}
+\item Número entero.
+\item Número decimal.
+\item Comprobarlo mediante una expresión regular definido en sintaxis Python.
+\end{itemize}
+\item Mostrar un mensaje de error personalizado si ha introducido en un
+formato incorrecto la respuesta.
+\end{itemize}
+\item Preguntas cuya respuesta es una opción dada, las opciones disponibles
+son las siguientes.
+
+\begin{itemize}
+\item Texto de la pregunta: Se hace uso de la sintaxis Markdown para el
+enriquecimiento del texto.
+\item Indicar si es una pregunta cuya respuesta es obligatoria o no.
+\item Respuesta correcta a la pregunta si es que la tiene, sirve para crear
+preguntas de control.
+\item Número máximo de intentos que tiene el usuario para responder bien
+a la pregunta.
+\item Formato en el que se mostrará la pregunta, hay tres posibilidades:
+
+\begin{itemize}
+\item Horizontal: Se mostrará las opciones mediante un radio botón, en una
+disposición horizontal.
+\item Vertical: Se mostrará las opciones mediante un radio botón, en una
+disposición vertical.
+\item Select: Se mostrará las opciones mediante un formulario de selección.
+\end{itemize}
+\item Definición de las respuestas disponibles mediante la definición de
+un rango de números, así como el salto entre ellos.
+\item Definición de las respuestas disponibles añadiéndolas de una en una.
+\end{itemize}
+\item Preguntas cuya respuesta es una escala likert, las opciones disponibles
+son las siguientes.
+
+\begin{itemize}
+\item Texto de la pregunta: Se hace uso de la sintaxis Markdown para el
+enriquecimiento del texto.
+\item Indicar si es una pregunta cuya respuesta es obligatoria o no.
+\item Indicar el rango de la escala likert, que estará definida entre 0/1
+y un número mayor que 1.
+\item Etiqueta opcional para indicar el significado mínimo de la escala.
+\item Etiqueta opcional para indicar el significado máximo de la escala
+\end{itemize}
+
+Todas las preguntas descritas anteriormente se pueden mostrar o no
+dependiendo de la respuesta dada a una pregunta de la misma sección.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}researcher/survey/<int:id\_survey>/section/<int:id\_section>/addQuestion\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta e \emph{id\_sectión}
+el identificador de la sección donde se encuentra la pregunta.
+
+\end{itemize}
+\item Modificación de una pregunta:
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}researcher/survey/<int:id\_survey>/section/<int:id\_section>/question/<int:id\_question>\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta e \emph{id\_sectión}
+el identificador de la sección donde se encuentra la pregunta, e \emph{id\_question}
+el identificador de la pregunta a modificar
+
+\item Eliminación de una pregunta:
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}researcher/survey/<int:id\_survey>/Section/<int:id\_section>/deleteQuestion/<int:id\_question>\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta e \emph{id\_section}
+el identificador de la sección donde se encuentra la pregunta, e \emph{id\_question}
+el identificador de la pregunta a eliminar
+
+\item Duplicar sección: Permite duplicar una sección así como todas las
+secciones y preguntas que cuelgan de su rama.
+
+
+A esta función se accede mediante la vista:
+\begin{itemize}
+\item \emph{\textquotedbl{}researcher/survey/<int:id\_survey>/duplicateSection/<int:id\_section>/section/<int:id\_section2>'},
+siendo \emph{id\_survey} el identificador de la encuesta, \emph{id\_sectión}
+el identificador de la sección a copiar, \emph{id\_section2} el identificador
+de la sección donde se copiará.
+\item \emph{\textquotedbl{}researcher/survey/<int:id\_survey>/duplicateSection/<int:id\_section>/survey/'},
+siendo \emph{id\_survey} el identificador de la encuesta, \emph{id\_sectión}
+el identificador de la sección a copiar, se copiará directamente sobre
+la raiz, la cual es la encuesta.
+\end{itemize}
+\item Exportar una encuesta: Permite exportar a un fichero XML, la encuesta
+seleccionada.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}researcher/survey/exportSurvey/<int:id\_survey>\textquotedbl{}},
+siendo \emph{id\_survey} la encuesta a exportar
+
+\item Importar una encuesta: Permite importar una encuesta mediante un fichero
+XML.
+
+
+A esta función se accede mediante la vista:\emph{ \textquotedbl{}researcher/survey/new\textquotedbl{}}
+
+\item Exportar estadísticas de una encuesta: Permite exportar en un fichero
+CSV, los resultados de la encuesta seleccionada.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}researcher/survey/exportStats/<int:id\_survey>\textquotedbl{}},
+siendo \emph{id\_survey} la encuesta a exportar
+
+\end{itemize}
+Las vistas anteriores solo están disponibles para investigadores,
+además no se pueden editar encuestas de otros investigadores, ya que
+todas las vistas están protegidas mediante el decorador\emph{ \textquotedbl{}@belong\_researcher\textquotedbl{}.}
+
+
+\subsection{Módulo del encuestado}
+
+Este módulo permite a los usuarios que sean voluntarios realizar rellenar
+encuestas. Las acciones disponibles son las siguientes:
+\begin{itemize}
+\item Listar todas las encuestas disponibles, así como el estado de esta,
+ya sea sin empezar, empezada o finalizada.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}survey/index\textquotedbl{}}
+o \emph{\textquotedbl{}survey/\textquotedbl{}}
+
+\item Empezar o continuar una encuesta: Es la función encargada de decidir
+cual es el siguiente paso cuando se realiza una encuesta, ya sea mostrar
+los consentimientos, mostrar una sección de la encuesta, indicar que
+se ha finalizado la encuesta o mostrar el feedback de la encuesta
+si es que la tiene.
+
+
+A esta función se accede mediante la vista: \emph{\textquotedbl{}survey/<int:id\_survey>\textquotedbl{}},
+siendo id\_survey la encuesta a realizar.
+
+\item Mostrar los consentimientos: Esta función es la encargada de mostrar
+el consentimiento que el usuario debe aceptar para realizar la encuesta.
+
+
+A esta función se accede mediante la vista \textquotedbl{}survey/<int:id\_survey>/consent\textquotedbl{},
+siendo \emph{id\_survey} la encuesta a realizar 
+
+\item Mostrar una sección: Esta función es la encargada de mostrar una sección,
+con todas las preguntas que hay en ella, además de guardar los resultados
+de las preguntas, así como los tiempos empleados en ellas.
+
+
+A esta función se accede mediante las vistas \emph{\textquotedbl{}survey/<int:id\_survey>/section/<int:id\_section>\textquotedbl{}}
+o \emph{\textquotedbl{}survey/<int:id\_survey>/section/\textquotedbl{}},
+siendo \emph{id\_survey} la encuesta a realizar e \emph{id\_section},
+la sección.
+
+\end{itemize}
+Todas las vistas están protegidas, de manera que es obligatorio haber
+ingresado en la plataforma, además en la vista \emph{Mostrar una sección}
+solo se permite acceder a la sección que le toca realizar al usuario.
+
+
+\subsection{Módulo de Feedback}
+
+Este módulo permite dar feedback sobre las decisiones tomadas en el
+proyecto \emph{\textquotedbl{}¿Cómo son nuestros voluntarios?\textquotedbl{}}.
+Cada vista corresponde con una decisión concreta del experimento. 
+\begin{itemize}
+\item Lógica: Durante el desarrollo del proyecto \textquotedbl{}¿Cómo son
+nuestros voluntarios?\textquotedbl{}, se decidió que el orden del
+feedback sobre las decisiones tomadas, iba a ser el mismo que el realizado
+durante el experimento, y debido a que cada voluntario se le asigna
+un orden al azar, está función es la encargada de decidir que feedback
+se le va a mostrar al voluntario, siempre siguiendo el mismo orden
+de la encuesta.
+
+
+A esta función se accede mediante la vista \textquotedbl{}feedback/id\_survey\textquotedbl{},
+siendo id\_survey la encuesta de la que recibir feedback.
+
+\item Juegos de la lotería, la renta y dictador: Corresponde a las decisiones
+de las versiones de los dos juegos de la lotería y los dos juegos
+de la renta. Muestra la respuesta del usuario y la media dada por
+los demás voluntarios, además muestra el porcentaje de los voluntarios
+que han tomado la misma decisión que el usuario.
+\item Juego del ultimatum: A parte de mostrar la información que se da en
+los demás juegos, también se muestra el porcentaje de voluntarios
+que hubiesen aceptado la cantidad dada por el usuario.
+\end{itemize}
+
+\subsection{Módulo de estadísticas:}
+
+Este módulo es el encargado de generar el fichero de resultados para
+los investigadores. Concretamente existen dos funciones, una para
+encuestas genéricas y otra para el experimento \emph{\textquotedbl{}¿Cómo
+son nuestros voluntarios?\textquotedbl{}.} Ya que se adapto los resultados
+a la necesidad de los investigadores en cuanto al formato requerido
+por ellos para trabajar más cómodamente.
+
+
+\subsection{Módulo Juegos:}
+
+Este módulo es el encargado de decidir en los juegos del experimento
+\textquotedbl{}¿Cómo son nuestros voluntarios?\textquotedbl{}, que
+usuarios se enfrentan con quién. Además de buscar las respuestas dadas
+por los voluntarios.
+
+A la hora de decidir que usuarios van a enfrentarse, se busca a todos
+los usuarios que no han realizado ningún enfrentamiento. Si este llega
+a un número mínimo necesario para que no existan enfrentamientos repetidos,
+se continua. Sino se selecciona las decisiones tomadas de otros voluntarios
+que ya se han enfrentado, pero sin posibilidad de que estos últimos
+vuelvan a salir premiados.
+
+
+\subsection{Módulo de visualización de estadísticas y juegos.}
+
+Este módulo permite la visualización de los resultados de las encuestas,
+además también permite la visualización de los resultados de los juegos
+del experimento \emph{\textquotedbl{}¿Cómo son nuestros voluntarios?\textquotedbl{}}
+\begin{itemize}
+\item Listar todas las encuestas creadas por un investigador.
+
+
+A esta función se accede mediante la vista \emph{\textquotedbl{}stats/\textquotedbl{}}
+o \emph{\textquotedbl{}stats/index\textquotedbl{}}
+
+\item Listar el resultado de una encuesta: Representa mediante una tabla
+el fichero CSV de las encuestas, se puede elegir el criterio de ordenación.
+
+
+A esta función se accede mediante la vista\emph{ \textquotedbl{}stats/<int:id\_survey>\textquotedbl{}},
+siendo \emph{id\_survey} la encuesta de la que se desea visualizar
+los resultados.
+
+\item Listar los juegos disponibles en una encuesta:
+
+
+A esta función se accede mediante la vista \emph{\textquotedbl{}stats/<int:id\_survey>/games\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta
+
+\item Listar el resultado de un juego de una encuesta: Representa mediante
+una tabla, los resultados de de los distintos juegos de una encuesta,
+se puede elegir el criterio de ordenación.
+
+
+A esta función se accede mediante la vista \emph{\textquotedbl{}stats/<int:id\_survey>/games/gameX\textquotedbl{}},
+siendo \emph{id\_survey} el identificador de la encuesta.
+
+\end{itemize}
+Las vistas anteriores solo están disponibles para investigadores,
+además solo se puede acceder a las encuestas creadas por el propio
+investigador.
+
+
+\subsection{Módulo de modelo}
+
+Este es el módulo descrito anteriormente en la sección \ref{sec:Diagrama-de-Clases}
+
+Casi todos los demás módulos interaccionan con este Módulo.
+
+
+\subsection{Módulo de configuración}
+
+Este módulo se encarga de leer la configuración de la plataforma una
+vez que se inicia está. Aunque no se ha señalado explícitamente, los
+demás módulos interaccionan con él si tienen que leer alguna configuración
+de la plataforma.
+
+Se han tenido en cuenta las recomendaciones dadas en http://flask.pocoo.org/docs/config/\#configuration-best-practices
+
+Y se ha decidido crear un sistema de clases y herencia para la configuración
+del sistema, pudiendo cambiar el modo de funcionamiento de la aplicación
+simplemente cambiando la variable de entorno \emph{FLASK\_CONFIG},
+la estructura que sigue y los modos disponibles son los siguientes:
+
+\begin{listing}[style=consola, numbers=none]
+class Config(object):
+    # configuración básica de la plataforma
+
+class DevelopmentConfig(Config):
+    # Configuración de la plataforma en modo desarrollo
+    DEBUG = True
+
+class TestingConfig(Config):
+    # Configuración de la plataforma para test unitarios
+
+class Jmeter(Config):
+    # Configuración de la plataforma para la realización de pruebas de sobrecarga
+
+class ProductionConfig(Config):
+    # Configuración de la plataforma en modo producción
+    # Se define quien es el usuario administrador y cual es el servidor de correo para enviar los distintos logs
+
+class HerokuConfig(ProductionConfig):
+    # Configuración de la plataforma en modo producción en la nube Heroku
+    # Usa el sistema de logs de Heroku para almacenarlos.
+
+
+class UnixConfig(ProductionConfig):
+    # Configuración de la plataforma en modo producción en una máquina de tipo Unix
+    # Hace uso del sistema de logs de la máquina Unix.
+\end{listing}
+
+Por otra parte, para facilitar el tener varias configuraciones posibles,
+se carga primeramente la configuración básica definida anteriormente
+y luego se puede reemplaza por la leída en la variable de entorno
+\emph{SWARMS\_SURVEY\_SETTINGS}, pudiendo cambiar fácilmente la configuración.
+
+
+\subsection{Módulo shell:}
+
+Este módulo se accede mediante la consola de la plataforma, dando
+acceso a un interprete Python.
+
+\begin{listing}[style=consola, numbers=none]
+(venv)$ ./manage.py shell
+// shell interactively of swarm-surveys, "import utiles" to access the administration tools
+In [1]: from current_app import utiles
+\end{listing}
+
+Entre las opciones disponible en \emph{utiles}, está la de listar
+usuarios, dar o quitar permisos de investigador a un usuario dado
+o reiniciar los juegos del experimento \emph{\textquotedbl{}¿Cómo
+son nuestros voluntarios?\textquotedbl{}}
+
+Además mediante el uso de esta interfaz de linea de comandos, se puede
+acceder a cualquier módulo definido en la plataforma.
+
+Por ejemplo, ejecutar la función de generar los resultados de una
+encuesta:
+
+\begin{listing}[style=consola, numbers=none]
+In [1]: from current_app import models
+In [2]: from current_app import stats
+In [2]: survey = models.Survey.query.get(1)
+In [3]: stats.write_stats(survey)
+written file in /home/jarenere/swarm_surveys/stats_csv/¿Cómo_son_nuestros_voluntarios?_1.csv
+\end{listing}
+
+
+\section{Prototipado de las ventanas y cuestiones de usabilidad}
+
+Después del análisis y el diseño de las distintas partes de la aplicación,
+se continuo con un diseño preliminar de la interfaz para el usuario.
+Se tomaron distintas ideas de las plataformas estudiadas para la elaboración
+de encuestas, así como las guías de usabilidad del proyecto KDE, http://techbase.kde.org/Projects/Usability/HIG
+
+Para facilitar al investigador la navegación entre las distintas secciones,
+se decidió mostrar el árbol de secciones por completo en un lateral
+de la ventana. Además de mostrar en la parte superior un menú de tipo
+\textquotedbl{}migas de pan\textquotedbl{}, que presenta en forma
+textual todos los enlaces que describen la ruta de una sección a partir
+de la raíz, siendo esta la propia encuesta.
+
+Por otra parte para mejorar la usabilidad de la aplicación, se ha
+añadido código JavaScript en distintas páginas para ofrecer ciertas
+funcionalidades al usuario, sin tener que realizar peticiones a la
+plataforma web, añadiendo velocidad y fluidez a la plataforma.
+
+Se decidió también añadir un editor y visualizador de código Markdown
+para poder comprobar en tiempo real el formato de texto que verían
+los usuarios a la hora de realizar encuestas.
+
+Por otra parte para mejorar la usabilidad de la plataforma, se uso
+un sistema de URL amigables, para recordar mas fácilmente la funcionalidad
+de cada página web.
+
+Además durante el prototipado de las ventanas, se tuvo en cuenta las
+funcionalidades que provee el framework Bootstrap, para facilitar
+que las distintas páginas se adaptasen al tamaño del navegador.
+
+\#\#\#\# Esquema de navegación
+
+\#\#\#\# Diseño del experimento \textquotedbl{}¿Cómo son nuestros
+voluntarios?\textquotedbl{}
+
+Debido a la naturaleza del proyecto, siempre se intenta evitar el
+influir a los participantes, para que las respuestas que den sean
+las que realmente quieren dar. Esto incluye cualquier tipo de feedback
+visual, incluso el nombre del proyecto \textquotedbl{}¿Cómo son nuestros
+voluntarios?\textquotedbl{}, induce a pensar como voluntario.
+
+El diseño final para el experimento, se puede ver en las capturas
+XX

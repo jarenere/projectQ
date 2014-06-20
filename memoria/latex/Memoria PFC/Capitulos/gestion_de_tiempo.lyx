@@ -1,0 +1,305 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Gestión del proyecto
+\end_layout
+
+\begin_layout Standard
+En este capítulo se va a detallar la metodología usada para la gestión del
+ proyecto.
+\end_layout
+
+\begin_layout Section
+Ciclo de vida del desarrollo.
+\end_layout
+
+\begin_layout Standard
+A pesar de tener claro desde el principio cual era la meta del proyecto
+ y del experimento "¿Cómo son nuestros voluntarios?", estos dos han ido
+ evolucionado a la par durante el desarrollo del proyecto.
+ Esto se ha debido sobretodo a las diferencias que hay a la hora de realizar
+ una encuesta con apoyo presencial y a otra telemática.
+\end_layout
+
+\begin_layout Standard
+Por eso el ciclo de vida que ha seguido el proyecto ha sido el prototipado
+ evolutivo, teniendo desde el primer mes una versión básica con los requisitos
+ sacados del documento "¿Cómo son nuestros voluntarios?" y a partir de esta
+ primera versión, con la información recibida por los investigadores, se
+ han ido añadiendo características y refinando el funcionamiento de esta,
+ así sucesivamente durante el desarrollo de la plataforma y la adaptación
+ del experimento a esta.
+\end_layout
+
+\begin_layout Standard
+Para facilitar esta retroalimentación de información, se ha intentado tener
+ siempre una versión actualizada de la plataforma disponible para los investigad
+ores y recibiendo los comentarios de estos a través del correo electrónico.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/prototipado_evolutivo.JPG
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Esquema del prototipado evolutivo
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Gestión del tiempo
+\end_layout
+
+\begin_layout Standard
+Debido al ciclo de vida desarrollado usado, una vez finalizado el primer
+ prototipo, se ha vuelto constantemente a las etapas anteriores, añadiendo
+ nuevos requisitos.
+ Los grupos de tareas son los siguientes:
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Análisis:
+\series default
+ Se realizó un análisis previo al documento "¿Cómo son nuestros voluntarios?"
+ y a partir de este y después de las sucesivas evaluaciones por parte de
+ los investigadores de los distintos prototipos, se fueron añadiendo mas
+ características.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Estudio de alternativas:
+\series default
+ En este grupo se engloba el estudio de las distintas plataformas para la
+ elaboración de encuestas, y su posible uso.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Estudio y familiarización de las herramientas:
+\series default
+ Esto incluye el estudio de las diferentes tecnologías usadas para la elaboració
+n del proyecto.
+ A pesar de dedicar un tiempo en exclusiva para él, a lo largo del desarrollo
+ se han ido adquiriendo nuevos conocimientos, que aveces ha implicado la
+ reimplementación de ciertas funcionalidades a favor de un código y una
+ solución mas clara.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Diseño:
+\series default
+ Este grupo incluye desde la estructuración de la aplicación en una jerarquía
+ de módulos y funcionalidades según el ámbito, hasta el diseño de los datos,
+ así como el diseño del interfaz.
+ En el diagrama de Gantt de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "gantt"
+
+\end_inset
+
+ solo se hace referencia explícita al primer diseño previo, pero después
+ de cada evaluación se volvía al diseño.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Implementación:
+\series default
+ Este grupo comprende en la escritura del código necesario para la elaboración
+ de la plataforma.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Pruebas:
+\series default
+ Esto incluye las pruebas tanto unitarias, aceptación y de sobrecarga realizadas
+ a la plataforma.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Documentación:
+\series default
+ En esta parte solo se engloba la generación de la documentación para la
+ elaboración de la memoria, aunque durante todas las fases se han ido generando
+ distintos diagramas, y ficheros.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Evaluación:
+\series default
+ En este grupo se incluye las distintas revisiones que han realizado los
+ investigadores a la plataforma y al experimento "¿Cómo son nuestros voluntarios
+?".
+ A lo largo de la vida del proyecto se ha ido recibiendo de manera constante
+ retroalimentación por parte de los investigadores, que han ido refinando
+ el experimento.
+ Aun así se podría destacarse tres grandes revisiones en las siguientes
+ fechas: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+4 de marzo, se enseño por primera vez en Madrid una primera versión de la
+ plataforma y del experimento.
+ Además se decidió que el usuario podría recibir un feedback por parte del
+ experimento.
+\end_layout
+
+\begin_layout Itemize
+11 de abril, se reviso por completo el experimento, se recibió las pautas
+ para modificarlo, además de indicar el formato de los ficheros de estadísticas
+ para los investigadores.
+\end_layout
+
+\begin_layout Itemize
+19 de mayo, se realizó la evaluación final de las características de la
+ plataforma.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/gantt.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+diagrama de Gantt
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "gantt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
