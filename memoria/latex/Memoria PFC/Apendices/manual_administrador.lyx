@@ -271,7 +271,7 @@ s/deploying/
 
 \begin_layout Itemize
 Base de datos a usar, está debe ser compatible con SQLAlchemy, las posibilidades
- son las siguientes: * 
+ son las siguientes:
 \end_layout
 
 \begin_deeper

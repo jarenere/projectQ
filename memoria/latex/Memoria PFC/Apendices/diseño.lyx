@@ -1474,11 +1474,11 @@ Listado de encuestas creadas por un investigador.
 \begin_layout Itemize
 A esta función se accede mediante las vistas: 
 \emph on
-"researcher/survey/"
+"researcher/"
 \emph default
  o 
 \emph on
-"researcher/survey/index"
+"researcher/index"
 \emph default
 .
 \end_layout

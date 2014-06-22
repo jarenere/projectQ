@@ -396,7 +396,7 @@ En el módulo de autetificación permite las siguientes opciones:
 Este modulo permite a los usuarios que sean investigadores, las siguientes acciones:
 
 * Listado de encuestas creadas por un investigador:
-    A esta función se accede mediante las vistas: "researcher/survey/" o "researcher/survey/index".
+    A esta función se accede mediante las vistas: "researcher/" o "researcher/index".
 
 * Creación de encuestas: Durante la creación de una encuesta se comprueba que todos los campos del formulario son validos, además permite definir las siguientes opciones:
     * Título.

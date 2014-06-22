@@ -100,7 +100,6 @@ commentstyle=\color{negro},
 \end_preamble
 \use_default_options false
 \begin_modules
-enumitem
 customHeadersFooters
 endnotes
 foottoend
@@ -359,16 +358,6 @@ filename "Capitulos/esqueleto.lyx"
 \begin_inset CommandInset include
 LatexCommand include
 filename "Capitulos/enrutamiento.lyx"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand include
-filename "Capitulos/seguridad.lyx"
 
 \end_inset
 

@@ -85,20 +85,30 @@ Ciclo de vida del desarrollo.
 
 \begin_layout Standard
 A pesar de tener claro desde el principio cual era la meta del proyecto
- y del experimento "¿Cómo son nuestros voluntarios?", estos dos han ido
- evolucionado a la par durante el desarrollo del proyecto.
+ y del experimento 
+\emph on
+"¿Cómo son nuestros voluntarios?"
+\emph default
+, estos dos han ido evolucionado a la par durante el desarrollo del proyecto.
  Esto se ha debido sobretodo a las diferencias que hay a la hora de realizar
  una encuesta con apoyo presencial y a otra telemática.
 \end_layout
 
 \begin_layout Standard
 Por eso el ciclo de vida que ha seguido el proyecto ha sido el prototipado
- evolutivo, teniendo desde el primer mes una versión básica con los requisitos
- sacados del documento "¿Cómo son nuestros voluntarios?" y a partir de esta
- primera versión, con la información recibida por los investigadores, se
- han ido añadiendo características y refinando el funcionamiento de esta,
- así sucesivamente durante el desarrollo de la plataforma y la adaptación
- del experimento a esta.
+ evolutivo, como se puede ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "figura_prototipado_evolutivo"
+
+\end_inset
+
+, teniendo desde el primer mes una versión básica con los requisitos sacados
+ del documento "¿Cómo son nuestros voluntarios?" y a partir de esta primera
+ versión, con la información recibida por los investigadores, se han ido
+ añadiendo características y refinando el funcionamiento de esta, así sucesivame
+nte durante el desarrollo de la plataforma y la adaptación del experimento
+ a esta.
 \end_layout
 
 \begin_layout Standard
@@ -114,8 +124,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/prototipado_evolutivo.JPG
+	width 10cm
+	height 10cm
 
 \end_inset
 
@@ -125,6 +138,13 @@ status open
 \begin_layout Plain Layout
 Esquema del prototipado evolutivo
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "figura_prototipado_evolutivo"
 
 \end_inset
 
@@ -271,6 +291,7 @@ status open
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/gantt.png
+	width 100line%
 
 \end_inset
 
@@ -278,6 +299,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
