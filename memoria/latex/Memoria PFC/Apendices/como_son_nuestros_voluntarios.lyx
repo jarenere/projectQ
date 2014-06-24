@@ -815,6 +815,13 @@ Decisión 1
 
 \begin_layout Paragraph
 Versión 1
+\begin_inset CommandInset label
+LatexCommand label
+name "par:loteria1"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -936,6 +943,13 @@ Imagina que te informamos de la cantidad que invierte la otra persona.
 
 \begin_layout Paragraph
 Version 2
+\begin_inset CommandInset label
+LatexCommand label
+name "par:loteria2"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -993,6 +1007,13 @@ s si superieras lo que el otro invierte
 
 \begin_layout Subsubsection
 Decisión 2
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Decisión-2"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1040,6 +1061,13 @@ s si superieras lo que el otro invierte
 
 \begin_layout Subsubsection
 Decisión 3
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Decisión-3"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1086,6 +1114,13 @@ s si superieras lo que el otro invierte
 
 \begin_layout Subsubsection
 Decisiones 4 y 5
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Decisiones-4-y5"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1157,6 +1192,13 @@ Si te manda 20€ y se queda 0€ ¿Aceptas o rechazas la división?
 
 \begin_layout Subsubsection
 Decisión 6
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Decisión-6"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard

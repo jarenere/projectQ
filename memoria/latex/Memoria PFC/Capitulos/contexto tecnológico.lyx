@@ -177,9 +177,10 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/ModelViewControllerDiagram_es.svg
-	width 100text%
+	width 10cm
 
 \end_inset
 
@@ -366,8 +367,10 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/responsive_design.png
+	width 10cm
 
 \end_inset
 
@@ -507,7 +510,7 @@ TeX Live como distribución de TeX
 \end_layout
 
 \begin_layout Itemize
-Lyx como entorno gráfico
+LyX como entorno gráfico
 \end_layout
 
 \begin_layout Itemize

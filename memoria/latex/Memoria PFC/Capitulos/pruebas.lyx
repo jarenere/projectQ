@@ -132,15 +132,9 @@ Además dentro de las pruebas unitarias, se realizo la cobertura de código,
 \begin_layout Standard
 Todos estos tests se integraron en la plataforma, pudiendose ejecutar desde
  ella, como se puede ver en la figura 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-ref{fig:unit_test}
-\end_layout
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "unit_tests"
 
 \end_inset
 
@@ -148,29 +142,15 @@ ref{fig:unit_test}
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset Float figure
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
-
-
-\backslash
-begin{figure}[!tbh]
-\end_layout
-
-\begin_layout Plain Layout
-
- 	
-\backslash
-begin{center}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
+\begin_inset listings
+inline false
+status open
 
 \begin_layout Plain Layout
 
@@ -246,39 +226,28 @@ Total               1267        263         4           360         38
          83%
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
 
 
-\backslash
-end{listing}
 \end_layout
 
 \begin_layout Plain Layout
-
-		 
-\backslash
-caption{Resultado de la ejecución de los test unitarios}
-\end_layout
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
-
- 		
-\backslash
-label{fig:unit_test}
+Resultado de la ejecución de los test unitarios
 \end_layout
 
-\begin_layout Plain Layout
-
-	 
-\backslash
-end{center}
-\end_layout
-
-\begin_layout Plain Layout
+\end_inset
 
 
-\backslash
-end{figure}
+\begin_inset CommandInset label
+LatexCommand label
+name "unit_tests"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset

@@ -1,0 +1,1272 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options false
+\begin_modules
+enumitem
+\end_modules
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Controlador
+\end_layout
+
+\begin_layout Standard
+Durante la memoria se ha ido utilizando el termino modelo, vista y controlador,
+ siendo el controlador la función que ejecuta la aplicación cuando recibe
+ una petición con un patrón reconocido en las rutas de la aplicación web.
+ Este capítulo tratará de presentar la estructura básica de un controlador
+ de la aplicación.
+\end_layout
+
+\begin_layout Section
+Estructura.
+\end_layout
+
+\begin_layout Standard
+Como se puede observar en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Esqueleto-de-la"
+
+\end_inset
+
+, cada módulo contiene un fichero 
+\emph on
+views.py
+\emph default
+, que reúne las funciones públicas que se ocupa de responder ante las rutas
+ web.
+ 
+\end_layout
+
+\begin_layout Standard
+Por ejemplo, en el módulo de creación de encuestas, ver figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "funciones_modw_researcher"
+
+\end_inset
+
+, podemos ver las distintas funciones públicas a las que podemos acceder
+ mediante una ruta web, cada función iría precedida de la ruta por la que
+ se accede a dicha función, así como los permisos necesarios para acceder,
+ todo esto explicado en los capítulos 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Enrutamiento"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Seguridad"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+def index():
+\end_layout
+
+\begin_layout Plain Layout
+
+def new():
+\end_layout
+
+\begin_layout Plain Layout
+
+def edit_survey(id_survey):
+\end_layout
+
+\begin_layout Plain Layout
+
+def delete_survey(id_survey):
+\end_layout
+
+\begin_layout Plain Layout
+
+def export_survey(id_survey):
+\end_layout
+
+\begin_layout Plain Layout
+
+def add_consent(id_survey):
+\end_layout
+
+\begin_layout Plain Layout
+
+def delete_consent(id_survey,id_consent):
+\end_layout
+
+\begin_layout Plain Layout
+
+def edit_consents(id_survey, id_consent):
+\end_layout
+
+\begin_layout Plain Layout
+
+def edit_section(id_survey, id_section):
+\end_layout
+
+\begin_layout Plain Layout
+
+def delete_section(id_survey,id_section):
+\end_layout
+
+\begin_layout Plain Layout
+
+def duplicate_section(id_survey,id_section):
+\end_layout
+
+\begin_layout Plain Layout
+
+def add_subsection(id_survey, id_section):
+\end_layout
+
+\begin_layout Plain Layout
+
+def add_question(id_survey, id_section):
+\end_layout
+
+\begin_layout Plain Layout
+
+def edit_question(id_survey, id_section,id_question):
+\end_layout
+
+\begin_layout Plain Layout
+
+def delete_question(id_survey,id_section,id_question):
+\end_layout
+
+\begin_layout Plain Layout
+
+def export_stats(id_survey):
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Funciones de modulo Researcher
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "funciones_modw_researcher"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Si nos centramos mas en la función index, ver figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "codigo_controlador_index"
+
+\end_inset
+
+, cuando un manager accediese a la ruta /researcher/index, el servidor ejecutará
+ el controlador index, que no recibe ningún parametro, y extrae todas las
+ encuestas de un investigador.
+ Estas encuestas se almacenan en una variable, 
+\emph on
+surveys
+\emph default
+, y pasa ésta información como parametro a la función 
+\emph on
+render_template
+\emph default
+, la cual se encarga de generar una página html a través de la plantilla
+ y la variable pasada, para luego generar una respuesta HTTP con la página
+ generada
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+@blueprint.route('/')
+\end_layout
+
+\begin_layout Plain Layout
+
+@blueprint.route('/index')
+\end_layout
+
+\begin_layout Plain Layout
+
+@login_required
+\end_layout
+
+\begin_layout Plain Layout
+
+@researcher_required
+\end_layout
+
+\begin_layout Plain Layout
+
+def index():
+\end_layout
+
+\begin_layout Plain Layout
+
+    surveys = Survey.query.filter(Survey.researcher==g.user).order_by(Survey.created.de
+sc())
+\end_layout
+
+\begin_layout Plain Layout
+
+    return render_template('/researcher/index.html',
+\end_layout
+
+\begin_layout Plain Layout
+
+        tittle = 'Survey',
+\end_layout
+
+\begin_layout Plain Layout
+
+        surveys = surveys)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Ejemplo del controlador index
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "codigo_controlador_index"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Formularios
+\end_layout
+
+\begin_layout Subsection
+Creando un formulario
+\end_layout
+
+\begin_layout Standard
+Para el uso de formularios en Flask, se ha hecho uso de Flask-WTF, que facilita
+ la integración de WTForms en aplicaciones Flask.
+ Todos los formularios se han declarado en en los ficheros 
+\emph on
+forms.py.
+\end_layout
+
+\begin_layout Standard
+Por ejemplo en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "codigo_controlador_index"
+
+\end_inset
+
+, se puede ver uno de los formularios que hay para la creación y la modificación
+ de encuesta, en el cual el investigador puede definir las características
+ generales de la encuesta, como puede ser el titulo, descripción, fecha
+ de inicio, etc.
+ Además de las restricciones que deben cumplir, como puede ser la longitud
+ del texto.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class SurveyForm(Form):
+\end_layout
+
+\begin_layout Plain Layout
+
+    title = TextField('Title', validators = [Length(min = 1, max = 128)])
+\end_layout
+
+\begin_layout Plain Layout
+
+    description = PageDownField('Description',validators = [Length(min =
+ 0)],default = EXAMPLE_MARKDOWN)
+\end_layout
+
+\begin_layout Plain Layout
+
+    startDate = DateTimeField('Day and start time', validators = [Optional()])
+\end_layout
+
+\begin_layout Plain Layout
+
+    endDate =DateTimeField('Day and finish time', validators = [Optional()])
+\end_layout
+
+\begin_layout Plain Layout
+
+    maxNumberRespondents = IntegerField('Number of respondents', validators
+ = [Optional()])
+\end_layout
+
+\begin_layout Plain Layout
+
+    duration = IntegerField('Time in minutes that a user has to answer the
+ survey', validators = [Optional()])
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+ejemplo de formulario
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "ejemplo_formulario"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Creando un formulario dinámico
+\end_layout
+
+\begin_layout Standard
+Muy raramente se necesita crear o modificar de manera dinámica los formularios
+ usados.
+ Pero debido a la naturaleza de nuestra aplicación, la cual permite la generació
+n personalizada de encuestas, es necesario crear dinámicamente los formularios
+ de las encuestas.
+ Para ello se lee las preguntas de una sección de la encuesta y según las
+ distintas propiedades de la pregunta se van añadiendo nuevos campos, que
+ no son mas que nuevos atributos a la clase que forma el formulario, mediante
+ la función 
+\emph on
+setattr
+\emph default
+, como se puede ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "generación_dinamica_formularios"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+def generate_form(questions):
+\end_layout
+
+\begin_layout Plain Layout
+
+    '''dynamically generates the forms for surveys
+\end_layout
+
+\begin_layout Plain Layout
+
+    '''
+\end_layout
+
+\begin_layout Plain Layout
+
+    class AnswerForm(Form):
+\end_layout
+
+\begin_layout Plain Layout
+
+        time = HiddenField('time',default=0)
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\end_layout
+
+\begin_layout Plain Layout
+
+    for question in questions:
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        if isinstance (question,QuestionYN):
+\end_layout
+
+\begin_layout Plain Layout
+
+            choices = [('Yes',gettext('Yes')),('No',gettext('No'))]
+\end_layout
+
+\begin_layout Plain Layout
+
+            if question.isSubquestion:
+\end_layout
+
+\begin_layout Plain Layout
+
+                setattr(AnswerForm,str(question.id),MyRadioField('Answer',
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+                    choices = choices,validators = [CheckSubquestion()]))
+\end_layout
+
+\begin_layout Plain Layout
+
+            ...
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    form = AnswerForm()
+\end_layout
+
+\begin_layout Plain Layout
+
+    return form
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Generación dinámica de formularios
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "generación_dinamica_formularios"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Creando un campo personalizado
+\end_layout
+
+\begin_layout Standard
+WTForms provee una serie de campos básicos para la creación de formularios,
+ además permite la personalización y creación de nuevos campos, para manejar
+ tipos de datos especiales en la aplicación.
+ 
+\end_layout
+
+\begin_layout Standard
+En el caso de la aplicación ha sido necesario crear nuevos campos personalizados
+ para mostrar según que tipo de preguntas al usuario, como puede ser la
+ escala likert que se puede ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "campo_likert"
+
+\end_inset
+
+.
+ Para ello se ha partido de un campo ya existente, como es el 
+\emph on
+RadioField
+\emph default
+, y se ha modificado la generación de código html.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class LikertField(RadioField):
+\end_layout
+
+\begin_layout Plain Layout
+
+    '''my implement of likert field'''
+\end_layout
+
+\begin_layout Plain Layout
+
+    def __init__(self, label='', validators=None, labelMin="", labelMax="",
+ **kwargs):
+\end_layout
+
+\begin_layout Plain Layout
+
+        self.labelMin=labelMin
+\end_layout
+
+\begin_layout Plain Layout
+
+        self.labelMax=labelMax
+\end_layout
+
+\begin_layout Plain Layout
+
+        super(LikertField, self).__init__(label, validators, **kwargs)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    def __call__(self, **kwargs):
+\end_layout
+
+\begin_layout Plain Layout
+
+        '''render likert as table
+\end_layout
+
+\begin_layout Plain Layout
+
+        '''
+\end_layout
+
+\begin_layout Plain Layout
+
+        from wtforms.widgets.core import html_params, HTMLString
+\end_layout
+
+\begin_layout Plain Layout
+
+        kwargs.setdefault('id', self.id)
+\end_layout
+
+\begin_layout Plain Layout
+
+        kwargs.setdefault('class_', " table table-condensed likert")
+\end_layout
+
+\begin_layout Plain Layout
+
+        html = ['<%s %s>' % ("table", html_params(**kwargs))]
+\end_layout
+
+\begin_layout Plain Layout
+
+        html.append('<tr>')
+\end_layout
+
+\begin_layout Plain Layout
+
+        html.append('<td></td>')
+\end_layout
+
+\begin_layout Plain Layout
+
+        for subfield in self:
+\end_layout
+
+\begin_layout Plain Layout
+
+            html.append('<td>%s</td>' % (subfield.label))
+\end_layout
+
+\begin_layout Plain Layout
+
+        html.append('</tr>')
+\end_layout
+
+\begin_layout Plain Layout
+
+        html.append('<tr>')
+\end_layout
+
+\begin_layout Plain Layout
+
+        html.append('<td class="type-info">%s</td>' % (self.labelMin))
+\end_layout
+
+\begin_layout Plain Layout
+
+        for subfield in self:
+\end_layout
+
+\begin_layout Plain Layout
+
+                html.append('<td>%s</td>' % (subfield()))
+\end_layout
+
+\begin_layout Plain Layout
+
+        html.append('<td class="type-info">%s</td>' % (self.labelMax))
+\end_layout
+
+\begin_layout Plain Layout
+
+        html.append('</tr>')
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        html.append('</%s>' % "table")
+\end_layout
+
+\begin_layout Plain Layout
+
+        return  HTMLString(''.join(html))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Campo likert
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "campo_likert"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Pudiéndose ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "visualizacion_escala_likert"
+
+\end_inset
+
+ el resultado final.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/escala_likert.png
+	width 100line%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Visualización de la escala likert
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "visualizacion_escala_likert"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Creando un validador personalizado
+\end_layout
+
+\begin_layout Standard
+WTForms provee una serie de validadores básicos, que permite verificar que
+ la entrada de un campo cumple con algún criterio específico, como puede
+ ser la longitud máxima de una cadena.
+ Si la validación falla, lanza un 
+\emph on
+ValidationError
+\emph default
+.
+ Este es un sistema sencillo y flexible que permite añadir a cualquier campo
+ una cadena de validadores.
+\end_layout
+
+\begin_layout Standard
+Además de unos validadores básicos, WTForms permite la creación de validadores
+ personalizados, que se adapten a las necesidades del sistema.
+ Para ello 
+\end_layout
+
+\begin_layout Standard
+Al igual que WTForms provee una serie de validadores básicos, como puede
+ ser 
+\emph on
+Lenght
+\emph default
+, para comprobar la longitud de un campo introducido, también permite crear
+ validadores personalizados, como se puede ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "validador personalizado"
+
+\end_inset
+
+, se ha creado un validador para comprobar si una subpregunta hay que validarla
+ o no, en función de la respuesta de la pregunta de la que depende.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class CheckSubquestion(object):
+\end_layout
+
+\begin_layout Plain Layout
+
+    '''check whether to answer the question or not
+\end_layout
+
+\begin_layout Plain Layout
+
+    '''
+\end_layout
+
+\begin_layout Plain Layout
+
+    def __call__(self, form, field):
+\end_layout
+
+\begin_layout Plain Layout
+
+        question = Question.query.get(field.name[1:])
+\end_layout
+
+\begin_layout Plain Layout
+
+        # get answer of the question that depend
+\end_layout
+
+\begin_layout Plain Layout
+
+        data = form["c"+str(question.parent.id)].data
+\end_layout
+
+\begin_layout Plain Layout
+
+        if question.check_subquestion(data):
+\end_layout
+
+\begin_layout Plain Layout
+
+            pass
+\end_layout
+
+\begin_layout Plain Layout
+
+        else:
+\end_layout
+
+\begin_layout Plain Layout
+
+            # nothing to check
+\end_layout
+
+\begin_layout Plain Layout
+
+            field.errors[:] = []
+\end_layout
+
+\begin_layout Plain Layout
+
+            raise StopValidation()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Validador personalizado
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "validador personalizado"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Trabajo con formularios
+\end_layout
+
+\begin_layout Standard
+Al principio de este capítulo hemos explicado el funcionamiento de un controlado
+r, y durante el resto del capítulo se ha explicado la creación y personalización
+ de formularios.
+ 
+\end_layout
+
+\begin_layout Standard
+En la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "generación_dinamica_formularios"
+
+\end_inset
+
+ se muestra un fragmento del controlador para editar encuestas, para ejemplifica
+r como trabajan juntos el controlador y los formularios.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+@blueprint.route('/survey/<int:id_survey>', methods = ['GET', 'POST'])
+\end_layout
+
+\begin_layout Plain Layout
+
+@login_required
+\end_layout
+
+\begin_layout Plain Layout
+
+@researcher_required
+\end_layout
+
+\begin_layout Plain Layout
+
+@belong_researcher('survey')
+\end_layout
+
+\begin_layout Plain Layout
+
+def editSurvey(id_survey):
+\end_layout
+
+\begin_layout Plain Layout
+
+    survey = Survey.query.get(id_survey)
+\end_layout
+
+\begin_layout Plain Layout
+
+    form = SurveyForm()
+\end_layout
+
+\begin_layout Plain Layout
+
+    if form.validate_on_submit():
+\end_layout
+
+\begin_layout Plain Layout
+
+        survey.title = form.title.data
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+\end_layout
+
+\begin_layout Plain Layout
+
+        db.session.add(survey)
+\end_layout
+
+\begin_layout Plain Layout
+
+        db.session.commit()
+\end_layout
+
+\begin_layout Plain Layout
+
+        flash('Your changes have been saved.')
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif request.method != "POST":
+\end_layout
+
+\begin_layout Plain Layout
+
+        form.title.data = survey.title
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    return render_template('/researcher/editSurvey.html',
+\end_layout
+
+\begin_layout Plain Layout
+
+        title = survey.title,
+\end_layout
+
+\begin_layout Plain Layout
+
+        form = form,
+\end_layout
+
+\begin_layout Plain Layout
+
+        survey = survey)
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Controlador para editar encuestas
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "controlador_editar_encuestas"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Cuando se recibe una petición para editar una encuesta, se busca dicha encuesta
+ en el modelo
+\emph on
+ Survey.query.get(id_survey)
+\emph default
+, y se utiliza los datos de la encuesta para crear una instancia del formulario,
+ 
+\emph on
+form.title.data = survey.title
+\emph default
+, esto permitirá que el formulario aparezca relleno con los valores actuales
+ de la encuesta que se pretende editar.
+\end_layout
+
+\begin_layout Standard
+Una vez que el investigador modifica el formulario y guarda los cambios,
+ vuelve a entrar en juego el controlador, esta vez atendiendo a la petición
+ POST.
+ Se comprueba que los datos del formulario son validos mediante el metodo
+ 
+\emph on
+form.validate_on_submit()
+\emph default
+, si son validos se modifica el modelo y se guarda los cambios realizados,
+ 
+\emph on
+survey.title = form.title.data
+\emph default
+, 
+\emph on
+db.session.commit
+\emph default
+.
+ Si existiera algún error, al volver a generar la vista, se mostraría estos
+ errores, 
+\emph on
+render_template
+\emph default
+.
+\end_layout
+
+\end_body
+\end_document

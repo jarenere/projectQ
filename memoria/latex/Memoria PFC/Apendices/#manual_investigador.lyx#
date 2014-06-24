@@ -112,9 +112,10 @@ reference "manual_00"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_00.png
 
@@ -164,9 +165,10 @@ reference "manual_01"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_01_login.png
 
@@ -223,6 +225,7 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_02_registro.png
 
@@ -252,6 +255,10 @@ name "manual_02_registro"
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Para iniciar sesión, vaya a la dirección http://servidor/auth/loginEmail
  e introduzca el correo con la que se registró y la contraseña que se le
  envió al correo, ver figura 
@@ -271,6 +278,7 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_01_loginEmail.png
 
@@ -333,6 +341,7 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/barra.png
 
@@ -425,6 +434,7 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_03_home_researcher.png
 
@@ -472,8 +482,10 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_04_new_survey.png
+	width 100line%
 
 \end_inset
 
@@ -595,9 +607,10 @@ reference "manual_error_crear_encuesta"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_04_new_survey_error.png
 
@@ -652,6 +665,7 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_06_encuesta_creada.png
+	width 100line%
 
 \end_inset
 
@@ -659,6 +673,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -772,9 +787,10 @@ reference "manual_08_consentimiento"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_07_nuevo_consentimiento.png
 
@@ -814,9 +830,10 @@ name "manual_07_nuevo_consentimiento"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_08_creado_consentimiento.png
 
@@ -885,6 +902,7 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_10_nueva_seccion.png
 
@@ -1013,6 +1031,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_11_creado_seccion.png
 
@@ -1090,9 +1109,10 @@ reference "manual_12_preguntas_sino"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_12_pregunta_si_no.png
 
@@ -1216,7 +1236,7 @@ reference "manual_13_pregutnas_texto"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -1821,6 +1841,21 @@ Preguntas de Juegos
 \end_layout
 
 \begin_layout Standard
+Estas opciones solo tienen sentido para la elaboración de encuestas en las
+ que haya una serie de juegos económicos en los que participan los usuarios.
+ Cada juego va ligado automáticamente a un tipo de pregunta, siendo imposible
+ cambiarlo.
+ En la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "manual_17"
+
+\end_inset
+
+ podemos ver los juegos/preguntas disponibles, con las siguientes opciones:
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -1860,6 +1895,65 @@ name "manual_17"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Itemize
+Part two: Es una serie de preguntas que mide la impaciencia del jugador.
+\end_layout
+
+\begin_layout Itemize
+Decision one v1: Una pregunta que implementa una versión de un juego de
+ lotería.
+\end_layout
+
+\begin_layout Itemize
+Decision one v2: Una pregunta que implementa una segunda versión de un juego
+ de lotería.
+\end_layout
+
+\begin_layout Itemize
+Decision two: Una pregunta que implementa un juego de renta.
+\end_layout
+
+\begin_layout Itemize
+Decision three: Una pregunta que implementa otro juego de renta.
+\end_layout
+
+\begin_layout Itemize
+Decisión four: Una pregunta que implementa el juego del ultimatum, decidiendo
+ el jugador la cantidad de dinero enviada al otro jugador.
+\end_layout
+
+\begin_layout Itemize
+Decision five: Una pregunta que implementa el juego del ultimatum, decidiendo
+ el jugador si acepta la cantidad enviada por otro usuario.
+\end_layout
+
+\begin_layout Itemize
+Decision six: Una pregunta que implementa el juego del dictador.
+\end_layout
+
+\begin_layout Standard
+Todos os juegos anteriores se pueden jugar con dinero real y dinero no real.
+\end_layout
+
+\begin_layout Standard
+Además se le puede ofrecer al usuario la posibilidad de recibir feedback
+ sobre las decisiones que ha tomado en los juegos.
+\end_layout
+
+\begin_layout Subsection
+Editar y eliminar preguntas
+\end_layout
+
+\begin_layout Standard
+Después de crear una pregunta existe la posibilidad de editar y eliminar
+ preguntas.
+ Tenga en cuenta que si eliminas una pregunta, todas las preguntas que dependen
+ de está serán eliminadas.
+ Aun así la plataforma le mostrará un aviso de las preguntas que se eliminarán.
+ Lo mismo sucede si modificas el tipo de pregunta de la que dependen otras.
+ 
 \end_layout
 
 \begin_layout Standard

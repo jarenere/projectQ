@@ -1,0 +1,976 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass ociamthesis-lyx
+\options a4paper,titlepage
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Plantillas
+\end_layout
+
+\begin_layout Standard
+En este capítulo se tratará de explicar como se generan las plantillas,
+ que es la parte encargada de generar la vista en el patrón modelo vista
+ controlador.
+\end_layout
+
+\begin_layout Section
+Motor de plantillas Jinja2
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Jinja2 
+\emph default
+es un motor de plantillas, es decir un software que está diseñado para combinar
+ una o mas plantillas con un modelo de datos para producir un documento
+ resultado, en nuestro caso una página web.
+\end_layout
+
+\begin_layout Standard
+Por otra parte cada plantilla contiene un esqueleto de la vista y una serie
+ de variables y expresiones que son remplazadas con los valores obtenidos
+ del modelo cuando se evalúa la plantilla para así poder generar una vista
+ de manera dinámica.
+\end_layout
+
+\begin_layout Standard
+En 
+\emph on
+Jinja2
+\emph default
+ existen dos tipos de delimitadores:
+\end_layout
+
+\begin_layout Itemize
+{% ...%}es usado para ejecutar sentencias como puede ser bucles o la asignación
+ de valores
+\end_layout
+
+\begin_layout Itemize
+{{..}} se utiliza para imprimir variables o el resultado de una expresión.
+\end_layout
+
+\begin_layout Standard
+Por ejemplo en el controlador 
+\emph on
+index
+\emph default
+ del modulo Researcher, se encarga de recoger de la base de datos todas
+ las encuestas creadas por un investigador, estas encuestas son pasadas
+ junto con una plantilla a la función render_templete que se encarga de
+ generar la vista.
+ Esto se puede observar en la figura
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "researcher.index"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+def index():
+\end_layout
+
+\begin_layout Plain Layout
+
+    surveys = Survey.query.filter(Survey.researcher==g.user).order_by(Survey.created.de
+sc())
+\end_layout
+
+\begin_layout Plain Layout
+
+    return render_template('/researcher/index.html',
+\end_layout
+
+\begin_layout Plain Layout
+
+        tittle = 'Survey',
+\end_layout
+
+\begin_layout Plain Layout
+
+        surveys = surveys)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Controlador researcher.index
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "researcher.index"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Desde la plantilla podremos crear un listado con enlaces a las distintas
+ encuestas del investigador, como se aprecia en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "templete.researcher.index.html"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+{% extends "base.html" %}
+\end_layout
+
+\begin_layout Plain Layout
+
+{% block content %}
+\end_layout
+
+\begin_layout Plain Layout
+
+    <h1>Researcher!</h1>
+\end_layout
+
+\begin_layout Plain Layout
+
+    <div>
+\end_layout
+
+\begin_layout Plain Layout
+
+        <a class="btn btn-primary btn" href="{{ url_for('researcher.new')
+ }}">{{ ('New survey') }}</a>
+\end_layout
+
+\begin_layout Plain Layout
+
+    </div>
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	<ul>
+\end_layout
+
+\begin_layout Plain Layout
+
+    {% for survey in surveys %}
+\end_layout
+
+\begin_layout Plain Layout
+
+            <li><a href="{{ url_for('researcher.editSurvey', id_survey =
+ survey.id) }}">{{ survey.title }}</a></li> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    {% endfor %}
+\end_layout
+
+\begin_layout Plain Layout
+
+	</ul>
+\end_layout
+
+\begin_layout Plain Layout
+
+{% endblock %}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Plantilla de listado de encuestas
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "templete.researcher.index.html"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Estructura
+\end_layout
+
+\begin_layout Standard
+El motor 
+\emph on
+Jinja2
+\emph default
+, entre sus distintas características permite la herencia de plantillas,
+ esto permite crear una plantilla base, que contiene todos los elementos
+ comunes del sitio web y define los bloque que las plantillas descendientes
+ pueden sustituir.
+\end_layout
+
+\begin_layout Standard
+Como se puede ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "templete.researcher.index.html"
+
+\end_inset
+
+, se ha optado por una plantilla base, 
+\emph on
+{% extends "base.html" %}
+\emph default
+, que contiene los elementos básicos que se repiten a lo largo de las paginas
+ web, como puede ser la barra de navegación o los ficheros de estilo y JavaScrip
+t.
+ 
+\end_layout
+
+\begin_layout Standard
+Además para simplificar el uso de formularios en la página web se ha creado
+ una serie de macros, que facilitan la generación del código de los formularios.
+ Además se encargan de mostrar los errores si los ha habido a la hora de
+ rellenar el formulario.
+ Por ejemplo en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "plantilla_nueva_encuesta"
+
+\end_inset
+
+, se observa que se usa la macro 
+\emph on
+render_field
+\emph default
+, para renderizar los distintos campos del formulario, así como indicar
+ el tamaño que deben tener, o alguna 
+\emph on
+miga de pan
+\emph default
+, con la información que debe incluir el investigador.
+ En las figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "vista_nueva_encuesta"
+
+\end_inset
+
+ podemos ver el aspecto final una vez generado la plantilla.
+ La figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "vista_nueva_encuesta_error"
+
+\end_inset
+
+ muestra un error producido a la hora de validar la plantilla.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+{% from "formHelpers.html" import render_field %}
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+<form method="post" class="form-horizontal">
+\end_layout
+
+\begin_layout Plain Layout
+
+    {{form.hidden_tag()}}
+\end_layout
+
+\begin_layout Plain Layout
+
+        {{ render_field(form.title, size = 64) }}
+\end_layout
+
+\begin_layout Plain Layout
+
+        {{ render_field(form.description, rows = 10, style = 'width:100%')
+ }}
+\end_layout
+
+\begin_layout Plain Layout
+
+        {{ render_field(form.startDate, size = 128,placeholder="%Y-%m-%d
+ %H:%M:%S")}}
+\end_layout
+
+\begin_layout Plain Layout
+
+        {{ render_field(form.endDate, size = 128,placeholder="%Y-%m-%d %H:%M:%S")
+}}
+\end_layout
+
+\begin_layout Plain Layout
+
+        {{ render_field(form.maxNumberRespondents)}}
+\end_layout
+
+\begin_layout Plain Layout
+
+        {{ render_field(form.duration)}}
+\end_layout
+
+\begin_layout Plain Layout
+
+        {{ render_field(form.surveyXml)}} 
+\end_layout
+
+\begin_layout Plain Layout
+
+        <div class="btn-group">
+\end_layout
+
+\begin_layout Plain Layout
+
+            <input class="btn" type="submit" value="Create Survey">
+\end_layout
+
+\begin_layout Plain Layout
+
+            <a class="btn" href="{{ url_for('researcher.index')}}">{{ ('Cancel')
+ }}</a> 
+\end_layout
+
+\begin_layout Plain Layout
+
+        </div>
+\end_layout
+
+\begin_layout Plain Layout
+
+</form>
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Plantilla nueva encuesta
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "plantilla_nueva_encuesta"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/formulario_nueva_encuesta.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Vista generada de una nueva encuesta
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "vista_nueva_encuesta"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/formulario_nueva_encuesta_error.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Vista generada de una nueva encuesta en la que hay un error
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "vista_nueva_encuesta_error"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Traducción
+\end_layout
+
+\begin_layout Standard
+Para hacer que nuestra aplicación sea accesible a usuarios con distintos
+ idiomas, se ha utilizado la extensión 
+\emph on
+Flask-Babel
+\emph default
+, que proporciona una herramienta fácil de usar para traducir las distintas
+ partes de la aplicación ya sea en el lado de las plantillas o ficheros
+ escritos en python, todo ello usando la interfaz de internacionalización
+ 
+\emph on
+gettext 
+\emph default
+de GNU.
+\end_layout
+
+\begin_layout Subsection
+Selección de idioma
+\end_layout
+
+\begin_layout Standard
+La figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lenguajes_disponibles"
+
+\end_inset
+
+ contiene parte del fichero de configuración, donde están definidos los
+ lenguajes disponibles.
+ Luengo en cada petición que se realiza a la plataforma, Babel se encarga
+ de decidir cual es el idioma a mostrar al usuario, como se puede ver en
+ la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "seleccion de idioma"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+    LANGUAGES = {
+\end_layout
+
+\begin_layout Plain Layout
+
+        'en': 'English',
+\end_layout
+
+\begin_layout Plain Layout
+
+        'es': 'Español'
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Lenguajes disponibles
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lenguajes_disponibles"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+from config import LANGUAGES
+\end_layout
+
+\begin_layout Plain Layout
+
+@babel.localeselector
+\end_layout
+
+\begin_layout Plain Layout
+
+def get_locale():
+\end_layout
+
+\begin_layout Plain Layout
+
+    return request.accept_languages.best_match(LANGUAGES.keys())
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Selección de idioma
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "seleccion de idioma"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Traducción de ficheros
+\end_layout
+
+\begin_layout Standard
+Una vez que se tiene seleccionado el idioma, 
+\emph on
+Babel 
+\emph default
+se encarga de buscar una traducción a aquellos textos que se hayan señalado
+ previamente.
+ En los ficheros python se usa la función 
+\emph on
+gettext
+\emph default
+ para extraer el texto a traducir, como se puede observar en el siguiente
+ ejemplo:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+password = PasswordField(gettext('Password'), validators=[Required()]) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para la traducción de plantillas se realiza algo similiar, pero en vez de
+ 
+\emph on
+getttext
+\emph default
+, se usa 
+\emph on
+_()
+\emph default
+.
+ Por ejemplo para traducir el enlace 
+\emph on
+Logout
+\emph default
+ de nuestra plantilla base:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<a href="{{ url_for('auth.logout') }}">{{ _('Logout') }}</a>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Una vez que tenemos seleccionado todos los textos a traducir de nuestras
+ plantillas y ficheros python, se extraen todos ellos mediante el siguiente
+ comando:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+pybabel init -i messages.pot -d app/translations -l es
+\end_layout
+
+\end_inset
+
+esto genera un catálogo con los textos a traducir, luego con una herramienta
+ externa como puede ser Lokalize, ver figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lokalize"
+
+\end_inset
+
+, se traducen los textos a los distintos idiomas disponibles en la plataforma.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/lokalize.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Captura de la herramienta Lokalize
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "lokalize"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por último, una vez traducido todos los textos hay que generar un fichero
+ con los textos traducidos en un formato optimizado, para ello se utiliza
+ el siguiente comando:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+pybabel compile -d app/translations
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+JavaScripts
+\end_layout
+
+\begin_layout Standard
+JavaScripts es un lenguaje de programación interpretado que se usa principalment
+e en el lado del cliente, implementado como una parte del navegador web,
+ permitiendo entre otras cosas mejoras en la interfaz del usuario, comunicación
+ asíncrona con el servidor o el añadir ciertas funcionalidades en el lado
+ del cliente.
+\end_layout
+
+\begin_layout Standard
+En las diferentes plantillas que generan código html, se ha incluido un
+ bloque para los distintos códigos JavaScripts embebidos, que añaden distintas
+ funcionalidades en la página web servida al usuario.
+ Alguna de estas funcionalidades son las siguientes:
+\end_layout
+
+\begin_layout Itemize
+En las vistas que muestran las distintas tablas con los resultados obtenidos
+ en la encuesta así como en los distintos juegos, se puede ordenar la tabla
+ por cualquier columna, evitando el tener que recargar la página y sobrecargar
+ al servidor con esta operación.
+\end_layout
+
+\begin_layout Itemize
+A la hora de crear o modificar encuestas y preguntas, la interfaz de usuario
+ se ha mejorado y simplificado mostrando únicamente las distintas opciones
+ posibles, así como ocultando las opciones menos comunes.
+\end_layout
+
+\begin_layout Itemize
+Renderizado en tiempo real de los textos escritos en sintaxis Markdown.
+\end_layout
+
+\begin_layout Itemize
+Generación de gráficos.
+\end_layout
+
+\begin_layout Itemize
+Cálculo de tiempos empleados a la hora de contestar cada pregunta.
+\end_layout
+
+\begin_layout Itemize
+Ocultar o mostrar las distintas preguntas dependiendo de las respuestas
+ anteriores dadas.
+\end_layout
+
+\end_body
+\end_document

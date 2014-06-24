@@ -124,31 +124,18 @@ config.py
  cambiar la configuración default por 
 \emph on
 jmeterProduction.
-\emph default
+\end_layout
 
-\begin_inset ERT
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
-
-
-\backslash
-begin{figure}[!tbh]
-\end_layout
-
-\begin_layout Plain Layout
-
- 	
-\backslash
-begin{center}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
+\begin_inset listings
+inline false
+status open
 
 \begin_layout Plain Layout
 
@@ -206,35 +193,30 @@ config = {
 end{listing}
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
 
-		 
-\backslash
-caption{Parte del fichero config.py}
+
 \end_layout
 
 \begin_layout Plain Layout
+\begin_inset Caption Standard
 
- 		
-\backslash
-label{fig:config.py}
+\begin_layout Plain Layout
+Parte del fichero config.py
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "config.py"
 
-	 
-\backslash
-end{center}
-\end_layout
+\end_inset
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{figure}
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -242,8 +224,15 @@ end{figure}
 
 También existe la posibilidad de ejecutar la plataforma en la nube.
  Dependiendo de la elección llevará mas o menos cambio.
- En el anexo **Guía de desarrollo** se incluyen las modificaciones y los
- pasos necesarios para ejecutar la aplicación en Heroku.
+ En el anexo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Guía-de-desarrollo"
+
+\end_inset
+
+ se incluyen las modificaciones y los pasos necesarios para ejecutar la
+ aplicación en Heroku.
 \end_layout
 
 \begin_layout Section
@@ -298,15 +287,9 @@ Instalación
 
 \begin_layout Standard
 Empezaremos clonando el repositorio git donde se encuentra la aplicación:
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -318,29 +301,20 @@ $ git clone git://github.com/nu_kru/swarm-survey.git
 $ cd swarm-survey
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Una vez clonado el repositorio procederemos a crear un entorno virtual para
  poder instalar todas las dependencias necesarias en la aplicación:
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -362,28 +336,19 @@ New python executable in venv/bin/python
 Installing distribute............done.
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Una vez instalado el entorno virtual, para activarlo: 
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -391,15 +356,12 @@ $ .
  venv/bin/activate 
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Una vez dentro del entorno virtual procederemos a instalar todas las dependencia
 s de la aplición.
  Todas ellas, así como la versión usada se encuentran en el fichero 
@@ -415,26 +377,13 @@ virtualenv
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
-
-\begin_layout Plain Layout
-
 (venv)$ pip install -r requeriments.txt 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -598,54 +547,32 @@ El formato es el siguiente:
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
-
-\begin_layout Plain Layout
-
 driver://username:password@host:port/database 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Por ejemplo para MySQL:
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
-
-\begin_layout Plain Layout
-
 driver://username:password@host:port/database 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -673,15 +600,9 @@ Una vez definida la base de datos a usar entre las soportadas por SQLALchemy,
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -698,15 +619,12 @@ begin{listing}[style=consola, numbers=none]
 (venv)$./manage.py db upgrade
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Con esto generamos la base de datos, además se hace uso de 
 \emph on
 flask-migrate
@@ -732,29 +650,9 @@ Dependiendo del servidor web usado, deberá arrancar la aplicación de una
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{figure}[!tbh]
-\end_layout
-
-\begin_layout Plain Layout
-
- 	
-\backslash
-begin{center}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -774,45 +672,6 @@ begin{listing}[style=consola, numbers=none]
 \begin_layout Plain Layout
 
 (venv)$ manage.py runserver
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
-\begin_layout Plain Layout
-
-		 
-\backslash
-caption{Modos de inicializar el programa}
-\end_layout
-
-\begin_layout Plain Layout
-
- 		
-\backslash
-label{fig:inicio_programa}
-\end_layout
-
-\begin_layout Plain Layout
-
-	 
-\backslash
-end{center}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{figure}
-\end_layout
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \end_inset
@@ -843,15 +702,9 @@ delete_researcher
 \emph default
 , que sirven para dar y quitar permisos de investigador a un usuario dado.
  En la Figura 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-ref{fig:comandos_shell}
-\end_layout
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "comandos_shell"
 
 \end_inset
 
@@ -859,29 +712,15 @@ ref{fig:comandos_shell}
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset Float figure
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
-
-
-\backslash
-begin{figure}[!tbh]
-\end_layout
-
-\begin_layout Plain Layout
-
- 	
-\backslash
-begin{center}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
+\begin_inset listings
+inline false
+status open
 
 \begin_layout Plain Layout
 
@@ -923,39 +762,32 @@ begin{listing}[style=consola, numbers=none]
 >>>list_user()
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Ejemplos de comandos disponibles en la shell
+\end_layout
+
+\end_inset
 
 
-\backslash
-end{listing}
+\begin_inset CommandInset label
+LatexCommand label
+name "comandos_shell"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Plain Layout
 
-		 
-\backslash
-caption{Ejemplos de comandos disponibles en la shell}
-\end_layout
-
-\begin_layout Plain Layout
-
- 		
-\backslash
-label{fig:comandos_shell}
-\end_layout
-
-\begin_layout Plain Layout
-
-	 
-\backslash
-end{center}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{figure}
 \end_layout
 
 \end_inset
@@ -989,26 +821,13 @@ Descargue la última versión de la plataforma mediante git:
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
-
-\begin_layout Plain Layout
-
 (venv)$ git pull 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -1021,26 +840,13 @@ Instale los nuevos módulos requeridos:
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
-
-\begin_layout Plain Layout
-
 (venv)$pip install -r requeriments.txt 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -1057,15 +863,9 @@ Actualice la base de datos si es necesario:
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -1075,13 +875,6 @@ begin{listing}[style=consola, numbers=none]
 \begin_layout Plain Layout
 
 (venv)$./manage.py db upgrade
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset

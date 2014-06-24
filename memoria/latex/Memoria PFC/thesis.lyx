@@ -90,6 +90,8 @@ commentstyle=\color{negro},
 %Minimizar fragmentado de listados
 \lstnewenvironment{listing}[1][]
    {\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+%uso de pie de páginas
+\usepackage{dblfnote}
 
 \usepackage{enumitem}
 \newenvironment{itemize*}%
@@ -284,22 +286,6 @@ LatexCommand tableofcontents
 \end_layout
 
 \begin_layout Standard
-\begin_inset FloatList table
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset FloatList algorithm
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset ERT
 status open
 
@@ -378,6 +364,26 @@ filename "Capitulos/seguridad.lyx"
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
+filename "Capitulos/controlador.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "Capitulos/plantillas_jinja2.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
 filename "Capitulos/pruebas.lyx"
 
 \end_inset
@@ -414,6 +420,9 @@ filename "Apendices/manual_administrador.lyx"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
 filename "Apendices/manual_investigador.lyx"

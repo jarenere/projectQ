@@ -114,11 +114,13 @@ reference "diagrama_alto_nivel1"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/schema1_alto_nivel.svg
+	height 100theight%
 
 \end_inset
 
@@ -175,11 +177,13 @@ reference "diagrama_question"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/preguntas.svg
+	width 100line%
 
 \end_inset
 
@@ -233,11 +237,13 @@ reference "diagrama_games_sin_detalle"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/games_sin_detalle.svg
+	height 100theight%
 
 \end_inset
 
@@ -288,11 +294,12 @@ Game.
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/games.svg
+	width 100line%
 
 \end_inset
 
@@ -516,7 +523,15 @@ GameImpatience, juego de la impaciencia
 
 \begin_layout Standard
 Hace referencia a los resultados de las decisiones tomadas en el juego de
- la impaciencia, que depende únicamente solo de un usuario.
+ la impaciencia, que depende únicamente solo de un usuario, descrita en
+ el anexo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Segunda-parte"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -535,7 +550,14 @@ GameLottery1, juego de la lotería 1
 
 \begin_layout Standard
 Guarda la información de la decisión tomada en la primera versión del juego
- de la lotería, descrita en el ANEXO X
+ de la lotería, descrita en el anexo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "par:loteria1"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -544,7 +566,14 @@ GameLottery2, juego de la lotería 2
 
 \begin_layout Standard
 Guarda la información de la decisión tomada en la segunda versión del juego
- de la lotería, descrita en el ANEXO X
+ de la lotería, descrita en el anexo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "par:loteria2"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -553,7 +582,14 @@ GameRent1, juego de la renta 1
 
 \begin_layout Standard
 Guarda la información de la decisión tomada en la primera versión del juego
- de la renta, descrita en el ANEXO X
+ de la renta, descrita en el anexo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Decisión-2"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -562,7 +598,14 @@ GameRent2, juego de la renta 2
 
 \begin_layout Standard
 Guarda la información de la decisión tomada en la segunda versión del juego
- de la renta, descrita en el ANEXO X
+ de la renta, descrita en el anexo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Decisión-3"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -571,7 +614,14 @@ GameUltimatum, juego del ultimatum
 
 \begin_layout Standard
 Guarda la información de la decisión tomada en el juego del ultimatum, descrita
- en el ANEXO X
+ en el anexo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Decisiones-4-y5"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -580,7 +630,14 @@ GameDictador, juego del dictador
 
 \begin_layout Standard
 Guarda la información de la decisión tomada en el juego del dictador, descrita
- en el ANEXO X
+ en el anexo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Decisión-6"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -603,11 +660,13 @@ reference "esquema_relacional"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/schema_bbdd.svg
+	height 100theight%
 
 \end_inset
 
@@ -736,11 +795,12 @@ reference "esquema_relacional_juegos"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/schema_bbdd_game.svg
+	width 100line%
 
 \end_inset
 
@@ -748,6 +808,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -857,11 +918,12 @@ reference "casos_uso_voluntario"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/voluntario.svg
+	width 100line%
 
 \end_inset
 
@@ -869,6 +931,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -911,11 +974,12 @@ reference "casos_uso_investigador"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/investigador.svg
+	width 100line%
 
 \end_inset
 
@@ -923,6 +987,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -1024,11 +1089,13 @@ reference "traza de eventos"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/traza de eventos.png
+	width 100line%
 
 \end_inset
 
@@ -1100,11 +1167,13 @@ reference "modulos_sistema"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/módulos.png
+	width 100line%
 
 \end_inset
 
@@ -1252,15 +1321,9 @@ there_is_stateSurvey
 
 \begin_layout Standard
 Por ejemplo en la figura 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-ref{fig:proteccion_vista}
-\end_layout
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "proteccion_vista"
 
 \end_inset
 
@@ -1288,29 +1351,15 @@ http://servidor/survey/new
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset Float figure
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
-
-
-\backslash
-begin{figure}[!tbh]
-\end_layout
-
-\begin_layout Plain Layout
-
- 	
-\backslash
-begin{center}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
+\begin_inset listings
+inline false
+status open
 
 \begin_layout Plain Layout
 
@@ -1332,39 +1381,32 @@ begin{listing}[style=consola, numbers=none]
 def new_survey():
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Protección de una vista
+\end_layout
+
+\end_inset
 
 
-\backslash
-end{listing}
+\begin_inset CommandInset label
+LatexCommand label
+name "proteccion_vista"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Plain Layout
 
-		 
-\backslash
-caption{Protección de una vista}
-\end_layout
-
-\begin_layout Plain Layout
-
- 		
-\backslash
-label{fig:proteccion_vista}
-\end_layout
-
-\begin_layout Plain Layout
-
-	 
-\backslash
-end{center}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{figure}
 \end_layout
 
 \end_inset
@@ -2398,15 +2440,9 @@ FLASK_CONFIG
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -2529,13 +2565,6 @@ class UnixConfig(ProductionConfig):
     # Hace uso del sistema de logs de la máquina Unix.
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -2561,15 +2590,9 @@ Este módulo se accede mediante la consola de la plataforma, dando acceso
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -2585,13 +2608,6 @@ ation tools
 \begin_layout Plain Layout
 
 In [1]: from current_app import utiles
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -2617,18 +2633,9 @@ Además mediante el uso de esta interfaz de linea de comandos, se puede acceder
 
 \begin_layout Standard
 Por ejemplo, ejecutar la función de generar los resultados de una encuesta:
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -2654,13 +2661,6 @@ In [3]: stats.write_stats(survey)
 
 written file in /home/jarenere/swarm_surveys/stats_csv/¿Cómo_son_nuestros_volunt
 arios?_1.csv
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -2715,11 +2715,198 @@ ades que provee el framework Bootstrap, para facilitar que las distintas
 \end_layout
 
 \begin_layout Standard
-#### Esquema de navegación
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/prototipo.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Prototipo de creación de una nueva pregunta
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-#### Diseño del experimento "¿Cómo son nuestros voluntarios?"
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/prototipo_movil.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Prototipo movil de creación de una nueva pregunta
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/ventana_crear_preguntas1.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Ventana de creación de una nueva pregunta
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/ventana_crear_preguntas2.png
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Despliege de opciones de creación de una nueva pregunta
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/ventana_crear_preguntas1_movil.png
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Visualización movil
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/ventana_crear_preguntas1_movil_desplegado.png
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Menú desplegado
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Diseño del experimento "¿Cómo son nuestros voluntarios?"
 \end_layout
 
 \begin_layout Standard
@@ -2731,7 +2918,69 @@ Debido a la naturaleza del proyecto, siempre se intenta evitar el influir
 \end_layout
 
 \begin_layout Standard
-El diseño final para el experimento, se puede ver en las capturas XX
+El diseño final para el experimento, se puede ver en las siguientes capturas
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/diseño_como_son_nuestros_voluntarios.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Visualización experimento "¿Cómo son nuestros voluntarios?"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/diseño_como_son_nuestros_voluntarios2.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Visualización experimento "¿Cómo son nuestros voluntarios?"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

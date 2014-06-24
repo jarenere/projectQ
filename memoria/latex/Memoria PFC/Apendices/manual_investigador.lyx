@@ -112,9 +112,10 @@ reference "manual_00"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_00.png
 
@@ -164,9 +165,10 @@ reference "manual_01"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_01_login.png
 
@@ -223,6 +225,7 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_02_registro.png
 
@@ -252,6 +255,10 @@ name "manual_02_registro"
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Para iniciar sesión, vaya a la dirección http://servidor/auth/loginEmail
  e introduzca el correo con la que se registró y la contraseña que se le
  envió al correo, ver figura 
@@ -271,6 +278,7 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_01_loginEmail.png
 
@@ -333,6 +341,7 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/barra.png
 
@@ -425,6 +434,7 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_03_home_researcher.png
 
@@ -472,8 +482,10 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_04_new_survey.png
+	width 100line%
 
 \end_inset
 
@@ -595,9 +607,10 @@ reference "manual_error_crear_encuesta"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_04_new_survey_error.png
 
@@ -652,6 +665,7 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_06_encuesta_creada.png
+	width 100line%
 
 \end_inset
 
@@ -659,6 +673,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -772,11 +787,13 @@ reference "manual_08_consentimiento"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_07_nuevo_consentimiento.png
+	scale 90
 
 \end_inset
 
@@ -814,9 +831,10 @@ name "manual_07_nuevo_consentimiento"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_08_creado_consentimiento.png
 
@@ -882,11 +900,13 @@ reference "manual_10_nueva_seccion"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_10_nueva_seccion.png
+	width 100line%
 
 \end_inset
 
@@ -1013,8 +1033,10 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_11_creado_seccion.png
+	width 100line%
 
 \end_inset
 
@@ -1090,11 +1112,13 @@ reference "manual_12_preguntas_sino"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_12_pregunta_si_no.png
+	width 100line%
 
 \end_inset
 
@@ -1216,11 +1240,13 @@ reference "manual_13_pregutnas_texto"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_13_pregunta_texto.png
+	width 100line%
 
 \end_inset
 
@@ -1333,11 +1359,13 @@ reference "manual_14_pregunta_choince"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_14_pregunta_choice.png
+	width 100line%
 
 \end_inset
 
@@ -1485,11 +1513,13 @@ reference "manual_15_pregunta_likert"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_15_pregunta_likert.png
+	width 100line%
 
 \end_inset
 
@@ -1576,11 +1606,12 @@ reference "manual_25_preguntas_dependientes"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_25_preguntas_dependiente.png
+	width 100line%
 
 \end_inset
 
@@ -1588,6 +1619,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -1736,9 +1768,10 @@ reference "manual_23"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_22_preguntas.png
 
@@ -1778,9 +1811,10 @@ name "manual_22"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_23_preguntas.png
 
@@ -1839,11 +1873,13 @@ reference "manual_17"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_17_pregunta_juegos.png
+	width 100line%
 
 \end_inset
 
@@ -1940,11 +1976,13 @@ Después de crear una pregunta existe la posibilidad de editar y eliminar
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/manual/retocadas/manual_18_preguntas_eliminar.png
+	width 100line%
 
 \end_inset
 

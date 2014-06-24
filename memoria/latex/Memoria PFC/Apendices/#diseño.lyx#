@@ -88,6 +88,13 @@ En este anexo se presenta una descripción del diseño que se llevo a cabo
 
 \begin_layout Section
 Diagrama de Clases
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Diagrama-de-Clases"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -107,11 +114,13 @@ reference "diagrama_alto_nivel1"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/schema1_alto_nivel.svg
+	width 100line%
 
 \end_inset
 
@@ -168,9 +177,10 @@ reference "diagrama_question"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/preguntas.svg
 
@@ -226,11 +236,13 @@ reference "diagrama_games_sin_detalle"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/games_sin_detalle.svg
+	width 100line%
 
 \end_inset
 
@@ -281,11 +293,12 @@ Game.
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/games.svg
+	width 100line%
 
 \end_inset
 
@@ -596,11 +609,13 @@ reference "esquema_relacional"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/schema_bbdd.svg
+	width 100line%
 
 \end_inset
 
@@ -729,11 +744,12 @@ reference "esquema_relacional_juegos"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/schema_bbdd_game.svg
+	width 100line%
 
 \end_inset
 
@@ -741,6 +757,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -850,11 +867,12 @@ reference "casos_uso_voluntario"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/voluntario.svg
+	width 100line%
 
 \end_inset
 
@@ -862,6 +880,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -904,11 +923,12 @@ reference "casos_uso_investigador"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/investigador.svg
+	width 100line%
 
 \end_inset
 
@@ -916,6 +936,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -1017,11 +1038,13 @@ reference "traza de eventos"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/traza de eventos.png
+	width 100line%
 
 \end_inset
 
@@ -1093,11 +1116,13 @@ reference "modulos_sistema"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/módulos.png
+	width 100line%
 
 \end_inset
 
@@ -1245,15 +1270,9 @@ there_is_stateSurvey
 
 \begin_layout Standard
 Por ejemplo en la figura 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-ref{fig:proteccion_vista}
-\end_layout
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "proteccion_vista"
 
 \end_inset
 
@@ -1281,29 +1300,15 @@ http://servidor/survey/new
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset Float figure
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
-
-
-\backslash
-begin{figure}[!tbh]
-\end_layout
-
-\begin_layout Plain Layout
-
- 	
-\backslash
-begin{center}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
+\begin_inset listings
+inline false
+status open
 
 \begin_layout Plain Layout
 
@@ -1325,39 +1330,32 @@ begin{listing}[style=consola, numbers=none]
 def new_survey():
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Protección de una vista
+\end_layout
+
+\end_inset
 
 
-\backslash
-end{listing}
+\begin_inset CommandInset label
+LatexCommand label
+name "proteccion_vista"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Plain Layout
 
-		 
-\backslash
-caption{Protección de una vista}
-\end_layout
-
-\begin_layout Plain Layout
-
- 		
-\backslash
-label{fig:proteccion_vista}
-\end_layout
-
-\begin_layout Plain Layout
-
-	 
-\backslash
-end{center}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{figure}
 \end_layout
 
 \end_inset
@@ -1467,11 +1465,11 @@ Listado de encuestas creadas por un investigador.
 \begin_layout Itemize
 A esta función se accede mediante las vistas: 
 \emph on
-"researcher/survey/"
+"researcher/"
 \emph default
  o 
 \emph on
-"researcher/survey/index"
+"researcher/index"
 \emph default
 .
 \end_layout
@@ -2285,13 +2283,20 @@ A esta función se accede mediante la vista
 \end_deeper
 \begin_layout Itemize
 Listar el resultado de una encuesta: Representa mediante una tabla el fichero
- csv de las encuestas, se puede elegir el criterio de ordenación.
+ CSV de las encuestas, se puede elegir el criterio de ordenación.
 \end_layout
 
 \begin_deeper
 \begin_layout Standard
-A esta función se accede mediante la vista "stats/<int:id_survey>", siendo
- id_survey la encuesta de la que se desea visualizar los resultados.
+A esta función se accede mediante la vista
+\emph on
+ "stats/<int:id_survey>"
+\emph default
+, siendo 
+\emph on
+id_survey
+\emph default
+ la encuesta de la que se desea visualizar los resultados.
 \end_layout
 
 \end_deeper
@@ -2301,8 +2306,15 @@ Listar los juegos disponibles en una encuesta:
 
 \begin_deeper
 \begin_layout Standard
-A esta función se accede mediante la vista "stats/<int:id_survey>/games",
- siendo id_survey el identificador de la encuesta
+A esta función se accede mediante la vista 
+\emph on
+"stats/<int:id_survey>/games"
+\emph default
+, siendo 
+\emph on
+id_survey
+\emph default
+ el identificador de la encuesta
 \end_layout
 
 \end_deeper
@@ -2314,8 +2326,15 @@ Listar el resultado de un juego de una encuesta: Representa mediante una
 
 \begin_deeper
 \begin_layout Standard
-A esta función se accede mediante la vista "stats/<int:id_survey>/games/gameX",
- siendo id_survey el identificador de la encuesta.
+A esta función se accede mediante la vista 
+\emph on
+"stats/<int:id_survey>/games/gameX"
+\emph default
+, siendo 
+\emph on
+id_survey
+\emph default
+ el identificador de la encuesta.
 \end_layout
 
 \end_deeper
@@ -2324,20 +2343,27 @@ Las vistas anteriores solo están disponibles para investigadores, además
  solo se puede acceder a las encuestas creadas por el propio investigador.
 \end_layout
 
-\begin_layout Standard
-### Módulo de modelo
+\begin_layout Subsection
+Módulo de modelo
 \end_layout
 
 \begin_layout Standard
-Este es el módulo descrito anteriormente en la sección diagrama de clases
+Este es el módulo descrito anteriormente en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Diagrama-de-Clases"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 Casi todos los demás módulos interaccionan con este Módulo.
 \end_layout
 
-\begin_layout Standard
-### Módulo de configuración
+\begin_layout Subsection
+Módulo de configuración
 \end_layout
 
 \begin_layout Standard
@@ -2355,101 +2381,156 @@ onfig/#configuration-best-practices
 \begin_layout Standard
 Y se ha decidido crear un sistema de clases y herencia para la configuración
  del sistema, pudiendo cambiar el modo de funcionamiento de la aplicación
- simplemente cambiando la variable de entorno **FLASK_CONFIG**, la estructura
- que sigue y los modos disponibles son los siguientes:
+ simplemente cambiando la variable de entorno 
+\emph on
+FLASK_CONFIG
+\emph default
+, la estructura que sigue y los modos disponibles son los siguientes:
 \end_layout
 
 \begin_layout Standard
-[code]
-\end_layout
+\begin_inset listings
+inline false
+status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
+
 class Config(object):
 \end_layout
 
-\begin_layout Standard
-# configuración básica de la plataforma
+\begin_layout Plain Layout
+
+    # configuración básica de la plataforma
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
 class DevelopmentConfig(Config):
 \end_layout
 
-\begin_layout Standard
-# Configuración de la plataforma en modo desarrollo
+\begin_layout Plain Layout
+
+    # Configuración de la plataforma en modo desarrollo
 \end_layout
 
-\begin_layout Standard
-DEBUG = True
+\begin_layout Plain Layout
+
+    DEBUG = True
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
 class TestingConfig(Config):
 \end_layout
 
-\begin_layout Standard
-# Configuración de la plataforma para test unitarios
+\begin_layout Plain Layout
+
+    # Configuración de la plataforma para test unitarios
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
 class Jmeter(Config):
 \end_layout
 
-\begin_layout Standard
-# Configuración de la plataforma para la realización de pruebas de sobrecarga
+\begin_layout Plain Layout
+
+    # Configuración de la plataforma para la realización de pruebas de sobrecarg
+a
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
 class ProductionConfig(Config):
 \end_layout
 
-\begin_layout Standard
-# Configuración de la plataforma en modo producción
+\begin_layout Plain Layout
+
+    # Configuración de la plataforma en modo producción
 \end_layout
 
-\begin_layout Standard
-# Se define quien es el usuario administrador y cual es el servidor de correo
- para enviar los distintos logs
+\begin_layout Plain Layout
+
+    # Se define quien es el usuario administrador y cual es el servidor
+ de correo para enviar los distintos logs
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
 class HerokuConfig(ProductionConfig):
 \end_layout
 
-\begin_layout Standard
-# Configuración de la plataforma en modo producción en la nube Heroku
+\begin_layout Plain Layout
+
+    # Configuración de la plataforma en modo producción en la nube Heroku
 \end_layout
 
-\begin_layout Standard
-# Usa el sistema de logs de Heroku para almacenarlos.
+\begin_layout Plain Layout
+
+    # Usa el sistema de logs de Heroku para almacenarlos.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
 class UnixConfig(ProductionConfig):
 \end_layout
 
-\begin_layout Standard
-# Configuración de la plataforma en modo producción en una máquina de tipo
- Unix
+\begin_layout Plain Layout
+
+    # Configuración de la plataforma en modo producción en una máquina de
+ tipo Unix
 \end_layout
 
-\begin_layout Standard
-# Hace uso del sistema de logs de la máquina Unix.
+\begin_layout Plain Layout
+
+    # Hace uso del sistema de logs de la máquina Unix.
 \end_layout
 
-\begin_layout Standard
-[/code]
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 Por otra parte, para facilitar el tener varias configuraciones posibles,
  se carga primeramente la configuración básica definida anteriormente y
- luego se puede reemplaza por la leída en la variable de entorno **SWARMS_SURVEY
-_SETTINGS**, pudiendo cambiar fácilmente la configuración.
+ luego se puede reemplaza por la leída en la variable de entorno 
+\emph on
+SWARMS_SURVEY_SETTINGS
+\emph default
+, pudiendo cambiar fácilmente la configuración.
 \end_layout
 
-\begin_layout Standard
-### Módulo shell:
+\begin_layout Subsection
+Módulo shell:
 \end_layout
 
 \begin_layout Standard
@@ -2458,30 +2539,40 @@ Este módulo se accede mediante la consola de la plataforma, dando acceso
 \end_layout
 
 \begin_layout Standard
-[code]
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+(venv)$ ./manage.py shell
 \end_layout
 
-\begin_layout Standard
-$ ./manage.py shell
-\end_layout
+\begin_layout Plain Layout
 
-\begin_layout Standard
 // shell interactively of swarm-surveys, "import utiles" to access the administr
 ation tools
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
+
 In [1]: from current_app import utiles
 \end_layout
 
-\begin_layout Standard
-[/code]
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Entre las opciones disponible en **utiles**, está la de listar usuarios,
- dar o quitar permisos de investigador a un usuario dado o Reiniciar los
- juegos del experimento "¿Cómo son nuestros voluntarios?"
+Entre las opciones disponible en 
+\emph on
+utiles
+\emph default
+, está la de listar usuarios, dar o quitar permisos de investigador a un
+ usuario dado o reiniciar los juegos del experimento 
+\emph on
+"¿Cómo son nuestros voluntarios?"
 \end_layout
 
 \begin_layout Standard
@@ -2491,39 +2582,43 @@ Además mediante el uso de esta interfaz de linea de comandos, se puede acceder
 
 \begin_layout Standard
 Por ejemplo, ejecutar la función de generar los resultados de una encuesta:
-\end_layout
+\begin_inset listings
+inline false
+status open
 
-\begin_layout Standard
-[code]
-\end_layout
+\begin_layout Plain Layout
 
-\begin_layout Standard
 In [1]: from current_app import models
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
+
 In [2]: from current_app import stats
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
+
 In [2]: survey = models.Survey.query.get(1)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
+
 In [3]: stats.write_stats(survey)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
+
 written file in /home/jarenere/swarm_surveys/stats_csv/¿Cómo_son_nuestros_volunt
 arios?_1.csv
 \end_layout
 
-\begin_layout Standard
-[/code]
+\end_inset
+
+
 \end_layout
 
-\begin_layout Standard
-### Prototipado de las ventanas y cuestiones de usabilidad
+\begin_layout Section
+Prototipado de las ventanas y cuestiones de usabilidad
 \end_layout
 
 \begin_layout Standard
@@ -2569,11 +2664,201 @@ ades que provee el framework Bootstrap, para facilitar que las distintas
 \end_layout
 
 \begin_layout Standard
-#### Esquema de navegación
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/prototipo.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Prototipo de creación de una nueva pregunta
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-#### Diseño del experimento "¿Cómo son nuestros voluntarios?"
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/prototipo_movil.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Prototipo movil de creación de una nueva pregunta
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/ventana_crear_preguntas1.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Ventana de creación de una nueva pregunta
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/ventana_crear_preguntas2.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Despliege de opciones de creación de una nueva pregunta
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/ventana_crear_preguntas1_movil.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Visualización movil
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/ventana_crear_preguntas1_movil_desplegado.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Menú desplegado
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Diseño del experimento "¿Cómo son nuestros voluntarios?"
 \end_layout
 
 \begin_layout Standard
@@ -2585,7 +2870,42 @@ Debido a la naturaleza del proyecto, siempre se intenta evitar el influir
 \end_layout
 
 \begin_layout Standard
-El diseño final para el experimento, se puede ver en las capturas XX
+El diseño final para el experimento, se puede ver en las siguientes capturas
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/julio/flask/frame_game_theory/memoria/latex/Memoria PFC/figures/diseño_como_son_nuestros_voluntarios.png
+	width 100line%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Visualización experimento 
+\begin_inset Quotes eld
+\end_inset
+
+¿c
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

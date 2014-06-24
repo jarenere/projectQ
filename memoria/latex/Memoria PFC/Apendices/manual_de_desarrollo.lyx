@@ -72,6 +72,13 @@
 
 \begin_layout Chapter
 Guía de desarrollo
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:Guía-de-desarrollo"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -131,15 +138,9 @@ Para crear un nuevo tipo de pregunta bastaría con la siguiente declaración:
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -159,13 +160,6 @@ class QuestionDate(Question):
 \begin_layout Plain Layout
 
     __mapper_args__ = {'polymorphic_identity': 'date'}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -202,15 +196,9 @@ Answer
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -242,13 +230,6 @@ class Answer(db.Model):
     answerDate = Column(Date)
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -260,15 +241,9 @@ Para añadir los cambios en la base de datos, debemos de migrar la base de
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -278,13 +253,6 @@ begin{listing}[style=consola, numbers=none]
 \begin_layout Plain Layout
 
 (venv)$ ./manage.py db upgrade
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -337,15 +305,9 @@ forms.py:
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -361,13 +323,6 @@ class QuestionForm(Form):
 
             ('text','Text'),('choice','Choice'),('likertScale','Likert Scale'),(
 'date','Date')]
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -393,15 +348,9 @@ Question
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -416,13 +365,6 @@ def selectType(form,section):
 \begin_layout Plain Layout
 
         question = QuestionDate()
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -450,19 +392,13 @@ onchange_question:
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
-
-\begin_layout Plain Layout
-
-    function onchange_question(selValue)
+function onchange_question(selValue)
 \end_layout
 
 \begin_layout Plain Layout
@@ -545,13 +481,6 @@ begin{listing}[style=consola, numbers=none]
         }
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -624,18 +553,9 @@ genearte_form
 "c"+id
 \emph default
  de la pregunta en cuestión.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -689,13 +609,6 @@ def generate_form(questions):
  = [Optional()]))
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -714,15 +627,9 @@ Answer
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -743,13 +650,6 @@ def new_answer(question,form,user):
 \begin_layout Plain Layout
 
         answer.answerText = str(answer.answerDate)
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -796,15 +696,9 @@ En este caso hemos decidido implementarlo en una tabla nueva, para ello
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -851,13 +745,6 @@ class QuestionMultipleChoices(Question):
         backref = 'question', lazy = 'dynamic')
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -869,15 +756,9 @@ Después creamos una nueva clase con todas las opciones posibles para una
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -924,13 +805,6 @@ class Choice (db.Model):
     question_id = Column(Integer, ForeignKey('question.id'))
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -956,19 +830,12 @@ Answer
 Choice
 \emph default
 , sin ningún atributo nuevo.
- 
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -1015,13 +882,6 @@ class Answer(db.Model):
         lazy = 'dynamic', uselist = True)
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -1033,15 +893,9 @@ Para añadir los cambios en la base de datos, debemos de migrar la base de
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -1051,13 +905,6 @@ begin{listing}[style=consola, numbers=none]
 \begin_layout Plain Layout
 
 (venv)$ ./manage.py db upgrade
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -1085,15 +932,9 @@ Por otro parte se podría modificar el validador del formulario para comprobar
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -1136,13 +977,6 @@ begin{listing}[style=consola, numbers=none]
  be less than the maximum")
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -1153,15 +987,9 @@ Además deberemos de añadir estas opciones a la base de datos:
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -1193,13 +1021,6 @@ def selectType(form,section):
             db.session.add(choice)
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -1216,15 +1037,9 @@ Esta parte es análoga a la implementación de una pregunta de tipo fecha,
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -1290,13 +1105,6 @@ class CheckMinChoices(object):
             raise ValidationError(self.message)
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -1307,26 +1115,13 @@ Además cuando creemos el formulario añadiremos el validador:
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
-
-\begin_layout Plain Layout
-
 validators = [Required(),CheckMinChoices(question.min_choices)] 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -1343,26 +1138,13 @@ También crearemos una lista con las opciones disponibles, cuya índice será
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
-
-\begin_layout Plain Layout
-
 choices = [(str(choice.id),choice.text) for choice in question.choices] 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -1383,15 +1165,9 @@ Answer
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -1464,13 +1240,6 @@ def new_answer(question,form,user):
         answer.text = ', '.join(list_aux)
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -1497,15 +1266,9 @@ La forma mas sencilla sería almacenar en un formato como JSON o XML el texto
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -1537,13 +1300,6 @@ begin{listing}[style=consola, numbers=none]
 }
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -1566,26 +1322,13 @@ Babel
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
-
-\begin_layout Plain Layout
-
 request.accept_languages.best_match(LANGUAGES.keys())
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -1598,15 +1341,9 @@ Por lo que una clase como Survey quedaría de la siguiente manera:
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -1639,13 +1376,6 @@ class Survey(db.Model):
         return get_text(self.text_json,language)
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -1675,15 +1405,9 @@ Para ello primero deberemos de crear un identificador único para cada sección
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -1710,13 +1434,6 @@ title = Column(String(128), nullable = False)
 __table_args__ = (UniqueConstraint('title', 'survey_id'),)
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -1734,15 +1451,9 @@ QuestionChoice
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -1843,13 +1554,6 @@ class Choice (db.Model):
     answer = relationship("Answer")
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -1866,15 +1570,9 @@ Choice
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -1884,13 +1582,6 @@ class Answer (db.Model):
 \begin_layout Plain Layout
 
     choice = Column(Integer, ForeignKey('choice.id'))
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -1925,6 +1616,22 @@ wtforms.ext.sqlalchemy.fields.QuerySelectField
 \end_layout
 
 \begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+section = QuerySelectField ('Section',get_label='text',validators=[Optional()])
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset ERT
 status open
 
@@ -1937,8 +1644,6 @@ begin{listing}[style=consola, numbers=none]
 
 \begin_layout Plain Layout
 
-section = QuerySelectField ('Section',get_label='text',validators=[Optional()])
- 
 \end_layout
 
 \begin_layout Plain Layout
@@ -1966,15 +1671,9 @@ title,
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -1999,13 +1698,6 @@ form.section.query=Question.query.filter(
 \begin_layout Plain Layout
 
     )
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -2049,15 +1741,9 @@ Primero buscamos la respuesta dada a la pregunta de la cual dependerá la
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -2119,13 +1805,6 @@ answer = Answer.query.filter(
 ).first()
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -2139,29 +1818,13 @@ answer
  tenemos la respuesta dada por el usuario de la que dependerá la siguiente
  sección.
  
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
-
-\begin_layout Plain Layout
-
 self.nexSection == answer.choice.section 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -2203,19 +1866,10 @@ Primero nos crearemos una cuenta en Heroku y nos bajaremos el
 "cliente Heroku"
 \emph default
 , una vez instalado el cliente, accederemos a nuestra cuenta y clonaremos
- nuestra plataforma desde github y crearemos la plataforma en Heroku
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
+ nuestra plataforma desde github y crearemos la plataforma en Heroku:
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -2237,13 +1891,6 @@ $ cd swarm-survey
 $ heroku create swarm-survey Creating swarm-survey...
  done, stack is cedar http://swarm-survey.herokuapp.com/ | git@heroku.com:swarm-sur
 vey.git 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -2283,18 +1930,9 @@ config.py
 \emph default
 , ya tenemos escrita una configuración por si se lanza la plataforma en
  Heroku, que se encarga de modificar el log a los requisitos de la nube
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -2326,13 +1964,6 @@ file_handler.setLevel(logging.WARNING)
 app.logger.addHandler(file_handler)
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
 
@@ -2340,29 +1971,13 @@ end{listing}
 
 \begin_layout Standard
 Para ver el log simplemente desde el cliente escribimos:
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
-
-\begin_layout Plain Layout
-
 $ heroku logs
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -2373,29 +1988,13 @@ end{listing}
 \begin_layout Standard
 Esto nos mostrara todos los logs, tanto de la nube como de nuestra aplicación,
  si solo queremos ver la de la aplicación:
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
-
-\begin_layout Plain Layout
-
 $ heroku logs --source app
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -2421,18 +2020,9 @@ Por otra parte si se observa el fichero de configuración, la base de datos
  indicada por nosotros.
  Esta variable de entorno es la misma que usa Heroku para darnos la dirección
  de la bbdd por lo que no tendremos que realizar ningún cambio.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -2449,13 +2039,6 @@ class ProductionConfig(Config):
 \begin_layout Plain Layout
 
         'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -2488,29 +2071,13 @@ gunicorn
 pip
 \emph default
 , para ejecutar el servidor con la aplicación tan solo debemos escribir:
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
 
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
-
-\begin_layout Plain Layout
-
 gunicorn manage.py runserver:app
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
 \end_layout
 
 \end_inset
@@ -2538,33 +2105,21 @@ Durante el desarrollo de aplicaciones en Python se recomienda instalar todos
  los módulos a usar en entornos virtuales, además en nuestro caso como hemos
  hecho uso de pip para la instalación de cada módulo, podemos obtener una
  lista de todos los módulos instalados usando:
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
 (venv)$ pip freeze > requirements.txt
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 
 \end_layout
 

@@ -75,6 +75,13 @@ enumitem
 
 \begin_layout Chapter
 Esqueleto de la aplicación construida
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:Esqueleto-de-la"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -109,7 +116,7 @@ status open
 
 \begin_layout Plain Layout
 
-nolistsep,leftmargin=*
+noitemsep
 \end_layout
 
 \end_inset
@@ -594,18 +601,9 @@ blueprints
 Por ejemplo, para registrar el módulo auth bajo la ruta /auth y /autentificación
 , simplemente hace falta añadir al fichero de inicialización de la plataforma
  las siguientes lineas:
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{listing}[style=consola, numbers=none]
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -622,15 +620,12 @@ app.register_blueprint(auth_blueprint, url_prefix='/auth')
 app.register_blueprint(auth_blueprint, url_prefix='/autentificacion')
 \end_layout
 
-\begin_layout Plain Layout
-
-
-\backslash
-end{listing}
-\end_layout
-
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 
 \end_layout
 
