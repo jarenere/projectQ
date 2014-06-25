@@ -17,7 +17,7 @@ def index():
 
 @blueprint.route('/pruebas')
 def pruebas():
-    return render_template('pruebas.html')
+    return render_template('pruebas2.html')
 
 
 
