@@ -20,7 +20,13 @@ def pruebas():
     return render_template('pruebas2.html')
 
 
+@blueprint.route('/pruebas3')
+def pruebas3():
+    return render_template('pruebas3.html')
 
+@blueprint.route('/scroll')
+def scroll():
+    return render_template('scroll_bootstrap.html')
 
 @babel.localeselector
 def get_locale():

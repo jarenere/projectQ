@@ -7,10 +7,13 @@
 }*/
 
 /* Navbar
+  height:78px;
+
+
 -------------------------------------------------- */
 .navbar-custom {
-  background-color: #373736;
-  border-color: #262626;
+  background-color: #1d1d1b;
+  border-color: #1d1d1b;
   height:78px;
 }
 .navbar-custom .navbar-brand {
@@ -36,7 +39,7 @@
 .navbar-custom .navbar-nav > .active > a:hover,
 .navbar-custom .navbar-nav > .active > a:focus {
   color: #c0c0c0;
-  background-color: #262626;
+  background-color: #0c0c0b;
 }
 .navbar-custom .navbar-nav > .disabled > a,
 .navbar-custom .navbar-nav > .disabled > a:hover,
@@ -45,7 +48,7 @@
   background-color: transparent;
 }
 .navbar-custom .navbar-toggle {
-  border-color: #dddddd;
+  border-color: #1d1d1b;
 }
 .navbar-custom .navbar-toggle:hover,
 .navbar-custom .navbar-toggle:focus {
@@ -56,7 +59,7 @@
 }
 .navbar-custom .navbar-collapse,
 .navbar-custom .navbar-form {
-  border-color: #252524;
+  border-color: #1d1d1b;
 }
 .navbar-custom .navbar-nav > .dropdown > a:hover .caret,
 .navbar-custom .navbar-nav > .dropdown > a:focus .caret {
@@ -66,7 +69,7 @@
 .navbar-custom .navbar-nav > .open > a,
 .navbar-custom .navbar-nav > .open > a:hover,
 .navbar-custom .navbar-nav > .open > a:focus {
-  background-color: #262626;
+  background-color: #0c0c0b;
   color: #c0c0c0;
 }
 .navbar-custom .navbar-nav > .open > a .caret,
@@ -92,7 +95,7 @@
   .navbar-custom .navbar-nav .open .dropdown-menu > .active > a:hover,
   .navbar-custom .navbar-nav .open .dropdown-menu > .active > a:focus {
     color: #c0c0c0;
-    background-color: #262626;
+    background-color: #0c0c0b;
   }
   .navbar-custom .navbar-nav .open .dropdown-menu > .disabled > a,
   .navbar-custom .navbar-nav .open .dropdown-menu > .disabled > a:hover,
@@ -107,7 +110,6 @@
 .navbar-custom .navbar-link:hover {
   color: #c0c0c0;
 }
-
 
 /* Button styles
 -------------------------------------------------- */
@@ -185,32 +187,44 @@ body {
 
 body {
    background:#1D1D1B !important;
+   padding: 78px 15px 0;
+
 }
 
 .projectQ {
    background:white !important;
-   padding: 60px 15px 0;
-
+   padding: 15px 15px 0;
 }
 
 
+.contend-1 {
+    background:#BBBBBA !important;
+    margin: 20px auto;
+    width: 95%;
+    border-top-right-radius: 5px;
+    border-top-left-radius:5px;
+    border-bottom-right-radius:5px;
+    border-bottom-left-radius:5px;
+}
 
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 
-body > .container {
-  padding: 60px 15px 0;
-}
-.container .text-muted {
-  margin: 20px 0;
-}
+/*body > .container {
+  padding: 78px 15px 0;
+    background:#1D1D1B !important;
 
-#footer > .container {
+}*/
+/*.container .text-muted {
+  margin: 20px 0;
+}*/
+
+/*#footer > .container {
   padding-right: 15px;
   padding-left: 15px;
 }
-
+*/
 code {
   font-size: 80%;
 }
