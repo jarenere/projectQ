@@ -1,8 +1,15 @@
-{% extends "base.html" %}
+{% extends "base2.html" %}
 
 {% block content %}
+  <div class="container container_logo">
+    <img class= "img-responsive center-block" src="/static/img/banner_projectq.png">
+  </div>
+  <div class="container  content-1"> 
+
+
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <div>
+      <p>
         {% filter markdown %}{{text}}{% endfilter %}
     </div>
     <script type="text/javascript">
@@ -27,6 +34,8 @@
           minPointLength: 10,
           title: '{{ _('Average') }}',
           legend: { position: "none" },
+          backgroundColor: "none",
+          colors:['#375A7F','#00BC8C'],
         };
 
         var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
@@ -48,6 +57,8 @@
           legend: 'labeled',
           pieSliceText: 'none',
           tooltip: { trigger: 'none' },
+          backgroundColor: "none",
+          colors:['#375A7F','#00BC8C'],
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -70,6 +81,8 @@
                 legend: 'labeled',
                 pieSliceText: 'none',
                 tooltip: { trigger: 'none' },
+                backgroundColor: "none",
+                colors:['#375A7F','#00BC8C'],
               };
 
               var chart = new google.visualization.PieChart(document.getElementById('decision5'));
@@ -92,5 +105,8 @@
       <input class="btn" type="submit" value="{{ _('Next') }}">
     </form>
     {% endif %}
+  
+  <p>
+  </div><!-- /.container -->
 
 {% endblock %}

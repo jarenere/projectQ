@@ -18,7 +18,7 @@
         {{field(**kwargs)}}
             {% if field.errors %}
                 {% for error in field.errors %}
-                    <span style="color: red;" class="help-inline">{{ error }}</span>
+                    <span style="color: #E74C3C;" class="help-inline">{{ error }}</span>
                 {% endfor %}
             {% endif %}
     </div>

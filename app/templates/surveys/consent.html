@@ -1,12 +1,17 @@
 {% extends "base2.html" %}
 
 {% block content %}
-    <img class= "img-responsive" src="/static/img/banner_projectq.png">
-    <div class="container preguntas pre-scrollable">
+  <div class="container container_logo">
+    <img class= "img-responsive center-block" src="/static/img/banner_projectq.png">
+  </div>
+  <div class="container  content-1"> 
         <h1>{{survey.title}}</h1>
             <form action="" method="post" name="secion">
                         {% filter markdown %}{{consent.text}}{% endfilter %}
-            <input class="btn btn-custom" type="submit" value="{{ _('Accept') }}">
+            <input class="btn btn-content" type="submit" value="{{ _('Accept') }}">
+            <p>
             </form>
     </div><!-- /.container -->
+
+
 {% endblock %}

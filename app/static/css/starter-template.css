@@ -160,6 +160,103 @@ fieldset[disabled] .btn-custom.active {
   background-color: #FFFFFF; 
 }
 
+/* Button styles
+-------------------------------------------------- */
+
+.btn-content { 
+  color: #ffffff; 
+  background-color: #464545; 
+  border-color: #464545; 
+} 
+ 
+.btn-content:hover, 
+.btn-content:focus, 
+.btn-content:active, 
+.btn-content.active, 
+.open .dropdown-toggle.btn-content { 
+  color: #ffffff; 
+  background-color: #2C2C2C; 
+  border-color: #464545; 
+} 
+ 
+.btn-content:active, 
+.btn-content.active, 
+.open .dropdown-toggle.btn-content { 
+  background-image: none; 
+} 
+ 
+.btn-content.disabled, 
+.btn-content[disabled], 
+fieldset[disabled] .btn-content, 
+.btn-content.disabled:hover, 
+.btn-content[disabled]:hover, 
+fieldset[disabled] .btn-content:hover, 
+.btn-content.disabled:focus, 
+.btn-content[disabled]:focus, 
+fieldset[disabled] .btn-content:focus, 
+.btn-content.disabled:active, 
+.btn-content[disabled]:active, 
+fieldset[disabled] .btn-content:active, 
+.btn-content.disabled.active, 
+.btn-content[disabled].active, 
+fieldset[disabled] .btn-content.active { 
+  background-color: #464545; 
+  border-color: #464545; 
+} 
+ 
+.btn-content .badge { 
+  color: #464545; 
+  background-color: #ffffff; 
+}
+
+/* Button styles
+-------------------------------------------------- */
+.content-1 .btn-default { 
+  color: #ffffff; 
+  background-color: #464545; 
+  border-color: #464545; 
+} 
+ 
+.content-1 .btn-default:hover, 
+.content-1 .btn-default:focus, 
+.content-1 .btn-default:active, 
+.content-1 .btn-default.active, 
+.open .dropdown-toggle.content-1 .btn-default { 
+  color: #ffffff; 
+  background-color: #2C2C2C; 
+  border-color: #464545; 
+} 
+ 
+.content-1 .btn-default:active, 
+.content-1 .btn-default.active, 
+.open .dropdown-toggle.content-1 .btn-default { 
+  background-image: none; 
+} 
+ 
+.content-1 .btn-default.disabled, 
+.content-1 .btn-default[disabled], 
+fieldset[disabled] .content-1 .btn-default, 
+.content-1 .btn-default.disabled:hover, 
+.content-1 .btn-default[disabled]:hover, 
+fieldset[disabled] .content-1 .btn-default:hover, 
+.content-1 .btn-default.disabled:focus, 
+.content-1 .btn-default[disabled]:focus, 
+fieldset[disabled] .content-1 .btn-default:focus, 
+.content-1 .btn-default.disabled:active, 
+.content-1 .btn-default[disabled]:active, 
+fieldset[disabled] .content-1 .btn-default:active, 
+.content-1 .btn-default.disabled.active, 
+.content-1 .btn-default[disabled].active, 
+fieldset[disabled] .content-1 .btn-default.active { 
+  background-color: #464545; 
+  border-color: #464545; 
+} 
+ 
+.content-1 .btn-default .badge { 
+  color: #464545; 
+  background-color: #ffffff; 
+}
+
 /* Titulo encuesta styles
 -------------------------------------------------- */
 
@@ -196,16 +293,80 @@ body {
    padding: 15px 15px 0;
 }
 
-
-.contend-1 {
+.content-1 {
     background:#BBBBBA !important;
     margin: 20px auto;
-    width: 95%;
-    border-top-right-radius: 5px;
+/*    width: 100%;
+*//*    max-height: calc(100% - 850px);
+*/  
+/*    max-height: 450px;  
+*/    border-top-right-radius: 5px;
     border-top-left-radius:5px;
     border-bottom-right-radius:5px;
     border-bottom-left-radius:5px;
 }
+
+
+/* Container banner
+-------------------------------------------------- */
+.container_logo {
+  height: 105px;
+  background: white !important;
+}
+
+
+/*And then change */
+  .container_logo .img-responsive {
+    display: block;
+    height: auto;
+    max-width: 100%;
+}  
+/*To */
+
+.container_logo .img-responsive {
+    display: block;
+    width: auto;
+    max-height: 100%;
+}
+
+
+/* Radiofield vertical
+-------------------------------------------------- */
+    .radiofield_vertical ul, li {
+        list-style-type: none;
+    }
+
+
+/* likert 
+-----------------------------------------------*/
+    .likert tr:first-child td {
+        border-top: none;
+    }
+    .likert {
+    border-collapse: collapse;
+        text-align: center;
+        float: right;
+        clear: left;
+        list-style-type: none;
+        margin:0;
+        padding:0;
+
+    }
+
+    .type-info{color:#999;vertical-align:middle}
+
+    .question tr:first-child td {
+    border-top: none;
+    }
+
+/*alert-warning
+----------------------------------------*/
+.alert-warning {
+  background-color: #F39C12;
+  border-color: #F39C12;
+  color: #fff;
+}
+
 
 /* Custom page CSS
 -------------------------------------------------- */

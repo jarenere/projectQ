@@ -69,12 +69,28 @@ class MyRadioField(RadioField):
 
     def __call__(self, **kwargs):
         if self.horizontal:
-            kwargs.setdefault('class_', "radioField_horizontal")
+            # kwargs.setdefault('class_', "radioField_horizontal")
             self.widget.prefix_label=True
+
+            from wtforms.widgets.core import html_params, HTMLString
+            kwargs.setdefault('id', self.id)
+            kwargs.setdefault('class_', " table table-condensed likert")
+            html = ['<%s %s>' % ("table", html_params(**kwargs))]
+            html.append('<tr>')
+            for subfield in self:
+                html.append('<td>%s</td>' % (subfield.label))
+            html.append('</tr>')
+            html.append('<tr>')
+            for subfield in self:
+                    html.append('<td>%s</td>' % (subfield()))
+            html.append('</tr>')
+
+            html.append('</%s>' % "table")
+            return  HTMLString(''.join(html))
         else:
             kwargs.setdefault('class_', "radio")
             self.widget.prefix_label=False
-        return super(MyRadioField, self).__call__(**kwargs)
+            return super(MyRadioField, self).__call__(**kwargs)
 
 class CheckAnswerExpected(object):
     '''check if the answer is the expected

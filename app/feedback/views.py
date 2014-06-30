@@ -51,7 +51,12 @@ def logic_feedback(id_survey,feedback=0):
         feedback=feedback+1
         return redirect(url_for('feedback.logic_feedback',id_survey = id_survey, feedback = feedback))
     if feedback >4:
-        return redirect(url_for('feedback.index',id_survey = id_survey))
+
+        return render_template('/surveys/finish.html',
+                id_survey=id_survey,
+                tittle = "Finish"
+                )
+        # return redirect(url_for('feedback.index',id_survey = id_survey))
         # return render_template('/feedback/index.html',
         #         id_survey=id_survey,
         #         tittle = "feedback"
