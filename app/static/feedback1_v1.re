@@ -14,3 +14,5 @@ Por tanto, si los dos invertís la misma cantidad, ambos tenéis un 50% de proba
 * Si ninguno de los dos invierte nada, el premio se pierde. Por tanto, cada uno de vosotros se llevaría los 10€ que le damos al principio para invertir pero nada más.
 
 * Si uno de los dos no invierte nada y el otro invierte algo (sea lo que sea), el premio iría para el que sí ha invertido, pues tiene el 100% de la inversión. Por tanto, el que no invirtió nada se llevaría los 10€ que recibió al inicio, mientras que el que sí invirtió se llevaría los 10€ del premio, más los 10€ que recibió para invertir, menos el dinero que invirtió.
+
+**Cantidad invertida en la lotería:**

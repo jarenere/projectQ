@@ -18,7 +18,7 @@
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['user', '{{ _('answer') }}' ],
-          ['{{ _('you') }}',  {{ans}} ],
+          ['Tú',  {{ans}} ],
           ['{{ _('avg') }}',  {{avg}}]
         ]);
 
@@ -53,7 +53,11 @@
         ]);
 
         var options = {
-          title: '% {{ _('with same answer') }}',
+          {% if percent5 is defined %}
+            title: '% Con la misma respuesta (jugador A)',
+          {% else %}
+            title: '% {{ _('with same answer') }}',
+          {% endif %}
           legend: 'labeled',
           pieSliceText: 'none',
           tooltip: { trigger: 'none' },
@@ -77,7 +81,7 @@
               ]);
 
               var options = {
-                title: '% {{ _('user than have accepted your division') }}',
+                title: '% Usuarios (como jugador B) que hubiesen aceptado tu división (como jugador A)',
                 legend: 'labeled',
                 pieSliceText: 'none',
                 tooltip: { trigger: 'none' },

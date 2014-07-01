@@ -26,9 +26,9 @@ from sqlalchemy import and_
 from flask.ext.babel import gettext
 
 
-@blueprint.route('/', methods=['GET', 'POST'])
-@blueprint.route('/index', methods=['GET', 'POST'])
-@login_required
+# @blueprint.route('/', methods=['GET', 'POST'])
+# @blueprint.route('/index', methods=['GET', 'POST'])
+# @login_required
 def index():
     '''
     shows all available surveys
@@ -146,11 +146,8 @@ def logicSurvey(id_survey):
     section = stateSurvey.nextSection()
     if section is None:
         if stateSurvey.status & StateSurvey.FINISH_OK:
-            if current_app.config.get('MODE_GAMES',False):
-                run_part2_raffle(id_survey)
-                return check_feedback(id_survey)
-            else:
-                return render_template('/surveys/finish.html',title = 'Finish')
+            run_part2_raffle(id_survey)
+            return check_feedback(id_survey)
         if stateSurvey.status & StateSurvey.TIMED_OUT:
             return render_template('/survey/error_time_date.html',
                 title ='time out')
@@ -159,7 +156,95 @@ def logicSurvey(id_survey):
                 title ='End date out')
         print "\n raro\n Status: ", stateSurvey.status
         return abort(500) 
+    if section.id in [40,43,46,49,32,33,23,52,55,58,61,38,39,27]:
+        #fixed to show number of decision
+        return show_number_decision(id_survey,section.id)
+
+    if section.id in [10,11,12,13]:
+        #fixed to show number of part
+        return show_number_parte(id_survey,section.id)
+
+
     return redirect (url_for('surveys.showQuestions',id_survey=id_survey,id_section=section.id))
+
+
+
+@blueprint.route('/survey/<int:id_survey>/decision', methods=['GET', 'POST'])
+@login_required
+def show_number_decision(id_survey,id_section):
+    ''' show number of decision
+    '''
+    def get_date_decision(decision, user_id,id_survey):
+        '''return date when answered 
+        '''
+        return Answer.query.filter(Answer.user_id==user_id,\
+                Answer.question_id==Question.id,\
+                Question.section_id==Section.id,\
+                Section.root_id==id_survey,\
+                Question.decision==decision).first() is not None
+
+    def get_date_decision1(user_id,id_survey):
+        '''return date when answered 
+        '''
+        return Answer.query.filter(Answer.user_id==user_id,\
+                Answer.question_id==Question.id,\
+                Question.section_id==Section.id,\
+                Section.root_id==id_survey,\
+                Question.decision.in_(["decision_one_v1","decision_one_v2"])).\
+                first() is not None
+
+    if request.method == 'POST':
+        return redirect (url_for('surveys.showQuestions',id_survey=id_survey,id_section=id_section))
+
+
+    id_survey = 1
+    n_decision = 1
+
+    n_decision = n_decision + 1 if get_date_decision1(current_user.id,id_survey) else n_decision
+    n_decision = n_decision + 1 if get_date_decision("decision_two",current_user.id,id_survey) else n_decision
+    n_decision = n_decision + 1 if get_date_decision("decision_three",current_user.id,id_survey) else n_decision
+    n_decision = n_decision + 1 if get_date_decision("decision_four",current_user.id,id_survey) else n_decision
+    n_decision = n_decision + 1 if get_date_decision("decision_five",current_user.id,id_survey) else n_decision
+    n_decision = n_decision + 1 if get_date_decision("decision_six",current_user.id,id_survey) else n_decision
+
+    text = '<h1>Decisión %s</h1>' % (n_decision)
+
+    return render_template('/surveys/show_decision.html',
+        text = text)
+
+@blueprint.route('/survey/<int:id_survey>/parte', methods=['GET', 'POST'])
+@login_required
+def show_number_parte(id_survey,id_section):
+    '''show number_part of the survey
+    '''
+    id_survey = 1
+    ss = get_stateSurvey_or_error(id_survey,g.user)
+    if request.method == 'POST':
+        return redirect (url_for('surveys.showQuestions',id_survey=id_survey,id_section=id_section))
+
+    n_part = 1
+
+    n_part = n_part + 1 if 10 in ss.sequence[0:ss.index+1] else n_part
+    n_part = n_part + 1 if 11 in ss.sequence[0:ss.index+1] else n_part
+    n_part = n_part + 1 if 12 in ss.sequence[0:ss.index+1] else n_part
+    n_part = n_part + 1 if 13 in ss.sequence[0:ss.index+1] else n_part
+
+    if n_part == 2:
+        text='<h1>Segunda Parte</h1>'
+    elif n_part == 3:
+        text='<h1>Tercera Parte</h1>'
+    else :
+        text = ""
+
+
+    return render_template('/surveys/show_decision.html',
+        text = text)
+
+
+
+
+
+
 
 @blueprint.route('/survey/<int:id_survey>/consent', methods=['GET', 'POST'])
 @blueprint.route('/survey/<int:id_survey>/consent/<int:n_consent>', methods=['GET', 'POST'])

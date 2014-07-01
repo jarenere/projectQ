@@ -8,7 +8,7 @@ class ValidateEmail(object):
     '''
     def __init__(self, message=None):
         if not message:
-            self.message = gettext('Email already registered.')
+            self.message = gettext('Correo ya registrado')
         else:  # pragma: no cover
             self.message = message
     
@@ -21,7 +21,7 @@ class ValidateDNI(object):
     '''
     def __init__(self, message=None):
         if not message:
-            self.message = gettext('Email already registered.')
+            self.message = gettext('Dni invalido o ya registrado.')
         else:  # pragma: no cover
             self.message = message
     

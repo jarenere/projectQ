@@ -7,3 +7,5 @@ Una vez creado el fondo (con las aportaciones de los dos), cada uno recibirá **
 * b) Si los dos decidís colocar los 10€ en el fondo común, entonces, habría 20€ en su interior. Esto significa que cada uno os llevaríais 24€ (20 x 1,20).
 
 *  c) Si uno de los dos decide no poner nada y el otro decide poner los 10€ en el fondo, entonces, el que no puso nada acaba con 22€ (10 que se quedó más 12 del fondo, 10 x 1,20) mientras que su pareja acaba con 12€ (lo que le corresponde del fondo porque no se quedó nada).
+
+**Cantidad colocada en el fondo común:**

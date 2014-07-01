@@ -1,0 +1,18 @@
+{% extends "base2.html" %}
+
+{% block content %}
+  <div class="container container_logo">
+    <img class= "img-responsive center-block" src="/static/img/banner_projectq.png">
+  </div>
+  <div class="container  content-1"> 
+      <form action="" method="post" name="secion">
+<!--         <h1>Decisión {{n_decision}}</h1>
+ -->
+              {{text|safe}}
+             <input class="btn btn-content" type="submit" value="Siguiente">
+            <p>
+            </form>
+    </div><!-- /.container -->
+
+
+{% endblock %}
