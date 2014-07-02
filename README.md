@@ -26,6 +26,18 @@ Run migration:
 
 note:custom migration/envy.py for upgrade
 
+
+fixed
+=====
+
+Si falla al iniciar sesión, forzar str en la comparacion en el fichero: werkzeug/security.py
+
+
+        return _builtin_safe_str_cmp(a, str(b))
+
+        
+https://github.com/mitsuhiko/werkzeug/issues/537
+
 Run server 
 ==========
 ./manage.py runserver

@@ -30,7 +30,7 @@ pagedown.init_app(app)
 #OpenID
 lm = LoginManager()
 lm.init_app(app)
-lm.login_view = 'auth.login'
+lm.login_view = 'auth.login_email'
 oid = OpenID(app, os.path.join(basedir, 'tmp'))
 #flask-babel
 babel = Babel(app)

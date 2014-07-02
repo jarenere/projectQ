@@ -54,7 +54,7 @@
                 {% if current_user.is_authenticated() %}
                     <li><a href="{{ url_for('auth.logout') }}"> <img src="/static/img/candado_abierto.png"> Cerrar Sesión</a></li>
                 {% else %}
-                  <li><a href="{{ url_for('auth.login') }}"><img src="/static/img/candado_abierto.png"> Iniciar Sesión</a></li>
+                  <li><a href="{{ url_for('auth.login_email') }}"><img src="/static/img/candado_abierto.png"> Iniciar Sesión</a></li>
                 {% endif %}
             </ul>
           </div>

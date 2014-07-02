@@ -70,7 +70,6 @@ class ProductionConfig(Config):
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
-        import pdb; pdb.set_trace()
 
         # email errors to the administrators
         import logging
@@ -90,6 +89,14 @@ class ProductionConfig(Config):
             secure=secure)
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
+
+        from logging.handlers import RotatingFileHandler
+        file_handler = RotatingFileHandler('logs/microblog.log', 'a', 1 * 1024 * 1024, 10)
+        file_handler.setLevel(logging.INFO)
+        file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+        app.logger.addHandler(file_handler)
+        app.logger.setLevel(logging.INFO)
+        app.logger.info('microblog startup')
 
 
 class JmeterProduction(ProductionConfig):
@@ -150,5 +157,5 @@ config = {
     'jmeter': Jmeter,
     'jmeterProduction' : JmeterProduction,
 
-    'default': DevelopmentConfig
+    'default': ProductionConfig
 }
