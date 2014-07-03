@@ -812,8 +812,8 @@ class User(db.Model):
             self.role=ROLE_RESEARCHER
     
     def __repr__(self):
-        return "<user(id='%s')>" % (
-            self.id)
+        return "<user(id='%s, email='%s')>\n" % (
+            self.id, self.email)
 
     @property
     def password(self):

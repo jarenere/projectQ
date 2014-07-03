@@ -9,27 +9,29 @@ from flask.ext.babel import gettext
 
 
 
+# @blueprint.route('/login', methods=['GET', 'POST'])
+# @blueprint.route('/', methods=['GET', 'POST'])
+# @oid.loginhandler
+# def login():
+#     """
+#     login method for users.
+
+#     Returns a Jinja2 template with the result of signing process.
+
+#     """
+#     if g.user is not None and g.user.is_authenticated():
+#         return redirect(url_for('main.index'))
+#     form = LoginFormOpenID()
+#     if form.validate_on_submit():
+#         session['remember_me'] = form.remember_me.data
+#         return oid.try_login(form.openid.data, ask_for = ['nickname', 'email'])
+#     return render_template('/auth/login.html', 
+#         title = 'Sign In',
+#         form = form,
+#         providers = app.config['OPENID_PROVIDERS'])
+
 @blueprint.route('/login', methods=['GET', 'POST'])
 @blueprint.route('/', methods=['GET', 'POST'])
-@oid.loginhandler
-def login():
-    """
-    login method for users.
-
-    Returns a Jinja2 template with the result of signing process.
-
-    """
-    if g.user is not None and g.user.is_authenticated():
-        return redirect(url_for('main.index'))
-    form = LoginFormOpenID()
-    if form.validate_on_submit():
-        session['remember_me'] = form.remember_me.data
-        return oid.try_login(form.openid.data, ask_for = ['nickname', 'email'])
-    return render_template('/auth/login.html', 
-        title = 'Sign In',
-        form = form,
-        providers = app.config['OPENID_PROVIDERS'])
-
 @blueprint.route('/login-email', methods=['GET', 'POST'])
 def login_email():
     form = LoginFormEmail()
