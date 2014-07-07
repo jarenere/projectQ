@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # from app import app
-from flask import render_template, Flask, url_for, session, request
+from flask import render_template, Flask, url_for, session, request, flash
 from config import basedir
 from . import blueprint
 from app import babel
@@ -17,16 +17,9 @@ def index():
 
 @blueprint.route('/pruebas')
 def pruebas():
+    flash ("error cerrar")
+    flash("valiendooooo")
     return render_template('pruebas2.html')
-
-
-@blueprint.route('/pruebas3')
-def pruebas3():
-    return render_template('pruebas3.html')
-
-@blueprint.route('/scroll')
-def scroll():
-    return render_template('scroll_bootstrap.html')
 
 @babel.localeselector
 def get_locale():
