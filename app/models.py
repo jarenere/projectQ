@@ -427,6 +427,8 @@ class Question(db.Model):
     #:number of attempt to answer a question with  expected Answer
     # zero is infinite attempt to get the right answer
     maxNumberAttempt = Column(Integer, default = 0)
+    #:help text to expectedAnser
+    help_text = Column(String(512), default="")
     # # type of decision
     decision = Column(Enum('none','part_two', 'decision_one_v1', 'decision_one_v2',
         'decision_two','decision_three','decision_four','decision_five',
@@ -560,6 +562,9 @@ class Question(db.Model):
         maxNumberAttempt = SubElement(question,'maxNumberAttempt')
         maxNumberAttempt.text = str(self.maxNumberAttempt)
 
+        help_text = SubElement(question,'help_text')
+        help_text.text = str(self.help_text)
+
         if isinstance (self, QuestionText):
             isNumber = SubElement(question,'isNumber')
             isNumber.text = str(self.isNumber)
@@ -627,6 +632,8 @@ class Question(db.Model):
 
             expectedAnswer = findField('expectedAnswer',root,msg)
             maxNumberAttempt = findField('maxNumberAttempt',root,msg)
+            help_text = findField('help_text',root,msg)
+
             type = findField('type',root,msg)
             
             if type == 'yn':
@@ -671,6 +678,7 @@ class Question(db.Model):
             question.required = required
             question.expectedAnswer = expectedAnswer
             question.maxNumberAttempt = maxNumberAttempt
+            question.help_text = help_text
             question.choices = l
             question.container = l1
             question.section = section

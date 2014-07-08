@@ -339,9 +339,13 @@ body {
 
 /* likert 
 -----------------------------------------------*/
-    .likert tr:first-child td {
+    .likert tr:first-child td,
+    .likert td:first-child,
+    .likert td:last-child {
         border-top: none;
     }
+
+
     .likert {
     border-collapse: collapse;
         text-align: center;

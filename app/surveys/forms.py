@@ -97,10 +97,10 @@ class CheckAnswerExpected(object):
     '''
     def __init__(self, message=None):
         if not message:
-            self.message = gettext("wrong answer")
+            self.message = gettext("Respuesta incorrecta")
         else:  # pragma: no cover
-            self.message = message
-        self.message_continue = gettext("wrong answer, you can continue")
+            self.message = 'Respuesta incorrecta. ' + message
+        self.message_continue = gettext("Respuesta incorrecta, puedes continuar")
 
     def __call__(self, form, field):
         question = Question.query.get(field.name[1:])
@@ -109,6 +109,7 @@ class CheckAnswerExpected(object):
         db.session.commit()
         if not answer.answerAttempt():
             if answer.isMoreAttempt():
+                 flash(self.message)
                  raise ValidationError(self.message)
             else:
                 flash(self.message_continue)
@@ -192,7 +193,7 @@ def generate_form(questions):
             else:
                 if question.isExpectedAnswer():
                     setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
-                        choices = choices, validators = [Required(),CheckAnswerExpected()]))
+                        choices = choices, validators = [Required(),CheckAnswerExpected(message=question.help_text)]))
                 elif question.required:
                     setattr(AnswerForm,"c"+str(question.id),MyRadioField('Answer', 
                         choices = choices,validators = [Required()]))
@@ -209,14 +210,14 @@ def generate_form(questions):
                         if question.isExpectedAnswer():
                             setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
                                 validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage),
-                                CheckAnswerExpected()]))
+                                CheckAnswerExpected(message=question.help_text)]))
                         else:
                             setattr(AnswerForm,"c"+str(question.id),TextField('Answer',
                                 validators=[Required(), Regexp(question.regularExpression,0,question.errorMessage)]))
                     elif question.isNumber:
                         if question.isExpectedAnswer():
                             setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer',validators = [Required(),
-                                CheckAnswerExpected()]))
+                                CheckAnswerExpected(message=question.help_text)]))
                         else:
                             setattr(AnswerForm,"c"+str(question.id),IntegerField('Answer'))
                     else:

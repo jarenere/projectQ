@@ -35,7 +35,7 @@
     </script>
 
         <div class="container-fluid">
-            {% filter markdown %}{{section.description}}{% endfilter %}
+            {% filter markdown %}{{section.description|safe}}{% endfilter %}
 
             <form onsubmit="timestamp()" class="form-horizontal" action="" method="post" name="question">
                 {{form.hidden_tag()}}

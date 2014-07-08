@@ -1,125 +1,174 @@
 # Spanish translations for PROJECT.
 # Copyright (C) 2014 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
 #
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-04-30 18:03+0200\n"
-"PO-Revision-Date: 2014-04-30 18:03+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: es <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"POT-Creation-Date: 2014-07-08 16:53+0200\n"
+"PO-Revision-Date: 2014-07-08 17:11+0200\n"
+"Last-Translator: \n"
+"Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
-"X-Generator: Poedit 1.5.4\n"
+"Language: es\n"
+"X-Generator: Lokalize 1.5\n"
 
-#: app/auth/views.py:47
-msgid "Invalid login. Please try again."
-msgstr "Login inválido, Por favor inténtelo otra vez"
+#: app/auth/forms.py:11
+msgid "openid"
+msgstr "OpenId"
 
-#: app/surveys/views.py:238 app/surveys/views.py:258
-msgid "Wrong answer"
+#: app/auth/forms.py:12 app/auth/forms.py:18
+msgid "Keep me logged in"
+msgstr "Identificarse automáticamente en cada visita"
+
+#: app/auth/forms.py:15 app/auth/forms.py:23
+msgid "Email"
+msgstr "Email"
+
+#: app/auth/forms.py:17
+msgid "Password"
+msgstr "Contraseña"
+
+#: app/auth/forms.py:19
+msgid "Log In"
+msgstr "Iniciar sesión"
+
+#: app/auth/forms.py:25 app/templates/auth/register.html:10
+msgid "Register"
+msgstr "Registrar"
+
+#: app/auth/forms.py:29
+msgid "Name"
+msgstr "Nombre"
+
+#: app/auth/forms.py:30
+msgid "Last name"
+msgstr "Apellido"
+
+#: app/auth/forms.py:31
+msgid "dni"
+msgstr "dni"
+
+#: app/auth/validator.py:11
+msgid "Correo ya registrado"
+msgstr "Correo ya registrado"
+
+#: app/auth/validator.py:24
+msgid "Dni invalido o ya registrado."
+msgstr "Dni invalido o ya registrado"
+
+#: app/auth/views.py:43
+msgid "Invalid email or password."
+msgstr "Correo o contraseña invalida"
+
+#: app/surveys/forms.py:100
+msgid "wrong answer"
 msgstr "Respuesta incorrecta"
 
-#: app/surveys/views.py:240 app/surveys/views.py:260
+#: app/surveys/forms.py:103
 msgid "wrong answer, you can continue"
 msgstr "Respuesta incorrecta, puedes continuar"
 
-#: app/surveys/views.py:309
+#: app/surveys/forms.py:159 app/surveys/forms.py:164
 msgid "Option not valid"
 msgstr "Opción no valida"
 
-#: app/surveys/views.py:397
+#: app/surveys/forms.py:188
 msgid "Yes"
 msgstr "Si"
 
-#: app/surveys/views.py:397
+#: app/surveys/forms.py:188
 msgid "No"
 msgstr "No"
 
-#: app/surveys/views.py:550
+#: app/surveys/views.py:330
 msgid "access denied"
 msgstr "Acceso denegado"
 
-#: app/templates/base.html:68
+#: app/templates/base.html:64
 msgid "Account"
 msgstr "Cuenta"
 
-#: app/templates/base.html:70
+#: app/templates/base.html:66
 msgid "Logout"
 msgstr "Cerrar sesión"
 
-#: app/templates/auth/login.html:19
+#: app/templates/auth/login.html:21
 msgid "Please Sign In"
 msgstr "Por Favor Regístrate"
 
-#: app/templates/auth/login.html:22
+#: app/templates/auth/login.html:24
 msgid "Click on your OpenID provider below:"
 msgstr "Haz click en tu proveedor de OpenID:"
 
-#: app/templates/auth/login.html:29
+#: app/templates/auth/login.html:31
 msgid "Or enter your OpenID here:"
 msgstr "O introduzca tu OpenID aquí:"
 
-#: app/templates/auth/login.html:40
+#: app/templates/auth/login.html:42
 msgid "Remember Me"
 msgstr "Recuerdame"
 
-#: app/templates/auth/login.html:46
+#: app/templates/auth/login.html:48
 msgid "Sign In"
 msgstr "Inicia sesión"
 
-#: app/templates/feedback/feedback.html:13
+#: app/templates/auth/loginEmail.html:11
+msgid "Login"
+msgstr "Iniciar sesión"
+
+#: app/templates/auth/loginEmail.html:16
+msgid "New user?"
+msgstr "Nuevo usuario"
+
+#: app/templates/auth/loginEmail.html:16
+msgid "Click here to register"
+msgstr "Click aquí para registrarse"
+
+#: app/templates/feedback/feedback.html:20
 msgid "answer"
 msgstr "Respuesta"
 
-#: app/templates/feedback/feedback.html:14
-msgid "you"
-msgstr "Tu"
-
-#: app/templates/feedback/feedback.html:15
+#: app/templates/feedback/feedback.html:22
 msgid "avg"
 msgstr "Media"
 
-#: app/templates/feedback/feedback.html:28
+#: app/templates/feedback/feedback.html:35
 msgid "Average"
 msgstr "Media"
 
-#: app/templates/feedback/feedback.html:42
+#: app/templates/feedback/feedback.html:51
 msgid "Same"
 msgstr "Igual"
 
-#: app/templates/feedback/feedback.html:43
+#: app/templates/feedback/feedback.html:52
 msgid "Different"
 msgstr "Diferente"
 
-#: app/templates/feedback/feedback.html:47
+#: app/templates/feedback/feedback.html:59
 msgid "with same answer"
 msgstr "Con la misma respuesta"
 
-#: app/templates/feedback/feedback.html:64
+#: app/templates/feedback/feedback.html:79
 msgid "Accepted"
 msgstr "Aceptado"
 
-#: app/templates/feedback/feedback.html:65
+#: app/templates/feedback/feedback.html:80
 msgid "Refused"
 msgstr "Rechazado"
 
-#: app/templates/feedback/feedback.html:69
-msgid "user than have accepted your division"
-msgstr "Usuarios que hubiesen aceptado tu división"
-
-#: app/templates/feedback/feedback.html:88
+#: app/templates/feedback/feedback.html:105
 msgid "Back"
 msgstr "Atrás"
 
-#: app/templates/feedback/feedback.html:92
-#: app/templates/surveys/showQuestions.html:146
+#: app/templates/feedback/feedback.html:109
+#: app/templates/surveys/showQuestions.html:122
 msgid "Next"
 msgstr "Siguiente"
 
@@ -143,7 +192,7 @@ msgstr "Decisión del juego del ultimatum"
 msgid "decision dictador"
 msgstr "Decisión del juego del dictador"
 
-#: app/templates/surveys/consent.html:12
+#: app/templates/surveys/consent.html:11
 msgid "Accept"
 msgstr "Aceptar"
 
@@ -159,10 +208,18 @@ msgstr "Sin empezar"
 msgid "without finish"
 msgstr "Sin terminar"
 
-#: app/templates/surveys/showQuestions.html:152
-msgid "Percent of survey:"
-msgstr "Porcentaje de la encuesta"
+#~ msgid "Invalid login. Please try again."
+#~ msgstr "Login inválido, Por favor inténtelo otra vez"
 
-#: app/templates/surveys/showQuestions.html:155
-msgid "Complete"
-msgstr "Completada"
+#~ msgid "you"
+#~ msgstr "Tu"
+
+#~ msgid "user than have accepted your division"
+#~ msgstr "Usuarios que hubiesen aceptado tu división"
+
+#~ msgid "Percent of survey:"
+#~ msgstr "Porcentaje de la encuesta"
+
+#~ msgid "Complete"
+#~ msgstr "Completada"
+

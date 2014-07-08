@@ -389,6 +389,7 @@ def selectType(form,section):
     question.text = form.text.data
     question.required = form.required.data
     question.expectedAnswer = form.expectedAnswer.data
+    question.help_text = form.help_text.data
     question.maxNumberAttempt = form.maxNumberAttempt.data
     question.section=section
     question.last_position()
@@ -453,6 +454,7 @@ def editQuestion(id_survey, id_section,id_question):
         form.required.data = question.required
         form.expectedAnswer.data = question.expectedAnswer
         form.maxNumberAttempt.data = question.maxNumberAttempt
+        form.help_text.data = question.help_text
         form.is_real_money.data = question.is_real_money
         if isinstance(question, QuestionText):
             form.regularExpression.data = question.regularExpression

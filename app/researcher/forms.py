@@ -66,6 +66,7 @@ class QuestionForm(Form):
     expectedAnswer = TextField('answer', validators = [Length(min = 0, max = 20)], 
         description='none if There isnt correct answer')
     maxNumberAttempt = IntegerField('Number of attempt', validators = [Optional()])
+    help_text = TextField('Help_text', validators = [Length(min=0, max=511)])
 
 
 
