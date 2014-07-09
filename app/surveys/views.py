@@ -168,11 +168,8 @@ def logicSurvey(id_survey):
     return redirect (url_for('surveys.showQuestions',id_survey=id_survey,id_section=section.id))
 
 
-
-@blueprint.route('/survey/<int:id_survey>/decision', methods=['GET', 'POST'])
-@login_required
-def show_number_decision(id_survey,id_section):
-    ''' show number of decision
+def get_number_decision(id_survey,id_section):
+    ''' get number of decision
     '''
     def get_date_decision(decision, user_id,id_survey):
         '''return date when answered 
@@ -193,10 +190,6 @@ def show_number_decision(id_survey,id_section):
                 Question.decision.in_(["decision_one_v1","decision_one_v2"])).\
                 first() is not None
 
-    if request.method == 'POST':
-        return redirect (url_for('surveys.showQuestions',id_survey=id_survey,id_section=id_section))
-
-
     id_survey = 1
     n_decision = 1
 
@@ -207,7 +200,18 @@ def show_number_decision(id_survey,id_section):
     n_decision = n_decision + 1 if get_date_decision("decision_five",current_user.id,id_survey) else n_decision
     n_decision = n_decision + 1 if get_date_decision("decision_six",current_user.id,id_survey) else n_decision
 
-    text = '<h1>Decisión %s</h1>' % (n_decision)
+    return n_decision
+
+
+
+@blueprint.route('/survey/<int:id_survey>/decision', methods=['GET', 'POST'])
+@login_required
+def show_number_decision(id_survey,id_section):
+    ''' show number of decision
+    '''
+    if request.method == 'POST':
+        return redirect (url_for('surveys.showQuestions',id_survey=id_survey,id_section=id_section))
+    text = '<h1>Decisión %s</h1>' % (get_number_decision(id_survey, id_section))
 
     return render_template('/surveys/show_decision.html',
         text = text)
@@ -239,10 +243,6 @@ def show_number_parte(id_survey,id_section):
 
     return render_template('/surveys/show_decision.html',
         text = text)
-
-
-
-
 
 
 
@@ -344,6 +344,19 @@ def showQuestions(id_survey, id_section):
         stateSurvey.finishedSection(form.time.data)
         return redirect(url_for('surveys.logicSurvey',id_survey = id_survey))
 
+    #dirty fix to show number decision, if i know it before...
+    decision = None
+    if id_section in [40,41,42,43,44,45,46,47,48,49,50,51,32,33,23,52,53,54,55,56,57,58,59,60,61,62,63,38,39,27]:
+        if id_section in [40,43,46,49,52,55,58,61]:
+            decision = '<h3>Decisión %s, parte 1</h3>' % (get_number_decision(id_survey, id_section))
+        elif id_section in [41,44,47,50,53,56,59,62]:
+            decision = '<h3>Decisión %s, parte 2</h3>' % (get_number_decision(id_survey, id_section))
+        elif id_section in [42,45,48,51,54,57,60,63]:
+            decision = '<h3>Decisión %s, parte 3</h3>' % (get_number_decision(id_survey, id_section))
+        else:
+            decision = '<h3>Decisión %s</h3>' % (get_number_decision(id_survey, id_section))
+        print "vamos",get_number_decision(id_survey, id_section)    
+
     return render_template('/surveys/showQuestions.html',
             title = survey.title,
             survey = survey,
@@ -351,5 +364,6 @@ def showQuestions(id_survey, id_section):
             # form = form,
             form = form,
             questions = questions,
-            percent = stateSurvey.percentSurvey()
+            # percent = stateSurvey.percentSurvey(),
+            decision = decision
             )

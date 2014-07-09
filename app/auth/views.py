@@ -1,4 +1,4 @@
-from app import app, db, lm, oid
+from app import app, db, lm
 from flask import Blueprint, request, url_for, flash, redirect, abort, session, g
 from flask import render_template
 from flask.ext.login import login_user, logout_user, current_user, login_required

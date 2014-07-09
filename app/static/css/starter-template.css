@@ -261,6 +261,7 @@ fieldset[disabled] .content-1 .btn-default.active {
 -------------------------------------------------- */
 
 a.titulo_encuesta { color: #78C042; }
+h1.titulo_encuesta {color: #78C042;}
 
 /* Sticky footer styles
 -------------------------------------------------- */

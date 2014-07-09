@@ -35,6 +35,7 @@
     </script>
 
         <div class="container-fluid">
+            {{decision|safe if decision !=None}}
             {% filter markdown %}{{section.description|safe}}{% endfilter %}
 
             <form onsubmit="timestamp()" class="form-horizontal" action="" method="post" name="question">

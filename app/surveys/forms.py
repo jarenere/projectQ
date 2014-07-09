@@ -109,7 +109,7 @@ class CheckAnswerExpected(object):
         db.session.commit()
         if not answer.answerAttempt():
             if answer.isMoreAttempt():
-                 flash(self.message)
+                 flash("Respuesta incorrecta")
                  raise ValidationError(self.message)
             else:
                 flash(self.message_continue)
@@ -171,7 +171,11 @@ def generate_form(questions):
         '''implement of range to floats:
         '''
         while x < y:
-            yield  '{0:g}'.format(float(x))
+            if x % 1 == 0:
+                yield '%.0f' % x
+            else:
+                yield '%.2f' % x
+            # yield  '{0:g}'.format(float(x))
             x += jump
 
     class AnswerForm(Form):

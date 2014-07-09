@@ -9,10 +9,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     BASEDIR = os.path.abspath(os.path.dirname(__file__))
-    SETTINGS = os.environ.get('SWARMS_SURVEY_SETTINGS') or \
-        os.path.join(basedir, 'settings.cfg')
-    if not os.path.isfile(SETTINGS):
-        shutil.copy(os.path.join(basedir, 'settings'),SETTINGS)
+    # SETTINGS = os.environ.get('SWARMS_SURVEY_SETTINGS') or \
+    #     os.path.join(basedir, 'settings.cfg')
+    # if not os.path.isfile(SETTINGS):
+    #     shutil.copy(os.path.join(basedir, 'settings'),SETTINGS)
     JMETER = False
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
     WTF_CSRF_ENABLED = True
@@ -24,15 +24,18 @@ class Config:
         'es': 'Español'
     }
     LOCALES = ['en', 'es']
-    MAIL_SERVER = None
-    MAIL_PORT = None
-    MAIL_USE_TLS = None
+    
+    MAIL_SERVER = 'localhost'
+    MAIL_PORT = 25
+    MAIL_USE_TLS = False
     MAIL_USERNAME = None
     MAIL_PASSWORD = None
-    SWARMS_MAIL_SUBJECT_PREFIX = None 
-    SWARMS_MAIL_SENDER = None
-    MODE_GAMES = False
-
+    PROJECTQ_MAIL_SUBJECT_PREFIX = '[Project Q]'
+    PROJECTQ_MAIL_SENDER = 'Project Q <thelab@ibercivis.com>'
+    PROJECTQ_ADMIN = ['jarenere@gmail.com']
+    # if MODE_GAMES == True, expected the survey "as are our volunteers"
+    MODE_GAMES = True
+    DEBUG = False
     @staticmethod
     def init_app(app):
         pass
@@ -64,8 +67,17 @@ class ProductionConfig(Config):
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
-
         # email errors to the administrators
+        # import logging
+        # from logging.handlers import SMTPHandler
+        # credentials = None
+        # mail_handler = SMTPHandler(('localhost', 25), 
+        #     'no-reply@' + 'localhost', ['you@example.com'], 
+        #     'microblog failure', 
+        #     credentials)
+        # mail_handler.setLevel(logging.ERROR)
+        # app.logger.addHandler(mail_handler)
+
         import logging
         from logging.handlers import SMTPHandler
         credentials = None
@@ -74,11 +86,10 @@ class ProductionConfig(Config):
             credentials = (app.config.get('MAIL_USERNAME'), app.config.get('MAIL_PASSWORD'))
             if app.config.get('MAIL_USE_TLS', False):
                 secure = ()
-        mail_handler = SMTPHandler(
-            mailhost=(app.config.get('MAIL_SERVER'),app.config.get('MAIL_PORT')),
-            fromaddr=app.config.get('.SWARMS_MAIL_SENDER'),
-            toaddrs=[app.config.get('SWARMS_ADMIN')],
-            subject=app.config.get('SWARMS_MAIL_SUBJECT_PREFIX') + ' Application Error',
+        mail_handler = SMTPHandler(mailhost=(app.config.get('MAIL_SERVER'),app.config.get('MAIL_PORT')), 
+            fromaddr=app.config.get('PROJECTQ_MAIL_SENDER'), 
+            toaddrs=app.config.get('PROJECTQ_ADMIN'), 
+            subject=app.config.get('PROJECTQ_MAIL_SUBJECT_PREFIX') + ' Application Error', 
             credentials=credentials,
             secure=secure)
         mail_handler.setLevel(logging.ERROR)
@@ -124,22 +135,12 @@ class UnixConfig(ProductionConfig):
     def init_app(cls, app):
         ProductionConfig.init_app(app)
 
-        # log to syslog unix machine
-        # import logging
-        # from logging.handlers import SysLogHandler
-        # syslog_handler = SysLogHandler()
-        # syslog_handler.setLevel(logging.WARNING)
-        # app.logger.addHandler(syslog_handler)
-
-        # file log
+        # log to syslog
         import logging
-        from logging.handlers import RotatingFileHandler
-        file_handler = RotatingFileHandler('temp/swarms.log', 'a', 1 * 1024 * 1024, 10)
-        file_handler.setLevel(logging.INFO)
-        file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-        app.logger.addHandler(file_handler)
-        app.logger.setLevel(logging.INFO)
-        app.logger.info('swarms startup')
+        from logging.handlers import SysLogHandler
+        syslog_handler = SysLogHandler()
+        syslog_handler.setLevel(logging.WARNING)
+        app.logger.addHandler(syslog_handler)
 
 
 config = {

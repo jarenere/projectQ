@@ -9,6 +9,8 @@ from flaskext.markdown import Markdown
 from flask.ext.pagedown import PageDown
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.babel import Babel
+from flask.ext.mail import Mail
+
 
 
 from config import config
@@ -16,9 +18,10 @@ config_name = os.getenv('FLASK_CONFIG') or 'default'
 
 app = Flask(__name__)
 app.config.from_object(config[config_name])
-app.config.from_pyfile(app.config["SETTINGS"])
+# app.config.from_pyfile(app.config["SETTINGS"])
 config[config_name].init_app(app)
 
+print app.debug
 bootstrap = Bootstrap()
 bootstrap.init_app(app)
 
@@ -27,11 +30,16 @@ pagedown = PageDown()
 markdown = Markdown(app)
 pagedown.init_app(app)
 
+#mail
+mail = Mail()
+mail.init_app(app)
+
+
 #OpenID
 lm = LoginManager()
 lm.init_app(app)
 lm.login_view = 'auth.login_email'
-oid = OpenID(app, os.path.join(basedir, 'tmp'))
+# oid = OpenID(app, os.path.join(basedir, 'tmp'))
 #flask-babel
 babel = Babel(app)
 

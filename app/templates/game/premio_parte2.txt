@@ -1,0 +1,7 @@
+Usuario {{user.email}}
+
+Has sido premiado en base a la siguiente decision tomada "{{premio}}"
+Próximamente nos pondremos en contacto para enviarle el cheque regalo.
+Permanece atento a esta dirección de correo. Tan pronto podamos nos pondremos en contacto contigo
+
+Saludos.

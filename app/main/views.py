@@ -3,7 +3,7 @@
 from flask import render_template, Flask, url_for, session, request, flash
 from config import basedir
 from . import blueprint
-from app import babel
+from app import babel, app
 # from config import LANGUAGES
 # from config import LOCALES
     
@@ -17,9 +17,8 @@ def index():
 
 @blueprint.route('/pruebas')
 def pruebas():
-    flash ("error cerrar")
-    flash("valiendooooo")
-    return render_template('pruebas2.html')
+    flash(app.debug)
+    return render_template('index.html')
 
 @babel.localeselector
 def get_locale():
