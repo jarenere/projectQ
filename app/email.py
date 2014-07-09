@@ -13,7 +13,8 @@ def send_email(to, subject, template, **kwargs):
     app = current_app._get_current_object()
     msg = Message(app.config['PROJECTQ_MAIL_SUBJECT_PREFIX'] + ' ' + subject,
                   sender=app.config['PROJECTQ_MAIL_SENDER'], recipients=[to],
-                  cc=['info@ibercivis.es'])
+                  # cc=['info@ibercivis.es']
+                  )
     msg.body = render_template(template + '.txt', **kwargs)
     msg.html = render_template(template + '.html', **kwargs)
     thr = Thread(target=send_async_email, args=[app, msg])
