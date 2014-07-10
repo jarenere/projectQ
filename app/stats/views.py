@@ -37,12 +37,26 @@ def usuarios():
         n_finish = n_finish,
         tittle = 'usuarios')
 
+@blueprint.route('/prueba_correo')
+@login_required
+@researcher_required
+def prueba_correo():
+    from app import email
+    from app.models import User
+
+    user1 = User.query.get(1)
+    flash(app.debug)
+    flash ("enviando correo")
+    email.send_email('jarenere@gmail.com',"prueba","email/prueba", user=user1)
+    return render_template('index.html')
+
 
 @blueprint.route('/')
 @blueprint.route('/index')
 @login_required
 @researcher_required
 def index():
+    flash(app.debug)
     return render_template('/stats/index.html',
         tittle = 'stats')
 

@@ -311,7 +311,7 @@ def showQuestions(id_survey, id_section):
         elif id_section in [41,44,47,50,53,56,59,62]:
             decision = '<h3>Decisión %s, parte 2</h3>' % (get_number_decision(id_survey, id_section))
         elif id_section in [42,45,48,51,54,57,60,63]:
-            decision = '<h3>Decisión %s, parte 3</h3>' % (get_number_decision(id_survey, id_section))
+            decision = '<h3>Decisión %s, parte 3</h3>' % (get_number_decision(id_survey, id_section)-1)
         else:
             decision = '<h3>Decisión %s</h3>' % (get_number_decision(id_survey, id_section))
         print "vamos",get_number_decision(id_survey, id_section)    
