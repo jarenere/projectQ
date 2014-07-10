@@ -4,7 +4,7 @@ from flask import render_template
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app.models import Survey, Consent, Section
 from app.models import Question, QuestionChoice, QuestionText
-from app.models import StateSurvey
+from app.models import StateSurvey, User
 from app.models import Answer
 from app.models import GameImpatience, GameLottery1, GameLottery2
 from app.models import GameRent1, GameRent2, GameUltimatum, GameDictador
@@ -30,11 +30,13 @@ ID_SURVEY=1
 @login_required
 @researcher_required
 def usuarios():
+    n_total = len(User.query.all())
     n_start = StateSurvey.query.filter(StateSurvey.survey_id==1).count()
     n_finish = StateSurvey.query.filter(StateSurvey.status.op('&')(StateSurvey.FINISH_OK)).count()
     return render_template('/stats/usuarios.html',
         n_start = n_start,
         n_finish = n_finish,
+        n_total = n_total,
         tittle = 'usuarios')
 
 @blueprint.route('/prueba_correo')
