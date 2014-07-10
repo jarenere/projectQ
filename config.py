@@ -32,7 +32,7 @@ class Config:
     MAIL_USERNAME = None
     MAIL_PASSWORD = None
     PROJECTQ_MAIL_SUBJECT_PREFIX = '[Project Q]'
-    PROJECTQ_MAIL_SENDER = 'Project Q <thelab@ibercivis.com>'
+    PROJECTQ_MAIL_SENDER = 'Project Q <thelab@ibercivis.es>'
     PROJECTQ_ADMIN = ['jarenere@gmail.com']
     # if MODE_GAMES == True, expected the survey "as are our volunteers"
     MODE_GAMES = True

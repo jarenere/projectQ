@@ -26,6 +26,18 @@ import csv
 
 ID_SURVEY=1
 
+@blueprint.route('/usuarios')
+@login_required
+@researcher_required
+def usuarios():
+    n_start = StateSurvey.query.filter(StateSurvey.survey_id==1).count()
+    n_finish = StateSurvey.query.filter(StateSurvey.status.op('&')(StateSurvey.FINISH_OK)).count()
+    return render_template('/stats/usuarios.html',
+        n_start = n_start,
+        n_finish = n_finish,
+        tittle = 'usuarios')
+
+
 @blueprint.route('/')
 @blueprint.route('/index')
 @login_required
@@ -40,22 +52,19 @@ def index():
 def run():
     game = Games(1)
     users = StateSurvey.query.filter(StateSurvey.survey_id==ID_SURVEY,\
-        StateSurvey.status.op('&')(StateSurvey.FINISH_OK),\
-        StateSurvey.status.op('&')(StateSurvey.PART2_MONEY)==0,\
-        StateSurvey.status.op('&')(StateSurvey.PART2_NO_MONEY)==0)
+        StateSurvey.status.op('&')(StateSurvey.FINISH_OK))
     for u in users:
-        game.part2(u.user)
-        print u.user.id, u.user.nickname
+        game.part2_reimplement(u.user)
+        # print u.user.id, u.user.email
 
+    print ("antes del match")
     game.match()
 
-    for ss in  StateSurvey.query.filter(StateSurvey.survey_id==ID_SURVEY,\
-            StateSurvey.status.op('&')(StateSurvey.FINISH_OK)):
-        game.raffle(ss.user)
-        print ss.id, ss.user_id
+    for u in users:
+        game.raffle(u.user)
+        # print u.id, u.user_id
 
     return redirect(url_for('stats.index'))
-
 
 @blueprint.route('/raffle')
 @login_required

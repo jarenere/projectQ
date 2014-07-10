@@ -3,7 +3,6 @@ from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 # from flask.ext.script import Manager
 from flask.ext.login import LoginManager
-from flask.ext.openid import OpenID
 from config import basedir
 from flaskext.markdown import Markdown
 from flask.ext.pagedown import PageDown
@@ -53,15 +52,13 @@ if not os.path.exists(stats_csv):
 
 
 # from datetime import datetime
-# from apscheduler.scheduler import Scheduler
-# from scheduler import deleteAnswers
+from apscheduler.scheduler import Scheduler
+from scheduler import games
 
 # # Start the scheduler
-# sched = Scheduler()
-# sched.start()
-# sched.add_interval_job(deleteAnswers.deleteAnswers, hours=2)
-
-
+sched = Scheduler()
+sched.start()
+sched.add_interval_job(games.match, minutes=10)
 
 from app.function_jinja.functions import status_part2, status_part3
 

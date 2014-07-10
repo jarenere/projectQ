@@ -6,6 +6,10 @@ from app.models import Raffle
 from sqlalchemy import or_
 import random
 from app import db
+from app.email import send_email
+import fcntl
+
+
 
 
 class Games:
@@ -206,8 +210,14 @@ class Games:
             or_(Game.userA_id==user, Game.userB_id==user)).first()
         if game.userA_id==user:
             game.prizeA=True
+            # email
+            send_email(game.userA.email,'Premio','game/email/premio_parte3',
+                user=game.userA,premio=game.moneyA)
         elif game.userB_id==user:
             game.prizeB=True
+            # email
+            send_email(game.userB.email,'Premio','game/email/premio_parte3',
+                user=game.userB,premio=game.moneyB)
         else:
             raise "error, user in decision one not found"
         db.session.add(game)
@@ -219,8 +229,14 @@ class Games:
             or_(Game.userA_id==user, Game.userB_id==user)).first()
         if game.userA_id==user:
             game.prizeA=True
+            # email
+            send_email(game.userA.email,'Premio','game/email/premio_parte3',
+                user=game.userA,premio=game.moneyA)
         elif game.userB_id==user:
             game.prizeB=True
+            # email
+            send_email(game.userB.email,'Premio','game/email/premio_parte3',
+                user=game.userB,premio=game.moneyB)
         else:
             raise "error, user in decision one not found"
         db.session.add(game)
@@ -231,6 +247,9 @@ class Games:
             Game.type==decision,\
             Game.userA_id==user).first()
         game.prizeA=True
+        # email
+        send_email(game.userA.email,'Premio','game/email/premio_parte3',
+            user=game.userA,premio=game.moneyA)
         db.session.add(game)
 
     def _prize_decision4_6_playerB(self,user,decision):
@@ -239,6 +258,9 @@ class Games:
             Game.type==decision,\
             Game.userB_id==user).first()
         game.prizeB=True
+        # email
+        send_email(game.userB.email,'Premio','game/email/premio_parte3',
+            user=game.userB,premio=game.moneyB)
         db.session.add(game)
 
     def _prize(self,user):
@@ -322,7 +344,7 @@ class Games:
                 alone_user = users[-1]
                 users = users[:-1]
             for i in range(len(users)/2):
-                print i, "of", len(users)/2, decision, "money", money
+                # print i, "of", len(users)/2, decision, "money", money
                 userA = random.choice(users)
                 users.remove(userA)
                 userB = random.choice(users)
@@ -345,7 +367,7 @@ class Games:
         elif decision=="decision4" or decision=="decision6":
             tuple_users = generate_tuple(users)
             for i in tuple_users:
-                print i, "of", decision
+                # print i, "of", decision
 
                 if decision=="decision4":
                     self._match_decision4_users(i[0], i[1], money)
@@ -377,7 +399,7 @@ class Games:
         if len(users_part3_no_match) >self.MIN_USERS_PART3 and \
                 len(users_decision1_v1)>self.MIN_USERS_DECISION1_V1 and\
                 len(users_decision1_v2)>self.MIN_USERS_DECISION1_V2:
-            print users_part3_no_match, users_decision1_v1 ,users_decision1_v2
+            # print users_part3_no_match, users_decision1_v1 ,users_decision1_v2
             self._match("decision1_v1",users_decision1_v1[:],money)
             self._match("decision1_v2",users_decision1_v2[:],money)
             self._match("decision2",users_part3_no_match[:],money)
@@ -411,10 +433,12 @@ class Games:
                 self._flag_status(user,("part3",money))
             db.session.commit()
 
-
     def match(self):
+        f1 = open("game.lck","w")
+        fcntl.flock(f1, fcntl.LOCK_EX)
         self.matching(True)
         self.matching(False)
+        f1.close()
 
     def part2(self,user):
         '''select random answer to game of part2 (GameImpatience)
@@ -465,6 +489,12 @@ class Games:
             self._flag_status(user.id, ("part2",is_real_money))
             db.session.add(game)
             db.session.commit()
+            # email
+            if game.prize:
+                send_email(user.email,'Premio','game/email/premio_parte2',
+                    user=user,
+                    premio=game.answer.answerText)
+
 
     def raffle(self, user):
         '''only if user have game allways with untrue money
@@ -479,3 +509,8 @@ class Games:
                 raffle = Raffle(user=user,survey=self.survey)
                 db.session.add(raffle)
                 db.session.commit()
+                # email
+                if raffle.prize!=0:
+                    send_email(user.email,'Premio','game/email/sorteo',
+                        user=user,
+                        premio=raffle.prize)

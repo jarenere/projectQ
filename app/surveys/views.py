@@ -53,48 +53,6 @@ def index():
         # surveys= [s.Survey for s in surveys],
         surveys = surveys) 
 
-def info_games(id_survey):
-    '''get info of game, raffle and impacience of the user
-    '''
-    raffle = Raffle.query.filter(Raffle.user_id==current_user.id,
-        Raffle.survey_id==id_survey).first()
-    part2 = GameImpatience.query.filter(GameImpatience.user_id==current_user.id,
-        GameImpatience.survey_id==id_survey).first()
-    lottery1 = GameLottery1.query.filter(GameLottery1.survey==id_survey,
-        or_(and_(GameLottery1.userA==current_user.id,GameLottery1.repeatA==False),
-            and_(GameLottery1.userB==current_user.id,GameLottery1.repeatB==False))).first()
-    lottery2 = GameLottery2.query.filter(GameLottery2.survey==id_survey,
-        or_(and_(GameLottery2.userA==current_user.id,GameLottery2.repeatA==False),
-            and_(GameLottery2.userB==current_user.id,GameLottery2.repeatB==False))).first()
-    rent1 = GameRent1.query.filter(GameRent1.survey==id_survey,
-        or_(and_(GameRent1.userA==current_user.id,GameRent1.repeatA==False),
-            and_(GameRent1.userB==current_user.id,GameRent1.repeatB==False))).first()
-    rent2 = GameRent2.query.filter(GameRent2.survey==id_survey,
-        or_(and_(GameRent2.userA==current_user.id,GameRent2.repeatA==False),
-            and_(GameRent2.userB==current_user.id,GameRent2.repeatB==False))).first()
-    ultimatum1 = GameUltimatum.query.filter(GameUltimatum.survey==id_survey,
-        GameUltimatum.userA==current_user.id, GameUltimatum.repeatA==False).first()
-    ultimatum2 = GameUltimatum.query.filter(GameUltimatum.survey==id_survey,
-        GameUltimatum.userB==current_user.id, GameUltimatum.repeatB==False).first()
-    dictador1 = GameDictador.query.filter(GameDictador.survey==id_survey,
-        GameDictador.userA==current_user.id, GameDictador.repeatA==False).first()
-    dictador2 = GameDictador.query.filter(GameDictador.survey==id_survey,
-        GameDictador.userB==current_user.id, GameDictador.repeatB==False).first()
-    return render_template('/surveys/results.html',
-        title = "Resutls",
-        user_id = current_user.id,
-        raffle = raffle,
-        part2 = part2,
-        lottery1 = lottery1,
-        lottery2 = lottery2,
-        rent1 = rent1,
-        rent2 = rent2,
-        ultimatum1 = ultimatum1,
-        ultimatum2 = ultimatum2,
-        dictador1 = dictador1,
-        dictador2 = dictador2)
-
-
 def get_stateSurvey_or_error(id_survey,user,ip = None):
     stateSurvey, status = StateSurvey.getStateSurvey(id_survey,user,ip)
     if status == StateSurvey.NO_ERROR:
@@ -128,8 +86,9 @@ def run_part2_raffle(id_survey):
     '''run part2 and raffle if user no always game with untrue money
     '''
     game = Games(id_survey)
-    game.part2(current_user)
+    game.part2_reimplement(current_user)
     game.raffle(current_user)
+    # game.match()
 
 
 @blueprint.route('/survey/<int:id_survey>', methods=['GET', 'POST'])
@@ -146,7 +105,7 @@ def logicSurvey(id_survey):
     section = stateSurvey.nextSection()
     if section is None:
         if stateSurvey.status & StateSurvey.FINISH_OK:
-            # run_part2_raffle(id_survey)
+            run_part2_raffle(id_survey)
             return check_feedback(id_survey)
         if stateSurvey.status & StateSurvey.TIMED_OUT:
             return render_template('/survey/error_time_date.html',
