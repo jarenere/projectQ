@@ -49,6 +49,12 @@ def prueba_correo():
     flash ("enviando correo")
     email.send_email('jarenere@gmail.com',"prueba","email/prueba", user=user1)
     return render_template('index.html')
+@blueprint.route('/div')
+@login_required
+@researcher_required
+def division_cero():
+    5/0
+    return render_template('index.html')
 
 
 @blueprint.route('/')
