@@ -26,8 +26,8 @@
         <tbody>
             {% for result in results %}
             <tr>
-                <td>{{result.userA_id}}</td>
-                <td>{{result.userB_id}}</td>
+                <td>{{result.userA_id}},{{result.userA.email}}</td>
+                <td>{{result.userB_id}},{{result.userB.email}}</td>
                 <td>{{result.cashInitA | round(1)}}</td>
                 <td>{{result.moneyA | round(1)}}</td>
                 <td>{{result.moneyB | round(1)}}</td>

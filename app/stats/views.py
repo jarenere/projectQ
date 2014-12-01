@@ -38,7 +38,33 @@ def usuarios():
         n_finish = n_finish,
         n_total = n_total,
         tittle = 'usuarios')
-
+  
+@blueprint.route('/premios')
+@login_required
+@researcher_required
+def premios():
+    n_finish = StateSurvey.query.filter(StateSurvey.status.op('&')(StateSurvey.FINISH_OK)).count()
+    raffle = Raffle.query.filter(Raffle.prize!=0)
+    gameA = Game.query.filter(Game.prizeA)
+    gameB = Game.query.filter(Game.prizeB)
+    impatience = GameImpatience.query.filter(GameImpatience.prize)
+    sum_raffle = sum(r.prize for r in raffle)
+    sum_decisions = sum (g.moneyA for g in gameA) + \
+        sum (g.moneyB for g in gameB)
+    sum_impatience =  sum (int(i.answer.answerText[8:10]) for i in impatience)
+    sum_total =  sum_raffle + sum_decisions + sum_impatience
+    return render_template('/stats/premios.html',
+        n_finish = n_finish,
+        sum_total = sum_total,
+        sum_decisions = sum_decisions,
+        sum_raffle = sum_raffle,
+        sum_impatience = sum_impatience,
+        raffle = raffle,
+        gameA = gameA,
+        gameB = gameB,
+        impatience = impatience,
+        tittle = 'premios')
+  
 @blueprint.route('/prueba_correo')
 @login_required
 @researcher_required
@@ -73,17 +99,16 @@ def index():
 @researcher_required
 def run():
     game = Games(1)
-    users = StateSurvey.query.filter(StateSurvey.survey_id==ID_SURVEY,\
-        StateSurvey.status.op('&')(StateSurvey.FINISH_OK))
-    for u in users:
-        game.part2_reimplement(u.user)
+    #users = StateSurvey.query.filter(StateSurvey.survey_id==ID_SURVEY,\
+        #StateSurvey.status.op('&')(StateSurvey.FINISH_OK))
+    #for u in users:
+        #game.part2_reimplement(u.user)
         # print u.user.id, u.user.email
 
-    print ("antes del match")
     game.match()
 
-    for u in users:
-        game.raffle(u.user)
+    #for u in users:
+        #game.raffle(u.user)
         # print u.id, u.user_id
 
     return redirect(url_for('stats.index'))

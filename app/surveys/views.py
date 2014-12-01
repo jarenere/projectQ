@@ -88,7 +88,7 @@ def run_part2_raffle(id_survey):
     game = Games(id_survey)
     game.part2_reimplement(current_user)
     game.raffle(current_user)
-    # game.match()
+    game.match()
 
 
 @blueprint.route('/survey/<int:id_survey>', methods=['GET', 'POST'])
@@ -108,10 +108,10 @@ def logicSurvey(id_survey):
             run_part2_raffle(id_survey)
             return check_feedback(id_survey)
         if stateSurvey.status & StateSurvey.TIMED_OUT:
-            return render_template('/survey/error_time_date.html',
+            return render_template('/surveys/error_time_date.html',
                 title ='time out')
         if stateSurvey.status & StateSurvey.END_DATE_OUT:
-            return render_template('/survey/error_time_date.html',
+            return render_template('/surveys/error_time_date.html',
                 title ='End date out')
         print "\n raro\n Status: ", stateSurvey.status
         return abort(500) 

@@ -236,7 +236,7 @@ class Games:
             game.prizeB=True
             # email
             send_email(game.userB.email,'Premio','game/email/premio_parte3',
-                user=game.userB,premio=game.moneyB)
+                 user=game.userB,premio=game.moneyB)
         else:
             raise "error, user in decision one not found"
         db.session.add(game)

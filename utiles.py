@@ -1,4 +1,77 @@
 from app import db, models
+def usuarios_control():
+    from app.models import *
+    #devuelve los usuarios que se han quedado en preguntas de control
+    sss =StateSurvey.query.filter(StateSurvey.index != 26)
+    i=0
+    for ss in sss:
+        ans = Answer.query.filter(Answer.user_id==ss.user_id, Answer.question_id.in_((131,143,156,167,190,203,214)),Answer.section==ss.sequence[ss.index]).first()
+        if ans is not None:
+            i=i+1
+    j=0
+    for ss in sss:
+        if ss.sequence[ss.index] in (40,43,46,49,52,55,58,61):
+            j=j+1
+    print "usuarios pregutnas de control",j
+    print "usuarios intentar contestar preguntas de control",i
+    
+def list_user_part():
+    from app.models import *
+    #lista de usuarios y en que parte se quedaron
+    sss =StateSurvey.query.filter(StateSurvey.index != 26)
+    parte1=0
+    parte2_real=0
+    parte2_ficticio=0
+    parte3_real=0
+    parte3_ficticio=0
+    decision1=0
+    decision2=0
+    decision3=0
+    decision4=0
+    decision5=0
+    decision6=0
+
+    for ss in sss:
+      if ss.sectionTime.has_key(9):
+        parte1=parte1+1
+      if ss.sectionTime.has_key(10) and ss.sectionTime.has_key(16) and ss.sectionTime.has_key(17):
+        parte2_real= parte2_real +1
+      if ss.sectionTime.has_key(11) and ss.sectionTime.has_key(18) and ss.sectionTime.has_key(19):
+        parte2_ficticio = parte2_ficticio +1
+      if ss.sectionTime.has_key(12) and (ss.sectionTime.has_key(42) or ss.sectionTime.has_key(45))\
+        and ss.sectionTime.has_key(48) and ss.sectionTime.has_key(51) and ss.sectionTime.has_key(32)\
+        and ss.sectionTime.has_key(33) and ss.sectionTime.has_key(23):
+        parte3_real= parte3_real +1
+      if ss.sectionTime.has_key(13) and (ss.sectionTime.has_key(54) or ss.sectionTime.has_key(57))\
+        and ss.sectionTime.has_key(60) and ss.sectionTime.has_key(63) and ss.sectionTime.has_key(38)\
+        and ss.sectionTime.has_key(39) and ss.sectionTime.has_key(27):
+        parte3_ficticio= parte3_ficticio +1
+      if  ss.sectionTime.has_key(42) or ss.sectionTime.has_key(45) or  ss.sectionTime.has_key(54) or  ss.sectionTime.has_key(57):
+        decision1=decision1 + 1
+      if  ss.sectionTime.has_key(48) or ss.sectionTime.has_key(60):
+        decision2=decision2 + 1
+      if  ss.sectionTime.has_key(51) or ss.sectionTime.has_key(63):
+        decision3=decision3 + 1
+      if  ss.sectionTime.has_key(32) or ss.sectionTime.has_key(38):
+        decision4=decision4 + 1
+      if  ss.sectionTime.has_key(33) or ss.sectionTime.has_key(39):
+        decision5=decision5 + 1
+      if  ss.sectionTime.has_key(23) or ss.sectionTime.has_key(27):
+        decision6=decision6 + 1
+        
+    print "usuarios sin completar la encuesta: ",sss.count()
+    print "usuarios_parte 1: ", parte1
+    print "usuarios_parte2_real: ", parte2_real
+    print "usuarios_parte2_ficticio: ",parte2_ficticio
+    print "usuarios_parte3_real: ", parte3_real
+    print "usuarios_parte3_ficticio: ",parte3_ficticio
+    print "decision1: ", decision1
+    print "decision2: ", decision2
+    print "decision3:", decision3
+    print "decision4: ", decision4
+    print "decision5: ", decision5
+    print "decision6: ", decision6
+
 def borrarState():
     state = models.StateSurvey.query.all()
     for s in state:
@@ -159,6 +232,8 @@ def borrarJuegos():
         ss.status=ss.status &~ models.StateSurvey.GAME_RENT2
         ss.status=ss.status &~ models.StateSurvey.GAME_ULTIMATUM
         ss.status=ss.status &~ models.StateSurvey.GAME_DICTADOR
+        ss.status=ss.status &~ models.StateSurvey.PART3_MONEY
+        ss.status=ss.status &~ models.StateSurvey.PART3_NO_MONEY
         db.session.add(ss)
     db.session.commit()
 

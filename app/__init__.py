@@ -52,13 +52,13 @@ if not os.path.exists(stats_csv):
 
 
 # from datetime import datetime
-from apscheduler.scheduler import Scheduler
-from scheduler import games
+#from apscheduler.scheduler import Scheduler
+#from scheduler import games
 
 # # Start the scheduler
-sched = Scheduler()
-sched.start()
-sched.add_interval_job(games.match, minutes=10)
+#sched = Scheduler()
+#sched.start()
+#sched.add_interval_job(games.match, minutes=100)
 
 from app.function_jinja.functions import status_part2, status_part3
 

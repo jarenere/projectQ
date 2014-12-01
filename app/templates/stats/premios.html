@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script type="text/javascript" src="/static/js/jquery.tablesorter.js"></script>
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+{% from "_formHelpers.html" import render_field %}
+    número de usuarios que han terminado la encuesta: <b>{{n_finish}}</b></p>
+    Dinero total dado <b>{{sum_total}}</b></p>
+    Dinero en Rifas <b>{{sum_raffle}}</b></p>
+    Dinero en juego de imapciencia <b>{{sum_impatience}}</b></p>
+    Dinero en decisiones <b>{{sum_decisions}}</b>
+
+    <h3>premios dados</h3>
+    <div class="container-fluid">
+    <table class="table data-table sort display" id="myTable1">
+        <thead>
+            <tr>
+                <th class="sorting">Usuario<i class="fa fa-sort"></i></th>
+                <th class="sorting">Premio<i class="fa fa-sort"></i></th>
+                <th class="sorting">Tipo<i class="fa fa-sort"></i></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in raffle %}
+            <tr>
+                <td>{{i.user.email}}</td>
+                <td>{{i.prize}}</td>
+                <td>Sorteo</td>
+            </tr>
+            {% endfor %}
+            {% for i in gameA %}
+            <tr>
+                <td>{{i.userA.email}}</td>
+                <td>{{i.moneyA}}</td>
+                <td>{{i.type}}</td>
+            </tr>
+            {% endfor %}
+            {% for i in gameB %}
+            <tr>
+                <td>{{i.userB.email}}</td>
+                <td>{{i.moneyB}}</td>
+                <td>{{i.type}}</td>
+            </tr>
+            {% endfor %}
+            {% for i in impatience %}
+            <tr>
+                <td>{{i.user.email}}</td>
+                <td>{{i.answer.answerText}}</td>
+                <td>impaciencia</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    </div>
+<script type="text/javascript" id="js">$(document).ready(function() {
+    // call the tablesorter plugin
+    $("table").tablesorter({
+    // sort on the first column and third column, order asc
+        sortList: [[0,0],[2,0]]
+  });
+}); </script>
+{% endblock %}

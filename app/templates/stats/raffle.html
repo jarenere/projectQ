@@ -18,7 +18,7 @@
         <tbody>
             {% for i in raffle %}
             <tr>
-                <td>{{i.user_id}}</td>
+                <td>{{i.user_id}}, {{i.user.email}}</td>
                 <td>{{i.prize}}</td>
             </tr>
             {% endfor %}

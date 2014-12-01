@@ -22,7 +22,7 @@
             {% for i in part2 %}
             <tr>
                 <td>{{i.GameImpatience.id}}</td>
-                <td>{{i.GameImpatience.user_id}}</td>
+                <td>{{i.GameImpatience.user_id}},{{i.GameImpatience.user.email}}</td>
                 <td>{{i.Question.choices[i.Answer.answerNumeric]}}</td>
                 <td>{{i.GameImpatience.prize}}</td>
                 <td>{{ status_part2(i.StateSurvey.status)}}</td>

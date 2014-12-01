@@ -25,7 +25,7 @@ class Config:
     }
     LOCALES = ['en', 'es']
     
-    MAIL_SERVER = 'localhost'
+    MAIL_SERVER = 'smtp.ibercivis.es'
     MAIL_PORT = 25
     MAIL_USE_TLS = False
     MAIL_USE_SSL = False
@@ -33,7 +33,7 @@ class Config:
     MAIL_PASSWORD = None
     PROJECTQ_MAIL_SUBJECT_PREFIX = '[Project Q]'
     PROJECTQ_MAIL_SENDER = 'Project Q <thelab@ibercivis.es>'
-    PROJECTQ_ADMIN = ['xxx@gmail.com']
+    PROJECTQ_ADMIN = ['jarenere@gmail.com']
     # if MODE_GAMES == True, expected the survey "as are our volunteers"
     MODE_GAMES = True
     DEBUG = False
