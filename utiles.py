@@ -6,7 +6,7 @@ def usuarios_control():
     i=0
     for ss in sss:
         ans = Answer.query.filter(Answer.user_id==ss.user_id, Answer.question_id.in_((131,143,156,167,190,203,214)),Answer.section==ss.sequence[ss.index]).first()
-        if ans is not None:
+        if ans is not None and ss.sequence[ss.index] in (40,43,46,49,52,55,58,61):
             i=i+1
     j=0
     for ss in sss:

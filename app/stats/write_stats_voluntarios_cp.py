@@ -16,8 +16,7 @@ def write_stats(id_survey):
     f1 = open(os.path.join(stats_csv, str(id_survey)+".csv"),"w")
     writer = csv.writer(f1, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
     write_header(writer, id_survey)
-    for  ss in StateSurvey.query.filter(StateSurvey.survey_id==1):
-    # for  ss in StateSurvey.query.filter(StateSurvey.survey_id==1,StateSurvey.status.op('&')(StateSurvey.FINISH_OK)):
+    for  ss in StateSurvey.query.filter(StateSurvey.survey_id==1,StateSurvey.status.op('&')(StateSurvey.FINISH_OK)):
         write_answers(writer, ss.user_id)
         print ss.user_id
     print "done"
@@ -107,7 +106,7 @@ def write_header(writer,id_survey):
     header_range("part3dec4","parte3d4p",1,1,l)
     header_range("part3dec5","parte3d5p",1,11,l)
     header_range("part3dec6","parte3d6p",1,1,l)
-    header_range("part4bloque1","parte4b1p",1,2,l)
+    header_range("part4bloque1","parte4b1p",1,1,l)
     header_range("part4bloque2","parte4b2p",1,1,l)
 
     writer.writerow(l)
@@ -270,7 +269,7 @@ def write_answers(writer,user_id):
             (question1.section_id ==23,38),
             (question1.section_id ==27,39),
             (question1.section_id ==14,40),
-            (question1.section_id ==15,41))),question1.position)
+            (question1.section_id ==15,40))),question1.position)
 
 
     l.append(ss.user_id)
@@ -299,9 +298,6 @@ def write_answers(writer,user_id):
             l.append("")
             l.append("")
             l.append("")
-            if  i[0].isExpectedAnswer():
-                l.append("")
-
 
         else:
             ans = i[1]
