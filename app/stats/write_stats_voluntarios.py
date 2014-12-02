@@ -305,7 +305,15 @@ def write_answers(writer,user_id):
 
         else:
             ans = i[1]
-            l.append(ans.answerText)
+            # 1,5,63 question with bugs
+            if ans.question_id==1:
+                l.append(ans.answerNumeric+1900)
+            elif ans.question_id==5:
+                l.append(ans.answerNumeric+0)
+            elif ans.question_id==63:
+                l.append(ans.answerNumeric+1900)
+            else:
+                l.append(ans.answerText)
             l.append(ans.globalTime)
             l.append(ans.differentialTime)
             if ans.question.isExpectedAnswer():

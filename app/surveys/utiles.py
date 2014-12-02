@@ -30,7 +30,7 @@ def new_answer(question,form,user):
             answer.answerText = form["c"+str(question.id)].choices[int(form["c"+str(question.id)].data)][1]
         else:
             # if ==select, the firts element is empty, form[0]=''
-            answer.answerText = form["c"+str(question.id)].choices[int(form["c"+str(question.id)+1].data)][1]
+            answer.answerText = form["c"+str(question.id)].choices[int(form["c"+str(question.id)].data)+1][1]
     if isinstance (question, QuestionLikertScale):
         answer = Answer (answerNumeric = form["c"+str(question.id)].data, user= user, question = question)
         answer.answerText = form["c"+str(question.id)].choices[int(form["c"+str(question.id)].data)][1]
